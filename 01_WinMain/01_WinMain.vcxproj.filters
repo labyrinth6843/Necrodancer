@@ -76,6 +76,12 @@
     <Filter Include="MainGame\Object\Enemy">
       <UniqueIdentifier>{80270d75-1ceb-486b-9aec-6ef2118fc719}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\Helper">
+      <UniqueIdentifier>{1cfba31d-be53-4306-98a9-60134bfdf2fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\FileManager">
+      <UniqueIdentifier>{3b5dc254-0b03-4450-a911-ef9c6425739a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -153,9 +159,6 @@
     <ClInclude Include="GameEventManager.h">
       <Filter>FrameWork\GameEvent</Filter>
     </ClInclude>
-    <ClInclude Include="Tile.h">
-      <Filter>MainGame\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="MapToolScene.h">
       <Filter>MainGame\Scene</Filter>
     </ClInclude>
@@ -176,6 +179,15 @@
     </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>MainGame\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper.h">
+      <Filter>FrameWork\Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="FileManager.h">
+      <Filter>FrameWork\FileManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>FrameWork\FileManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -242,9 +254,6 @@
     <ClCompile Include="GameEventManager.cpp">
       <Filter>FrameWork\GameEvent</Filter>
     </ClCompile>
-    <ClCompile Include="Tile.cpp">
-      <Filter>MainGame\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="MapToolScene.cpp">
       <Filter>MainGame\Scene</Filter>
     </ClCompile>
@@ -265,6 +274,12 @@
     </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>MainGame\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="FileManager.cpp">
+      <Filter>FrameWork\FileManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>FrameWork\FileManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

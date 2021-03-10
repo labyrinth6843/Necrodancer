@@ -27,3 +27,16 @@
 *.exe
 *.out
 *.app
+.vs/01_WinMain/v16/.suo
+*.db
+*.db-wal
+*.db-shm
+*.opendb
+*.ipch
+*.log
+*.res
+*.lastbuildstate
+*.tlog
+*.idb
+*.pdb
+*.ilk

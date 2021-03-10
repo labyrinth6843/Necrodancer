@@ -110,6 +110,11 @@ void Camera::RenderEllipse(HDC hdc, float x, float y, float radius)
 	RenderEllipse(hdc, x - mRect.left, y - mRect.top, radius);
 }
 
+void Camera::RenderTextBox(HDC hdc, RECT rc, wstring st)
+{
+	TextOut(hdc, rc.right - mRect.left, rc.bottom - mRect.top, st.c_str(), st.length());
+}
+
 bool Camera::IsInCameraArea(float x, float y, float width, float height)
 {
 	RECT rc = RectMakeCenter(x, y, width, height);

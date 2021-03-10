@@ -29,7 +29,7 @@ private:
 	int mFrameIndexX;
 	int mFrameIndexY;
 public:
-	Tile(class Image* image, float x, float y, float sizeX, float sizeY,int frameIndexX, int frameIndexY);
+	Tile(class Image* image, float x, float y, float sizeX, float sizeY,int frameIndexX, int frameIndexY, TileType tiletype = TileType::Normal);
 	void Render(HDC hdc);
 
 	Image* GetImage()const { return mImage; }

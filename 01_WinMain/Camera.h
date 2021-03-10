@@ -34,6 +34,7 @@ public:
 
 	void RenderRect(HDC hdc, RECT rc);
 	void RenderEllipse(HDC hdc, float x, float y, float radius);
+	void RenderTextBox(HDC hdc, RECT rc, wstring st);
 
 	bool IsInCameraArea(float x, float y, float width, float height);
 	bool IsInCameraArea(RECT rc);
