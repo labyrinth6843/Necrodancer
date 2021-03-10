@@ -102,39 +102,43 @@ class MapToolScene : public Scene{
 	Tile* mItemList[TileCountY][TileCountX];
 	Tile* mObjectList[TileCountY][TileCountX];
 	//
-	TilePallete mPallete[10][5];
+	/*	//타일 벡터화 -> 이부분 주석 해제하기전에 Init개조 필요
+	vector<vector<Tile*>> mGroundList;
+	vector<vector<Tile*>> mDecoList;
+	vector<vector<Tile*>> mItemList;
+	vector<vector<Tile*>> mObjectList;
+	*/
 
-	vector<wstring>mPalleteList;
 	int mCurrentPage = 0;
 
+	TilePallete mPallete[10][5];
+	vector<wstring>mPalleteList;
 	TilePallete mCurrentPallete;
-	Button* mSaveButton;
-	Button* mLoadButton;
-	Button* mClearButton;
-	Button* mUndoButton;
-	Button* mRedoButton;
-	Button* mPlayButton;
 
-	Button* mGroundButton;
-	Button* mWallButton;
-	Button* mDecoButton;
-	Button* mItemButton;
-	Button* mObjectButton;
-
-	Button* mPrevButton;
-	Button* mNextButton;
 	map<wstring, class Button*> mButtonList;
 	typedef map<wstring, class Button*> ::iterator ButtonIt;
 
 	stack<ICommand*> mCommandList;
 	stack<ICommand*> mReCommandList;
+
+	bool mShowGrid;
+
+	int mMaxSizeX;
+	int mMaxSizeY;
+
+	int mIsInput;	//0 : false, 1 : x, 2 : y
+	string mInputX;
+	string mInputY;
 public:
 	void Init()override;
 	void Release()override;
 	void Update()override;
 	void Render(HDC hdc)override;
 
+	LRESULT Proc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 private:
+	void SetSize();
+
 	void Save();
 	void Load();
 	void Clear();

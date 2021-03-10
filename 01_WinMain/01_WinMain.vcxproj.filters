@@ -82,6 +82,9 @@
     <Filter Include="FrameWork\FileManager">
       <UniqueIdentifier>{3b5dc254-0b03-4450-a911-ef9c6425739a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Scene\MapToolScene">
+      <UniqueIdentifier>{57bbbaef-4051-41a8-ac0b-b3dd6d58242c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -159,9 +162,6 @@
     <ClInclude Include="GameEventManager.h">
       <Filter>FrameWork\GameEvent</Filter>
     </ClInclude>
-    <ClInclude Include="MapToolScene.h">
-      <Filter>MainGame\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>FrameWork\Button</Filter>
     </ClInclude>
@@ -180,14 +180,14 @@
     <ClInclude Include="Enemy.h">
       <Filter>MainGame\Object\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Helper.h">
-      <Filter>FrameWork\Helper</Filter>
+    <ClInclude Include="Tile.h">
+      <Filter>FrameWork\FileManager</Filter>
     </ClInclude>
     <ClInclude Include="FileManager.h">
       <Filter>FrameWork\FileManager</Filter>
     </ClInclude>
-    <ClInclude Include="Tile.h">
-      <Filter>FrameWork\FileManager</Filter>
+    <ClInclude Include="MapToolScene.h">
+      <Filter>MainGame\Scene\MapToolScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -254,9 +254,6 @@
     <ClCompile Include="GameEventManager.cpp">
       <Filter>FrameWork\GameEvent</Filter>
     </ClCompile>
-    <ClCompile Include="MapToolScene.cpp">
-      <Filter>MainGame\Scene</Filter>
-    </ClCompile>
     <ClCompile Include="Button.cpp">
       <Filter>FrameWork\Button</Filter>
     </ClCompile>
@@ -275,11 +272,20 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>MainGame\Object\Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>FrameWork\FileManager</Filter>
+    </ClCompile>
     <ClCompile Include="FileManager.cpp">
       <Filter>FrameWork\FileManager</Filter>
     </ClCompile>
-    <ClCompile Include="Tile.cpp">
-      <Filter>FrameWork\FileManager</Filter>
+    <ClCompile Include="MapToolScene.cpp">
+      <Filter>MainGame\Scene\MapToolScene</Filter>
+    </ClCompile>
+    <ClCompile Include="MapToolProc+SetSize.cpp">
+      <Filter>MainGame\Scene\MapToolScene</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadImage.cpp">
+      <Filter>FrameWork\Image</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

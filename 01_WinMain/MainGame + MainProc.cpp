@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "MainGame.h"
+#include "MapToolScene.h"
 
 LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam)
 {
@@ -23,6 +24,13 @@ LRESULT MainGame::MainProc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		_mousePosition.x = LOWORD(lParam);
 		_mousePosition.y = HIWORD(lParam);
 		break;
+	}
+
+	if (SceneManager::GetInstance()->CheckCurrentScene(L"MapToolScene"))
+	{
+		MapToolScene* map = (MapToolScene*)SceneManager::GetInstance()->FindScene(L"MapToolScene");
+		map->Proc(hWnd, iMessage, wParam, lParam);
+
 	}
 
 	return (DefWindowProc(hWnd, iMessage, wParam, lParam));

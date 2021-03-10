@@ -5,8 +5,7 @@
 #include "LoadingScene.h"
 
 SceneManager::SceneManager()
-	:mCurrentScene(nullptr),mLoadingThread(nullptr),mTargetScene(nullptr),mLoadingScene(nullptr),
-mIsLoadingEnd(false){}
+	:mCurrentScene(nullptr),mLoadingThread(nullptr),mTargetScene(nullptr),mLoadingScene(nullptr),mIsLoadingEnd(false), mSaveName(L""){}
 
 SceneManager::~SceneManager()
 {
@@ -28,6 +27,8 @@ void SceneManager::Render(HDC hdc)
 {
 	if (mCurrentScene != nullptr)
 		mCurrentScene->Render(hdc);
+	if (mSaveName != L"")
+		LoadScene(mSaveName);
 }
 
 void SceneManager::AddScene(const wstring& sceneName,Scene * scene)
@@ -42,6 +43,12 @@ void SceneManager::AddScene(const wstring& sceneName,Scene * scene)
 
 void SceneManager::LoadScene(const wstring & sceneName)
 {
+	if (mSaveName == L"")
+	{
+		mSaveName = sceneName;
+		return;
+	}
+
 	SceneIter iter = mSceneList.find(sceneName);
 	//못찾았으면 return (돌아가라)
 	if (iter == mSceneList.end())
@@ -58,6 +65,7 @@ void SceneManager::LoadScene(const wstring & sceneName)
 	targetScene->Init();
 
 	mCurrentScene = targetScene;
+	mSaveName = L"";
 }
 
 //잘 개조해서 써봐. 잘 모르고 괜히 쓰면 면접때 털림
@@ -82,6 +90,28 @@ void SceneManager::LoadScene(const wstring & targetSceneName, const wstring & lo
 	function<void(void)> threadFunc = bind(&SceneManager::LoadingThread, this);
 	//스레드는 메모리 할당해주는 순간부터 바로 돌기 시작한다.
 	mLoadingThread = new thread(threadFunc);
+}
+
+bool SceneManager::CheckCurrentScene(const wstring& sceneName)
+{
+	SceneIter iter = mSceneList.find(sceneName);
+	if (iter != mSceneList.end())
+	{
+		if (mCurrentScene == iter->second)
+			return true;
+	}
+	return false;
+}
+
+Scene* SceneManager::FindScene(const wstring& sceneName)
+{
+	SceneIter iter = mSceneList.find(sceneName);
+	if (iter != mSceneList.end())
+	{
+		if (mCurrentScene == iter->second)
+			return iter->second;
+	}
+	return nullptr;
 }
 
 void SceneManager::LoadingThread()

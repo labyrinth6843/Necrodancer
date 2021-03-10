@@ -30,7 +30,9 @@ private:
 	int mFrameIndexY;
 public:
 	Tile(class Image* image, float x, float y, float sizeX, float sizeY,int frameIndexX, int frameIndexY, TileType tiletype = TileType::Normal);
+	
 	void Render(HDC hdc);
+	void MoveRender(HDC hdc, float moveX, float moveY);
 
 	Image* GetImage()const { return mImage; }
 	void SetImage(Image * image) { mImage = image; }

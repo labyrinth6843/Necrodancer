@@ -6,36 +6,32 @@
 #include "Button.h"
 #include <fstream>
 
-void MapToolScene::Init(){
-	//바닥
-	ImageManager::GetInstance()->LoadFromFile(L"0", Resources(L"Stage1Ground.bmp"), 80, 96, 5, 6, true);
-	ImageManager::GetInstance()->LoadFromFile(L"1", Resources(L"Stage2Ground.bmp"), 80, 96, 5, 6, true);
-	ImageManager::GetInstance()->LoadFromFile(L"2", Resources(L"Stage3Ground.bmp"), 80, 96, 5, 6, true);
-	ImageManager::GetInstance()->LoadFromFile(L"3", Resources(L"Stage4Ground.bmp"), 80, 96, 5, 6, true);
-	ImageManager::GetInstance()->LoadFromFile(L"4", Resources(L"Stage5Ground.bmp"), 80, 96, 5, 6, true);
-	//벽
-	ImageManager::GetInstance()->LoadFromFile(L"5", Resources(L"Stage1Wall.bmp"), 80, 48, 5, 3, true);
-	ImageManager::GetInstance()->LoadFromFile(L"6", Resources(L"Stage2Wall.bmp"), 80, 48, 5, 3, true);
-	ImageManager::GetInstance()->LoadFromFile(L"7", Resources(L"Stage3Wall.bmp"), 80, 48, 5, 3, true);
-	ImageManager::GetInstance()->LoadFromFile(L"8", Resources(L"Stage4Wall.bmp"), 80, 48, 5, 3, true);
-	ImageManager::GetInstance()->LoadFromFile(L"9", Resources(L"Stage5Wall.bmp"), 80, 48, 5, 3, true);
-	//장식
-	ImageManager::GetInstance()->LoadFromFile(L"10", Resources(L"Stage1Deco.bmp"), 80, 64, 5, 4, true);
-	ImageManager::GetInstance()->LoadFromFile(L"11", Resources(L"Stage2Deco.bmp"), 80, 64, 5, 4, true);
-	ImageManager::GetInstance()->LoadFromFile(L"12", Resources(L"Stage3Deco.bmp"), 80, 64, 5, 4, true);
-	ImageManager::GetInstance()->LoadFromFile(L"13", Resources(L"Stage4Deco.bmp"), 80, 64, 5, 4, true);
-	ImageManager::GetInstance()->LoadFromFile(L"14", Resources(L"Stage5Deco.bmp"), 80, 64, 5, 4, true);
-	//아이템
-	ImageManager::GetInstance()->LoadFromFile(L"15", Resources(L"ItemList1.bmp"), 80, 144, 5, 9, true);
-	ImageManager::GetInstance()->LoadFromFile(L"16", Resources(L"ItemList2.bmp"), 80, 144, 5, 9, true);
-	//적
-	ImageManager::GetInstance()->LoadFromFile(L"17", Resources(L"Enemy.bmp"), 80, 80, 5, 5, true);
+void MapToolScene::Init()
+{
+	//Image LoadFromFile은 필터 -> LoadImage.cpp로 옮김
 
 	for (int i = 0; i < 18; i++) {
 		wstring wstr = to_wstring(i);
 		mPalleteList.push_back(wstr);
 	}
 
+	//Tile* List들 vector화 필요
+	/*
+	vector<Tile*> XList;
+	for (int y = 0; y < mMaxSizeY; ++y)
+	{
+		for (int x = 0; x < mMaxSizeX; ++x)
+		{
+			XList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+		}
+		mGroundList.push_back(XList);
+		mDecoList.push_back(XList);
+		mItemList.push_back(XList);
+		mObjectList.push_back(XList);
+		XList.clear();	//넣어주고 비워주기
+		XList.shrink_to_fit();
+	}
+	*/
 	for (int y = 0; y < TileCountY; ++y){
 		for (int x = 0; x < TileCountX; ++x){
 			mGroundList[y][x] = new Tile(
@@ -119,6 +115,19 @@ void MapToolScene::Init(){
 	mButtonList.insert(make_pair(L"Next", new Button(L"Next", L"Next", 900, 600, 200, 50, bind(&MapToolScene::NextPallete, this))));
 
 	mCurrentPallete = mPallete[0][0];
+	
+	mShowGrid = true;
+
+	//SetSize 관련 변수들
+	mMaxSizeX = TileCountX;
+	mMaxSizeY = TileCountY;
+	mInputX = to_string(TileCountX);
+	mInputY = to_string(TileCountY);
+
+	mButtonList.insert(make_pair(L"Set", new Button(L"",L"Set", 475, WINSIZEY - 175, 50, 25, bind(&MapToolScene::SetSize, this))));
+	mButtonList.insert(make_pair(L"SizeX", new Button(L"", L"", 300, WINSIZEY - 175, 50, 25, [this]() { mIsInput = 1; })));
+	mButtonList.insert(make_pair(L"SizeY", new Button(L"", L"", 370, WINSIZEY - 175, 50, 25, [this]() { mIsInput = 2; })));
+	mIsInput = 0;
 }
 
 void MapToolScene::Release(){
@@ -217,6 +226,8 @@ void MapToolScene::Update(){
 		}
 	}
 
+	if (Input::GetInstance()->GetKeyDown('H'))	//격자 표시
+		mShowGrid = !mShowGrid;
 	if (Input::GetInstance()->GetKey(VK_CONTROL)) {
 		if (Input::GetInstance()->GetKeyDown('Z'))
 			Undo();
@@ -232,6 +243,7 @@ void MapToolScene::Update(){
 }
 
 void MapToolScene::Render(HDC hdc){
+	//배경
 	HBRUSH Brush = CreateSolidBrush(RGB(66, 66, 66));
 	HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, Brush);
 	
@@ -241,6 +253,7 @@ void MapToolScene::Render(HDC hdc){
 	SelectObject(hdc, oldBrush);
 	DeleteObject(Brush);
 
+	//타일 출력
 	for (int y = 0; y < TileCountY; ++y) {
 		for (int x = 0; x < TileCountX; ++x) {
 			mGroundList[y][x]->Render(hdc);
@@ -278,12 +291,39 @@ void MapToolScene::Render(HDC hdc){
 			);
 		}
 	}
+	//선택된 타일 미리보기
+	mCurrentPallete.Image->ScaleFrameRender(hdc, 600, 200, mCurrentPallete.FrameX, mCurrentPallete.FrameY, 50, 50);
+	Gizmo::GetInstance()->DrawRect(hdc, RectMake(600, 200, 50, 50), Gizmo::Color::Black);
 
+	//격자
+	for (int y = 0; y < 10; ++y)
+	{
+		for (int x = 0; x < 10; ++x)
+		{
+			if (mShowGrid)
+			{
+				RECT temp = RectMake(100 + TileSize * x, 200 + TileSize * y, TileSize, TileSize);
+				Gizmo::GetInstance()->DrawRect(hdc, temp, Gizmo::Color::Blue);
+			}
+		}
+	}
+
+	//버튼
 	ButtonIt iter = mButtonList.begin();
 	for (; iter != mButtonList.end(); ++iter)
 	{
 		iter->second->Render(hdc);
 	}
+
+	//Size 입출력, 버튼위치 변경시 아래 x,y값도 변경해줄것
+	RECT rcX = mButtonList.find(L"SizeX")->second->GetRect();
+	wstring x;
+	x.assign(mInputX.begin(), mInputX.end());
+	TextOut(hdc, rcX.left + 5,rcX.top + 5, x.c_str(), x.length());
+	RECT rcY = mButtonList.find(L"SizeY")->second->GetRect();
+	wstring y;
+	y.assign(mInputY.begin(), mInputY.end());
+	TextOut(hdc, rcY.left + 5, rcY.top + 5, y.c_str(), y.length());
 }
 
 void MapToolScene::Save(){

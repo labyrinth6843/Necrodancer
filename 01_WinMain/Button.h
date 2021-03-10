@@ -22,5 +22,7 @@ public:
 
 	void Update();
 	void Render(HDC hdc);
+
+	RECT GetRect() { return mRect; }
 };
 

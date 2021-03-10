@@ -13,6 +13,8 @@ private:
 	class Scene* mLoadingScene;
 	thread* mLoadingThread;
 	bool mIsLoadingEnd;
+
+	wstring mSaveName;
 public:
 	SceneManager();
 	~SceneManager();
@@ -24,6 +26,10 @@ public:
 	//로딩없이 로드하는 함수
 	void LoadScene(const wstring& sceneName);
 	void LoadScene(const wstring& targetSceneName, const wstring& loadingSceneName);
+
+	//Proc사용하려고 추가한 함수
+	bool CheckCurrentScene(const wstring& sceneName);
+	Scene* FindScene(const wstring& sceneName);
 private:
 	//스레드에 집어 넣을 함수 : 즉 실제로 스레드가 작업 처리 할 함수
 	void LoadingThread();

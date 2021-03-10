@@ -30,7 +30,9 @@ public:
 	//토글 키
 	bool ToggleKey(const int& key);
 
-
+		//2중키입력
+	bool DoubleKeyDown(const int& key1, const int& key2);
+	bool DoubleKey(const int& key1, const int& key2);
 };
 
 #define _Input Input::Get()

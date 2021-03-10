@@ -45,6 +45,7 @@ public:// 생성관련 ~
 	bool CreateEmpty(int width, int height);
 	bool LoadFromFile(wstring keyName,wstring fileName, int width, int height, bool isTrans, COLORREF transColor = RGB(255,0,255));
 	bool LoadFromFile(wstring keyName,wstring fileName, int width, int height, int frameX, int frameY, bool isTrans, COLORREF transColor = RGB(255,0,255));
+	void LoadAllImage();
 public://렌더링 관련 ~
 	//기본렌더링
 	void Render(HDC hdc, int x, int y);

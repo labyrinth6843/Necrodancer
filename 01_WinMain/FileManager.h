@@ -3,7 +3,6 @@
 #include "Tile.h"
 #include "Image.h"
 
-
 class FileManager
 {
 	Singleton(FileManager);

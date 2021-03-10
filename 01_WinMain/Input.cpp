@@ -74,3 +74,28 @@ bool Input::ToggleKey(const int& key)
 
 	return false;
 }
+
+bool Input::DoubleKeyDown(const int& key1, const int& key2)
+{
+	if (GetAsyncKeyState(key1) & 0x8000)
+	{
+		if (GetAsyncKeyState(key2) & 0x8000)
+		{
+			if (!mKeyPast[key2])
+			{
+				mKeyCurrent.set(key2, true);
+				return true;
+			}
+		}
+		else mKeyCurrent.set(key2, false);
+	}
+	return false;
+}
+
+bool Input::DoubleKey(const int& key1, const int& key2)
+{
+	if (GetAsyncKeyState(key1) & 0x8000 && GetAsyncKeyState(key2) & 0x8000)
+		return true;
+
+	return false;
+}

@@ -18,5 +18,12 @@ Tile::Tile(Image * image, float x, float y, float sizeX, float sizeY, int frameI
 void Tile::Render(HDC hdc){
 	if (mImage != nullptr)
 		mImage->ScaleFrameRender(hdc, mRect.left, mRect.top, mFrameIndexX, mFrameIndexY, mSizeX, mSizeY);
-	Gizmo::GetInstance()->DrawRect(hdc, mRect, Gizmo::Color::Gray);
+
+	//Gizmo::GetInstance()->DrawRect(hdc, mRect, Gizmo::Color::Gray);
+}
+void Tile::MoveRender(HDC hdc, float moveX, float moveY)
+{
+	if (mImage != nullptr)
+		mImage->ScaleFrameRender(hdc, mRect.left + moveX, mRect.top + moveY,
+			mFrameIndexX, mFrameIndexY, mSizeX, mSizeY);
 }
