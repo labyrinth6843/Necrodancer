@@ -183,11 +183,11 @@
     <ClInclude Include="Tile.h">
       <Filter>FrameWork\FileManager</Filter>
     </ClInclude>
-    <ClInclude Include="FileManager.h">
-      <Filter>FrameWork\FileManager</Filter>
-    </ClInclude>
     <ClInclude Include="MapToolScene.h">
       <Filter>MainGame\Scene\MapToolScene</Filter>
+    </ClInclude>
+    <ClInclude Include="FileManager.h">
+      <Filter>FrameWork\FileManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -275,11 +275,11 @@
     <ClCompile Include="Tile.cpp">
       <Filter>FrameWork\FileManager</Filter>
     </ClCompile>
-    <ClCompile Include="FileManager.cpp">
-      <Filter>FrameWork\FileManager</Filter>
-    </ClCompile>
     <ClCompile Include="MapToolScene.cpp">
       <Filter>MainGame\Scene\MapToolScene</Filter>
+    </ClCompile>
+    <ClCompile Include="FileManager.cpp">
+      <Filter>FrameWork\FileManager</Filter>
     </ClCompile>
     <ClCompile Include="MapToolProc+SetSize.cpp">
       <Filter>MainGame\Scene\MapToolScene</Filter>

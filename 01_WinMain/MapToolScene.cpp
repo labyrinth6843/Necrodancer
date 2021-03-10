@@ -342,12 +342,9 @@ void MapToolScene::Save(){
 					keyName = mGroundList[y][x]->GetImage()->GetKeyName();
 				str.assign(keyName.begin(), keyName.end());
 
-				saveStream << str.c_str();
-				saveStream << ", (";
-				saveStream << mGroundList[y][x]->GetFrameIndexX();
-				saveStream << ", ";
-				saveStream << mGroundList[y][x]->GetFrameIndexY();
-				saveStream << "), ";
+				saveStream << str.c_str() << ",";
+				saveStream << mGroundList[y][x]->GetFrameIndexX() << ",";
+				saveStream << mGroundList[y][x]->GetFrameIndexY() << ",";
 				saveStream << (int)(mGroundList[y][x]->GetTileType());
 				saveStream << endl;
 			}
@@ -369,12 +366,9 @@ void MapToolScene::Save(){
 					keyName = mDecoList[y][x]->GetImage()->GetKeyName();
 				str.assign(keyName.begin(), keyName.end());
 
-				saveStream << str.c_str();
-				saveStream << ", (";
-				saveStream << mDecoList[y][x]->GetFrameIndexX();
-				saveStream << ", ";
-				saveStream << mDecoList[y][x]->GetFrameIndexY();
-				saveStream << "), ";
+				saveStream << str.c_str() << ",";
+				saveStream << mDecoList[y][x]->GetFrameIndexX() << ",";
+				saveStream << mDecoList[y][x]->GetFrameIndexY() << ",";
 				saveStream << (int)(mDecoList[y][x]->GetTileType());
 				saveStream << endl;
 			}
@@ -396,14 +390,10 @@ void MapToolScene::Save(){
 					keyName = mItemList[y][x]->GetImage()->GetKeyName();
 				str.assign(keyName.begin(), keyName.end());
 
-				saveStream << str.c_str();
-				saveStream << ", (";
-				saveStream << mItemList[y][x]->GetFrameIndexX();
-				saveStream << ", ";
-				saveStream << mItemList[y][x]->GetFrameIndexY();
-				saveStream << "), ";
-				saveStream << (int)(mItemList[y][x]->GetTileType());
-				saveStream << endl;
+				saveStream << str.c_str() << ",";
+				saveStream << mItemList[y][x]->GetFrameIndexX() << ",";
+				saveStream << mItemList[y][x]->GetFrameIndexY() << ",";
+				saveStream << (int)(mItemList[y][x]->GetTileType()) << endl;
 			}
 		}
 	}
@@ -423,12 +413,9 @@ void MapToolScene::Save(){
 					keyName = mObjectList[y][x]->GetImage()->GetKeyName();
 				str.assign(keyName.begin(), keyName.end());
 
-				saveStream << str.c_str();
-				saveStream << ", (";
-				saveStream << mObjectList[y][x]->GetFrameIndexX();
-				saveStream << ", ";
-				saveStream << mObjectList[y][x]->GetFrameIndexY();
-				saveStream << "), ";
+				saveStream << str.c_str()<< ",";
+				saveStream << mObjectList[y][x]->GetFrameIndexX()<< ",";
+				saveStream << mObjectList[y][x]->GetFrameIndexY()<< ",";
 				saveStream << (int)(mObjectList[y][x]->GetTileType());
 				saveStream << endl;
 			}
@@ -451,13 +438,10 @@ void MapToolScene::Load(){
 				
 				getline(loadStream, buffer, ',');
 				key = buffer;
-				getline(loadStream, buffer, '(');
 				getline(loadStream, buffer, ',');
 				frameX = stoi(buffer);
-				getline(loadStream, buffer, ' ');
-				getline(loadStream, buffer, ')');
+				getline(loadStream, buffer, ',');
 				frameY = stoi(buffer);
-				getline(loadStream, buffer, ' ');
 				getline(loadStream, buffer);
 				type = stoi(buffer);
 
@@ -485,13 +469,10 @@ void MapToolScene::Load(){
 
 				getline(loadStream, buffer, ',');
 				key = buffer;
-				getline(loadStream, buffer, '(');
 				getline(loadStream, buffer, ',');
 				frameX = stoi(buffer);
-				getline(loadStream, buffer, ' ');
-				getline(loadStream, buffer, ')');
+				getline(loadStream, buffer, ',');
 				frameY = stoi(buffer);
-				getline(loadStream, buffer, ' ');
 				getline(loadStream, buffer);
 				type = stoi(buffer);
 
@@ -519,13 +500,10 @@ void MapToolScene::Load(){
 
 				getline(loadStream, buffer, ',');
 				key = buffer;
-				getline(loadStream, buffer, '(');
 				getline(loadStream, buffer, ',');
 				frameX = stoi(buffer);
-				getline(loadStream, buffer, ' ');
-				getline(loadStream, buffer, ')');
+				getline(loadStream, buffer, ',');
 				frameY = stoi(buffer);
-				getline(loadStream, buffer, ' ');
 				getline(loadStream, buffer);
 				type = stoi(buffer);
 
@@ -553,13 +531,10 @@ void MapToolScene::Load(){
 
 				getline(loadStream, buffer, ',');
 				key = buffer;
-				getline(loadStream, buffer, '(');
 				getline(loadStream, buffer, ',');
 				frameX = stoi(buffer);
-				getline(loadStream, buffer, ' ');
-				getline(loadStream, buffer, ')');
+				getline(loadStream, buffer, ',');
 				frameY = stoi(buffer);
-				getline(loadStream, buffer, ' ');
 				getline(loadStream, buffer);
 				type = stoi(buffer);
 
