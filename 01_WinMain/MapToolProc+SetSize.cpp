@@ -42,7 +42,7 @@ LRESULT MapToolScene::Proc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			{
 				if (mIsInput == 1 && strx.size() < 5)
 				{
-					if (strx[0] == '1' && strx.size() == 1)
+					if (strx[0] == '0' && strx.size() == 1)
 					{
 						if (wParam == 48)
 							strx.push_back(wParam);
@@ -54,7 +54,7 @@ LRESULT MapToolScene::Proc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 				}
 				if (mIsInput == 2 && stry.size() < 5)
 				{
-					if (stry[0] == '1' && stry.size() == 1)
+					if (stry[0] == '0' && stry.size() == 1)
 					{
 						if (wParam == 48)
 							stry.push_back(wParam);
@@ -67,13 +67,13 @@ LRESULT MapToolScene::Proc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 			}
 		}
 
-		if (strx.size() <= 0 || strx[0] == '0')
+		if (strx.size() <= 0)
 		{
-			strx = "1";
+			strx = "0";
 		}
-		if (stry.size() <= 0 || stry[0] == '0')
+		if (stry.size() <= 0)
 		{
-			stry = "1";
+			stry = "0";
 		}
 		//SizeSet에 들어갈 변수 세팅
 		mInputY = stry;
@@ -87,6 +87,11 @@ LRESULT MapToolScene::Proc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 void MapToolScene::SetSize()
 {
 	mIsInput = 0;
+
+	if (mInputX == "0")
+		mInputX = 1;
+	if (mInputY == "0")
+		mInputY = 1;
 
 	mMaxSizeX = stoi(mInputX);
 	mMaxSizeY = stoi(mInputY);
