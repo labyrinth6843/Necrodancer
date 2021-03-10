@@ -14,29 +14,6 @@ void GameScene::Init(){
 	mPlayer->Init();
 
 	SoundPlayer::GetInstance()->Play(L"Game",0.2f);
-	//바닥
-	ImageManager::GetInstance()->LoadFromFile(L"0", Resources(L"Stage1Ground.bmp"), 80, 96, 5, 6, true);
-	ImageManager::GetInstance()->LoadFromFile(L"1", Resources(L"Stage2Ground.bmp"), 80, 96, 5, 6, true);
-	ImageManager::GetInstance()->LoadFromFile(L"2", Resources(L"Stage3Ground.bmp"), 80, 96, 5, 6, true);
-	ImageManager::GetInstance()->LoadFromFile(L"3", Resources(L"Stage4Ground.bmp"), 80, 96, 5, 6, true);
-	ImageManager::GetInstance()->LoadFromFile(L"4", Resources(L"Stage5Ground.bmp"), 80, 96, 5, 6, true);
-	//벽
-	ImageManager::GetInstance()->LoadFromFile(L"5", Resources(L"Stage1Wall.bmp"), 80, 48, 5, 3, true);
-	ImageManager::GetInstance()->LoadFromFile(L"6", Resources(L"Stage2Wall.bmp"), 80, 48, 5, 3, true);
-	ImageManager::GetInstance()->LoadFromFile(L"7", Resources(L"Stage3Wall.bmp"), 80, 48, 5, 3, true);
-	ImageManager::GetInstance()->LoadFromFile(L"8", Resources(L"Stage4Wall.bmp"), 80, 48, 5, 3, true);
-	ImageManager::GetInstance()->LoadFromFile(L"9", Resources(L"Stage5Wall.bmp"), 80, 48, 5, 3, true);
-	//장식
-	ImageManager::GetInstance()->LoadFromFile(L"10", Resources(L"Stage1Deco.bmp"), 80, 64, 5, 4, true);
-	ImageManager::GetInstance()->LoadFromFile(L"11", Resources(L"Stage2Deco.bmp"), 80, 64, 5, 4, true);
-	ImageManager::GetInstance()->LoadFromFile(L"12", Resources(L"Stage3Deco.bmp"), 80, 64, 5, 4, true);
-	ImageManager::GetInstance()->LoadFromFile(L"13", Resources(L"Stage4Deco.bmp"), 80, 64, 5, 4, true);
-	ImageManager::GetInstance()->LoadFromFile(L"14", Resources(L"Stage5Deco.bmp"), 80, 64, 5, 4, true);
-	//아이템
-	ImageManager::GetInstance()->LoadFromFile(L"15", Resources(L"ItemList1.bmp"), 80, 144, 5, 9, true);
-	ImageManager::GetInstance()->LoadFromFile(L"16", Resources(L"ItemList2.bmp"), 80, 144, 5, 9, true);
-	//적
-	ImageManager::GetInstance()->LoadFromFile(L"17", Resources(L"Enemy.bmp"), 80, 80, 5, 5, true);
 
 	for (int y = 0; y < TileCountY; ++y) {
 		for (int x = 0; x < TileCountX; ++x) {
@@ -92,13 +69,10 @@ void GameScene::Init(){
 
 				getline(loadStream, buffer, ',');
 				key = buffer;
-				getline(loadStream, buffer, '(');
 				getline(loadStream, buffer, ',');
 				frameX = stoi(buffer);
-				getline(loadStream, buffer, ' ');
-				getline(loadStream, buffer, ')');
+				getline(loadStream, buffer, ',');
 				frameY = stoi(buffer);
-				getline(loadStream, buffer, ' ');
 				getline(loadStream, buffer);
 				type = stoi(buffer);
 
@@ -126,13 +100,10 @@ void GameScene::Init(){
 
 				getline(loadStream, buffer, ',');
 				key = buffer;
-				getline(loadStream, buffer, '(');
 				getline(loadStream, buffer, ',');
 				frameX = stoi(buffer);
-				getline(loadStream, buffer, ' ');
-				getline(loadStream, buffer, ')');
+				getline(loadStream, buffer, ',');
 				frameY = stoi(buffer);
-				getline(loadStream, buffer, ' ');
 				getline(loadStream, buffer);
 				type = stoi(buffer);
 
@@ -160,13 +131,10 @@ void GameScene::Init(){
 
 				getline(loadStream, buffer, ',');
 				key = buffer;
-				getline(loadStream, buffer, '(');
 				getline(loadStream, buffer, ',');
 				frameX = stoi(buffer);
-				getline(loadStream, buffer, ' ');
-				getline(loadStream, buffer, ')');
+				getline(loadStream, buffer, ',');
 				frameY = stoi(buffer);
-				getline(loadStream, buffer, ' ');
 				getline(loadStream, buffer);
 				type = stoi(buffer);
 
@@ -194,13 +162,10 @@ void GameScene::Init(){
 
 				getline(loadStream, buffer, ',');
 				key = buffer;
-				getline(loadStream, buffer, '(');
 				getline(loadStream, buffer, ',');
 				frameX = stoi(buffer);
-				getline(loadStream, buffer, ' ');
-				getline(loadStream, buffer, ')');
+				getline(loadStream, buffer, ',');
 				frameY = stoi(buffer);
-				getline(loadStream, buffer, ' ');
 				getline(loadStream, buffer);
 				type = stoi(buffer);
 
