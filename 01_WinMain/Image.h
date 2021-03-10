@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 class Image
 {
 private:
@@ -41,31 +41,31 @@ public:
 	~Image();
 
 	void ReleaseBuffer();
-public:// »ý¼º°ü·Ã ~
+public:// ìƒì„±ê´€ë ¨ ~
 	bool CreateEmpty(int width, int height);
 	bool LoadFromFile(wstring keyName,wstring fileName, int width, int height, bool isTrans, COLORREF transColor = RGB(255,0,255));
 	bool LoadFromFile(wstring keyName,wstring fileName, int width, int height, int frameX, int frameY, bool isTrans, COLORREF transColor = RGB(255,0,255));
 	void LoadAllImage();
-public://·»´õ¸µ °ü·Ã ~
-	//±âº»·»´õ¸µ
+public://ë Œë”ë§ ê´€ë ¨ ~
+	//ê¸°ë³¸ë Œë”ë§
 	void Render(HDC hdc, int x, int y);
-	//¿ä°Å ¿µ¿ª ÁöÁ¤ÇØ¼­ ±×¸®´Â°Å
+	//ìš”ê±° ì˜ì—­ ì§€ì •í•´ì„œ ê·¸ë¦¬ëŠ”ê±°
 	void Render(HDC hdc, int x, int y, int tempX, int tempY, int tempWidth, int tempHeight);
-	//ÇÁ·¹ÀÓ·»´õ
+	//í”„ë ˆìž„ë Œë”
 	void FrameRender(HDC hdc, int x, int y, int frameX, int frameY);
-	//¾ËÆÄ°ªÁÖ´Â ·»´õ¸µ
+	//ì•ŒíŒŒê°’ì£¼ëŠ” ë Œë”ë§
 	void AlphaRender(HDC hdc,int x, int y, float alpha);
-	//¾ËÆÄ°ªÁÖ´Â ÇÁ·¹ÀÓ ·»´õ¸µ
+	//ì•ŒíŒŒê°’ì£¼ëŠ” í”„ë ˆìž„ ë Œë”ë§
 	void AlphaFrameRender(HDC hdc, int x, int y, int frameX, int frameY, float alpha);
-	//Å©±â Á¶Á¤ÇØÁÖ´Â ·»´õ¸µ
+	//í¬ê¸° ì¡°ì •í•´ì£¼ëŠ” ë Œë”ë§
 	void ScaleRender(HDC hdc, int x, int y, int width, int height);
-	//Å©±â Á¶Á¤ÇØÁÖ´Â ÇÁ·¹ÀÓ ·»´õ¸µ
+	//í¬ê¸° ì¡°ì •í•´ì£¼ëŠ” í”„ë ˆìž„ ë Œë”ë§
 	void ScaleFrameRender(HDC hdc, int x, int y, int frameX, int frameY, int width, int height);
-	//¾ËÆÄ°ª¿¡ Å©±â Á¶Á¤ÇÏ´Â ·»´õ¸µ
+	//ì•ŒíŒŒê°’ì— í¬ê¸° ì¡°ì •í•˜ëŠ” ë Œë”ë§
 	void AlphaScaleRender(HDC hdc, int x, int y, int width, int height, float alpha);
-	//¾ËÆÄ°ª + ÇÁ·¹ÀÓ·»´õ¸µ + Å©±â Á¶Á¤
+	//ì•ŒíŒŒê°’ + í”„ë ˆìž„ë Œë”ë§ + í¬ê¸° ì¡°ì •
 	void AlphaScaleFrameRender(HDC hdc, int x, int y, int frameX, int frameY, int width, int height, float alpha);
-public:// Á¢±Ù °ü·Ã~
+public:// ì ‘ê·¼ ê´€ë ¨~
 	inline HDC GetHDC()const { return mImageBuffer->hdc; }
 	inline int GetFrameX()const { return mImageBuffer->frameX; }
 	inline int GetFrameY()const { return mImageBuffer->frameY; }

@@ -1,11 +1,11 @@
-#pragma once
+ï»¿#pragma once
 #include "Scene.h"
 #include "Tile.h"
 #include "Image.h"
 #include <stack>
 #include <queue>
 
-//±¸Á¶Ã¼ º¯¼ö´Â ´ë¹®ÀÚ·Î ½ÃÀÛÇÏ°Ô Â«, ³ª°°Àº°æ¿ì¿¡´Â
+//êµ¬ì¡°ì²´ ë³€ìˆ˜ëŠ” ëŒ€ë¬¸ìë¡œ ì‹œì‘í•˜ê²Œ ì§¬, ë‚˜ê°™ì€ê²½ìš°ì—ëŠ”
 struct TilePallete{
 	class Image* Image;
 	int PositionX;
@@ -102,7 +102,7 @@ class MapToolScene : public Scene{
 	Tile* mItemList[TileCountY][TileCountX];
 	Tile* mObjectList[TileCountY][TileCountX];
 	//
-	/*	//Å¸ÀÏ º¤ÅÍÈ­ -> ÀÌºÎºĞ ÁÖ¼® ÇØÁ¦ÇÏ±âÀü¿¡ Init°³Á¶ ÇÊ¿ä
+	/*	//íƒ€ì¼ ë²¡í„°í™” -> ì´ë¶€ë¶„ ì£¼ì„ í•´ì œí•˜ê¸°ì „ì— Initê°œì¡° í•„ìš”
 	vector<vector<Tile*>> mGroundList;
 	vector<vector<Tile*>> mDecoList;
 	vector<vector<Tile*>> mItemList;

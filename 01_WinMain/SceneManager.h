@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <thread>
 class Scene;
 class SceneManager
@@ -7,7 +7,7 @@ class SceneManager
 private:
 	typedef map<wstring, Scene*>::iterator SceneIter;
 	map<wstring, Scene*> mSceneList;
-	Scene* mCurrentScene;						//ÇöÀç ¾À
+	Scene* mCurrentScene;						//í˜„ì¬ ì”¬
 
 	class Scene* mTargetScene;
 	class Scene* mLoadingScene;
@@ -23,15 +23,15 @@ public:
 	void Render(HDC hdc);
 
 	void AddScene(const wstring& sceneName,Scene* scene);
-	//·Îµù¾øÀÌ ·ÎµåÇÏ´Â ÇÔ¼ö
+	//ë¡œë”©ì—†ì´ ë¡œë“œí•˜ëŠ” í•¨ìˆ˜
 	void LoadScene(const wstring& sceneName);
 	void LoadScene(const wstring& targetSceneName, const wstring& loadingSceneName);
 
-	//Proc»ç¿ëÇÏ·Á°í Ãß°¡ÇÑ ÇÔ¼ö
+	//Procì‚¬ìš©í•˜ë ¤ê³  ì¶”ê°€í•œ í•¨ìˆ˜
 	bool CheckCurrentScene(const wstring& sceneName);
 	Scene* FindScene(const wstring& sceneName);
 private:
-	//½º·¹µå¿¡ Áı¾î ³ÖÀ» ÇÔ¼ö : Áï ½ÇÁ¦·Î ½º·¹µå°¡ ÀÛ¾÷ Ã³¸® ÇÒ ÇÔ¼ö
+	//ìŠ¤ë ˆë“œì— ì§‘ì–´ ë„£ì„ í•¨ìˆ˜ : ì¦‰ ì‹¤ì œë¡œ ìŠ¤ë ˆë“œê°€ ì‘ì—… ì²˜ë¦¬ í•  í•¨ìˆ˜
 	void LoadingThread();
 };
 

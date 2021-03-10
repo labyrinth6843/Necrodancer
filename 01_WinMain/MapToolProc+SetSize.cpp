@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "MapToolScene.h"
 
 #include "Tile.h"
@@ -8,7 +8,7 @@ LRESULT MapToolScene::Proc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 	switch (iMessage)
 	{
 	case WM_DESTROY:
-		//¸Ş¼¼ÁöÅ¥¿¡ WM_QUIT¶ó´Â ¸Ş¼¼Áö¸¦ º¸³» GetMessage°¡ false¸¦ ¹İÈ¯ÇÏ°Ô ¸¸µç´Ù. Áï ·çÇÁ¸¦ Á¾·á½ÃÅ²´Ù
+		//ë©”ì„¸ì§€íì— WM_QUITë¼ëŠ” ë©”ì„¸ì§€ë¥¼ ë³´ë‚´ GetMessageê°€ falseë¥¼ ë°˜í™˜í•˜ê²Œ ë§Œë“ ë‹¤. ì¦‰ ë£¨í”„ë¥¼ ì¢…ë£Œì‹œí‚¨ë‹¤
 		PostQuitMessage(0);
 		break;
 
@@ -75,7 +75,7 @@ LRESULT MapToolScene::Proc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lPara
 		{
 			stry = "1";
 		}
-		//SizeSet¿¡ µé¾î°¥ º¯¼ö ¼¼ÆÃ
+		//SizeSetì— ë“¤ì–´ê°ˆ ë³€ìˆ˜ ì„¸íŒ…
 		mInputY = stry;
 		mInputX = strx;
 	}
@@ -91,8 +91,8 @@ void MapToolScene::SetSize()
 	mMaxSizeX = stoi(mInputX);
 	mMaxSizeY = stoi(mInputY);
 
-	//Å©±â º¯°æ Àü ¿ø·¡ Å¸ÀÏ Á¤º¸
-	//¹è¿­·Î ¼±¾ğµÈ ·¹ÀÌ¾îµéÀº º¤ÅÍ·Î º¯È¯ÇÏ°í ¾Æ·¡ ÁÖ¼® Á¦°Å ¹× Å×½ºÆÃ
+	//í¬ê¸° ë³€ê²½ ì „ ì›ë˜ íƒ€ì¼ ì •ë³´
+	//ë°°ì—´ë¡œ ì„ ì–¸ëœ ë ˆì´ì–´ë“¤ì€ ë²¡í„°ë¡œ ë³€í™˜í•˜ê³  ì•„ë˜ ì£¼ì„ ì œê±° ë° í…ŒìŠ¤íŒ…
 	/*
 	int prevY = mGroundList.size();
 	int prevX = mGroundList[prevY - 1].size();
@@ -101,7 +101,7 @@ void MapToolScene::SetSize()
 	vector<vector<Tile*>> saveItem = mItemList;
 	vector<vector<Tile*>> saveObject = mObjectList;
 
-	//Å©±â º¯°æÀü ÀüºÎ ºñ¿ì±â
+	//í¬ê¸° ë³€ê²½ì „ ì „ë¶€ ë¹„ìš°ê¸°
 	mGroundList.clear()
 	mDecoList.clear()
 	mItemList.clear()
@@ -112,7 +112,7 @@ void MapToolScene::SetSize()
 	mItemList.shrink_to_fit();
 	mObjectList.shrink_to_fit();
 
-	//size x,y¸¦ ¹Ş¾Æ Å¸ÀÏ¸ÊÀÇ ÃÖ´ëÅ©±â¿¡ ¸ÂÃç ºó Å¸ÀÏÀ» »ı¼ºÇØÁØ´Ù
+	//size x,yë¥¼ ë°›ì•„ íƒ€ì¼ë§µì˜ ìµœëŒ€í¬ê¸°ì— ë§ì¶° ë¹ˆ íƒ€ì¼ì„ ìƒì„±í•´ì¤€ë‹¤
 	vector<Tile*> XList;
 	for (int y = 0; y < mMaxSizeY; ++y)
 	{
@@ -124,12 +124,12 @@ void MapToolScene::SetSize()
 		mDecoList.push_back(XList);
 		mItemList.push_back(XList);
 		mObjectList.push_back(XList);
-		XList.clear();	//³Ö¾îÁÖ°í ºñ¿öÁÖ±â
+		XList.clear();	//ë„£ì–´ì£¼ê³  ë¹„ì›Œì£¼ê¸°
 		XList.shrink_to_fit();
 	}
 
-	//±âÁ¸ÀÇ ³»¿ëÀ» ³Ö´Â´Ù
-	if (prevX <= mMaxSizeX && prevY <= mMaxSizeY)//±âÁ¸º¸´Ù »õ·Î Á¶Á¤ÇÑ Å©±â°¡ Å©°Å³ª °°À»¶§
+	//ê¸°ì¡´ì˜ ë‚´ìš©ì„ ë„£ëŠ”ë‹¤
+	if (prevX <= mMaxSizeX && prevY <= mMaxSizeY)//ê¸°ì¡´ë³´ë‹¤ ìƒˆë¡œ ì¡°ì •í•œ í¬ê¸°ê°€ í¬ê±°ë‚˜ ê°™ì„ë•Œ
 	{
 		for (int y = 0; y < prevY; ++y)
 		{
@@ -142,7 +142,7 @@ void MapToolScene::SetSize()
 			}
 		}
 	}
-	else//¸¸¾à ±âÁ¸º¸´Ù ÀÛÀº »çÀÌÁî¶ó¸é ³Ñ¾î°¡´Â Å©±â´Â ³ÖÁö ¾Ê´Â´Ù
+	else//ë§Œì•½ ê¸°ì¡´ë³´ë‹¤ ì‘ì€ ì‚¬ì´ì¦ˆë¼ë©´ ë„˜ì–´ê°€ëŠ” í¬ê¸°ëŠ” ë„£ì§€ ì•ŠëŠ”ë‹¤
 	{
 		for (int y = 0; y < mMaxSizeY; ++y)
 		{

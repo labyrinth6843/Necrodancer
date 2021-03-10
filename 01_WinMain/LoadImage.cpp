@@ -1,11 +1,11 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Image.h"
 
 #pragma comment(lib, "msimg32.lib")
 
-void Image::LoadAllImage()//MainGame::Init¿¡¼­ ´Ü ÇÑ¹ø ½ÇÇà µÈ´Ù
+void Image::LoadAllImage()//MainGame::Initì—ì„œ ë‹¨ í•œë²ˆ ì‹¤í–‰ ëœë‹¤
 {
-	//{{ ¹öÆ° °ü·Ã ÀÌ¹ÌÁö ~
+	//{{ ë²„íŠ¼ ê´€ë ¨ ì´ë¯¸ì§€ ~
 	ImageManager::GetInstance()->LoadFromFile(L"Save", Resources(L"Save.bmp"), 72, 48, 1, 2, false);
 	ImageManager::GetInstance()->LoadFromFile(L"Load", Resources(L"Load.bmp"), 72, 48, 1, 2, false);
 	ImageManager::GetInstance()->LoadFromFile(L"Undo", Resources(L"Undo.bmp"), 72, 48, 1, 2, false);
@@ -25,29 +25,29 @@ void Image::LoadAllImage()//MainGame::Init¿¡¼­ ´Ü ÇÑ¹ø ½ÇÇà µÈ´Ù
 	//}}
 
 
-	//{{ ¸Ê + ¿ÀºêÁ§Æ® °ü·Ã ÀÌ¹ÌÁö ~
-		//¹Ù´Ú
+	//{{ ë§µ + ì˜¤ë¸Œì íŠ¸ ê´€ë ¨ ì´ë¯¸ì§€ ~
+	//ë°”ë‹¥
 	ImageManager::GetInstance()->LoadFromFile(L"0", Resources(L"Stage1Ground.bmp"), 80, 96, 5, 6, true);
 	ImageManager::GetInstance()->LoadFromFile(L"1", Resources(L"Stage2Ground.bmp"), 80, 96, 5, 6, true);
 	ImageManager::GetInstance()->LoadFromFile(L"2", Resources(L"Stage3Ground.bmp"), 80, 96, 5, 6, true);
 	ImageManager::GetInstance()->LoadFromFile(L"3", Resources(L"Stage4Ground.bmp"), 80, 96, 5, 6, true);
 	ImageManager::GetInstance()->LoadFromFile(L"4", Resources(L"Stage5Ground.bmp"), 80, 96, 5, 6, true);
-	//º®
+	//ë²½
 	ImageManager::GetInstance()->LoadFromFile(L"5", Resources(L"Stage1Wall.bmp"), 80, 48, 5, 3, true);
 	ImageManager::GetInstance()->LoadFromFile(L"6", Resources(L"Stage2Wall.bmp"), 80, 48, 5, 3, true);
 	ImageManager::GetInstance()->LoadFromFile(L"7", Resources(L"Stage3Wall.bmp"), 80, 48, 5, 3, true);
 	ImageManager::GetInstance()->LoadFromFile(L"8", Resources(L"Stage4Wall.bmp"), 80, 48, 5, 3, true);
 	ImageManager::GetInstance()->LoadFromFile(L"9", Resources(L"Stage5Wall.bmp"), 80, 48, 5, 3, true);
-	//Àå½Ä
+	//ìž¥ì‹
 	ImageManager::GetInstance()->LoadFromFile(L"10", Resources(L"Stage1Deco.bmp"), 80, 64, 5, 4, true);
 	ImageManager::GetInstance()->LoadFromFile(L"11", Resources(L"Stage2Deco.bmp"), 80, 64, 5, 4, true);
 	ImageManager::GetInstance()->LoadFromFile(L"12", Resources(L"Stage3Deco.bmp"), 80, 64, 5, 4, true);
 	ImageManager::GetInstance()->LoadFromFile(L"13", Resources(L"Stage4Deco.bmp"), 80, 64, 5, 4, true);
 	ImageManager::GetInstance()->LoadFromFile(L"14", Resources(L"Stage5Deco.bmp"), 80, 64, 5, 4, true);
-	//¾ÆÀÌÅÛ
+	//ì•„ì´í…œ
 	ImageManager::GetInstance()->LoadFromFile(L"15", Resources(L"ItemList1.bmp"), 80, 144, 5, 9, true);
 	ImageManager::GetInstance()->LoadFromFile(L"16", Resources(L"ItemList2.bmp"), 80, 144, 5, 9, true);
-	//Àû
+	//ì 
 	ImageManager::GetInstance()->LoadFromFile(L"17", Resources(L"Enemy.bmp"), 80, 80, 5, 5, true);
 
 	//}}

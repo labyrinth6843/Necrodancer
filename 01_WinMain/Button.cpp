@@ -1,10 +1,10 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Button.h"
 #include "Image.h"
 
 Button::Button(wstring imagekey, wstring text,float x, float y, float sizeX, float sizeY, function<void(void)> func)
 {
-	//Image LoadFromFileÀº ÇÊÅÍ -> LoadImage.cpp·Î ¿Å±è
+	//Image LoadFromFileì€ í•„í„° -> LoadImage.cppë¡œ ì˜®ê¹€
 
 	mText = text;
 	mX = x;

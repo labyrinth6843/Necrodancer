@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "SceneManager.h"
 
 #include "Scene.h"
@@ -34,7 +34,7 @@ void SceneManager::Render(HDC hdc)
 void SceneManager::AddScene(const wstring& sceneName,Scene * scene)
 {
 	SceneIter iter = mSceneList.find(sceneName);
-	//ÀÌ¹Ì ÇØ´çÀÌ¸§ÀÇ µ¥ÀÌÅÍ°¡ ¸Ê¾È¿¡ ÀÖ´Ù
+	//ì´ë¯¸ í•´ë‹¹ì´ë¦„ì˜ ë°ì´í„°ê°€ ë§µì•ˆì— ìˆë‹¤
 	if (iter != mSceneList.end())
 		return;
 
@@ -50,7 +50,7 @@ void SceneManager::LoadScene(const wstring & sceneName)
 	}
 
 	SceneIter iter = mSceneList.find(sceneName);
-	//¸øÃ£¾ÒÀ¸¸é return (µ¹¾Æ°¡¶ó)
+	//ëª»ì°¾ì•˜ìœ¼ë©´ return (ëŒì•„ê°€ë¼)
 	if (iter == mSceneList.end())
 		return;
 
@@ -68,7 +68,7 @@ void SceneManager::LoadScene(const wstring & sceneName)
 	mSaveName = L"";
 }
 
-//Àß °³Á¶ÇØ¼­ ½áºÁ. Àß ¸ğ¸£°í ±¦È÷ ¾²¸é ¸éÁ¢¶§ ÅĞ¸²
+//ì˜ ê°œì¡°í•´ì„œ ì¨ë´. ì˜ ëª¨ë¥´ê³  ê´œíˆ ì“°ë©´ ë©´ì ‘ë•Œ í„¸ë¦¼
 void SceneManager::LoadScene(const wstring & targetSceneName, const wstring & loadingSceneName)
 {
 	SceneIter iter = mSceneList.find(targetSceneName);
@@ -88,7 +88,7 @@ void SceneManager::LoadScene(const wstring & targetSceneName, const wstring & lo
 	}
 
 	function<void(void)> threadFunc = bind(&SceneManager::LoadingThread, this);
-	//½º·¹µå´Â ¸Ş¸ğ¸® ÇÒ´çÇØÁÖ´Â ¼ø°£ºÎÅÍ ¹Ù·Î µ¹±â ½ÃÀÛÇÑ´Ù.
+	//ìŠ¤ë ˆë“œëŠ” ë©”ëª¨ë¦¬ í• ë‹¹í•´ì£¼ëŠ” ìˆœê°„ë¶€í„° ë°”ë¡œ ëŒê¸° ì‹œì‘í•œë‹¤.
 	mLoadingThread = new thread(threadFunc);
 }
 
@@ -116,7 +116,7 @@ Scene* SceneManager::FindScene(const wstring& sceneName)
 
 void SceneManager::LoadingThread()
 {
-	//µ¥µå¶ô ÁÖÀÇ!! Ã£¾ÆºÁ!
+	//ë°ë“œë½ ì£¼ì˜!! ì°¾ì•„ë´!
 
 	Scene* prevScene = mCurrentScene;
 	

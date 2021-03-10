@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "MapToolScene.h"
 
 #include "Tile.h"
@@ -8,14 +8,14 @@
 
 void MapToolScene::Init()
 {
-	//Image LoadFromFileÀº ÇÊÅÍ -> LoadImage.cpp·Î ¿Å±è
+	//Image LoadFromFileì€ í•„í„° -> LoadImage.cppë¡œ ì˜®ê¹€
 
 	for (int i = 0; i < 18; i++) {
 		wstring wstr = to_wstring(i);
 		mPalleteList.push_back(wstr);
 	}
 
-	//Tile* Listµé vectorÈ­ ÇÊ¿ä
+	//Tile* Listë“¤ vectorí™” í•„ìš”
 	/*
 	vector<Tile*> XList;
 	for (int y = 0; y < mMaxSizeY; ++y)
@@ -28,7 +28,7 @@ void MapToolScene::Init()
 		mDecoList.push_back(XList);
 		mItemList.push_back(XList);
 		mObjectList.push_back(XList);
-		XList.clear();	//³Ö¾îÁÖ°í ºñ¿öÁÖ±â
+		XList.clear();	//ë„£ì–´ì£¼ê³  ë¹„ì›Œì£¼ê¸°
 		XList.shrink_to_fit();
 	}
 	*/
@@ -118,7 +118,7 @@ void MapToolScene::Init()
 	
 	mShowGrid = true;
 
-	//SetSize °ü·Ã º¯¼öµé
+	//SetSize ê´€ë ¨ ë³€ìˆ˜ë“¤
 	mMaxSizeX = TileCountX;
 	mMaxSizeY = TileCountY;
 	mInputX = to_string(TileCountX);
@@ -172,7 +172,7 @@ void MapToolScene::Update(){
 	}
 
 	if (Input::GetInstance()->GetKeyDown(VK_LBUTTON)){
-		//{{ ÆÈ·¹Æ® ÇÈ~
+		//{{ íŒ”ë ˆíŠ¸ í”½~
 		for (int y = 0; y < 10; ++y)	{
 			for (int x = 0; x < 5; ++x){
 				if (PtInRect(&mPallete[y][x].Rc, _mousePosition)){
@@ -183,7 +183,7 @@ void MapToolScene::Update(){
 		// }}
 	}
 
-	// {{ Å¸ÀÏ ±×¸®±â~
+	// {{ íƒ€ì¼ ê·¸ë¦¬ê¸°~
 	if (Input::GetInstance()->GetKey(VK_LBUTTON)){
 		int indexX = (_mousePosition.x-100) / TileSize;
 		int indexY = (_mousePosition.y-200) / TileSize;
@@ -226,7 +226,7 @@ void MapToolScene::Update(){
 		}
 	}
 
-	if (Input::GetInstance()->GetKeyDown('H'))	//°İÀÚ Ç¥½Ã
+	if (Input::GetInstance()->GetKeyDown('H'))	//ê²©ì í‘œì‹œ
 		mShowGrid = !mShowGrid;
 	if (Input::GetInstance()->GetKey(VK_CONTROL)) {
 		if (Input::GetInstance()->GetKeyDown('Z'))
@@ -243,7 +243,7 @@ void MapToolScene::Update(){
 }
 
 void MapToolScene::Render(HDC hdc){
-	//¹è°æ
+	//ë°°ê²½
 	HBRUSH Brush = CreateSolidBrush(RGB(66, 66, 66));
 	HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, Brush);
 	
@@ -253,7 +253,7 @@ void MapToolScene::Render(HDC hdc){
 	SelectObject(hdc, oldBrush);
 	DeleteObject(Brush);
 
-	//Å¸ÀÏ Ãâ·Â
+	//íƒ€ì¼ ì¶œë ¥
 	for (int y = 0; y < TileCountY; ++y) {
 		for (int x = 0; x < TileCountX; ++x) {
 			mGroundList[y][x]->Render(hdc);
@@ -291,11 +291,11 @@ void MapToolScene::Render(HDC hdc){
 			);
 		}
 	}
-	//¼±ÅÃµÈ Å¸ÀÏ ¹Ì¸®º¸±â
+	//ì„ íƒëœ íƒ€ì¼ ë¯¸ë¦¬ë³´ê¸°
 	mCurrentPallete.Image->ScaleFrameRender(hdc, 600, 200, mCurrentPallete.FrameX, mCurrentPallete.FrameY, 50, 50);
 	Gizmo::GetInstance()->DrawRect(hdc, RectMake(600, 200, 50, 50), Gizmo::Color::Black);
 
-	//°İÀÚ
+	//ê²©ì
 	for (int y = 0; y < 10; ++y)
 	{
 		for (int x = 0; x < 10; ++x)
@@ -308,14 +308,14 @@ void MapToolScene::Render(HDC hdc){
 		}
 	}
 
-	//¹öÆ°
+	//ë²„íŠ¼
 	ButtonIt iter = mButtonList.begin();
 	for (; iter != mButtonList.end(); ++iter)
 	{
 		iter->second->Render(hdc);
 	}
 
-	//Size ÀÔÃâ·Â, ¹öÆ°À§Ä¡ º¯°æ½Ã ¾Æ·¡ x,y°ªµµ º¯°æÇØÁÙ°Í
+	//Size ì…ì¶œë ¥, ë²„íŠ¼ìœ„ì¹˜ ë³€ê²½ì‹œ ì•„ë˜ x,yê°’ë„ ë³€ê²½í•´ì¤„ê²ƒ
 	RECT rcX = mButtonList.find(L"SizeX")->second->GetRect();
 	wstring x;
 	x.assign(mInputX.begin(), mInputX.end());
