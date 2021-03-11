@@ -37,11 +37,11 @@ void MapToolScene::Init()
 			IList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
 			OList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
 		}
+		mGroundList.push_back(GList);
 		mDecoList.push_back(DList);
 		mItemList.push_back(IList);
 		mObjectList.push_back(OList);
 		
-		mGroundList.push_back(GList);
 		DList.clear();
 		DList.shrink_to_fit();
 		IList.clear();
@@ -239,6 +239,8 @@ void MapToolScene::Update(){
 	{
 		iter->second->Update();
 	}
+
+	CanvasMove();
 }
 
 void MapToolScene::Render(HDC hdc){
@@ -253,19 +255,33 @@ void MapToolScene::Render(HDC hdc){
 	DeleteObject(Brush);
 
 	//타일 출력
+	int posY = 0;
 	for (int y = mMinIndexY; y < mMinIndexY + TileCountY; ++y) {
+		int posX = 0;
 		if (y >= mMaxSizeY)
 			break;
 		for (int x = mMinIndexX; x < mMinIndexX + TileCountX; ++x) {
 			if (x >= mMaxSizeX)
 				break;
+			mGroundList[y][x]->PositionRender(hdc, posX * TileSize + mMoveX, posY * TileSize + mMoveY);
+			mDecoList[y][x]->PositionRender(hdc, posX * TileSize + mMoveX, posY * TileSize + mMoveY);
+			mItemList[y][x]->PositionRender(hdc, posX * TileSize + mMoveX, posY * TileSize + mMoveY);
+			mObjectList[y][x]->PositionRender(hdc, posX * TileSize + mMoveX, posY * TileSize + mMoveY);
 
+			posX++;
+			/*
 			mGroundList[y][x]->MoveRender(hdc,mMoveX,mMoveY);
 			mDecoList[y][x]->MoveRender(hdc, mMoveX, mMoveY);
 			mItemList[y][x]->MoveRender(hdc, mMoveX, mMoveY);
 			mObjectList[y][x]->MoveRender(hdc, mMoveX, mMoveY);
+			*/
 		}
+		posY++;
 	}
+	wstring testx = to_wstring(mMinIndexX);
+	TextOut(hdc, 10, 10, testx.c_str(), testx.length());
+	wstring testy = to_wstring(mMinIndexY);
+	TextOut(hdc, 100, 10, testy.c_str(), testy.length());
 
 	//팔레트
 	for (int y = 0; y < 10; ++y)	{

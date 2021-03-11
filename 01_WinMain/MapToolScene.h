@@ -161,4 +161,6 @@ private:
 
 	void PrevPallete();
 	void NextPallete();
+
+	void CanvasMove();
 };

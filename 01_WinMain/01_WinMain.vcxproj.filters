@@ -290,6 +290,9 @@
     <ClCompile Include="LoadImage.cpp">
       <Filter>FrameWork\Image</Filter>
     </ClCompile>
+    <ClCompile Include="MapToolScene+CanvasMove.cpp">
+      <Filter>MainGame\Scene\MapToolScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc">

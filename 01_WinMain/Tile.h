@@ -33,6 +33,8 @@ public:
 	
 	void Render(HDC hdc);
 	void MoveRender(HDC hdc, float moveX, float moveY);
+	void PositionRender(HDC hdc, float posX, float posY);
+
 
 	Image* GetImage()const { return mImage; }
 	void SetImage(Image * image) { mImage = image; }

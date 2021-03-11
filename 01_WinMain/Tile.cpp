@@ -27,3 +27,8 @@ void Tile::MoveRender(HDC hdc, float moveX, float moveY)
 		mImage->ScaleFrameRender(hdc, mRect.left + moveX, mRect.top + moveY,
 			mFrameIndexX, mFrameIndexY, mSizeX, mSizeY);
 }
+void Tile::PositionRender(HDC hdc, float posX, float posY)
+{
+	if (mImage != nullptr)
+		mImage->ScaleFrameRender(hdc, posX, posY, mFrameIndexX, mFrameIndexY, mSizeX, mSizeY);
+}

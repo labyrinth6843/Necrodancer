@@ -118,19 +118,32 @@ void MapToolScene::SetSize()
 	mObjectList.shrink_to_fit();
 
 	//size x,y를 받아 타일맵의 최대크기에 맞춰 빈 타일을 생성해준다
-	vector<Tile*> XList;
+	vector<Tile*> GList;
+	vector<Tile*> DList;
+	vector<Tile*> IList;
+	vector<Tile*> OList;
 	for (int y = 0; y < mMaxSizeY; ++y)
 	{
 		for (int x = 0; x < mMaxSizeX; ++x)
 		{
-			XList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+			GList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"0"), TileSize * x, TileSize * y, TileSize, TileSize, 2, 5));
+			DList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+			IList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+			OList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
 		}
-		mGroundList.push_back(XList);
-		mDecoList.push_back(XList);
-		mItemList.push_back(XList);
-		mObjectList.push_back(XList);
-		XList.clear();	//넣어주고 비워주기
-		XList.shrink_to_fit();
+		mGroundList.push_back(GList);
+		mDecoList.push_back(DList);
+		mItemList.push_back(IList);
+		mObjectList.push_back(OList);
+
+		DList.clear();
+		DList.shrink_to_fit();
+		IList.clear();
+		IList.shrink_to_fit();
+		OList.clear();
+		OList.shrink_to_fit();
+		GList.clear();
+		GList.shrink_to_fit();
 	}
 
 	//기존의 내용을 넣는다
