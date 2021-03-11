@@ -9,10 +9,10 @@ class GameScene : public Scene
 	Player* mPlayer;
 	vector<wstring>mPallete;
 
-	Tile* mGroundList[TileCountY][TileCountX];
-	Tile* mDecoList[TileCountY][TileCountX];
-	Tile* mItemList[TileCountY][TileCountX];
-	Tile* mObjectList[TileCountY][TileCountX];
+	vector<vector<Tile*>> mGroundList;
+	vector<vector<Tile*>> mDecoList;
+	vector<vector<Tile*>> mItemList;
+	vector<vector<Tile*>> mObjectList;
 
 	Button* mToolButton;
 

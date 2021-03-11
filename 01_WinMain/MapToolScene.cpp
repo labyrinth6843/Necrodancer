@@ -128,6 +128,14 @@ void MapToolScene::Release(){
 			SafeDelete(mObjectList[y][x]);
 		}
 	}
+	mGroundList.clear();
+	mGroundList.shrink_to_fit();
+	mDecoList.clear();
+	mDecoList.shrink_to_fit();
+	mItemList.clear();
+	mItemList.shrink_to_fit();
+	mObjectList.clear();
+	mObjectList.shrink_to_fit();
 
 	ButtonIt iter = mButtonList.begin();
 	for (; iter != mButtonList.end(); ++iter){
@@ -414,7 +422,7 @@ void MapToolScene::Save(){
 	saveStream.close();
 }
 
-void MapToolScene::Load(){
+void MapToolScene::Load(){	//이제 사용 안함
 	int i = 0;
 	ifstream loadStream(L"../04_Data/Test0" + to_wstring(i) + L".txt");
 	if (loadStream.is_open()){

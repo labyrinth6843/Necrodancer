@@ -85,6 +85,9 @@
     <Filter Include="MainGame\Scene\MapToolScene">
       <UniqueIdentifier>{57bbbaef-4051-41a8-ac0b-b3dd6d58242c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Object\Ground">
+      <UniqueIdentifier>{f49a7a75-3294-4a3c-98b7-0347e9c0832c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">

@@ -14,170 +14,12 @@ void GameScene::Init(){
 	mPlayer->Init();
 
 	SoundPlayer::GetInstance()->Play(L"Game",0.2f);
+	
+	FileManager::GetInstance()->LoadMap(L"Test00", mGroundList, TileSize);
+	FileManager::GetInstance()->LoadMap(L"Test01", mDecoList, TileSize);
+	FileManager::GetInstance()->LoadMap(L"Test02", mItemList, TileSize);
+	FileManager::GetInstance()->LoadMap(L"Test03", mObjectList, TileSize);
 
-	for (int y = 0; y < TileCountY; ++y) {
-		for (int x = 0; x < TileCountX; ++x) {
-			mGroundList[y][x] = new Tile(
-				nullptr,
-				100 + TileSize * x,
-				200 + TileSize * y,
-				TileSize,
-				TileSize,
-				0,
-				0
-			);
-			mDecoList[y][x] = new Tile(
-				nullptr,
-				100 + TileSize * x,
-				200 + TileSize * y,
-				TileSize,
-				TileSize,
-				0,
-				0
-			);
-			mItemList[y][x] = new Tile(
-				nullptr,
-				100 + TileSize * x,
-				200 + TileSize * y,
-				TileSize,
-				TileSize,
-				0,
-				0
-			);
-			mObjectList[y][x] = new Tile(
-				nullptr,
-				100 + TileSize * x,
-				200 + TileSize * y,
-				TileSize,
-				TileSize,
-				0,
-				0
-			);
-		}
-	}
-	int i = 0;
-	ifstream loadStream(L"../04_Data/Test0" + to_wstring(i) + L".txt");
-	if (loadStream.is_open()) {
-		for (int y = 0; y < TileCountY; ++y) {
-			for (int x = 0; x < TileCountX; ++x) {
-				string key;
-				int frameX;
-				int frameY;
-				int type;
-
-				string buffer;
-
-				getline(loadStream, buffer, ',');
-				key = buffer;
-				getline(loadStream, buffer, ',');
-				frameX = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				frameY = stoi(buffer);
-				getline(loadStream, buffer);
-				type = stoi(buffer);
-
-				wstring wstr;
-				wstr.assign(key.begin(), key.end());
-				mGroundList[y][x]->SetImage(ImageManager::GetInstance()->FindImage(wstr));
-				mGroundList[y][x]->SetFrameIndexX(frameX);
-				mGroundList[y][x]->SetFrameIndexY(frameY);
-				mGroundList[y][x]->SetTileType((TileType)type);
-			}
-		}
-	}
-	i++;
-	loadStream.close();
-	loadStream.open(L"../04_Data/Test0" + to_wstring(i) + L".txt");
-	if (loadStream.is_open()) {
-		for (int y = 0; y < TileCountY; ++y) {
-			for (int x = 0; x < TileCountX; ++x) {
-				string key;
-				int frameX;
-				int frameY;
-				int type;
-
-				string buffer;
-
-				getline(loadStream, buffer, ',');
-				key = buffer;
-				getline(loadStream, buffer, ',');
-				frameX = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				frameY = stoi(buffer);
-				getline(loadStream, buffer);
-				type = stoi(buffer);
-
-				wstring wstr;
-				wstr.assign(key.begin(), key.end());
-				mDecoList[y][x]->SetImage(ImageManager::GetInstance()->FindImage(wstr));
-				mDecoList[y][x]->SetFrameIndexX(frameX);
-				mDecoList[y][x]->SetFrameIndexY(frameY);
-				mDecoList[y][x]->SetTileType((TileType)type);
-			}
-		}
-	}
-	i++;
-	loadStream.close();
-	loadStream.open(L"../04_Data/Test0" + to_wstring(i) + L".txt");
-	if (loadStream.is_open()) {
-		for (int y = 0; y < TileCountY; ++y) {
-			for (int x = 0; x < TileCountX; ++x) {
-				string key;
-				int frameX;
-				int frameY;
-				int type;
-
-				string buffer;
-
-				getline(loadStream, buffer, ',');
-				key = buffer;
-				getline(loadStream, buffer, ',');
-				frameX = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				frameY = stoi(buffer);
-				getline(loadStream, buffer);
-				type = stoi(buffer);
-
-				wstring wstr;
-				wstr.assign(key.begin(), key.end());
-				mItemList[y][x]->SetImage(ImageManager::GetInstance()->FindImage(wstr));
-				mItemList[y][x]->SetFrameIndexX(frameX);
-				mItemList[y][x]->SetFrameIndexY(frameY);
-				mItemList[y][x]->SetTileType((TileType)type);
-			}
-		}
-	}
-	i++;
-	loadStream.close();
-	loadStream.open(L"../04_Data/Test0" + to_wstring(i) + L".txt");
-	if (loadStream.is_open()) {
-		for (int y = 0; y < TileCountY; ++y) {
-			for (int x = 0; x < TileCountX; ++x) {
-				string key;
-				int frameX;
-				int frameY;
-				int type;
-
-				string buffer;
-
-				getline(loadStream, buffer, ',');
-				key = buffer;
-				getline(loadStream, buffer, ',');
-				frameX = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				frameY = stoi(buffer);
-				getline(loadStream, buffer);
-				type = stoi(buffer);
-
-				wstring wstr;
-				wstr.assign(key.begin(), key.end());
-				mObjectList[y][x]->SetImage(ImageManager::GetInstance()->FindImage(wstr));
-				mObjectList[y][x]->SetFrameIndexX(frameX);
-				mObjectList[y][x]->SetFrameIndexY(frameY);
-				mObjectList[y][x]->SetTileType((TileType)type);
-			}
-		}
-	}
 	mToolButton  = new Button(L"Tool",  L"Tool",  550, 50, 200, 50, bind(&GameScene::Tool, this));
 }
 
@@ -204,29 +46,13 @@ void GameScene::Render(HDC hdc){
 
 	for (int y = 0; y < TileCountY; ++y) {
 		for (int x = 0; x < TileCountX; ++x) {
-			if(mGroundList[y][x] != NULL)
-				mGroundList[y][x]->Render(hdc);
-		}
-	}
-
-	for (int y = 0; y < TileCountY; ++y) {
-		for (int x = 0; x < TileCountX; ++x) {
-			if (mDecoList[y][x] != NULL)
-				mDecoList[y][x]->Render(hdc);
-		}
-	}
-
-	for (int y = 0; y < TileCountY; ++y) {
-		for (int x = 0; x < TileCountX; ++x) {
-			if (mItemList[y][x] != NULL)
-				mItemList[y][x]->Render(hdc);
-		}
-	}
-
-	for (int y = 0; y < TileCountY; ++y) {
-		for (int x = 0; x < TileCountX; ++x) {
-			if (mObjectList[y][x] != NULL)
-				mObjectList[y][x]->Render(hdc);
+			if (mGroundList[y][x] != NULL)
+			{
+				mGroundList[y][x]->MoveRender(hdc, 100, 200);
+				mDecoList[y][x]->MoveRender(hdc, 100, 200);
+				mItemList[y][x]->MoveRender(hdc, 100, 200);
+				mObjectList[y][x]->MoveRender(hdc, 100, 200);
+			}
 		}
 	}
 
