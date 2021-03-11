@@ -80,8 +80,6 @@ void MapToolScene::Init()
 	mButtonList.insert(make_pair(L"Redo", new Button(L"Redo", L"Redo", 150, 50, 200, 50, bind(&MapToolScene::Redo, this))));
 
 	mButtonList.insert(make_pair(L"Save", new Button(L"Save", L"Save", 250, 50, 200, 50, bind(&MapToolScene::Save, this))));
-	//mButtonList.insert(make_pair(L"Load", new Button(L"Load", L"Load", 350, 50, 200, 50, bind(&MapToolScene::Load, this))));
-
 	mButtonList.insert(make_pair(L"Load", new Button(L"Load", L"Load", 350, 50, 200, 50, [this]() 
 		{
 			FileManager::GetInstance()->LoadMap(L"Test00", mGroundList, TileSize);
@@ -90,6 +88,8 @@ void MapToolScene::Init()
 			FileManager::GetInstance()->LoadMap(L"Test03", mObjectList, TileSize);
 			mMaxSizeY = mGroundList.size();
 			mMaxSizeX = mGroundList[mMaxSizeY - 1].size();
+			mInputX = to_string(mMaxSizeX);
+			mInputY = to_string(mMaxSizeY);
 		}
 	)));
 
@@ -105,8 +105,26 @@ void MapToolScene::Init()
 	mButtonList.insert(make_pair(L"Prev", new Button(L"Prev", L"Prev", 800, 600, 200, 50, bind(&MapToolScene::PrevPallete, this))));
 	mButtonList.insert(make_pair(L"Next", new Button(L"Next", L"Next", 900, 600, 200, 50, bind(&MapToolScene::NextPallete, this))));
 
-	mCurrentPallete = mPallete[0][0];
-	
+	//선택 툴
+	mButtonList.insert(make_pair(L"SelectMod", new Button(L"", L"Select", 80, 100, 60, 25, [this]()
+		{
+			mDragMod = false;
+			mSelectMod = !mSelectMod;
+			mSelectIndex.clear();
+			mSelectIndex.shrink_to_fit();
+		})));
+	mButtonList.insert(make_pair(L"DragMod", new Button(L"", L"Drag", 160, 100, 60, 25, [this]()
+		{
+			mSelectRectShow = false;
+			mSelectMod = false;
+			mDragMod = !mDragMod;
+			mSelectIndex.clear();
+			mSelectIndex.shrink_to_fit();
+		})));
+
+	mSelectRectShow = false;
+	mSelectMod = false;
+	mDragMod = false;
 	mShowGrid = true;
 
 	//SetSize 관련 변수들
@@ -117,6 +135,8 @@ void MapToolScene::Init()
 	mButtonList.insert(make_pair(L"SizeX", new Button(L"", L"", 300, WINSIZEY - 175, 50, 25, [this]() { mIsInput = 1; })));
 	mButtonList.insert(make_pair(L"SizeY", new Button(L"", L"", 370, WINSIZEY - 175, 50, 25, [this]() { mIsInput = 2; })));
 	mIsInput = 0;
+
+	mCurrentPallete = mPallete[0][0];
 }
 
 void MapToolScene::Release(){
@@ -182,49 +202,141 @@ void MapToolScene::Update(){
 		// }}
 	}
 
+
 	// {{ 타일 그리기~
 	if (Input::GetInstance()->GetKey(VK_LBUTTON)){
-		int indexX = (_mousePosition.x-mMoveX) / TileSize + mMinIndexX;
-		int indexY = (_mousePosition.y-mMoveY) / TileSize + mMinIndexY;
+		int indexX = (_mousePosition.x - mMoveX) / TileSize + mMinIndexX;
+		int indexY = (_mousePosition.y - mMoveY) / TileSize + mMinIndexY;
 
 		if (indexX >= mMinIndexX && indexX < mMaxSizeX &&
 			indexY >= mMinIndexY && indexY < mMaxSizeY)
 		{
-			if ((mGroundList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
-				mGroundList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
-				mGroundList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
-				(mCurrentPallete.Layer == TileLayer::Ground))
+
+			if (mSelectMod)
 			{
-				IBrushTile* command = new IBrushTile(mGroundList[indexY][indexX],mCurrentPallete);
-				PushCommand(command);
+				bool check = true;
+				POINT temp = { indexX, indexY };
+				for (int i = 0; i < mSelectIndex.size(); ++i)
+				{
+					if (mSelectIndex[i].x == temp.x && mSelectIndex[i].y == temp.y)
+					{
+						check = false;
+						break;
+					}
+				}
+				if(check)
+					mSelectIndex.push_back(temp);
 			}
-			else if ((mDecoList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
-				mDecoList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
-				mDecoList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) && 
-				(mCurrentPallete.Layer == TileLayer::Deco))
+			else if (mDragMod)
 			{
-				IBrushTile* command = new IBrushTile(mDecoList[indexY][indexX], mCurrentPallete);
-				PushCommand(command);
+				mSelectRect.right = _mousePosition.x;
+				mSelectRect.bottom = _mousePosition.y;
 			}
-			if ((mItemList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
-				mItemList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
-				mItemList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
-				(mCurrentPallete.Layer == TileLayer::Item))
+			else
 			{
-				IBrushTile* command = new IBrushTile(mItemList[indexY][indexX], mCurrentPallete);
-				PushCommand(command);
-			}
-			if ((mObjectList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
-				mObjectList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
-				mObjectList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
-				(mCurrentPallete.Layer == TileLayer::GameObject))
-			{
-				IBrushTile* command = new IBrushTile(mObjectList[indexY][indexX], mCurrentPallete);
-				PushCommand(command);
+				if ((mGroundList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+					mGroundList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
+					mGroundList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
+					(mCurrentPallete.Layer == TileLayer::Ground))
+				{
+					IBrushTile* command = new IBrushTile(mGroundList[indexY][indexX], mCurrentPallete);
+					PushCommand(command);
+				}
+				else if ((mDecoList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+					mDecoList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
+					mDecoList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) && 
+					(mCurrentPallete.Layer == TileLayer::Deco))
+				{
+					IBrushTile* command = new IBrushTile(mDecoList[indexY][indexX], mCurrentPallete);
+					PushCommand(command);
+				}
+				if ((mItemList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+					mItemList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
+					mItemList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
+					(mCurrentPallete.Layer == TileLayer::Item))
+				{
+					IBrushTile* command = new IBrushTile(mItemList[indexY][indexX], mCurrentPallete);
+					PushCommand(command);
+				}
+				if ((mObjectList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+					mObjectList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
+					mObjectList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
+					(mCurrentPallete.Layer == TileLayer::GameObject))
+				{
+					IBrushTile* command = new IBrushTile(mObjectList[indexY][indexX], mCurrentPallete);
+					PushCommand(command);
+				}
 			}
 		}
 	}
 
+	if (mDragMod)
+	{
+		if (Input::GetInstance()->GetKeyDown(VK_LBUTTON)) {
+			int indexX = (_mousePosition.x - mMoveX) / TileSize + mMinIndexX;
+			int indexY = (_mousePosition.y - mMoveY) / TileSize + mMinIndexY;
+
+			if (indexX >= mMinIndexX && indexX < mMinIndexX + TileCountX &&
+				indexY >= mMinIndexY && indexY < mMinIndexY + TileCountY)
+			{
+				//mSelectRect의 left,top을 설정
+				mSelectRect.left = _mousePosition.x-1;
+				mSelectRect.top = _mousePosition.y-1;
+				mSelectRect.right = _mousePosition.x;
+				mSelectRect.bottom = _mousePosition.y;
+				mSelectRectShow = true;
+			}
+		}
+		if (Input::GetInstance()->GetKeyUp(VK_LBUTTON)) {
+			int indexX = (_mousePosition.x - mMoveX) / TileSize + mMinIndexX;
+			int indexY = (_mousePosition.y - mMoveY) / TileSize + mMinIndexY;
+
+				mSelectRect.right = _mousePosition.x;
+				mSelectRect.bottom = _mousePosition.y;
+
+				if (mSelectRect.bottom < mSelectRect.top)
+				{
+					LONG temp = mSelectRect.top;
+					mSelectRect.top = mSelectRect.bottom;
+					mSelectRect.bottom = temp;
+				}
+				if (mSelectRect.right < mSelectRect.left)
+				{
+					LONG temp = mSelectRect.left;
+					mSelectRect.left = mSelectRect.right;
+					mSelectRect.right = temp;
+				}
+				//mSelectRect와 충돌하는 타일의 인덱스를 mSelectIndex에 저장
+				for (int y = 0; y < TileCountY; ++y) 
+				{
+					if (y >= mMaxSizeY)
+						break;
+					for (int x = 0; x < TileCountX; ++x)
+					{
+						if (x >= mMaxSizeX)
+							break;
+						POINT pos = { x * TileSize + TileSize/2 + mMoveX , y * TileSize + TileSize/2 + mMoveY };
+						if (PtInRect(&mSelectRect, pos))
+						{
+							POINT index = { x + mMinIndexX, y + mMinIndexY};
+							bool check = true;
+							for (int i = 0; i < mSelectIndex.size(); ++i)
+							{
+								if (mSelectIndex[i].x == index.x && mSelectIndex[i].y == index.y)
+								{
+									check = false;
+									break;
+								}
+							}
+							if (check)
+								mSelectIndex.push_back(index);
+						}
+					}
+				}
+
+			mSelectRectShow = false;
+		}
+	}
 	if (Input::GetInstance()->GetKeyDown('H'))	//격자 표시
 		mShowGrid = !mShowGrid;
 	if (Input::GetInstance()->GetKey(VK_CONTROL)) {
@@ -269,19 +381,25 @@ void MapToolScene::Render(HDC hdc){
 			mObjectList[y][x]->PositionRender(hdc, posX * TileSize + mMoveX, posY * TileSize + mMoveY);
 
 			posX++;
-			/*
-			mGroundList[y][x]->MoveRender(hdc,mMoveX,mMoveY);
-			mDecoList[y][x]->MoveRender(hdc, mMoveX, mMoveY);
-			mItemList[y][x]->MoveRender(hdc, mMoveX, mMoveY);
-			mObjectList[y][x]->MoveRender(hdc, mMoveX, mMoveY);
-			*/
 		}
 		posY++;
 	}
-	wstring testx = to_wstring(mMinIndexX);
-	TextOut(hdc, 10, 10, testx.c_str(), testx.length());
-	wstring testy = to_wstring(mMinIndexY);
-	TextOut(hdc, 100, 10, testy.c_str(), testy.length());
+	//선택표시
+	Image* select = IMAGEMANAGER->FindImage(L"SelectTile");
+	for (int i = 0; i < mSelectIndex.size(); ++i)
+	{
+		int posX = (mSelectIndex[i].x - mMinIndexX)* TileSize + mMoveX;
+		int posY = (mSelectIndex[i].y - mMinIndexY)* TileSize + mMoveY;
+		
+		if (posX < mMoveX || posY < mMoveY)
+			continue;
+		if (posX > TileSize*TileCountX + mMoveX || posY > TileSize* TileCountY + mMoveY)
+			continue;
+		
+		select->AlphaRender(hdc, posX, posY, 0.5f);
+	}
+	if (mSelectRectShow)
+		RenderRect(hdc, mSelectRect);
 
 	//팔레트
 	for (int y = 0; y < 10; ++y)	{
@@ -340,8 +458,8 @@ void MapToolScene::Save(){
 		int frameX;
 		int frameY;
 
-		for (int y = 0; y < TileCountY; ++y){
-			for (int x = 0; x < TileCountX; ++x){
+		for (int y = 0; y < mMaxSizeY; ++y){
+			for (int x = 0; x < mMaxSizeX; ++x){
 				string str;
 				wstring keyName;
 				if(mGroundList[y][x]->GetImage() != nullptr)
@@ -366,8 +484,8 @@ void MapToolScene::Save(){
 		int frameX;
 		int frameY;
 
-		for (int y = 0; y < TileCountY; ++y) {
-			for (int x = 0; x < TileCountX; ++x) {
+		for (int y = 0; y < mMaxSizeY; ++y) {
+			for (int x = 0; x < mMaxSizeX; ++x) {
 				string str;
 				wstring keyName;
 				if (mDecoList[y][x]->GetImage() != nullptr)
@@ -392,8 +510,8 @@ void MapToolScene::Save(){
 		int frameX;
 		int frameY;
 
-		for (int y = 0; y < TileCountY; ++y) {
-			for (int x = 0; x < TileCountX; ++x) {
+		for (int y = 0; y < mMaxSizeY; ++y) {
+			for (int x = 0; x < mMaxSizeX; ++x) {
 				string str;
 				wstring keyName;
 				if (mItemList[y][x]->GetImage() != nullptr)
@@ -417,8 +535,8 @@ void MapToolScene::Save(){
 		int frameX;
 		int frameY;
 
-		for (int y = 0; y < TileCountY; ++y) {
-			for (int x = 0; x < TileCountX; ++x) {
+		for (int y = 0; y < mMaxSizeY; ++y) {
+			for (int x = 0; x < mMaxSizeX; ++x) {
 				string str;
 				wstring keyName;
 				if (mObjectList[y][x]->GetImage() != nullptr)
