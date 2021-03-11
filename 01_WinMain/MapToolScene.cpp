@@ -24,23 +24,31 @@ void MapToolScene::Init()
 	mMoveY = 200;
 
 	//Tile* List들 vector화 필요
-	vector<Tile*> XList;
 	vector<Tile*> GList;
+	vector<Tile*> DList;
+	vector<Tile*> IList;
+	vector<Tile*> OList;
 	for (int y = 0; y < mMaxSizeY; ++y)
 	{
 		for (int x = 0; x < mMaxSizeX; ++x)
 		{
-			XList.push_back(new Tile(nullptr, TileSize * x , TileSize * y , TileSize, TileSize, 0, 0));
 			GList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"0"), TileSize * x , TileSize * y , TileSize, TileSize, 2, 5));
+			DList.push_back(new Tile(nullptr, TileSize * x , TileSize * y , TileSize, TileSize, 0, 0));
+			IList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+			OList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
 		}
-		mDecoList.push_back(XList);
-		mItemList.push_back(XList);
-		mObjectList.push_back(XList);
+		mDecoList.push_back(DList);
+		mItemList.push_back(IList);
+		mObjectList.push_back(OList);
 		
 		mGroundList.push_back(GList);
-		XList.clear();	//넣어주고 비워주기
-		XList.shrink_to_fit();
-		GList.clear();	//넣어주고 비워주기
+		DList.clear();
+		DList.shrink_to_fit();
+		IList.clear();
+		IList.shrink_to_fit();
+		OList.clear();
+		OList.shrink_to_fit();
+		GList.clear();
 		GList.shrink_to_fit();
 	}
 
@@ -72,7 +80,19 @@ void MapToolScene::Init()
 	mButtonList.insert(make_pair(L"Redo", new Button(L"Redo", L"Redo", 150, 50, 200, 50, bind(&MapToolScene::Redo, this))));
 
 	mButtonList.insert(make_pair(L"Save", new Button(L"Save", L"Save", 250, 50, 200, 50, bind(&MapToolScene::Save, this))));
-	mButtonList.insert(make_pair(L"Load", new Button(L"Load", L"Load", 350, 50, 200, 50, bind(&MapToolScene::Load, this))));
+	//mButtonList.insert(make_pair(L"Load", new Button(L"Load", L"Load", 350, 50, 200, 50, bind(&MapToolScene::Load, this))));
+
+	mButtonList.insert(make_pair(L"Load", new Button(L"Load", L"Load", 350, 50, 200, 50, [this]() 
+		{
+			FileManager::GetInstance()->LoadMap(L"Test00", mGroundList, TileSize);
+			FileManager::GetInstance()->LoadMap(L"Test01", mDecoList, TileSize);
+			FileManager::GetInstance()->LoadMap(L"Test02", mItemList, TileSize);
+			FileManager::GetInstance()->LoadMap(L"Test03", mObjectList, TileSize);
+			mMaxSizeY = mGroundList.size();
+			mMaxSizeX = mGroundList[mMaxSizeY - 1].size();
+		}
+	)));
+
 	mButtonList.insert(make_pair(L"Clear", new Button(L"Clear", L"Clear", 450, 50, 200, 50, bind(&MapToolScene::Clear, this))));
 	mButtonList.insert(make_pair(L"Play", new Button(L"Play", L"Play", 550, 50, 200, 50, bind(&MapToolScene::Play, this))));
 
@@ -100,8 +120,8 @@ void MapToolScene::Init()
 }
 
 void MapToolScene::Release(){
-	for (int y = 0; y < TileCountY; ++y){
-		for (int x = 0; x < TileCountX; ++x){
+	for (int y = 0; y < mMaxSizeY; ++y){
+		for (int x = 0; x < mMaxSizeY; ++x){
 			SafeDelete(mGroundList[y][x]);
 			SafeDelete(mDecoList[y][x]);
 			SafeDelete(mItemList[y][x]);
@@ -159,8 +179,8 @@ void MapToolScene::Update(){
 		int indexX = (_mousePosition.x-mMoveX) / TileSize + mMinIndexX;
 		int indexY = (_mousePosition.y-mMoveY) / TileSize + mMinIndexY;
 
-		if (indexX >= mMinIndexX && indexX < TileCountX &&
-			indexY >= mMinIndexY && indexY < TileCountY)
+		if (indexX >= mMinIndexX && indexX < mMaxSizeX &&
+			indexY >= mMinIndexY && indexY < mMaxSizeY)
 		{
 			if ((mGroundList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
 				mGroundList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
@@ -305,6 +325,8 @@ void MapToolScene::Save(){
 				str.assign(keyName.begin(), keyName.end());
 
 				saveStream << str.c_str() << ",";
+				saveStream << x << ",";
+				saveStream << y << ",";
 				saveStream << mGroundList[y][x]->GetFrameIndexX() << ",";
 				saveStream << mGroundList[y][x]->GetFrameIndexY() << ",";
 				saveStream << (int)(mGroundList[y][x]->GetTileType());
@@ -329,6 +351,8 @@ void MapToolScene::Save(){
 				str.assign(keyName.begin(), keyName.end());
 
 				saveStream << str.c_str() << ",";
+				saveStream << x << ",";
+				saveStream << y << ",";
 				saveStream << mDecoList[y][x]->GetFrameIndexX() << ",";
 				saveStream << mDecoList[y][x]->GetFrameIndexY() << ",";
 				saveStream << (int)(mDecoList[y][x]->GetTileType());
@@ -353,6 +377,8 @@ void MapToolScene::Save(){
 				str.assign(keyName.begin(), keyName.end());
 
 				saveStream << str.c_str() << ",";
+				saveStream << x << ",";
+				saveStream << y << ",";
 				saveStream << mItemList[y][x]->GetFrameIndexX() << ",";
 				saveStream << mItemList[y][x]->GetFrameIndexY() << ",";
 				saveStream << (int)(mItemList[y][x]->GetTileType()) << endl;
@@ -376,6 +402,8 @@ void MapToolScene::Save(){
 				str.assign(keyName.begin(), keyName.end());
 
 				saveStream << str.c_str()<< ",";
+				saveStream << x << ",";
+				saveStream << y << ",";
 				saveStream << mObjectList[y][x]->GetFrameIndexX()<< ",";
 				saveStream << mObjectList[y][x]->GetFrameIndexY()<< ",";
 				saveStream << (int)(mObjectList[y][x]->GetTileType());
@@ -393,6 +421,8 @@ void MapToolScene::Load(){
 		for (int y = 0; y < TileCountY; ++y){
 			for (int x = 0; x < TileCountX; ++x){
 				string key;
+				int posx;
+				int posy;
 				int frameX;
 				int frameY;
 				int type;
@@ -401,6 +431,10 @@ void MapToolScene::Load(){
 				
 				getline(loadStream, buffer, ',');
 				key = buffer;
+				getline(loadStream, buffer, ',');
+				posx = stoi(buffer);
+				getline(loadStream, buffer, ',');
+				posy = stoi(buffer);
 				getline(loadStream, buffer, ',');
 				frameX = stoi(buffer);
 				getline(loadStream, buffer, ',');
@@ -424,6 +458,8 @@ void MapToolScene::Load(){
 		for (int y = 0; y < TileCountY; ++y) {
 			for (int x = 0; x < TileCountX; ++x) {
 				string key;
+				int indexX;
+				int indexY;
 				int frameX;
 				int frameY;
 				int type;
@@ -432,6 +468,10 @@ void MapToolScene::Load(){
 
 				getline(loadStream, buffer, ',');
 				key = buffer;
+				getline(loadStream, buffer, ',');
+				indexX = stoi(buffer);
+				getline(loadStream, buffer, ',');
+				indexY = stoi(buffer);
 				getline(loadStream, buffer, ',');
 				frameX = stoi(buffer);
 				getline(loadStream, buffer, ',');
@@ -455,6 +495,8 @@ void MapToolScene::Load(){
 		for (int y = 0; y < TileCountY; ++y) {
 			for (int x = 0; x < TileCountX; ++x) {
 				string key;
+				int indexX;
+				int indexY;
 				int frameX;
 				int frameY;
 				int type;
@@ -463,6 +505,10 @@ void MapToolScene::Load(){
 
 				getline(loadStream, buffer, ',');
 				key = buffer;
+				getline(loadStream, buffer, ',');
+				indexX = stoi(buffer);
+				getline(loadStream, buffer, ',');
+				indexY = stoi(buffer);
 				getline(loadStream, buffer, ',');
 				frameX = stoi(buffer);
 				getline(loadStream, buffer, ',');
@@ -486,6 +532,8 @@ void MapToolScene::Load(){
 		for (int y = 0; y < TileCountY; ++y) {
 			for (int x = 0; x < TileCountX; ++x) {
 				string key;
+				int indexX;
+				int indexY;
 				int frameX;
 				int frameY;
 				int type;
@@ -494,6 +542,10 @@ void MapToolScene::Load(){
 
 				getline(loadStream, buffer, ',');
 				key = buffer;
+				getline(loadStream, buffer, ',');
+				indexX = stoi(buffer);
+				getline(loadStream, buffer, ',');
+				indexY = stoi(buffer);
 				getline(loadStream, buffer, ',');
 				frameX = stoi(buffer);
 				getline(loadStream, buffer, ',');

@@ -41,6 +41,7 @@ using namespace std;
 #include "GameEventManager.h"
 #include "Gizmo.h"
 #include "Helper.h"
+#include "FileManager.h"
 
 
 extern POINT _mousePosition;	//마우스 좌표

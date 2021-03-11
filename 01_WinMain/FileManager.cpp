@@ -84,7 +84,7 @@ void FileManager::LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int
 				saveList[y][x]->SetImage(ImageManager::GetInstance()->FindImage(wstr));
 				saveList[y][x]->SetFrameIndexX(stoi(subList[3]));
 				saveList[y][x]->SetFrameIndexY(stoi(subList[4]));
-				saveList[y][x]->SetTileType((TileType)stoi(subList[6]));
+				saveList[y][x]->SetTileType((TileType)stoi(subList[5]));
 			}
 			else
 			{
@@ -96,7 +96,7 @@ void FileManager::LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int
 
 				//크기 늘리는거
 				Tile* tile = new Tile(ImageManager::GetInstance()->FindImage(wstr),
-					tilesize * stof(subList[1]), tilesize * stof(subList[2]), tilesize, tilesize,
+					tilesize * x, tilesize * y, tilesize, tilesize,
 					stof(subList[3]), stof(subList[4]), (TileType)stoi(subList[5]));
 				//원래 사이즈
 
