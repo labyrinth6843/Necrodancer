@@ -97,17 +97,18 @@ class Tile;
 class MapToolScene : public Scene{
 	Image* tileImage;
 	//
+	/*	
 	Tile* mGroundList[TileCountY][TileCountX];
 	Tile* mDecoList[TileCountY][TileCountX];
 	Tile* mItemList[TileCountY][TileCountX];
 	Tile* mObjectList[TileCountY][TileCountX];
+	*/
 	//
-	/*	//타일 벡터화 -> 이부분 주석 해제하기전에 Init개조 필요
+	//타일 벡터화 -> 이부분 주석 해제하기전에 Init개조 필요
 	vector<vector<Tile*>> mGroundList;
 	vector<vector<Tile*>> mDecoList;
 	vector<vector<Tile*>> mItemList;
 	vector<vector<Tile*>> mObjectList;
-	*/
 
 	int mCurrentPage = 0;
 
@@ -123,8 +124,13 @@ class MapToolScene : public Scene{
 
 	bool mShowGrid;
 
+	int mMinIndexX;
+	int mMinIndexY;
 	int mMaxSizeX;
 	int mMaxSizeY;
+
+	int mMoveX;
+	int mMoveY;
 
 	int mIsInput;	//0 : false, 1 : x, 2 : y
 	string mInputX;

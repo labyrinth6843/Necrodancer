@@ -98,7 +98,7 @@ void MapToolScene::SetSize()
 
 	//크기 변경 전 원래 타일 정보
 	//배열로 선언된 레이어들은 벡터로 변환하고 아래 주석 제거 및 테스팅
-	/*
+	
 	int prevY = mGroundList.size();
 	int prevX = mGroundList[prevY - 1].size();
 	vector<vector<Tile*>> saveGround = mGroundList;
@@ -107,10 +107,10 @@ void MapToolScene::SetSize()
 	vector<vector<Tile*>> saveObject = mObjectList;
 
 	//크기 변경전 전부 비우기
-	mGroundList.clear()
-	mDecoList.clear()
-	mItemList.clear()
-	mObjectList.clear()
+	mGroundList.clear();
+	mDecoList.clear();
+	mItemList.clear();
+	mObjectList.clear();
 
 	mGroundList.shrink_to_fit();
 	mDecoList.shrink_to_fit();
@@ -160,5 +160,5 @@ void MapToolScene::SetSize()
 			}
 		}
 	}
-	*/
+	
 }

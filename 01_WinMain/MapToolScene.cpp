@@ -15,62 +15,33 @@ void MapToolScene::Init()
 		mPalleteList.push_back(wstr);
 	}
 
+	mMaxSizeX = TileCountX;
+	mMaxSizeY = TileCountY;
+	mMinIndexX = 0;
+	mMinIndexY = 0;
+
+	mMoveX = 100;
+	mMoveY = 200;
+
 	//Tile* List들 vector화 필요
-	/*
 	vector<Tile*> XList;
+	vector<Tile*> GList;
 	for (int y = 0; y < mMaxSizeY; ++y)
 	{
 		for (int x = 0; x < mMaxSizeX; ++x)
 		{
-			XList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+			XList.push_back(new Tile(nullptr, TileSize * x , TileSize * y , TileSize, TileSize, 0, 0));
+			GList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"0"), TileSize * x , TileSize * y , TileSize, TileSize, 2, 5));
 		}
-		mGroundList.push_back(XList);
 		mDecoList.push_back(XList);
 		mItemList.push_back(XList);
 		mObjectList.push_back(XList);
+		
+		mGroundList.push_back(GList);
 		XList.clear();	//넣어주고 비워주기
 		XList.shrink_to_fit();
-	}
-	*/
-	for (int y = 0; y < TileCountY; ++y){
-		for (int x = 0; x < TileCountX; ++x){
-			mGroundList[y][x] = new Tile(
-				ImageManager::GetInstance()->FindImage(L"0"),
-				100 + TileSize * x,
-				200 + TileSize * y,
-				TileSize,
-				TileSize,
-				2,
-				5
-			);
-			mDecoList[y][x] = new Tile(
-				nullptr,
-				100 + TileSize * x,
-				200 + TileSize * y,
-				TileSize,
-				TileSize,
-				0,
-				0
-			);
-			mItemList[y][x] = new Tile(
-				nullptr,
-				100 + TileSize * x,
-				200 + TileSize * y,
-				TileSize,
-				TileSize,
-				0,
-				0
-			);
-			mObjectList[y][x] = new Tile(
-				nullptr,
-				100 + TileSize * x,
-				200 + TileSize * y,
-				TileSize,
-				TileSize,
-				0,
-				0
-			);
-		}
+		GList.clear();	//넣어주고 비워주기
+		GList.shrink_to_fit();
 	}
 
 	int palleteStartX = WINSIZEX / 2 + 140;
@@ -119,8 +90,6 @@ void MapToolScene::Init()
 	mShowGrid = true;
 
 	//SetSize 관련 변수들
-	mMaxSizeX = TileCountX;
-	mMaxSizeY = TileCountY;
 	mInputX = to_string(TileCountX);
 	mInputY = to_string(TileCountY);
 
@@ -148,6 +117,8 @@ void MapToolScene::Release(){
 }
 
 void MapToolScene::Update(){
+
+	//팔레트
 	int palleteStartX = WINSIZEX / 2+140;
 	int palleteStartY = 200;
 	for (int y = 0; y < 10; ++y) {
@@ -185,11 +156,11 @@ void MapToolScene::Update(){
 
 	// {{ 타일 그리기~
 	if (Input::GetInstance()->GetKey(VK_LBUTTON)){
-		int indexX = (_mousePosition.x-100) / TileSize;
-		int indexY = (_mousePosition.y-200) / TileSize;
+		int indexX = (_mousePosition.x-mMoveX) / TileSize + mMinIndexX;
+		int indexY = (_mousePosition.y-mMoveY) / TileSize + mMinIndexY;
 
-		if (indexX >= 0 && indexX < TileCountX &&
-			indexY >= 0 && indexY < TileCountY)
+		if (indexX >= mMinIndexX && indexX < TileCountX &&
+			indexY >= mMinIndexY && indexY < TileCountY)
 		{
 			if ((mGroundList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
 				mGroundList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
@@ -254,30 +225,21 @@ void MapToolScene::Render(HDC hdc){
 	DeleteObject(Brush);
 
 	//타일 출력
-	for (int y = 0; y < TileCountY; ++y) {
-		for (int x = 0; x < TileCountX; ++x) {
-			mGroundList[y][x]->Render(hdc);
+	for (int y = mMinIndexY; y < mMinIndexY + TileCountY; ++y) {
+		if (y >= mMaxSizeY)
+			break;
+		for (int x = mMinIndexX; x < mMinIndexX + TileCountX; ++x) {
+			if (x >= mMaxSizeX)
+				break;
+
+			mGroundList[y][x]->MoveRender(hdc,mMoveX,mMoveY);
+			mDecoList[y][x]->MoveRender(hdc, mMoveX, mMoveY);
+			mItemList[y][x]->MoveRender(hdc, mMoveX, mMoveY);
+			mObjectList[y][x]->MoveRender(hdc, mMoveX, mMoveY);
 		}
 	}
 
-	for (int y = 0; y < TileCountY; ++y) {
-		for (int x = 0; x < TileCountX; ++x) {
-			mDecoList[y][x]->Render(hdc);
-		}
-	}
-
-	for (int y = 0; y < TileCountY; ++y) {
-		for (int x = 0; x < TileCountX; ++x) {
-			mItemList[y][x]->Render(hdc);
-		}
-	}
-
-	for (int y = 0; y < TileCountY; ++y) {
-		for (int x = 0; x < TileCountX; ++x) {
-			mObjectList[y][x]->Render(hdc);
-		}
-	}
-
+	//팔레트
 	for (int y = 0; y < 10; ++y)	{
 		for (int x = 0; x < 5; ++x)	{
 			mPallete[y][x].Image->ScaleFrameRender
@@ -421,6 +383,7 @@ void MapToolScene::Save(){
 			}
 		}
 	}
+	saveStream.close();
 }
 
 void MapToolScene::Load(){
@@ -550,16 +513,18 @@ void MapToolScene::Load(){
 }
 
 void MapToolScene::Clear(){
-	for (int y = 0; y < TileCountY; ++y) {
-		for (int x = 0; x < TileCountX; ++x) {
+	for (int y = 0; y < mMaxSizeY; ++y) {
+		for (int x = 0; x < mMaxSizeX; ++x) {
 			mDecoList[y][x]->SetImage(nullptr);
 			mItemList[y][x]->SetImage(nullptr);
 			mObjectList[y][x]->SetImage(nullptr);
-
+/*
+			mGroundList[y][x]->SetImage(nullptr);
+*/
 			mGroundList[y][x] = new Tile(
 				ImageManager::GetInstance()->FindImage(L"0"),
-				100 + TileSize * x,
-				200 + TileSize * y,
+				TileSize * x,
+				TileSize * y,
 				TileSize,
 				TileSize,
 				2,
