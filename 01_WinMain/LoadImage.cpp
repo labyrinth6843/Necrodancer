@@ -75,6 +75,8 @@ void Image::LoadAllImage()//MainGame::Init에서 단 한번 실행 된다
 	ImageManager::GetInstance()->LoadFromFile(L"Skeleton1", Resources(L"Enemy/Skeleton1.bmp"), 208, 208, 8, 8, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Skeleton2", Resources(L"Enemy/Skeleton2.bmp"), 234, 208, 9, 8, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Skeleton3", Resources(L"Enemy/Skeleton3.bmp"), 234, 208, 9, 8, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Nightmare1", Resources(L"Enemy/Nightmare1.bmp"), 285, 84, 5, 2, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Nightmare2", Resources(L"Enemy/Nightmare2.bmp"), 285, 84, 5, 2, true);
 	//}}
 
 	//{{ NPC 관련 이미지
