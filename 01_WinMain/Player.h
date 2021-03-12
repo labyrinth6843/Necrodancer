@@ -1,38 +1,16 @@
 #pragma once
 #include "Image.h"
-#include "Animation.h"
 #include "GameObject.h"
-enum class PlayerState {
-	Idle,
-	Walk,
-	Death,
-	Attack,
-	Use,
-	Scroll,
-	Fly,
-	End
-};
 
 class Player:public GameObject{
-	Image* mImage;
+	Image* mHeadImage;
+	Image* mBodyImage;
 
-	Animation* mIdleAnimation;
-	Animation* mWalkAnimation;
-	Animation* mDeathAnimation;
-	Animation* mAttackAnimation;
-	Animation* mUseAnimation;
-	Animation* mScrollAnimation;
-	Animation* mFlyAnimation;
-	
-	PlayerState mPlayerState;
-
-	Animation* mCurrentAnimation;
-
+	int mHp;
 	int indexX;
 	int indexY;
 	float destX;
 	float destY;
-	float mAngle;
 	bool mIsMove;
 
 	int mSpeed;

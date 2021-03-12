@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Image.h"
 
 #pragma comment(lib, "msimg32.lib")
@@ -33,7 +33,7 @@ void Image::ReleaseBuffer()
 
 bool Image::CreateEmpty(int width, int height)
 {
-	//ÀÌ¹Ì ÀÌ¹ÌÁö ¹öÆÛ°¡ ÀÖ´Ù¸é »èÁ¦
+	//ì´ë¯¸ ì´ë¯¸ì§€ ë²„í¼ê°€ ìžˆë‹¤ë©´ ì‚­ì œ
 	if (mImageBuffer != nullptr)
 	{
 		ReleaseBuffer();
@@ -44,9 +44,9 @@ bool Image::CreateEmpty(int width, int height)
 	mImageBuffer = new ImageBuffer();
 	mImageBuffer->loadType = LoadType::Empty;
 	mImageBuffer->registerID = 0;
-	mImageBuffer->hdc = CreateCompatibleDC(hdc);	//ºó HDC»ý¼º
-	mImageBuffer->bitmap = (HBITMAP)CreateCompatibleBitmap(hdc, width, height); //ºó ºñÆ®¸Ê »ý¼º
-	mImageBuffer->oldBitmap = (HBITMAP)SelectObject(mImageBuffer->hdc, mImageBuffer->bitmap);	//ÀÌÀü ºñÆ®¸Ê ÀúÀå
+	mImageBuffer->hdc = CreateCompatibleDC(hdc);	//ë¹ˆ HDCìƒì„±
+	mImageBuffer->bitmap = (HBITMAP)CreateCompatibleBitmap(hdc, width, height); //ë¹ˆ ë¹„íŠ¸ë§µ ìƒì„±
+	mImageBuffer->oldBitmap = (HBITMAP)SelectObject(mImageBuffer->hdc, mImageBuffer->bitmap);	//ì´ì „ ë¹„íŠ¸ë§µ ì €ìž¥
 	mImageBuffer->width = width;
 	mImageBuffer->height = height;
 
@@ -193,44 +193,44 @@ bool Image::LoadFromFile(wstring keyName, wstring fileName, int width, int heigh
 
 /*
 ## Render ##
-hdc : ±×¸± HDC
-x : ±×¸± ÁÂÇ¥X
-y : ±×¸± ÁÂÇ¥Y
+hdc : ê·¸ë¦´ HDC
+x : ê·¸ë¦´ ì¢Œí‘œX
+y : ê·¸ë¦´ ì¢Œí‘œY
 */
 void Image::Render(HDC hdc, int x, int y)
 {
 	if (mIsTrans)
 	{
 		GdiTransparentBlt(
-			hdc,					//±×¸± ¹öÆÛ(HDC)
-			x,						//±×¸± ÁÂÇ¥X
-			y,						//±×¸± ÁÂÇ¥Y
-			mImageBuffer->width,	//±×¸± °¡·Î±æÀÌ
-			mImageBuffer->height,	//±×¸± ¼¼·Î±æÀÌ
-			mImageBuffer->hdc,		//±×¸± HDC
-			0,						//º¹»çÇØ¿Ã ¹öÆÛ ½ÃÀÛÁÂÇ¥X
-			0,						//º¹»çÇØ¿Ã ¹öÆÛ ½ÃÀÛÁÂÇ¥Y
-			mImageBuffer->width,	//º¹»çÇØ¿Ã ¹öÆÛ °¡·Î±æÀÌ
-			mImageBuffer->height,	//º¹»çÇØ¿Ã ¹öÆÛ ¼¼·Î±æÀÌ
-			mTransColor				//TransÃ³¸®ÇÒ »ö»ó
+			hdc,					//ê·¸ë¦´ ë²„í¼(HDC)
+			x,						//ê·¸ë¦´ ì¢Œí‘œX
+			y,						//ê·¸ë¦´ ì¢Œí‘œY
+			mImageBuffer->width,	//ê·¸ë¦´ ê°€ë¡œê¸¸ì´
+			mImageBuffer->height,	//ê·¸ë¦´ ì„¸ë¡œê¸¸ì´
+			mImageBuffer->hdc,		//ê·¸ë¦´ HDC
+			0,						//ë³µì‚¬í•´ì˜¬ ë²„í¼ ì‹œìž‘ì¢Œí‘œX
+			0,						//ë³µì‚¬í•´ì˜¬ ë²„í¼ ì‹œìž‘ì¢Œí‘œY
+			mImageBuffer->width,	//ë³µì‚¬í•´ì˜¬ ë²„í¼ ê°€ë¡œê¸¸ì´
+			mImageBuffer->height,	//ë³µì‚¬í•´ì˜¬ ë²„í¼ ì„¸ë¡œê¸¸ì´
+			mTransColor				//Transì²˜ë¦¬í•  ìƒ‰ìƒ
 		);
 	}
 	else
 	{
-		//HDCÀÇ ¹öÆÛ¸¦ ´Ù¸¥ HDC¹öÆÛ¿¡ °í¼Ó º¹»çÇØÁÖ´Â ÇÔ¼ö
+		//HDCì˜ ë²„í¼ë¥¼ ë‹¤ë¥¸ HDCë²„í¼ì— ê³ ì† ë³µì‚¬í•´ì£¼ëŠ” í•¨ìˆ˜
 		BitBlt(hdc, x, y, mImageBuffer->width, mImageBuffer->height, mImageBuffer->hdc, 0, 0, SRCCOPY);
 	}
 }
 
 /*
 ## Render ##
-hdc : ±×¸± HDC
-x : ±×¸± ÁÂÇ¥
-y : ±×¸± ÁÂÇ¥
-tempX : ¹öÆÛ(ÅØ½ºÃÄ)·ÎºÎÅÍ ±×¸± ½ÃÀÛÇÈ¼¿
-tempY : ¹öÆÛ(ÅØ½ºÃÄ)·ÎºÎÅÍ ±×¸± ½ÃÀÛÇÈ¼¿
-tempWidth : ¹öÆÛÀÇ tempX·ÎºÎÅÍ ±×¸± ³Êºñ
-tempHeight : ¹öÆÛÀÇ tempY·ÎºÎÅÍ ±×¸± ³ôÀÌ
+hdc : ê·¸ë¦´ HDC
+x : ê·¸ë¦´ ì¢Œí‘œ
+y : ê·¸ë¦´ ì¢Œí‘œ
+tempX : ë²„í¼(í…ìŠ¤ì³)ë¡œë¶€í„° ê·¸ë¦´ ì‹œìž‘í”½ì…€
+tempY : ë²„í¼(í…ìŠ¤ì³)ë¡œë¶€í„° ê·¸ë¦´ ì‹œìž‘í”½ì…€
+tempWidth : ë²„í¼ì˜ tempXë¡œë¶€í„° ê·¸ë¦´ ë„ˆë¹„
+tempHeight : ë²„í¼ì˜ tempYë¡œë¶€í„° ê·¸ë¦´ ë†’ì´
 */
 
 void Image::Render(HDC hdc, int x, int y, 
@@ -270,10 +270,10 @@ void Image::Render(HDC hdc, int x, int y,
 
 /*
 ## FrameRender ##
-x : ±×¸± ÁÂÇ¥
-y : ±×¸± ÁÂÇ¥
-frameX : Ãâ·ÂÇÒ °¡·Î ÇÁ·¹ÀÓ ÀÎµ¦½º
-frameY : Ãâ·ÂÇÒ ¼¼·Î ÇÁ·¹ÀÓ ÀÎµ¦½º 
+x : ê·¸ë¦´ ì¢Œí‘œ
+y : ê·¸ë¦´ ì¢Œí‘œ
+frameX : ì¶œë ¥í•  ê°€ë¡œ í”„ë ˆìž„ ì¸ë±ìŠ¤
+frameY : ì¶œë ¥í•  ì„¸ë¡œ í”„ë ˆìž„ ì¸ë±ìŠ¤ 
 */
 void Image::FrameRender(HDC hdc, int x, int y, int frameX, int frameY)
 {
@@ -454,6 +454,93 @@ void Image::AlphaScaleFrameRender(HDC hdc, int x, int y, int frameX, int frameY,
 			mImageBuffer->frameWidth, mImageBuffer->frameHeight,
 			*mBlendFunc
 		);
+	}
+}
+
+void Image::TileRender(HDC hdc, int x, int y){
+	if (mIsTrans)
+	{
+		GdiTransparentBlt(
+			hdc,					//ê·¸ë¦´ ë²„í¼(HDC)
+			x*TileSize - mImageBuffer->width / 2 + TileSize / 2,			//ê·¸ë¦´ ì¢Œí‘œX
+			y*TileSize - mImageBuffer->height /2 + TileSize / 2,						//ê·¸ë¦´ ì¢Œí‘œY
+			mImageBuffer->width,	//ê·¸ë¦´ ê°€ë¡œê¸¸ì´
+			mImageBuffer->height,	//ê·¸ë¦´ ì„¸ë¡œê¸¸ì´
+			mImageBuffer->hdc,		//ê·¸ë¦´ HDC
+			0,						//ë³µì‚¬í•´ì˜¬ ë²„í¼ ì‹œìž‘ì¢Œí‘œX
+			0,						//ë³µì‚¬í•´ì˜¬ ë²„í¼ ì‹œìž‘ì¢Œí‘œY
+			mImageBuffer->width,	//ë³µì‚¬í•´ì˜¬ ë²„í¼ ê°€ë¡œê¸¸ì´
+			mImageBuffer->height,	//ë³µì‚¬í•´ì˜¬ ë²„í¼ ì„¸ë¡œê¸¸ì´
+			mTransColor				//Transì²˜ë¦¬í•  ìƒ‰ìƒ
+		);
+	}
+	else
+	{
+		//HDCì˜ ë²„í¼ë¥¼ ë‹¤ë¥¸ HDCë²„í¼ì— ê³ ì† ë³µì‚¬í•´ì£¼ëŠ” í•¨ìˆ˜
+		BitBlt(hdc, x * TileSize - mImageBuffer->width / 2 + TileSize / 2, y * TileSize - mImageBuffer->height / 2 + TileSize / 2, mImageBuffer->width, mImageBuffer->height, mImageBuffer->hdc, 0, 0, SRCCOPY);
+	}
+}
+
+void Image::TileFrameRender(HDC hdc, int x, int y, int frameX, int frameY){
+	if (mIsTrans)
+	{
+		GdiTransparentBlt
+		(
+			hdc,
+			x * TileSize - mImageBuffer->frameWidth / 2 + TileSize / 2,
+			y * TileSize - mImageBuffer->frameHeight / 2 + TileSize / 2,
+			mImageBuffer->frameWidth,
+			mImageBuffer->frameHeight,
+			mImageBuffer->hdc,
+			mImageBuffer->frameWidth * frameX,
+			mImageBuffer->frameHeight * frameY,
+			mImageBuffer->frameWidth,
+			mImageBuffer->frameHeight,
+			mTransColor
+		);
+	}
+	else
+	{
+		BitBlt
+		(
+			hdc,
+			x * TileSize - mImageBuffer->frameWidth / 2 + TileSize / 2,
+			y * TileSize - mImageBuffer->frameHeight / 2 + TileSize / 2,
+			mImageBuffer->frameWidth,
+			mImageBuffer->frameHeight,
+			mImageBuffer->hdc,
+			mImageBuffer->frameWidth * frameX,
+			mImageBuffer->frameHeight * frameY,
+			SRCCOPY
+		);
+	}
+}
+
+void Image::TileScaleRender(HDC hdc, int x, int y, int width, int height){
+	if (mIsTrans)
+	{
+		GdiTransparentBlt(hdc, x * TileSize - mImageBuffer->width / 2 + TileSize / 2, y * TileSize - mImageBuffer->frameHeight / 2 + TileSize / 2, width, height,
+			mImageBuffer->hdc, 0, 0, mImageBuffer->width, mImageBuffer->height,
+			mTransColor);
+	}
+	else
+	{
+		StretchBlt(hdc, x * TileSize - mImageBuffer->width / 2 + TileSize / 2, y * TileSize - mImageBuffer->frameHeight / 2 + TileSize / 2, width, height, mImageBuffer->hdc, 0, 0, mImageBuffer->width, mImageBuffer->height,
+			SRCCOPY);
+	}
+}
+
+void Image::TileScaleFrameRender(HDC hdc, int x, int y, int frameX, int frameY, int width, int height){
+	if (mIsTrans)
+	{
+		GdiTransparentBlt(hdc, x * TileSize - mImageBuffer->width / 2 + TileSize / 2, y * TileSize - mImageBuffer->frameHeight / 2 + TileSize / 2, width, height,
+			mImageBuffer->hdc, mImageBuffer->frameWidth * frameX, mImageBuffer->frameHeight * frameY,
+			mImageBuffer->frameWidth, mImageBuffer->frameHeight, mTransColor);
+	}
+	else
+	{
+		BitBlt(hdc, x * TileSize - mImageBuffer->width / 2 + TileSize / 2, y * TileSize - mImageBuffer->frameHeight / 2 + TileSize / 2, width, height, mImageBuffer->hdc, mImageBuffer->frameWidth * frameX,
+			mImageBuffer->frameHeight * frameY, SRCCOPY);
 	}
 }
 
