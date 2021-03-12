@@ -161,5 +161,5 @@ private:
 	void NextPallete();
 
 	void CanvasMove();
-	void CanvasMove(float key);
+	void ButtonMove(int key, int move);
 };

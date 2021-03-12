@@ -131,10 +131,15 @@ void MapToolScene::Init()
 	mInputX = to_string(TileCountX);
 	mInputY = to_string(TileCountY);
 
-	mButtonList.insert(make_pair(L"Set", new Button(L"",L"Set", 475, WINSIZEY - 175, 50, 25, bind(&MapToolScene::SetSize, this))));
-	mButtonList.insert(make_pair(L"SizeX", new Button(L"", L"", 300, WINSIZEY - 175, 50, 25, [this]() { mIsInput = 1; })));
-	mButtonList.insert(make_pair(L"SizeY", new Button(L"", L"", 370, WINSIZEY - 175, 50, 25, [this]() { mIsInput = 2; })));
+	mButtonList.insert(make_pair(L"Set", new Button(L"",L"Set", 475, 100, 50, 25, bind(&MapToolScene::SetSize, this))));
+	mButtonList.insert(make_pair(L"SizeX", new Button(L"", L"", 300, 100, 50, 25, [this]() { mIsInput = 1; })));
+	mButtonList.insert(make_pair(L"SizeY", new Button(L"", L"", 370, 100, 50, 25, [this]() { mIsInput = 2; })));
 	mIsInput = 0;
+
+	mButtonList.insert(make_pair(L"LeftMove", new Button(L"",L"",50, 200 + TileSize*5, 25, 50, bind(&MapToolScene::ButtonMove,this,VK_LEFT,5))));
+	mButtonList.insert(make_pair(L"RightMove", new Button(L"", L"", 150 + TileSize*10 , 200 + TileSize * 5, 25, 50, bind(&MapToolScene::ButtonMove, this, VK_RIGHT, 5))));
+	mButtonList.insert(make_pair(L"UpMove", new Button(L"", L"", 100 + TileSize * 5, 175, 50, 25, bind(&MapToolScene::ButtonMove, this, VK_UP, 5))));
+	mButtonList.insert(make_pair(L"DownMove", new Button(L"", L"", 100 + TileSize * 5, 225 + TileSize * 10, 50, 25, bind(&MapToolScene::ButtonMove, this, VK_DOWN, 5))));
 
 	mCurrentPallete = mPallete[0][0];
 }
@@ -205,66 +210,70 @@ void MapToolScene::Update(){
 
 	// {{ 타일 그리기~
 	if (Input::GetInstance()->GetKey(VK_LBUTTON)){
-		int indexX = (_mousePosition.x - mMoveX) / TileSize + mMinIndexX;
-		int indexY = (_mousePosition.y - mMoveY) / TileSize + mMinIndexY;
-
-		if (indexX >= mMinIndexX && indexX < mMaxSizeX &&
-			indexY >= mMinIndexY && indexY < mMaxSizeY)
+		if (_mousePosition.x > mMoveX && _mousePosition.y > mMoveY)
 		{
 
-			if (mSelectMod)
+			int indexX = (_mousePosition.x - mMoveX) / TileSize + mMinIndexX;
+			int indexY = (_mousePosition.y - mMoveY) / TileSize + mMinIndexY;
+
+			if (indexX >= mMinIndexX && indexX < mMaxSizeX &&
+				indexY >= mMinIndexY && indexY < mMaxSizeY)
 			{
-				bool check = true;
-				POINT temp = { indexX, indexY };
-				for (int i = 0; i < mSelectIndex.size(); ++i)
+
+				if (mSelectMod)
 				{
-					if (mSelectIndex[i].x == temp.x && mSelectIndex[i].y == temp.y)
+					bool check = true;
+					POINT temp = { indexX, indexY };
+					for (int i = 0; i < mSelectIndex.size(); ++i)
 					{
-						check = false;
-						break;
+						if (mSelectIndex[i].x == temp.x && mSelectIndex[i].y == temp.y)
+						{
+							check = false;
+							break;
+						}
 					}
+					if(check)
+						mSelectIndex.push_back(temp);
 				}
-				if(check)
-					mSelectIndex.push_back(temp);
-			}
-			else if (mDragMod)
-			{
-				mSelectRect.right = _mousePosition.x;
-				mSelectRect.bottom = _mousePosition.y;
-			}
-			else
-			{
-				if ((mGroundList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
-					mGroundList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
-					mGroundList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
-					(mCurrentPallete.Layer == TileLayer::Ground))
+				else if (mDragMod)
 				{
-					IBrushTile* command = new IBrushTile(mGroundList[indexY][indexX], mCurrentPallete);
-					PushCommand(command);
+					mSelectRect.right = _mousePosition.x;
+					mSelectRect.bottom = _mousePosition.y;
 				}
-				else if ((mDecoList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
-					mDecoList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
-					mDecoList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) && 
-					(mCurrentPallete.Layer == TileLayer::Deco))
+				else
 				{
-					IBrushTile* command = new IBrushTile(mDecoList[indexY][indexX], mCurrentPallete);
-					PushCommand(command);
-				}
-				if ((mItemList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
-					mItemList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
-					mItemList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
-					(mCurrentPallete.Layer == TileLayer::Item))
-				{
-					IBrushTile* command = new IBrushTile(mItemList[indexY][indexX], mCurrentPallete);
-					PushCommand(command);
-				}
-				if ((mObjectList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
-					mObjectList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
-					mObjectList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
-					(mCurrentPallete.Layer == TileLayer::GameObject))
-				{
-					IBrushTile* command = new IBrushTile(mObjectList[indexY][indexX], mCurrentPallete);
-					PushCommand(command);
+					if ((mGroundList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+						mGroundList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
+						mGroundList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
+						(mCurrentPallete.Layer == TileLayer::Ground))
+					{
+						IBrushTile* command = new IBrushTile(mGroundList[indexY][indexX], mCurrentPallete);
+						PushCommand(command);
+					}
+					else if ((mDecoList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+						mDecoList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
+						mDecoList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) && 
+						(mCurrentPallete.Layer == TileLayer::Deco))
+					{
+						IBrushTile* command = new IBrushTile(mDecoList[indexY][indexX], mCurrentPallete);
+						PushCommand(command);
+					}
+					if ((mItemList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+						mItemList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
+						mItemList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
+						(mCurrentPallete.Layer == TileLayer::Item))
+					{
+						IBrushTile* command = new IBrushTile(mItemList[indexY][indexX], mCurrentPallete);
+						PushCommand(command);
+					}
+					if ((mObjectList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+						mObjectList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
+						mObjectList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
+						(mCurrentPallete.Layer == TileLayer::GameObject))
+					{
+						IBrushTile* command = new IBrushTile(mObjectList[indexY][indexX], mCurrentPallete);
+						PushCommand(command);
+					}
 				}
 			}
 		}

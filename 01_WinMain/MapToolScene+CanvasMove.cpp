@@ -29,29 +29,29 @@ void MapToolScene::CanvasMove()
 	}
 }
 
-void MapToolScene::CanvasMove(float key)//버튼용
+void MapToolScene::ButtonMove(int key, int move)//버튼용
 {
 	if (key == VK_UP)
 	{
-		mMinIndexY--;
+		mMinIndexY = mMinIndexY - move;
 		if (mMinIndexY < 0)
 			mMinIndexY = 0;
 	}
 	if (key == VK_DOWN )
 	{
-		mMinIndexY++;
+		mMinIndexY = mMinIndexY + move;
 		if (mMinIndexY >= mMaxSizeY)
 			mMinIndexY = mMaxSizeY;
 	}
 	if (key == VK_LEFT )
 	{
-		mMinIndexX--;
+		mMinIndexX = mMinIndexX - move;
 		if (mMinIndexX < 0)
 			mMinIndexX = 0;
 	}
 	if (key == VK_RIGHT)
 	{
-		mMinIndexX++;
+		mMinIndexX = mMinIndexX + move;
 		if (mMinIndexX >= mMaxSizeX)
 			mMinIndexX = mMaxSizeX;
 	}
