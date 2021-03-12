@@ -22,12 +22,14 @@ void Image::LoadAllImage()//MainGame::Init에서 단 한번 실행 된다
 
 	ImageManager::GetInstance()->LoadFromFile(L"Prev", Resources(L"Prev.bmp"), 72, 48, 1, 2, false);
 	ImageManager::GetInstance()->LoadFromFile(L"Next", Resources(L"Next.bmp"), 72, 48, 1, 2, false);
+
+	ImageManager::GetInstance()->LoadFromFile(L"Paint", Resources(L"Paint.bmp"), 88, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Pencil", Resources(L"Pencil.bmp"), 104, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Select", Resources(L"Select.bmp"), 104, 48, 1, 2, false);
 	//}}
 
 
-	//{{ 맵 + 오브젝트 관련 이미지 ~
-	//선택 표시
-	ImageManager::GetInstance()->LoadFromFile(L"SelectTile", Resources(L"SelectTile.bmp"), 32, 32, true);
+	//{{ 맵 + 오브젝트 관련 이미지
 	//바닥
 	ImageManager::GetInstance()->LoadFromFile(L"0", Resources(L"Stage1Ground.bmp"), 80, 96, 5, 6, true);
 	ImageManager::GetInstance()->LoadFromFile(L"1", Resources(L"Stage2Ground.bmp"), 80, 96, 5, 6, true);
@@ -51,6 +53,35 @@ void Image::LoadAllImage()//MainGame::Init에서 단 한번 실행 된다
 	ImageManager::GetInstance()->LoadFromFile(L"16", Resources(L"ItemList2.bmp"), 80, 144, 5, 9, true);
 	//적
 	ImageManager::GetInstance()->LoadFromFile(L"17", Resources(L"Enemy.bmp"), 80, 80, 5, 5, true);
+	//}}
 
+	//{{ 아이템 관련 이미지
+	ImageManager::GetInstance()->LoadFromFile(L"Weapon", Resources(L"Item/Weapon.bmp"), 243, 324, 9, 12, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Armor", Resources(L"Item/Armor.bmp"), 260, 52, 10, 2, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Torch", Resources(L"Item/Torch.bmp"), 189, 54, 7, 2, true);
+	//}}
+
+	//{{ 캐릭터 관련 이미지
+	ImageManager::GetInstance()->LoadFromFile(L"Head", Resources(L"Character/Head.bmp"), 112, 22, 8, 2, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Body", Resources(L"CharacterBody.bmp"), 136, 150, 8, 10, true);
+	//}}
+
+	//{{ 적 관련 이미지
+	ImageManager::GetInstance()->LoadFromFile(L"Zombie", Resources(L"Enemy/Zombie.bmp"), 320, 150, 16, 6, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Slime1", Resources(L"Enemy/Slime1.bmp"), 104, 104, 4, 4, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Slime2", Resources(L"Enemy/Slime2.bmp"), 104, 104, 4, 4, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Slime3", Resources(L"Enemy/Slime3.bmp"), 208, 104, 8, 5, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Skeleton1", Resources(L"Enemy/Skeleton1.bmp"), 208, 208, 8, 8, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Skeleton2", Resources(L"Enemy/Skeleton2.bmp"), 234, 208, 9, 8, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Skeleton3", Resources(L"Enemy/Skeleton3.bmp"), 234, 208, 9, 8, true);
+	//}}
+
+	//{{ NPC 관련 이미지
+	ImageManager::GetInstance()->LoadFromFile(L"ShopKeeper", Resources(L"NPC/ShopKeeper.bmp"), 376, 76, 8, 2, true);
+	//}}
+
+	//{{ 맵 타일
+	ImageManager::GetInstance()->LoadFromFile(L"GroundTile", Resources(L"Tile/GroundTile.bmp"), 156, 52, 6, 2, true);
+	ImageManager::GetInstance()->LoadFromFile(L"WallTile", Resources(L"Tile/WallTile.bmp"), 550, 48, 22, 1, true);
 	//}}
 }
