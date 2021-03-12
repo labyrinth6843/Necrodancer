@@ -407,8 +407,21 @@ void MapToolScene::Render(HDC hdc){
 		
 		select->AlphaRender(hdc, posX, posY, 0.5f);
 	}
+	//드래그 범위 표시 Rect
 	if (mSelectRectShow)
+	{
+		HBRUSH nullbrush = (HBRUSH)GetStockObject(NULL_BRUSH);
+		HPEN redpen = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
+		HBRUSH prevbrush = (HBRUSH)SelectObject(hdc,nullbrush);
+		HPEN prevpen = (HPEN)SelectObject(hdc, redpen);
+
 		RenderRect(hdc, mSelectRect);
+
+		SelectObject(hdc,prevbrush);
+		SelectObject(hdc, prevbrush);
+		DeleteObject(nullbrush);
+		DeleteObject(redpen);
+	}
 
 	//팔레트
 	for (int y = 0; y < 10; ++y)	{

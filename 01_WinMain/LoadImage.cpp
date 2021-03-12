@@ -30,6 +30,7 @@ void Image::LoadAllImage()//MainGame::Init에서 단 한번 실행 된다
 
 
 	//{{ 맵 + 오브젝트 관련 이미지
+	ImageManager::GetInstance()->LoadFromFile(L"SelectTile", Resources(L"SelectTile.bmp"), 32, 32, true);
 	//바닥
 	ImageManager::GetInstance()->LoadFromFile(L"0", Resources(L"Stage1Ground.bmp"), 80, 96, 5, 6, true);
 	ImageManager::GetInstance()->LoadFromFile(L"1", Resources(L"Stage2Ground.bmp"), 80, 96, 5, 6, true);
