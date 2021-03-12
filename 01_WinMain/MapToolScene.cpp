@@ -216,8 +216,8 @@ void MapToolScene::Update(){
 			int indexX = (_mousePosition.x - mMoveX) / TileSize + mMinIndexX;
 			int indexY = (_mousePosition.y - mMoveY) / TileSize + mMinIndexY;
 
-			if (indexX >= mMinIndexX && indexX < mMaxSizeX &&
-				indexY >= mMinIndexY && indexY < mMaxSizeY)
+			if (indexX >= mMinIndexX && indexX < mMinIndexX + TileCountX &&
+				indexY >= mMinIndexY && indexY < mMinIndexY + TileCountY)
 			{
 
 				if (mSelectMod)
