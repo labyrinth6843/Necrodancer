@@ -19,6 +19,24 @@ struct TilePallete{
 	TileLayer Layer;
 };
 
+struct TileSave {
+	wstring SaveImageKey;
+	int SaveFrameX;
+	int SaveFrameY;
+
+	int IndexX;
+	int IndexY;
+
+	void Set(wstring imagekey, int frameX, int frameY, int indexX, int indexY)
+	{
+		SaveImageKey = imagekey;
+		SaveFrameX = frameX;
+		SaveFrameY = frameY;
+		IndexX = indexX;
+		IndexY = indexY;
+	}
+};
+
 class ICommand{
 public:
 	virtual void Execute() = 0;
@@ -26,42 +44,87 @@ public:
 	virtual void Redo() = 0;
 };
 
-class IBrushTile : public ICommand{
-	Tile* mTargetTile;
+//{{ 개조 테스트, 단일 Re/Undo 확인 완료 ~
+class IBrushTile : public ICommand {
+	vector<vector<Tile*>> mTileList;//원본 레이어
+	vector<TileSave> mTargetTile; //바꿀 타일들의 정보(ImageKey,FrameX,FrameY,IndexX,IndexY)
 
-	wstring mSaveImageKey;
-	int mSaveFrameX;
-	int mSaveFrameY;
-
-	TilePallete mExecutePalleteData;
+	TilePallete mExecutePalleteData;//바꿀 타일 정보
 public:
-	IBrushTile(Tile* tile ,TilePallete executeData)	{
-		mTargetTile = tile;
+	IBrushTile(vector<vector<Tile*>>& LayerList, TileSave &tilesave, TilePallete executeData) {
+		mTileList = LayerList;
+		mTargetTile.push_back(tilesave);
 		mExecutePalleteData = executeData;
 
-		if(tile->GetImage() != nullptr)
-			mSaveImageKey = tile->GetImage()->GetKeyName();
-		mSaveFrameX = tile->GetFrameIndexX();
-		mSaveFrameY = tile->GetFrameIndexY();
+		for (int i = 0; i < mTargetTile.size(); ++i)
+		{
+			//이미지 키 가져오기 : 타일 레이어를 알아내 indexX/Y에 해당하는 이미지를 가져옴 -> 레이어 구분은 mCurrentPallete.Layer == TileLayer::~~
+			//위의 과정을 하기 위해서는 해당 클래스가 원본 벡터를 알아야 한다 -> 생성할때 넣어버림
+			int indexX = mTargetTile[i].IndexX;
+			int indexY = mTargetTile[i].IndexY;
+
+			if (mTileList[indexY][indexX]->GetImage() != nullptr)
+				mTargetTile[i].SaveImageKey = mTileList[indexY][indexX]->GetImage()->GetKeyName();
+			mTargetTile[i].SaveFrameX = mTileList[indexY][indexX]->GetFrameIndexX();
+			mTargetTile[i].SaveFrameY = mTileList[indexY][indexX]->GetFrameIndexY();
+		}
+
+	}
+	IBrushTile(vector<vector<Tile*>> &LayerList,vector<TileSave> &tilesave, TilePallete executeData) {
+		mTileList = LayerList;
+		mTargetTile = tilesave;
+		mExecutePalleteData = executeData;
+
+		for (int i = 0; i < mTargetTile.size(); ++i)
+		{
+			//이미지 키 가져오기 : 타일 레이어를 알아내 indexX/Y에 해당하는 이미지를 가져옴 -> 레이어 구분은 mCurrentPallete.Layer == TileLayer::~~
+			//위의 과정을 하기 위해서는 해당 클래스가 원본 벡터를 알아야 한다 -> 생성할때 넣어버림
+			int indexX = mTargetTile[i].IndexX;
+			int indexY = mTargetTile[i].IndexY;
+
+			if (mTileList[indexY][indexX]->GetImage() != nullptr)
+				mTargetTile[i].SaveImageKey = mTileList[indexY][indexX]->GetImage()->GetKeyName();
+			mTargetTile[i].SaveFrameX = mTileList[indexY][indexX]->GetFrameIndexX();
+			mTargetTile[i].SaveFrameY = mTileList[indexY][indexX]->GetFrameIndexY();
+		}
+
 	}
 
-	void Execute(){
-		mTargetTile->SetImage(ImageManager::GetInstance()->FindImage(mExecutePalleteData.Image->GetKeyName()));
-		mTargetTile->SetFrameIndexX(mExecutePalleteData.FrameX);
-		mTargetTile->SetFrameIndexY(mExecutePalleteData.FrameY);
+	void Execute() {
+		for (int i = 0; i < mTargetTile.size(); ++i)
+		{
+			int indexX = mTargetTile[i].IndexX;
+			int indexY = mTargetTile[i].IndexY;
+
+			mTileList[indexY][indexX]->SetImage(ImageManager::GetInstance()->FindImage(mExecutePalleteData.Image->GetKeyName()));
+			mTileList[indexY][indexX]->SetFrameIndexX(mExecutePalleteData.FrameX);
+			mTileList[indexY][indexX]->SetFrameIndexY(mExecutePalleteData.FrameY);
+		}
 	}
-	void Undo()override	{
-		mTargetTile->SetImage(ImageManager::GetInstance()->FindImage(mSaveImageKey));
-		mTargetTile->SetFrameIndexX(mSaveFrameX);
-		mTargetTile->SetFrameIndexY(mSaveFrameY);
+	void Undo()override {
+		for (int i = 0; i < mTargetTile.size(); ++i)
+		{
+			int indexX = mTargetTile[i].IndexX;
+			int indexY = mTargetTile[i].IndexY;
+
+			mTileList[indexY][indexX]->SetImage(ImageManager::GetInstance()->FindImage(mTargetTile[i].SaveImageKey));
+			mTileList[indexY][indexX]->SetFrameIndexX(mTargetTile[i].SaveFrameX);
+			mTileList[indexY][indexX]->SetFrameIndexY(mTargetTile[i].SaveFrameY);
+		}
 	}
 	void Redo()override {
-		mTargetTile->SetImage(ImageManager::GetInstance()->FindImage(mSaveImageKey));
-		mTargetTile->SetFrameIndexX(mExecutePalleteData.FrameX);
-		mTargetTile->SetFrameIndexY(mExecutePalleteData.FrameY);
+		for (int i = 0; i < mTargetTile.size(); ++i)
+		{
+			int indexX = mTargetTile[i].IndexX;
+			int indexY = mTargetTile[i].IndexY;
+
+			mTileList[indexY][indexX]->SetImage(ImageManager::GetInstance()->FindImage(mExecutePalleteData.Image->GetKeyName()));
+			mTileList[indexY][indexX]->SetFrameIndexX(mExecutePalleteData.FrameX);
+			mTileList[indexY][indexX]->SetFrameIndexY(mExecutePalleteData.FrameY);
+		}
 	}
 };
-
+// ~}}
 class IRectTile :public ICommand {
 	void Execute(){}
 	void Undo()override {

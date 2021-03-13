@@ -55,7 +55,7 @@ void Player::Update() {
 }
 
 void Player::Render(HDC hdc) {
-	if()
+
 }
 
 void Player::Move(int x, int y) {

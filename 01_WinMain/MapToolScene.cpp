@@ -216,8 +216,8 @@ void MapToolScene::Update(){
 			int indexX = (_mousePosition.x - mMoveX) / TileSize + mMinIndexX;
 			int indexY = (_mousePosition.y - mMoveY) / TileSize + mMinIndexY;
 
-			if (indexX >= mMinIndexX && indexX < mMinIndexX + TileCountX &&
-				indexY >= mMinIndexY && indexY < mMinIndexY + TileCountY)
+			if (indexX >= mMinIndexX && indexX < mMinIndexX + TileCountX && indexX < mMaxSizeX &&
+				indexY >= mMinIndexY && indexY < mMinIndexY + TileCountY && indexY < mMaxSizeY)
 			{
 
 				if (mSelectMod)
@@ -247,7 +247,10 @@ void MapToolScene::Update(){
 						mGroundList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
 						(mCurrentPallete.Layer == TileLayer::Ground))
 					{
-						IBrushTile* command = new IBrushTile(mGroundList[indexY][indexX], mCurrentPallete);
+						TileSave com;
+						com.Set(mGroundList[indexY][indexX]->GetImage()->GetKeyName(),
+							mGroundList[indexY][indexX]->GetFrameIndexX(), mGroundList[indexY][indexX]->GetFrameIndexY(),indexX,indexY);
+						IBrushTile* command = new IBrushTile(mGroundList, com, mCurrentPallete);
 						PushCommand(command);
 					}
 					else if ((mDecoList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
@@ -255,7 +258,10 @@ void MapToolScene::Update(){
 						mDecoList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) && 
 						(mCurrentPallete.Layer == TileLayer::Deco))
 					{
-						IBrushTile* command = new IBrushTile(mDecoList[indexY][indexX], mCurrentPallete);
+						TileSave com;
+						com.Set(mDecoList[indexY][indexX]->GetImage()->GetKeyName(),
+							mDecoList[indexY][indexX]->GetFrameIndexX(), mDecoList[indexY][indexX]->GetFrameIndexY(), indexX, indexY);
+						IBrushTile* command = new IBrushTile(mDecoList, com, mCurrentPallete);
 						PushCommand(command);
 					}
 					if ((mItemList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
@@ -263,7 +269,10 @@ void MapToolScene::Update(){
 						mItemList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
 						(mCurrentPallete.Layer == TileLayer::Item))
 					{
-						IBrushTile* command = new IBrushTile(mItemList[indexY][indexX], mCurrentPallete);
+						TileSave com;
+						com.Set(mItemList[indexY][indexX]->GetImage()->GetKeyName(),
+							mItemList[indexY][indexX]->GetFrameIndexX(), mItemList[indexY][indexX]->GetFrameIndexY(), indexX, indexY);
+						IBrushTile* command = new IBrushTile(mItemList, com, mCurrentPallete);
 						PushCommand(command);
 					}
 					if ((mObjectList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
@@ -271,7 +280,10 @@ void MapToolScene::Update(){
 						mObjectList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
 						(mCurrentPallete.Layer == TileLayer::GameObject))
 					{
-						IBrushTile* command = new IBrushTile(mObjectList[indexY][indexX], mCurrentPallete);
+						TileSave com;
+						com.Set(mObjectList[indexY][indexX]->GetImage()->GetKeyName(),
+							mObjectList[indexY][indexX]->GetFrameIndexX(), mObjectList[indexY][indexX]->GetFrameIndexY(), indexX, indexY);
+						IBrushTile* command = new IBrushTile(mObjectList, com, mCurrentPallete);
 						PushCommand(command);
 					}
 				}
@@ -285,8 +297,8 @@ void MapToolScene::Update(){
 			int indexX = (_mousePosition.x - mMoveX) / TileSize + mMinIndexX;
 			int indexY = (_mousePosition.y - mMoveY) / TileSize + mMinIndexY;
 
-			if (indexX >= mMinIndexX && indexX < mMinIndexX + TileCountX &&
-				indexY >= mMinIndexY && indexY < mMinIndexY + TileCountY)
+			if (indexX >= mMinIndexX && indexX < mMinIndexX + TileCountX && indexX < mMaxSizeX &&
+				indexY >= mMinIndexY && indexY < mMinIndexY + TileCountY && indexY < mMaxSizeY)
 			{
 				//mSelectRect의 left,top을 설정
 				mSelectRect.left = _mousePosition.x-1;
@@ -300,9 +312,11 @@ void MapToolScene::Update(){
 			int indexX = (_mousePosition.x - mMoveX) / TileSize + mMinIndexX;
 			int indexY = (_mousePosition.y - mMoveY) / TileSize + mMinIndexY;
 
-				mSelectRect.right = _mousePosition.x;
-				mSelectRect.bottom = _mousePosition.y;
-
+			mSelectRect.right = _mousePosition.x;
+			mSelectRect.bottom = _mousePosition.y;
+			if (indexX >= mMinIndexX && indexX < mMaxSizeX &&
+				indexY >= mMinIndexY && indexY < mMaxSizeY)
+			{
 				if (mSelectRect.bottom < mSelectRect.top)
 				{
 					LONG temp = mSelectRect.top;
@@ -329,9 +343,11 @@ void MapToolScene::Update(){
 						{
 							POINT index = { x + mMinIndexX, y + mMinIndexY};
 							bool check = true;
+							if(index.x >= mMaxSizeX || index.y >= mMaxSizeY)
+								bool check = false;
 							for (int i = 0; i < mSelectIndex.size(); ++i)
 							{
-								if (mSelectIndex[i].x == index.x && mSelectIndex[i].y == index.y)
+								if (check && mSelectIndex[i].x == index.x && mSelectIndex[i].y == index.y)
 								{
 									check = false;
 									break;
@@ -342,7 +358,7 @@ void MapToolScene::Update(){
 						}
 					}
 				}
-
+			}
 			mSelectRectShow = false;
 		}
 	}
@@ -393,6 +409,18 @@ void MapToolScene::Render(HDC hdc){
 		}
 		posY++;
 	}
+	//격자
+	for (int y = 0; y < 10; ++y)
+	{
+		for (int x = 0; x < 10; ++x)
+		{
+			if (mShowGrid)
+			{
+				RECT temp = RectMake(100 + TileSize * x, 200 + TileSize * y, TileSize, TileSize);
+				Gizmo::GetInstance()->DrawRect(hdc, temp, Gizmo::Color::Blue);
+			}
+		}
+	}
 	//선택표시
 	Image* select = IMAGEMANAGER->FindImage(L"SelectTile");
 	for (int i = 0; i < mSelectIndex.size(); ++i)
@@ -402,7 +430,7 @@ void MapToolScene::Render(HDC hdc){
 		
 		if (posX < mMoveX || posY < mMoveY)
 			continue;
-		if (posX > TileSize*TileCountX + mMoveX || posY > TileSize* TileCountY + mMoveY)
+		if (posX >= TileSize*TileCountX + mMoveX || posY >= TileSize* TileCountY + mMoveY)
 			continue;
 		
 		select->AlphaRender(hdc, posX, posY, 0.5f);
@@ -440,19 +468,6 @@ void MapToolScene::Render(HDC hdc){
 	//선택된 타일 미리보기
 	mCurrentPallete.Image->ScaleFrameRender(hdc, 600, 200, mCurrentPallete.FrameX, mCurrentPallete.FrameY, 50, 50);
 	Gizmo::GetInstance()->DrawRect(hdc, RectMake(600, 200, 50, 50), Gizmo::Color::Black);
-
-	//격자
-	for (int y = 0; y < 10; ++y)
-	{
-		for (int x = 0; x < 10; ++x)
-		{
-			if (mShowGrid)
-			{
-				RECT temp = RectMake(100 + TileSize * x, 200 + TileSize * y, TileSize, TileSize);
-				Gizmo::GetInstance()->DrawRect(hdc, temp, Gizmo::Color::Blue);
-			}
-		}
-	}
 
 	//버튼
 	ButtonIt iter = mButtonList.begin();
@@ -750,10 +765,6 @@ void MapToolScene::Clear(){
 	}
 }
 
-void MapToolScene::PushCommand(ICommand* command){
-	command->Execute();
-	mCommandList.emplace(command);
-}
 
 void MapToolScene::GroundPallete(){
 	mCurrentPage = 0;
@@ -787,23 +798,6 @@ void MapToolScene::NextPallete(){
 	else mCurrentPage++;
 }
 
-void MapToolScene::Undo(){
-	if (mCommandList.size() == 0)
-		return;
-
-	mReCommandList.emplace(mCommandList.top());
-	mCommandList.top()->Undo();
-	mCommandList.pop();
-}
-
-void MapToolScene::Redo() {
-	if (mReCommandList.size() == 0)
-		return;
-
-	mCommandList.emplace(mReCommandList.top());
-	mReCommandList.top()->Redo();
-	mReCommandList.pop();
-}
 
 void MapToolScene::Play() {
 	SceneManager::GetInstance()->LoadScene(L"GameScene");

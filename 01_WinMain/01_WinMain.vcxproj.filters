@@ -88,6 +88,9 @@
     <Filter Include="MainGame\Object\Ground">
       <UniqueIdentifier>{f49a7a75-3294-4a3c-98b7-0347e9c0832c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Scene\MapToolScene\MapToolFunc">
+      <UniqueIdentifier>{e425a033-c97b-4ceb-af95-0f604a99abca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -284,14 +287,17 @@
     <ClCompile Include="FileManager.cpp">
       <Filter>FrameWork\FileManager</Filter>
     </ClCompile>
-    <ClCompile Include="MapToolProc+SetSize.cpp">
-      <Filter>MainGame\Scene\MapToolScene</Filter>
-    </ClCompile>
     <ClCompile Include="LoadImage.cpp">
       <Filter>FrameWork\Image</Filter>
     </ClCompile>
+    <ClCompile Include="MapToolProc+SetSize.cpp">
+      <Filter>MainGame\Scene\MapToolScene\MapToolFunc</Filter>
+    </ClCompile>
     <ClCompile Include="MapToolScene+CanvasMove.cpp">
-      <Filter>MainGame\Scene\MapToolScene</Filter>
+      <Filter>MainGame\Scene\MapToolScene\MapToolFunc</Filter>
+    </ClCompile>
+    <ClCompile Include="MapToolCommend.cpp">
+      <Filter>MainGame\Scene\MapToolScene\MapToolFunc</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
