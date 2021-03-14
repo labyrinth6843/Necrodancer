@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "MapToolScene.h"
 
 #include "Tile.h"
@@ -28,7 +28,7 @@ void MapToolScene::Redo() {
 
 void MapToolScene::Fill()
 {
-	//Ã¤¿ï Å¸ÀÏÀ» ¼±ÅÃ ÇßÀ» °æ¿ì
+	//ì±„ìš¸ íƒ€ì¼ì„ ì„ íƒ í–ˆì„ ê²½ìš°
 	if (mSelectIndex.size() > 0)
 	{
 		vector<TileSave> save;
@@ -91,28 +91,28 @@ void MapToolScene::Fill()
 		}
 		mFillMod = false;
 	}
-	//Ã¤¿ï Å¸ÀÏ ¼±ÅÃÀ» ¾ÈÇßÀ» °æ¿ì
+	//ì±„ìš¸ íƒ€ì¼ ì„ íƒì„ ì•ˆí–ˆì„ ê²½ìš°
 	else
 	{
-		//¸ğµå¸¦ º¯È¯ ÇÑ ÈÄ, MapToolScene::Update¿¡¼­ mFillMod == trueÀÏ¶§ Paint()¸¦ È£ÃâÇÑ´Ù
+		//ëª¨ë“œë¥¼ ë³€í™˜ í•œ í›„, MapToolScene::Updateì—ì„œ mFillMod == trueì¼ë•Œ Paint()ë¥¼ í˜¸ì¶œí•œë‹¤
 		mFillMod = !mFillMod;
 	}
 }
 
 void MapToolScene::Paint()
 {
-	//Ã¤¿ì°í ½ÍÀº ½ÃÀÛÁ¡À» Å¬¸¯
+	//ì±„ìš°ê³  ì‹¶ì€ ì‹œì‘ì ì„ í´ë¦­
 	if (Input::GetInstance()->GetKeyDown(VK_LBUTTON)) {
 		int indexX = (_mousePosition.x - mMoveX) / TileSize + mMinIndexX;
 		int indexY = (_mousePosition.y - mMoveY) / TileSize + mMinIndexY;
 
-		//½ÃÀÛÁ¡ÀÌ ÂïÀ» ¼ö ÀÖ´Â ÀÎµ¦½ºÀÎÁö Ã¼Å©
+		//ì‹œì‘ì ì´ ì°ì„ ìˆ˜ ìˆëŠ” ì¸ë±ìŠ¤ì¸ì§€ ì²´í¬
 		if (indexX >= mMinIndexX && indexX < mMinIndexX + TileCountX && indexX < mMaxSizeX &&
 			indexY >= mMinIndexY && indexY < mMinIndexY + TileCountY && indexY < mMaxSizeY)
 		{
 
 
-			//½ÃÀÛÁ¡ÀÇ Á¤º¸°¡ ÇöÀç ¼±ÅÃÇÑ ÆÈ·¹Æ®¿Í ÇÏ³ª¶óµµ °°Áö ¾ÊÀ¸¸é
+			//ì‹œì‘ì ì˜ ì •ë³´ê°€ í˜„ì¬ ì„ íƒí•œ íŒ”ë ˆíŠ¸ì™€ í•˜ë‚˜ë¼ë„ ê°™ì§€ ì•Šìœ¼ë©´
 			if ((mGroundList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
 				mGroundList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
 				mGroundList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY)
@@ -133,33 +133,33 @@ void MapToolScene::Paint()
 
 void MapToolScene::FloodFill(vector<vector<Tile*>>& tileList, int indexX, int indexY)
 {
-	queue<Tile*> tempQueue;	//floodfill¿ë Å¥
-	vector<TileSave> saveVector;	//Å¸ÀÏ µ¥ÀÌÅÍ ÀúÀåº¤ÅÍ
+	queue<Tile*> tempQueue;	//floodfillìš© í
+	vector<TileSave> saveVector;	//íƒ€ì¼ ë°ì´í„° ì €ì¥ë²¡í„°
 
 	tempQueue.emplace(tileList[indexY][indexX]);
 	Tile init = *mGroundList[indexY][indexX];
 
-	//°Ë»ç°¡ Á¾·áµÉ¶§±îÁö
+	//ê²€ì‚¬ê°€ ì¢…ë£Œë ë•Œê¹Œì§€
 	while (tempQueue.empty() == false) {
 		Tile* check = tempQueue.front();
 		tempQueue.pop();
 
-		//checkÀÇ index
+		//checkì˜ index
 		int checkIndexX = check->GetX() / TileSize;
 		int checkIndexY = check->GetY() / TileSize;
 
-		//index È®ÀÎ
+		//index í™•ì¸
 		if (checkIndexX < mMinIndexX || checkIndexX >= mMaxSizeX)
 			continue;
 		if (checkIndexY < mMinIndexX || checkIndexY >= mMaxSizeY)
 			continue;
 
-		//È®ÀåÇÒ Á¶°Ç : ¸ğµç Á¤º¸°¡ ½ÃÀÛÁ¡°ú °°À¸¸é
+		//í™•ì¥í•  ì¡°ê±´ : ëª¨ë“  ì •ë³´ê°€ ì‹œì‘ì ê³¼ ê°™ìœ¼ë©´
 		if (check->GetImage() == init.GetImage() &&
 			check->GetFrameIndexX() == init.GetFrameIndexX() &&
 			check->GetFrameIndexY() == init.GetFrameIndexY()) {
 
-			//Å¸ÀÏ Á¤º¸ ÀúÀå
+			//íƒ€ì¼ ì •ë³´ ì €ì¥
 			TileSave save;
 			save.Set(tileList[checkIndexY][checkIndexX]->GetImage()->GetKeyName(),
 				tileList[checkIndexY][checkIndexX]->GetFrameIndexX(),
@@ -168,7 +168,7 @@ void MapToolScene::FloodFill(vector<vector<Tile*>>& tileList, int indexX, int in
 
 			saveVector.push_back(save);
 
-			//ÀúÀå Á¤º¸¸¦ ³Ñ°åÀ¸´Ï floodfillÀ» ÇÏ±âÀ§ÇØ ÀÌ¹ÌÁö¸¦ º¯°æÇÑ´Ù
+			//ì €ì¥ ì •ë³´ë¥¼ ë„˜ê²¼ìœ¼ë‹ˆ floodfillì„ í•˜ê¸°ìœ„í•´ ì´ë¯¸ì§€ë¥¼ ë³€ê²½í•œë‹¤
 			check->SetImage(mCurrentPallete.Image);
 			check->SetFrameIndexX(mCurrentPallete.FrameX);
 			check->SetFrameIndexY(mCurrentPallete.FrameY);
@@ -183,8 +183,8 @@ void MapToolScene::FloodFill(vector<vector<Tile*>>& tileList, int indexX, int in
 				tempQueue.emplace(tileList[checkIndexY - 1][checkIndexX]);
 		}
 	}
-	//°Ë»ç°¡ Á¾·áµÆÀ¸´Ï ÀúÀåÇÑ Á¤º¸¸¦ ³Ñ±ä´Ù
+	//ê²€ì‚¬ê°€ ì¢…ë£Œëìœ¼ë‹ˆ ì €ì¥í•œ ì •ë³´ë¥¼ ë„˜ê¸´ë‹¤
 	IBrushTile* command = new IBrushTile(tileList, saveVector, mCurrentPallete);
-	//À§ÀÇ °úÁ¤¿¡¼­ excute´Â »ç½Ç»ó ½ÇÇàµÆÀ¸´Ï mCommandList¿¡¸¸ Ãß°¡ÇØÁØ´Ù
+	//ìœ„ì˜ ê³¼ì •ì—ì„œ excuteëŠ” ì‚¬ì‹¤ìƒ ì‹¤í–‰ëìœ¼ë‹ˆ mCommandListì—ë§Œ ì¶”ê°€í•´ì¤€ë‹¤
 	mCommandList.emplace(command);
 }
