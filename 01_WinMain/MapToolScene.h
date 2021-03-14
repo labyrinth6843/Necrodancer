@@ -44,7 +44,7 @@ public:
 	virtual void Redo() = 0;
 };
 
-//{{ 개조 테스트, 단일 Re/Undo 확인 완료 ~
+//{{ ~
 class IBrushTile : public ICommand {
 	vector<vector<Tile*>> mTileList;//원본 레이어
 	vector<TileSave> mTargetTile; //바꿀 타일들의 정보(ImageKey,FrameX,FrameY,IndexX,IndexY)
