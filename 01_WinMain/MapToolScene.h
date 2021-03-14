@@ -99,35 +99,6 @@ public:
 	}
 };
 // ~}}
-class IRectTile :public ICommand {
-	void Execute(){}
-	void Undo()override {
-
-	}
-	void Redo()override {
-
-	}
-};
-
-class IPaintTile :public ICommand {
-	void Execute() {}
-	void Undo()override {
-
-	}
-	void Redo()override {
-
-	}
-};
-
-class ISelectTile :public ICommand {
-	void Execute() {}
-	void Undo()override {
-
-	}
-	void Redo()override {
-
-	}
-};
 
 class Button;
 class Tile;
