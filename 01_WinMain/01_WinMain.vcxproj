@@ -203,7 +203,7 @@
     <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="MainGame + MainProc.cpp" />
     <ClCompile Include="MainGame.cpp" />
-    <ClCompile Include="MapToolCommend.cpp" />
+    <ClCompile Include="MapToolCommand.cpp" />
     <ClCompile Include="MapToolProc+SetSize.cpp" />
     <ClCompile Include="MapToolScene+CanvasMove.cpp" />
     <ClCompile Include="MapToolScene.cpp" />

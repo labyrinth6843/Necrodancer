@@ -296,7 +296,7 @@
     <ClCompile Include="MapToolScene+CanvasMove.cpp">
       <Filter>MainGame\Scene\MapToolScene\MapToolFunc</Filter>
     </ClCompile>
-    <ClCompile Include="MapToolCommend.cpp">
+    <ClCompile Include="MapToolCommand.cpp">
       <Filter>MainGame\Scene\MapToolScene\MapToolFunc</Filter>
     </ClCompile>
   </ItemGroup>
