@@ -110,68 +110,81 @@ void MapToolScene::Paint()
 		if (indexX >= mMinIndexX && indexX < mMinIndexX + TileCountX && indexX < mMaxSizeX &&
 			indexY >= mMinIndexY && indexY < mMinIndexY + TileCountY && indexY < mMaxSizeY)
 		{
-			queue<Tile*> tempQueue;	//floodfill용 큐
-			vector<TileSave> saveVector;	//
+
 
 			//시작점의 정보가 현재 선택한 팔레트와 하나라도 같지 않으면
 			if ((mGroundList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
 				mGroundList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
-				mGroundList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
-				(mCurrentPallete.Layer == TileLayer::Ground))
+				mGroundList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY)
+				)
 			{
-				tempQueue.emplace(mGroundList[indexY][indexX]);
-				Tile init = *mGroundList[indexY][indexX];
-
-				//검사가 종료될때까지
-				while (tempQueue.empty() == false) {
-					Tile* check = tempQueue.front();
-					tempQueue.pop();
-
-					//check의 index
-					int checkIndexX = check->GetX() / TileSize;
-					int checkIndexY = check->GetY() / TileSize;
-
-					//index 확인
-					if (checkIndexX < mMinIndexX  || checkIndexX >= mMaxSizeX)
-						continue;
-					if (checkIndexY < mMinIndexX  || checkIndexY >= mMaxSizeY)
-						continue;
-
-					//확장할 조건 : 모든 정보가 시작점과 같으면
-					if (check->GetImage() == init.GetImage() &&
-						check->GetFrameIndexX() == init.GetFrameIndexX() &&
-						check->GetFrameIndexY() == init.GetFrameIndexY()) {
-
-						//타일 정보 저장
-						TileSave save;
-						save.Set(mGroundList[checkIndexY][checkIndexX]->GetImage()->GetKeyName(),
-							mGroundList[checkIndexY][checkIndexX]->GetFrameIndexX(),
-							mGroundList[checkIndexY][checkIndexX]->GetFrameIndexY(),
-							checkIndexX, checkIndexY);
-
-						saveVector.push_back(save);
-
-						//저장 정보를 넘겼으니 floodfill을 하기위해 이미지를 변경한다
-						check->SetImage(mCurrentPallete.Image);
-						check->SetFrameIndexX(mCurrentPallete.FrameX);
-						check->SetFrameIndexY(mCurrentPallete.FrameY);
-
-						if (checkIndexX + 1 < mMaxSizeX)
-							tempQueue.emplace(mGroundList[checkIndexY][checkIndexX + 1]);
-						if (checkIndexX - 1 >= 0)
-							tempQueue.emplace(mGroundList[checkIndexY][checkIndexX - 1]);
-						if (checkIndexY + 1 < mMaxSizeY)
-							tempQueue.emplace(mGroundList[checkIndexY + 1][checkIndexX]);
-						if (checkIndexY - 1 >= 0)
-							tempQueue.emplace(mGroundList[checkIndexY - 1][checkIndexX]);
-					}
-				}
-				//검사가 종료됐으니 저장한 정보를 넘긴다
-				IBrushTile* command = new IBrushTile(mGroundList, saveVector, mCurrentPallete);
-				//위의 과정에서 excute는 사실상 실행됐으니 mCommandList에만 추가해준다
-				//mCommandList.emplace(command);
-				PushCommand(command);
+				if (mCurrentPallete.Layer == TileLayer::Ground)
+					FloodFill(mGroundList,indexX,indexY);
+				else if (mCurrentPallete.Layer == TileLayer::Deco)
+					FloodFill(mDecoList, indexX, indexY);
+				else if (mCurrentPallete.Layer == TileLayer::Item)
+					FloodFill(mItemList, indexX, indexY);
+				else if (mCurrentPallete.Layer == TileLayer::GameObject)
+					FloodFill(mObjectList, indexX, indexY);
 			}
 		}
 	}
+}
+
+void MapToolScene::FloodFill(vector<vector<Tile*>>& tileList, int indexX, int indexY)
+{
+	queue<Tile*> tempQueue;	//floodfill용 큐
+	vector<TileSave> saveVector;	//타일 데이터 저장벡터
+
+	tempQueue.emplace(tileList[indexY][indexX]);
+	Tile init = *mGroundList[indexY][indexX];
+
+	//검사가 종료될때까지
+	while (tempQueue.empty() == false) {
+		Tile* check = tempQueue.front();
+		tempQueue.pop();
+
+		//check의 index
+		int checkIndexX = check->GetX() / TileSize;
+		int checkIndexY = check->GetY() / TileSize;
+
+		//index 확인
+		if (checkIndexX < mMinIndexX || checkIndexX >= mMaxSizeX)
+			continue;
+		if (checkIndexY < mMinIndexX || checkIndexY >= mMaxSizeY)
+			continue;
+
+		//확장할 조건 : 모든 정보가 시작점과 같으면
+		if (check->GetImage() == init.GetImage() &&
+			check->GetFrameIndexX() == init.GetFrameIndexX() &&
+			check->GetFrameIndexY() == init.GetFrameIndexY()) {
+
+			//타일 정보 저장
+			TileSave save;
+			save.Set(tileList[checkIndexY][checkIndexX]->GetImage()->GetKeyName(),
+				tileList[checkIndexY][checkIndexX]->GetFrameIndexX(),
+				tileList[checkIndexY][checkIndexX]->GetFrameIndexY(),
+				checkIndexX, checkIndexY);
+
+			saveVector.push_back(save);
+
+			//저장 정보를 넘겼으니 floodfill을 하기위해 이미지를 변경한다
+			check->SetImage(mCurrentPallete.Image);
+			check->SetFrameIndexX(mCurrentPallete.FrameX);
+			check->SetFrameIndexY(mCurrentPallete.FrameY);
+
+			if (checkIndexX + 1 < mMaxSizeX)
+				tempQueue.emplace(tileList[checkIndexY][checkIndexX + 1]);
+			if (checkIndexX - 1 >= 0)
+				tempQueue.emplace(tileList[checkIndexY][checkIndexX - 1]);
+			if (checkIndexY + 1 < mMaxSizeY)
+				tempQueue.emplace(tileList[checkIndexY + 1][checkIndexX]);
+			if (checkIndexY - 1 >= 0)
+				tempQueue.emplace(tileList[checkIndexY - 1][checkIndexX]);
+		}
+	}
+	//검사가 종료됐으니 저장한 정보를 넘긴다
+	IBrushTile* command = new IBrushTile(tileList, saveVector, mCurrentPallete);
+	//위의 과정에서 excute는 사실상 실행됐으니 mCommandList에만 추가해준다
+	mCommandList.emplace(command);
 }

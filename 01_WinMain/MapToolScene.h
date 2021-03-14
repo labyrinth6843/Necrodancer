@@ -189,6 +189,8 @@ private:
 	void Fill();
 	void Paint();
 
+	void FloodFill(vector<vector<Tile*>>& tileList, int indexX, int indexY);
+
 
 	void Play();
 	void PushCommand(ICommand* command);
