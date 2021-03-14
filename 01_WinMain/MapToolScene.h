@@ -51,46 +51,20 @@ class IBrushTile : public ICommand {
 
 	TilePallete mExecutePalleteData;//바꿀 타일 정보
 public:
+
+	//생성자를 호출하기 이전에 TileSave에 저장한 값을 넣어서 보내기때문에 따로 저장할 필요가 없다
 	IBrushTile(vector<vector<Tile*>>& LayerList, TileSave &tilesave, TilePallete executeData) {
 		mTileList = LayerList;
 		mTargetTile.push_back(tilesave);
 		mExecutePalleteData = executeData;
-
-		for (int i = 0; i < mTargetTile.size(); ++i)
-		{
-			//이미지 키 가져오기 : 타일 레이어를 알아내 indexX/Y에 해당하는 이미지를 가져옴 -> 레이어 구분은 mCurrentPallete.Layer == TileLayer::~~
-			//위의 과정을 하기 위해서는 해당 클래스가 원본 벡터를 알아야 한다 -> 생성할때 넣어버림
-			int indexX = mTargetTile[i].IndexX;
-			int indexY = mTargetTile[i].IndexY;
-
-			if (mTileList[indexY][indexX]->GetImage() != nullptr)
-				mTargetTile[i].SaveImageKey = mTileList[indexY][indexX]->GetImage()->GetKeyName();
-			mTargetTile[i].SaveFrameX = mTileList[indexY][indexX]->GetFrameIndexX();
-			mTargetTile[i].SaveFrameY = mTileList[indexY][indexX]->GetFrameIndexY();
-		}
-
 	}
 	IBrushTile(vector<vector<Tile*>> &LayerList,vector<TileSave> &tilesave, TilePallete executeData) {
 		mTileList = LayerList;
 		mTargetTile = tilesave;
 		mExecutePalleteData = executeData;
-
-		for (int i = 0; i < mTargetTile.size(); ++i)
-		{
-			//이미지 키 가져오기 : 타일 레이어를 알아내 indexX/Y에 해당하는 이미지를 가져옴 -> 레이어 구분은 mCurrentPallete.Layer == TileLayer::~~
-			//위의 과정을 하기 위해서는 해당 클래스가 원본 벡터를 알아야 한다 -> 생성할때 넣어버림
-			int indexX = mTargetTile[i].IndexX;
-			int indexY = mTargetTile[i].IndexY;
-
-			if (mTileList[indexY][indexX]->GetImage() != nullptr)
-				mTargetTile[i].SaveImageKey = mTileList[indexY][indexX]->GetImage()->GetKeyName();
-			mTargetTile[i].SaveFrameX = mTileList[indexY][indexX]->GetFrameIndexX();
-			mTargetTile[i].SaveFrameY = mTileList[indexY][indexX]->GetFrameIndexY();
-		}
-
 	}
 
-	void Execute() {
+	void Execute() {//실행
 		for (int i = 0; i < mTargetTile.size(); ++i)
 		{
 			int indexX = mTargetTile[i].IndexX;
@@ -101,7 +75,7 @@ public:
 			mTileList[indexY][indexX]->SetFrameIndexY(mExecutePalleteData.FrameY);
 		}
 	}
-	void Undo()override {
+	void Undo()override {//실행취소
 		for (int i = 0; i < mTargetTile.size(); ++i)
 		{
 			int indexX = mTargetTile[i].IndexX;
@@ -112,7 +86,7 @@ public:
 			mTileList[indexY][indexX]->SetFrameIndexY(mTargetTile[i].SaveFrameY);
 		}
 	}
-	void Redo()override {
+	void Redo()override {//실행취소 번복
 		for (int i = 0; i < mTargetTile.size(); ++i)
 		{
 			int indexX = mTargetTile[i].IndexX;
@@ -196,6 +170,7 @@ class MapToolScene : public Scene{
 	bool mSelectRectShow;
 	RECT mSelectRect;
 	vector<POINT> mSelectIndex;
+	bool mFillMod;
 public:
 	void Init()override;
 	void Release()override;
@@ -211,6 +186,10 @@ private:
 	void Clear();
 	void Undo();
 	void Redo();
+	void Fill();
+	void Paint();
+
+
 	void Play();
 	void PushCommand(ICommand* command);
 	

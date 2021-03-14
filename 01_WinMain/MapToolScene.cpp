@@ -108,6 +108,7 @@ void MapToolScene::Init()
 	//선택 툴
 	mButtonList.insert(make_pair(L"SelectMod", new Button(L"", L"Select", 80, 100, 60, 25, [this]()
 		{
+			mFillMod = false;
 			mDragMod = false;
 			mSelectMod = !mSelectMod;
 			mSelectIndex.clear();
@@ -115,25 +116,29 @@ void MapToolScene::Init()
 		})));
 	mButtonList.insert(make_pair(L"DragMod", new Button(L"", L"Drag", 160, 100, 60, 25, [this]()
 		{
+			mFillMod = false;
 			mSelectRectShow = false;
 			mSelectMod = false;
 			mDragMod = !mDragMod;
 			mSelectIndex.clear();
 			mSelectIndex.shrink_to_fit();
 		})));
+	//채우기
+	mButtonList.insert(make_pair(L"Fill", new Button(L"", L"Fill", 240, 100, 60, 25, bind(&MapToolScene::Fill,this))));
 
 	mSelectRectShow = false;
 	mSelectMod = false;
 	mDragMod = false;
 	mShowGrid = true;
+	mFillMod = false;
 
 	//SetSize 관련 변수들
 	mInputX = to_string(TileCountX);
 	mInputY = to_string(TileCountY);
 
-	mButtonList.insert(make_pair(L"Set", new Button(L"",L"Set", 475, 100, 50, 25, bind(&MapToolScene::SetSize, this))));
-	mButtonList.insert(make_pair(L"SizeX", new Button(L"", L"", 300, 100, 50, 25, [this]() { mIsInput = 1; })));
-	mButtonList.insert(make_pair(L"SizeY", new Button(L"", L"", 370, 100, 50, 25, [this]() { mIsInput = 2; })));
+	mButtonList.insert(make_pair(L"Set", new Button(L"",L"Set", 600, 100, 50, 25, bind(&MapToolScene::SetSize, this))));
+	mButtonList.insert(make_pair(L"SizeX", new Button(L"", L"", 420, 100, 50, 25, [this]() { mIsInput = 1; })));
+	mButtonList.insert(make_pair(L"SizeY", new Button(L"", L"", 490, 100, 50, 25, [this]() { mIsInput = 2; })));
 	mIsInput = 0;
 
 	mButtonList.insert(make_pair(L"LeftMove", new Button(L"",L"",50, 200 + TileSize*5, 25, 50, bind(&MapToolScene::ButtonMove,this,VK_LEFT,5))));
@@ -220,7 +225,11 @@ void MapToolScene::Update(){
 				indexY >= mMinIndexY && indexY < mMinIndexY + TileCountY && indexY < mMaxSizeY)
 			{
 
-				if (mSelectMod)
+				if (mFillMod)
+				{
+					Paint();
+				}
+				else if (mSelectMod)
 				{
 					bool check = true;
 					POINT temp = { indexX, indexY };
@@ -247,10 +256,10 @@ void MapToolScene::Update(){
 						mGroundList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
 						(mCurrentPallete.Layer == TileLayer::Ground))
 					{
-						TileSave com;
-						com.Set(mGroundList[indexY][indexX]->GetImage()->GetKeyName(),
+						TileSave temp;
+						temp.Set(mGroundList[indexY][indexX]->GetImage()->GetKeyName(),
 							mGroundList[indexY][indexX]->GetFrameIndexX(), mGroundList[indexY][indexX]->GetFrameIndexY(),indexX,indexY);
-						IBrushTile* command = new IBrushTile(mGroundList, com, mCurrentPallete);
+						IBrushTile* command = new IBrushTile(mGroundList, temp, mCurrentPallete);
 						PushCommand(command);
 					}
 					else if ((mDecoList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
@@ -258,10 +267,10 @@ void MapToolScene::Update(){
 						mDecoList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) && 
 						(mCurrentPallete.Layer == TileLayer::Deco))
 					{
-						TileSave com;
-						com.Set(mDecoList[indexY][indexX]->GetImage()->GetKeyName(),
+						TileSave temp;
+						temp.Set(mDecoList[indexY][indexX]->GetImage()->GetKeyName(),
 							mDecoList[indexY][indexX]->GetFrameIndexX(), mDecoList[indexY][indexX]->GetFrameIndexY(), indexX, indexY);
-						IBrushTile* command = new IBrushTile(mDecoList, com, mCurrentPallete);
+						IBrushTile* command = new IBrushTile(mDecoList, temp, mCurrentPallete);
 						PushCommand(command);
 					}
 					if ((mItemList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
@@ -269,10 +278,10 @@ void MapToolScene::Update(){
 						mItemList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
 						(mCurrentPallete.Layer == TileLayer::Item))
 					{
-						TileSave com;
-						com.Set(mItemList[indexY][indexX]->GetImage()->GetKeyName(),
+						TileSave temp;
+						temp.Set(mItemList[indexY][indexX]->GetImage()->GetKeyName(),
 							mItemList[indexY][indexX]->GetFrameIndexX(), mItemList[indexY][indexX]->GetFrameIndexY(), indexX, indexY);
-						IBrushTile* command = new IBrushTile(mItemList, com, mCurrentPallete);
+						IBrushTile* command = new IBrushTile(mItemList, temp, mCurrentPallete);
 						PushCommand(command);
 					}
 					if ((mObjectList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
@@ -280,10 +289,10 @@ void MapToolScene::Update(){
 						mObjectList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
 						(mCurrentPallete.Layer == TileLayer::GameObject))
 					{
-						TileSave com;
-						com.Set(mObjectList[indexY][indexX]->GetImage()->GetKeyName(),
+						TileSave temp;
+						temp.Set(mObjectList[indexY][indexX]->GetImage()->GetKeyName(),
 							mObjectList[indexY][indexX]->GetFrameIndexX(), mObjectList[indexY][indexX]->GetFrameIndexY(), indexX, indexY);
-						IBrushTile* command = new IBrushTile(mObjectList, com, mCurrentPallete);
+						IBrushTile* command = new IBrushTile(mObjectList, temp, mCurrentPallete);
 						PushCommand(command);
 					}
 				}
