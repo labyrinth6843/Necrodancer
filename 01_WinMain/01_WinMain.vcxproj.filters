@@ -195,6 +195,12 @@
     <ClInclude Include="FileManager.h">
       <Filter>FrameWork\FileManager</Filter>
     </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>MainGame\Object\Ground</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper.h">
+      <Filter>FrameWork\Helper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -298,6 +304,9 @@
     </ClCompile>
     <ClCompile Include="MapToolCommand.cpp">
       <Filter>MainGame\Scene\MapToolScene\MapToolFunc</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>MainGame\Object\Ground</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
