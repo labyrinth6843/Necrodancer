@@ -57,7 +57,8 @@ void Image::LoadAllImage()//MainGame::Init에서 단 한번 실행 된다
 	//}}
 
 	//{{ 팔레트 관련 이미지
-	ImageManager::GetInstance()->LoadFromFile(L"GroundPallet", Resources(L"GroundPallet.bmp"), 130, 156, 5, 6, false);
+	ImageManager::GetInstance()->LoadFromFile(L"GroundPallet", Resources(L"GroundPallet.bmp"), 130, 130, 5, 5, false);
+	ImageManager::GetInstance()->LoadFromFile(L"WallPallet", Resources(L"WallPallet.bmp"), 130, 26, 5, 1, false);
 	ImageManager::GetInstance()->LoadFromFile(L"ItemPallet", Resources(L"ItemPallet.bmp"), 130, 234, 5, 9, false);
 	ImageManager::GetInstance()->LoadFromFile(L"MonsterPallet", Resources(L"MonsterPallet.bmp"), 130, 52, 5, 2, false);
 	//}}
