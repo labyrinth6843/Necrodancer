@@ -51,16 +51,14 @@ void Ground::Render(HDC hdc)
 			int posy = y * TileSize;
 			if (CameraManager::GetInstance()->GetMainCamera()->IsInCameraArea(posx, posy, TileSize))
 			{
-				//if(mGroundList[y][x]->GetImage() != NULL)
+				if(mGroundList[y][x]->GetImage() != NULL)
 					CameraManager::GetInstance()->GetMainCamera()->AlphaScaleFrameRender(hdc, mGroundList[y][x]->GetImage(),
 					mGroundList[y][x]->GetX(), mGroundList[y][x]->GetY(), mGroundList[y][x]->GetFrameIndexX(), mGroundList[y][x]->GetFrameIndexY(),
-					mGroundList[y][x]->Getwidth(), mGroundList[y][x]->GetHeight(), 1.0f
-					);
+					mGroundList[y][x]->Getwidth(), mGroundList[y][x]->GetHeight(), 1.0f);
 				if (mDecoList[y][x]->GetImage() != NULL)
 					CameraManager::GetInstance()->GetMainCamera()->AlphaScaleFrameRender(hdc, mDecoList[y][x]->GetImage(),
 						mDecoList[y][x]->GetX(), mDecoList[y][x]->GetY(), mDecoList[y][x]->GetFrameIndexX(), mDecoList[y][x]->GetFrameIndexY(),
-						mDecoList[y][x]->Getwidth(), mDecoList[y][x]->GetHeight(), 1.0f
-					);
+						mDecoList[y][x]->Getwidth(), mDecoList[y][x]->GetHeight(), 1.0f);
 			}
 		}
 		int a = 1;

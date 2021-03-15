@@ -47,6 +47,20 @@ void MapToolScene::Fill()
 			IBrushTile* command = new IBrushTile(mGroundList, save, mCurrentPallete);
 			PushCommand(command);
 		}
+		else if (mCurrentPallete.Layer == TileLayer::Wall)
+		{
+			for (int i = 0; i < mSelectIndex.size(); ++i)
+			{
+				TileSave temp;
+				temp.Set(mWallList[mSelectIndex[i].y][mSelectIndex[i].x]->GetImage()->GetKeyName(),
+					mWallList[mSelectIndex[i].y][mSelectIndex[i].x]->GetFrameIndexX(),
+					mWallList[mSelectIndex[i].y][mSelectIndex[i].x]->GetFrameIndexY(),
+					mSelectIndex[i].x, mSelectIndex[i].y);
+				save.push_back(temp);
+			}
+			IBrushTile* command = new IBrushTile(mWallList, save, mCurrentPallete);
+			PushCommand(command);
+		}
 		else if (mCurrentPallete.Layer == TileLayer::Deco)
 		{
 			for (int i = 0; i < mSelectIndex.size(); ++i)
@@ -110,22 +124,41 @@ void MapToolScene::Paint()
 		if (indexX >= mMinIndexX && indexX < mMinIndexX + TileCountX && indexX < mMaxSizeX &&
 			indexY >= mMinIndexY && indexY < mMinIndexY + TileCountY && indexY < mMaxSizeY)
 		{
-
-
 			//시작점의 정보가 현재 선택한 팔레트와 하나라도 같지 않으면
 			if ((mGroundList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
 				mGroundList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
-				mGroundList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY)
-				)
+				mGroundList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
+				mCurrentPallete.Layer == TileLayer::Ground)
 			{
-				if (mCurrentPallete.Layer == TileLayer::Ground)
-					FloodFill(mGroundList,indexX,indexY);
-				else if (mCurrentPallete.Layer == TileLayer::Deco)
-					FloodFill(mDecoList, indexX, indexY);
-				else if (mCurrentPallete.Layer == TileLayer::Item)
-					FloodFill(mItemList, indexX, indexY);
-				else if (mCurrentPallete.Layer == TileLayer::GameObject)
-					FloodFill(mObjectList, indexX, indexY);
+				FloodFill(mGroundList,indexX,indexY);
+			}
+			else if ((mWallList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+				mWallList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
+				mWallList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
+				mCurrentPallete.Layer == TileLayer::Wall)
+			{
+				FloodFill(mWallList, indexX, indexY);
+			}
+			else if ((mDecoList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+				mDecoList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
+				mDecoList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY)&&
+				mCurrentPallete.Layer == TileLayer::Deco)
+			{
+				FloodFill(mDecoList, indexX, indexY);
+			}
+			else if ((mItemList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+				mItemList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
+				mItemList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
+				mCurrentPallete.Layer == TileLayer::Item)
+			{
+				FloodFill(mItemList, indexX, indexY);
+			}
+			else if ((mObjectList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+				mObjectList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
+				mObjectList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY)&&
+				mCurrentPallete.Layer == TileLayer::GameObject)
+			{
+				FloodFill(mObjectList, indexX, indexY);
 			}
 		}
 	}
@@ -137,7 +170,7 @@ void MapToolScene::FloodFill(vector<vector<Tile*>>& tileList, int indexX, int in
 	vector<TileSave> saveVector;	//타일 데이터 저장벡터
 
 	tempQueue.emplace(tileList[indexY][indexX]);
-	Tile init = *mGroundList[indexY][indexX];
+	Tile init = *tileList[indexY][indexX];
 
 	//검사가 종료될때까지
 	while (tempQueue.empty() == false) {
