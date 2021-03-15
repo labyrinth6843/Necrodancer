@@ -32,10 +32,10 @@ public:
 	void Pause(const wstring& keyName);
 	void Stop(const wstring& keyName);
 
-	//과제~ MP3플레이어 만들어오기
-	//void SetVolume(const wstring& keyName, float volume);
-	//float GetVolume(const wstring& keyName);  
-	//void SetPosition(const wstring& keyName, float time);
-	//float GetPosition(const wstring& keyName);
+	void SetVolume(const wstring& keyName, float volume);
+	float GetVolume(const wstring& keyName);  
+	void SetPosition(const wstring& keyName, float time);
+	float GetPosition(const wstring& keyName);
+	float GetFullPosition(const wstring& keyName);
 };
 

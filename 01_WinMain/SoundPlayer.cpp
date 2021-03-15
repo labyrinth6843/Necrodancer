@@ -138,3 +138,68 @@ void SoundPlayer::Stop(const wstring & keyName)
 		}
 	}
 }
+void SoundPlayer::SetVolume(const wstring& keyName, float volume)
+{
+	for (int i = 0; i < mActiveChannels.size(); ++i)
+	{
+		if (mActiveChannels[i].SoundName == keyName)
+		{
+			mActiveChannels[i].Channel->setVolume(volume);
+			break;
+		}
+	}
+}
+
+float SoundPlayer::GetVolume(const wstring& keyName)
+{
+	for (int i = 0; i < mActiveChannels.size(); ++i)
+	{
+		if (mActiveChannels[i].SoundName == keyName)
+		{
+			float voluem;
+			mActiveChannels[i].Channel->getVolume(&voluem);
+			return voluem;
+		}
+	}
+}
+
+void SoundPlayer::SetPosition(const wstring& keyName, float time)
+{
+	for (int i = 0; i < mActiveChannels.size(); ++i)
+	{
+		if (mActiveChannels[i].SoundName == keyName)
+		{
+			mActiveChannels[i].Channel->setPosition(time, FMOD_TIMEUNIT_MS);
+			break;
+		}
+	}
+}
+
+float SoundPlayer::GetPosition(const wstring& keyName)
+{
+	for (int i = 0; i < mActiveChannels.size(); ++i)
+	{
+		if (mActiveChannels[i].SoundName == keyName)
+		{
+			unsigned int pos = 0;
+			mActiveChannels[i].Channel->getPosition(&pos, FMOD_TIMEUNIT_MS);
+			return pos;
+		}
+	}
+}
+
+float SoundPlayer::GetFullPosition(const wstring& keyName)
+{
+	for (int i = 0; i < mActiveChannels.size(); ++i)
+	{
+		if (mActiveChannels[i].SoundName == keyName)
+		{
+			SoundIter iter = mSoundList.find(keyName);
+			Sound* sound = iter->second;
+
+			unsigned int pos = 0;
+			sound->getLength(&pos, FMOD_TIMEUNIT_MS);
+			return pos;
+		}
+	}
+}
