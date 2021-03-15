@@ -47,16 +47,21 @@ void Ground::Render(HDC hdc)
 		for (int x = 0; x < mMapSizeX; ++x)
 		{
 			//맵 전체를 랜더하면 엄청 느려지니 처리 생각하기
-			if(mGroundList[y][x]->GetImage() != NULL)
-				CameraManager::GetInstance()->GetMainCamera()->AlphaScaleFrameRender(hdc, mGroundList[y][x]->GetImage(),
-				mGroundList[y][x]->GetX(), mGroundList[y][x]->GetY(), mGroundList[y][x]->GetFrameIndexX(), mGroundList[y][x]->GetFrameIndexY(),
-				mGroundList[y][x]->Getwidth(), mGroundList[y][x]->GetHeight(), 1.0f
-				);
-			if (mDecoList[y][x]->GetImage() != NULL)
-				CameraManager::GetInstance()->GetMainCamera()->AlphaScaleFrameRender(hdc, mDecoList[y][x]->GetImage(),
-					mDecoList[y][x]->GetX(), mDecoList[y][x]->GetY(), mDecoList[y][x]->GetFrameIndexX(), mDecoList[y][x]->GetFrameIndexY(),
-					mDecoList[y][x]->Getwidth(), mDecoList[y][x]->GetHeight(), 1.0f
-				);
+			int posx = x * TileSize;
+			int posy = y * TileSize;
+			if (CameraManager::GetInstance()->GetMainCamera()->IsInCameraArea(posx, posy, TileSize))
+			{
+				if(mGroundList[y][x]->GetImage() != NULL)
+					CameraManager::GetInstance()->GetMainCamera()->AlphaScaleFrameRender(hdc, mGroundList[y][x]->GetImage(),
+					mGroundList[y][x]->GetX(), mGroundList[y][x]->GetY(), mGroundList[y][x]->GetFrameIndexX(), mGroundList[y][x]->GetFrameIndexY(),
+					mGroundList[y][x]->Getwidth(), mGroundList[y][x]->GetHeight(), 1.0f
+					);
+				if (mDecoList[y][x]->GetImage() != NULL)
+					CameraManager::GetInstance()->GetMainCamera()->AlphaScaleFrameRender(hdc, mDecoList[y][x]->GetImage(),
+						mDecoList[y][x]->GetX(), mDecoList[y][x]->GetY(), mDecoList[y][x]->GetFrameIndexX(), mDecoList[y][x]->GetFrameIndexY(),
+						mDecoList[y][x]->Getwidth(), mDecoList[y][x]->GetHeight(), 1.0f
+					);
+			}
 		}
 		int a = 1;
 	}

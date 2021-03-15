@@ -91,6 +91,9 @@
     <Filter Include="MainGame\Scene\MapToolScene\MapToolFunc">
       <UniqueIdentifier>{e425a033-c97b-4ceb-af95-0f604a99abca}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\System">
+      <UniqueIdentifier>{c01fed77-2b46-47e6-8ae5-3ce6490cd8bc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -201,6 +204,9 @@
     <ClInclude Include="Helper.h">
       <Filter>FrameWork\Helper</Filter>
     </ClInclude>
+    <ClInclude Include="Beat.h">
+      <Filter>MainGame\System</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -307,6 +313,9 @@
     </ClCompile>
     <ClCompile Include="Ground.cpp">
       <Filter>MainGame\Object\Ground</Filter>
+    </ClCompile>
+    <ClCompile Include="Beat.cpp">
+      <Filter>MainGame\System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
