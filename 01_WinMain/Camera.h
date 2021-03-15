@@ -39,6 +39,8 @@ public:
 	bool IsInCameraArea(float x, float y, float width, float height);
 	bool IsInCameraArea(RECT rc);
 
+	bool IsInCameraArea(int x, int y, int range);
+
 	inline float GetMoveSpeed()const { return mMoveSpeed; }
 	inline void SetMoveSpeed(float speed) { mMoveSpeed = speed; }
 };
