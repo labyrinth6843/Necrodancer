@@ -28,7 +28,6 @@ void Image::LoadAllImage()//MainGame::Init에서 단 한번 실행 된다
 	ImageManager::GetInstance()->LoadFromFile(L"Select", Resources(L"Select.bmp"), 104, 48, 1, 2, false);
 	//}}
 
-
 	//{{ 맵 + 오브젝트 관련 이미지
 	ImageManager::GetInstance()->LoadFromFile(L"SelectTile", Resources(L"SelectTile.bmp"), 32, 32, true);
 	//바닥
@@ -54,6 +53,12 @@ void Image::LoadAllImage()//MainGame::Init에서 단 한번 실행 된다
 	ImageManager::GetInstance()->LoadFromFile(L"16", Resources(L"ItemList2.bmp"), 80, 144, 5, 9, true);
 	//적
 	ImageManager::GetInstance()->LoadFromFile(L"17", Resources(L"Enemy.bmp"), 80, 80, 5, 5, true);
+	//}}
+
+	//{{ 팔레트 관련 이미지
+	ImageManager::GetInstance()->LoadFromFile(L"GroundPallet", Resources(L"GroundPallet.bmp"), 130, 156, 5, 6, false);
+	ImageManager::GetInstance()->LoadFromFile(L"ItemPallet", Resources(L"ItemPallet.bmp"), 130, 234, 5, 9, false);
+	ImageManager::GetInstance()->LoadFromFile(L"MonsterPallet", Resources(L"MonsterPallet.bmp"), 130, 52, 5, 2, false);
 	//}}
 
 	//{{ 아이템 관련 이미지
