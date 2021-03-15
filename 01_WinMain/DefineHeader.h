@@ -6,7 +6,7 @@
 
 #define TileCountX 10
 #define TileCountY 10
-#define TileSize 32
+#define TileSize 39
 
 //인자로 들어온 p를 삭제하고 NULL로 초기화 하는 매크로 함수, 안전하게 삭제
 #define SafeDelete(p)\

@@ -2,9 +2,10 @@
 
 enum class TileLayer {
 	Ground = 0,
-	Deco = 1,
-	Item = 2,
-	GameObject = 3,
+	Wall = 1,
+	Deco = 2,
+	Item = 3,
+	GameObject = 4,
 	End
 };
 

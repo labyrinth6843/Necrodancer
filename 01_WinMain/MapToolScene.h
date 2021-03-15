@@ -106,6 +106,7 @@ class MapToolScene : public Scene{
 	Image* tileImage;
 
 	vector<vector<Tile*>> mGroundList;
+	vector<vector<Tile*>> mWallList;
 	vector<vector<Tile*>> mDecoList;
 	vector<vector<Tile*>> mItemList;
 	vector<vector<Tile*>> mObjectList;
@@ -148,8 +149,11 @@ public:
 	void Update()override;
 	void Render(HDC hdc)override;
 
+
 	LRESULT Proc(HWND hWnd, UINT iMessage, WPARAM wParam, LPARAM lParam);
 private:
+	void TileListRender(HDC hdc,const vector<vector<Tile*>>& tilelist);
+	
 	void SetSize();
 
 	void Save();

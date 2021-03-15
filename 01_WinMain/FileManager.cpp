@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-void FileManager::LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int tilesize)
+void FileManager::LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int tilesizeX, int tilesizeY)
 {
 	ifstream loadStream(L"../04_Data/" + filename + L".txt");
 
@@ -96,7 +96,7 @@ void FileManager::LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int
 
 				//크기 늘리는거
 				Tile* tile = new Tile(ImageManager::GetInstance()->FindImage(wstr),
-					tilesize * x, tilesize * y, tilesize, tilesize,
+					tilesizeX * x, tilesizeY * y, tilesizeX, tilesizeY,
 					stof(subList[3]), stof(subList[4]), (TileType)stoi(subList[5]));
 				//원래 사이즈
 

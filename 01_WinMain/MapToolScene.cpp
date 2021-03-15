@@ -10,10 +10,11 @@ void MapToolScene::Init()
 {
 	//Image LoadFromFile은 필터 -> LoadImage.cpp로 옮김
 
-	for (int i = 0; i < 18; i++) {
-		wstring wstr = to_wstring(i);
-		mPalleteList.push_back(wstr);
-	}
+	mPalleteList.push_back(L"GroundPallet");
+	mPalleteList.push_back(L"WallTile");
+	mPalleteList.push_back(L"WallPallet");
+	mPalleteList.push_back(L"ItemPallet");
+	mPalleteList.push_back(L"MonsterPallet");
 
 	mMaxSizeX = TileCountX;
 	mMaxSizeY = TileCountY;
@@ -25,6 +26,7 @@ void MapToolScene::Init()
 
 	//Tile* List들 vector화 필요
 	vector<Tile*> GList;
+	vector<Tile*> WList;
 	vector<Tile*> DList;
 	vector<Tile*> IList;
 	vector<Tile*> OList;
@@ -32,24 +34,28 @@ void MapToolScene::Init()
 	{
 		for (int x = 0; x < mMaxSizeX; ++x)
 		{
-			GList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"0"), TileSize * x , TileSize * y , TileSize, TileSize, 2, 5));
-			DList.push_back(new Tile(nullptr, TileSize * x , TileSize * y , TileSize, TileSize, 0, 0));
-			IList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
-			OList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+			GList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"GroundPallet"), TileSize * x , TileSize * y , TileSize, TileSize, 0, 0));
+			WList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"WallTile"), TileSize * x , TileSize * y , TileSize, 72, 0, 0));
+			DList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"WallPallet"), TileSize * x , TileSize * y , TileSize, TileSize, 0, 0));
+			IList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"ItemPallet"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+			OList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"MonsterPallet"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
 		}
 		mGroundList.push_back(GList);
+		mWallList.push_back(WList);
 		mDecoList.push_back(DList);
 		mItemList.push_back(IList);
 		mObjectList.push_back(OList);
 		
+		GList.clear();
+		GList.shrink_to_fit();
+		WList.clear();
+		WList.shrink_to_fit();
 		DList.clear();
 		DList.shrink_to_fit();
 		IList.clear();
 		IList.shrink_to_fit();
 		OList.clear();
 		OList.shrink_to_fit();
-		GList.clear();
-		GList.shrink_to_fit();
 	}
 
 	int palleteStartX = WINSIZEX / 2 + 140;
@@ -64,15 +70,6 @@ void MapToolScene::Init()
 			mPallete[y][x].Rc = RectMake(mPallete[y][x].PositionX,	mPallete[y][x].PositionY, mPallete[y][x].Width, mPallete[y][x].Height);
 			mPallete[y][x].FrameX = x;
 			mPallete[y][x].FrameY = y;
-
-			if(mCurrentPage < 10)
-				mPallete[y][x].Layer = TileLayer::Ground;
-			else if (mCurrentPage < 15)
-				mPallete[y][x].Layer = TileLayer::Deco;
-			else if (mCurrentPage < 17)
-				mPallete[y][x].Layer = TileLayer::Item;
-			else if (mCurrentPage < 18)
-				mPallete[y][x].Layer = TileLayer::GameObject;
 		}
 	}
 
@@ -83,9 +80,10 @@ void MapToolScene::Init()
 	mButtonList.insert(make_pair(L"Load", new Button(L"Load", L"Load", 350, 50, 200, 50, [this]() 
 		{
 			FileManager::GetInstance()->LoadMap(L"Test00", mGroundList, TileSize);
-			FileManager::GetInstance()->LoadMap(L"Test01", mDecoList, TileSize);
-			FileManager::GetInstance()->LoadMap(L"Test02", mItemList, TileSize);
-			FileManager::GetInstance()->LoadMap(L"Test03", mObjectList, TileSize);
+			FileManager::GetInstance()->LoadMap(L"Test01", mWallList, TileSize, 72);
+			FileManager::GetInstance()->LoadMap(L"Test02", mDecoList, TileSize);
+			FileManager::GetInstance()->LoadMap(L"Test03", mItemList, TileSize);
+			FileManager::GetInstance()->LoadMap(L"Test04", mObjectList, TileSize);
 			mMaxSizeY = mGroundList.size();
 			mMaxSizeX = mGroundList[mMaxSizeY - 1].size();
 			mInputX = to_string(mMaxSizeX);
@@ -153,6 +151,7 @@ void MapToolScene::Release(){
 	for (int y = 0; y < mMaxSizeY; ++y){
 		for (int x = 0; x < mMaxSizeY; ++x){
 			SafeDelete(mGroundList[y][x]);
+			SafeDelete(mWallList[y][x]);
 			SafeDelete(mDecoList[y][x]);
 			SafeDelete(mItemList[y][x]);
 			SafeDelete(mObjectList[y][x]);
@@ -160,6 +159,8 @@ void MapToolScene::Release(){
 	}
 	mGroundList.clear();
 	mGroundList.shrink_to_fit();
+	mWallList.clear();
+	mWallList.shrink_to_fit();
 	mDecoList.clear();
 	mDecoList.shrink_to_fit();
 	mItemList.clear();
@@ -175,7 +176,6 @@ void MapToolScene::Release(){
 }
 
 void MapToolScene::Update(){
-
 	//팔레트
 	int palleteStartX = WINSIZEX / 2+140;
 	int palleteStartY = 200;
@@ -189,13 +189,15 @@ void MapToolScene::Update(){
 			mPallete[y][x].Rc = RectMake(mPallete[y][x].PositionX, mPallete[y][x].PositionY, mPallete[y][x].Width, mPallete[y][x].Height);
 			mPallete[y][x].FrameX = x;
 			mPallete[y][x].FrameY = y;
-			if (mCurrentPage < 5)
+			if (mCurrentPage < 1)
 				mPallete[y][x].Layer = TileLayer::Ground;
-			else if (mCurrentPage < 10)
+			else if (mCurrentPage < 2)
+				mPallete[y][x].Layer = TileLayer::Wall;
+			else if (mCurrentPage < 3)
 				mPallete[y][x].Layer = TileLayer::Deco;
-			else if (mCurrentPage < 15)
+			else if (mCurrentPage < 4)
 				mPallete[y][x].Layer = TileLayer::Item;
-			else if (mCurrentPage < 17)
+			else
 				mPallete[y][x].Layer = TileLayer::GameObject;
 		}
 	}
@@ -262,6 +264,17 @@ void MapToolScene::Update(){
 						IBrushTile* command = new IBrushTile(mGroundList, temp, mCurrentPallete);
 						PushCommand(command);
 					}
+					else if ((mWallList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+						mWallList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
+						mWallList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
+						(mCurrentPallete.Layer == TileLayer::Wall))
+					{
+						TileSave temp;
+						temp.Set(mWallList[indexY][indexX]->GetImage()->GetKeyName(),
+							mWallList[indexY][indexX]->GetFrameIndexX(), mWallList[indexY][indexX]->GetFrameIndexY(), indexX, indexY);
+						IBrushTile* command = new IBrushTile(mWallList, temp, mCurrentPallete);
+						PushCommand(command);
+					}
 					else if ((mDecoList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
 						mDecoList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
 						mDecoList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) && 
@@ -273,7 +286,7 @@ void MapToolScene::Update(){
 						IBrushTile* command = new IBrushTile(mDecoList, temp, mCurrentPallete);
 						PushCommand(command);
 					}
-					if ((mItemList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+					else if ((mItemList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
 						mItemList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
 						mItemList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
 						(mCurrentPallete.Layer == TileLayer::Item))
@@ -284,7 +297,7 @@ void MapToolScene::Update(){
 						IBrushTile* command = new IBrushTile(mItemList, temp, mCurrentPallete);
 						PushCommand(command);
 					}
-					if ((mObjectList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
+					else if ((mObjectList[indexY][indexX]->GetImage() != mCurrentPallete.Image ||
 						mObjectList[indexY][indexX]->GetFrameIndexX() != mCurrentPallete.FrameX ||
 						mObjectList[indexY][indexX]->GetFrameIndexY() != mCurrentPallete.FrameY) &&
 						(mCurrentPallete.Layer == TileLayer::GameObject))
@@ -401,23 +414,11 @@ void MapToolScene::Render(HDC hdc){
 	DeleteObject(Brush);
 
 	//타일 출력
-	int posY = 0;
-	for (int y = mMinIndexY; y < mMinIndexY + TileCountY; ++y) {
-		int posX = 0;
-		if (y >= mMaxSizeY)
-			break;
-		for (int x = mMinIndexX; x < mMinIndexX + TileCountX; ++x) {
-			if (x >= mMaxSizeX)
-				break;
-			mGroundList[y][x]->PositionRender(hdc, posX * TileSize + mMoveX, posY * TileSize + mMoveY);
-			mDecoList[y][x]->PositionRender(hdc, posX * TileSize + mMoveX, posY * TileSize + mMoveY);
-			mItemList[y][x]->PositionRender(hdc, posX * TileSize + mMoveX, posY * TileSize + mMoveY);
-			mObjectList[y][x]->PositionRender(hdc, posX * TileSize + mMoveX, posY * TileSize + mMoveY);
-
-			posX++;
-		}
-		posY++;
-	}
+	TileListRender(hdc, mGroundList);
+	TileListRender(hdc, mDecoList);
+	TileListRender(hdc, mItemList);
+	TileListRender(hdc, mWallList);
+	TileListRender(hdc, mObjectList);
 	//격자
 	for (int y = 0; y < 10; ++y)
 	{
@@ -442,7 +443,7 @@ void MapToolScene::Render(HDC hdc){
 		if (posX >= TileSize*TileCountX + mMoveX || posY >= TileSize* TileCountY + mMoveY)
 			continue;
 		
-		select->AlphaRender(hdc, posX, posY, 0.5f);
+		select->AlphaScaleRender(hdc, posX, posY, TileSize, TileSize, 0.5f);
 	}
 	//드래그 범위 표시 Rect
 	if (mSelectRectShow)
@@ -496,6 +497,23 @@ void MapToolScene::Render(HDC hdc){
 	TextOut(hdc, rcY.left + 5, rcY.top + 5, y.c_str(), y.length());
 }
 
+void MapToolScene::TileListRender(HDC hdc,const vector <vector<Tile*>>&tilelist)
+{
+	int posY = 0;
+	for (int y = mMinIndexY; y < mMinIndexY + TileCountY; ++y) {
+		int posX = 0;
+		if (y >= mMaxSizeY)
+			break;
+		for (int x = mMinIndexX; x < mMinIndexX + TileCountX; ++x) {
+			if (x >= mMaxSizeX)
+				break;
+			tilelist[y][x]->PositionRender(hdc, posX * TileSize + mMoveX, posY * TileSize + mMoveY);
+			posX++;
+		}
+		posY++;
+	}
+}
+
 void MapToolScene::Save(){
 	int i = 0;
 	ofstream saveStream(L"../04_Data/Test0" + to_wstring(i) + L".txt");
@@ -518,6 +536,32 @@ void MapToolScene::Save(){
 				saveStream << mGroundList[y][x]->GetFrameIndexX() << ",";
 				saveStream << mGroundList[y][x]->GetFrameIndexY() << ",";
 				saveStream << (int)(mGroundList[y][x]->GetTileType());
+				saveStream << endl;
+			}
+		}
+	}
+	i++;
+	saveStream.close();
+	saveStream.open(L"../04_Data/Test0" + to_wstring(i) + L".txt");
+	if (saveStream.is_open()) {
+		string tempImageKey;
+		int frameX;
+		int frameY;
+
+		for (int y = 0; y < mMaxSizeY; ++y) {
+			for (int x = 0; x < mMaxSizeX; ++x) {
+				string str;
+				wstring keyName;
+				if (mWallList[y][x]->GetImage() != nullptr)
+					keyName = mWallList[y][x]->GetImage()->GetKeyName();
+				str.assign(keyName.begin(), keyName.end());
+
+				saveStream << str.c_str() << ",";
+				saveStream << x << ",";
+				saveStream << y << ",";
+				saveStream << mWallList[y][x]->GetFrameIndexX() << ",";
+				saveStream << mWallList[y][x]->GetFrameIndexY() << ",";
+				saveStream << (int)(mWallList[y][x]->GetTileType());
 				saveStream << endl;
 			}
 		}
@@ -669,6 +713,43 @@ void MapToolScene::Load(){	//이제 사용 안함
 
 				wstring wstr;
 				wstr.assign(key.begin(), key.end());
+				mWallList[y][x]->SetImage(ImageManager::GetInstance()->FindImage(wstr));
+				mWallList[y][x]->SetFrameIndexX(frameX);
+				mWallList[y][x]->SetFrameIndexY(frameY);
+				mWallList[y][x]->SetTileType((TileType)type);
+			}
+		}
+	}
+	i++;
+	loadStream.close();
+	loadStream.open(L"../04_Data/Test0" + to_wstring(i) + L".txt");
+	if (loadStream.is_open()) {
+		for (int y = 0; y < TileCountY; ++y) {
+			for (int x = 0; x < TileCountX; ++x) {
+				string key;
+				int indexX;
+				int indexY;
+				int frameX;
+				int frameY;
+				int type;
+
+				string buffer;
+
+				getline(loadStream, buffer, ',');
+				key = buffer;
+				getline(loadStream, buffer, ',');
+				indexX = stoi(buffer);
+				getline(loadStream, buffer, ',');
+				indexY = stoi(buffer);
+				getline(loadStream, buffer, ',');
+				frameX = stoi(buffer);
+				getline(loadStream, buffer, ',');
+				frameY = stoi(buffer);
+				getline(loadStream, buffer);
+				type = stoi(buffer);
+
+				wstring wstr;
+				wstr.assign(key.begin(), key.end());
 				mDecoList[y][x]->SetImage(ImageManager::GetInstance()->FindImage(wstr));
 				mDecoList[y][x]->SetFrameIndexX(frameX);
 				mDecoList[y][x]->SetFrameIndexY(frameY);
@@ -755,20 +836,50 @@ void MapToolScene::Load(){	//이제 사용 안함
 void MapToolScene::Clear(){
 	for (int y = 0; y < mMaxSizeY; ++y) {
 		for (int x = 0; x < mMaxSizeX; ++x) {
-			mDecoList[y][x]->SetImage(nullptr);
-			mItemList[y][x]->SetImage(nullptr);
-			mObjectList[y][x]->SetImage(nullptr);
-/*
-			mGroundList[y][x]->SetImage(nullptr);
-*/
 			mGroundList[y][x] = new Tile(
-				ImageManager::GetInstance()->FindImage(L"0"),
+				ImageManager::GetInstance()->FindImage(L"GroundPallet"),
 				TileSize * x,
 				TileSize * y,
 				TileSize,
 				TileSize,
-				2,
-				5
+				0,
+				0
+			);
+			mWallList[y][x] = new Tile(
+				ImageManager::GetInstance()->FindImage(L"WallTile"),
+				TileSize * x,
+				TileSize * y,
+				TileSize,
+				72,
+				0,
+				0
+			);
+			mDecoList[y][x] = new Tile(
+				ImageManager::GetInstance()->FindImage(L"WallPallet"),
+				TileSize * x,
+				TileSize * y,
+				TileSize,
+				TileSize,
+				0,
+				0
+			);
+			mItemList[y][x] = new Tile(
+				ImageManager::GetInstance()->FindImage(L"ItemPallet"),
+				TileSize * x,
+				TileSize * y,
+				TileSize,
+				TileSize,
+				0,
+				0
+			);
+			mObjectList[y][x] = new Tile(
+				ImageManager::GetInstance()->FindImage(L"MonsterPallet"),
+				TileSize * x,
+				TileSize * y,
+				TileSize,
+				TileSize,
+				0,
+				0
 			);
 		}
 	}
@@ -780,19 +891,19 @@ void MapToolScene::GroundPallete(){
 }
 
 void MapToolScene::WallPallete(){
-	mCurrentPage = 5;
+	mCurrentPage = 1;
 }
 
 void MapToolScene::DecoPallete(){
-	mCurrentPage = 10;
+	mCurrentPage = 2;
 }
 
 void MapToolScene::ItemPallete(){
-	mCurrentPage = 15;
+	mCurrentPage = 3;
 }
 
 void MapToolScene::ObjectPallete(){
-	mCurrentPage = 17;
+	mCurrentPage = 4;
 }
 
 void MapToolScene::PrevPallete(){

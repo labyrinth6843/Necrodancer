@@ -8,6 +8,6 @@ class FileManager
 	Singleton(FileManager);
 
 public:
-	void LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int tilesize = 50);
+	void LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int tilesizeX = TileSize, int tilesizeY = TileSize);
 };
 

@@ -102,23 +102,27 @@ void MapToolScene::SetSize()
 	int prevY = mGroundList.size();
 	int prevX = mGroundList[prevY - 1].size();
 	vector<vector<Tile*>> saveGround = mGroundList;
+	vector<vector<Tile*>> saveWall = mWallList;
 	vector<vector<Tile*>> saveDeco = mDecoList;
 	vector<vector<Tile*>> saveItem = mItemList;
 	vector<vector<Tile*>> saveObject = mObjectList;
 
 	//크기 변경전 전부 비우기
 	mGroundList.clear();
+	mWallList.clear();
 	mDecoList.clear();
 	mItemList.clear();
 	mObjectList.clear();
 
 	mGroundList.shrink_to_fit();
+	mWallList.shrink_to_fit();
 	mDecoList.shrink_to_fit();
 	mItemList.shrink_to_fit();
 	mObjectList.shrink_to_fit();
 
 	//size x,y를 받아 타일맵의 최대크기에 맞춰 빈 타일을 생성해준다
 	vector<Tile*> GList;
+	vector<Tile*> WList;
 	vector<Tile*> DList;
 	vector<Tile*> IList;
 	vector<Tile*> OList;
@@ -126,24 +130,28 @@ void MapToolScene::SetSize()
 	{
 		for (int x = 0; x < mMaxSizeX; ++x)
 		{
-			GList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"0"), TileSize * x, TileSize * y, TileSize, TileSize, 2, 5));
-			DList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
-			IList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
-			OList.push_back(new Tile(nullptr, TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+			GList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"GroundPallet"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+			WList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"WallPallet"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+			DList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"WallPallet"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+			IList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"ItemPallet"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+			OList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"MonsterPallet"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
 		}
 		mGroundList.push_back(GList);
+		mWallList.push_back(WList);
 		mDecoList.push_back(DList);
 		mItemList.push_back(IList);
 		mObjectList.push_back(OList);
 
+		GList.clear();
+		GList.shrink_to_fit();
+		WList.clear();
+		WList.shrink_to_fit();
 		DList.clear();
 		DList.shrink_to_fit();
 		IList.clear();
 		IList.shrink_to_fit();
 		OList.clear();
 		OList.shrink_to_fit();
-		GList.clear();
-		GList.shrink_to_fit();
 	}
 
 	//기존의 내용을 넣는다
@@ -154,6 +162,7 @@ void MapToolScene::SetSize()
 			for (int x = 0; x < prevX; ++x)
 			{
 				mGroundList[y][x] = saveGround[y][x];
+				mWallList[y][x] = saveWall[y][x];
 				mDecoList[y][x] = saveDeco[y][x];
 				mItemList[y][x] = saveItem[y][x];
 				mObjectList[y][x] = saveObject[y][x];
@@ -167,6 +176,7 @@ void MapToolScene::SetSize()
 			for (int x = 0; x < mMaxSizeX; ++x)
 			{
 				mGroundList[y][x] = saveGround[y][x];
+				mWallList[y][x] = saveWall[y][x];
 				mDecoList[y][x] = saveDeco[y][x];
 				mItemList[y][x] = saveItem[y][x];
 				mObjectList[y][x] = saveObject[y][x];
