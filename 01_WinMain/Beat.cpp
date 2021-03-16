@@ -44,8 +44,14 @@ void Beat::Release()
 {
 	mNowMusic = L"";
 	mDeadLine = INT_MAX;
+	mIsBoss = false;
 	QueueClear(mRunQueue);
 	QueueClear(mSaveQueue);
+	for (int i = 0; i < 30; ++i)
+	{
+		mLeftNote[i] = { { 0, WINSIZEY - 50 } , RectMakeCenter(0, WINSIZEY - 50,5,5), NoteState::Unactive , 1.f};
+		mRightNote[i] = { { WINSIZEX, WINSIZEY - 50 }, RectMakeCenter(WINSIZEX, WINSIZEY - 50,5,5),  NoteState::Unactive, 1.f };
+	}
 }
 
 void Beat::Update()
@@ -67,21 +73,40 @@ void Beat::Update()
 	//활성화된 노트만 중앙으로 이동시킨다
 	for (int i = 0; i < 30; ++i)
 	{
+		//노트 이동
 		if (mLeftNote[i].State == NoteState::Active)
 		{
 			mLeftNote[i].Pos.x += 500 * Time::GetInstance()->DeltaTime();	//속도는 임의로 설정했기때문에 조정 필요
 			mLeftNote[i].Rc = RectMakeCenter(mLeftNote[i].Pos.x, WINSIZEY - 50, 5, 5);
 		}
+		else if (mLeftNote[i].State == NoteState::Miss)
+		{
+			mLeftNote[i].Pos.y -= 50 * Time::GetInstance()->DeltaTime();
+			mLeftNote[i].Rc = RectMakeCenter(mLeftNote[i].Pos.x, mLeftNote[i].Pos.y, 5, 5);
+			mLeftNote[i].Alpha -= 20 * Time::GetInstance()->DeltaTime();
+		}
+
 		if (mRightNote[i].State == NoteState::Active)
 		{
 			mRightNote[i].Pos.x -= 500 * Time::GetInstance()->DeltaTime();
 			mRightNote[i].Rc = RectMakeCenter(mRightNote[i].Pos.x, WINSIZEY - 50, 5, 5);
 		}
+		else if (mRightNote[i].State == NoteState::Miss)
+		{
+			mRightNote[i].Pos.y -= 50 * Time::GetInstance()->DeltaTime();
+			mRightNote[i].Rc = RectMakeCenter(mRightNote[i].Pos.x, mRightNote[i].Pos.y, 5, 5);
+			mRightNote[i].Alpha -= 20.f * Time::GetInstance()->DeltaTime();
+		}
+		if (mLeftNote[i].Alpha <= 0 && mRightNote[i].Alpha <= 0)
+			NoteReset();
+
 		
-		//Left와 Right끼리 충돌하면  Miss
+		//Left와 Right끼리 충돌하면  Miss 처리
 		RECT temp;
 		if (IntersectRect(&temp, &mLeftNote[i].Rc, &mRightNote[i].Rc))
-			NoteReset();//어차피 맨 앞의 노트의 인덱스는 무조건 0이다
+		{
+			MissNote();
+		}
 	}
 
 	//음악의 재생시간이 mDeadLine을 넘어가면 노트 이미지를 변경한다
@@ -122,10 +147,10 @@ void Beat::Render(HDC hdc)
 	//노트
 	for (int i = 0; i < 30; ++i)
 	{
-		if (mLeftNote[i].State == NoteState::Active)
-			mNoteImage->ScaleRender(hdc, mLeftNote[i].Pos.x - 12, mLeftNote[i].Pos.y - 50, 25, 100);
-		if(mRightNote[i].State == NoteState::Active)
-			mNoteImage->ScaleRender(hdc, mRightNote[i].Pos.x - 12, mRightNote[i].Pos.y - 50, 25, 100);
+		if (mLeftNote[i].State != NoteState::Unactive)
+			mNoteImage->AlphaScaleRender(hdc, mLeftNote[i].Pos.x - 12, mLeftNote[i].Pos.y - 50, 25, 100, mLeftNote[i].Alpha);
+		if(mRightNote[i].State != NoteState::Unactive)
+			mNoteImage->AlphaScaleRender(hdc, mRightNote[i].Pos.x - 12, mRightNote[i].Pos.y - 50, 25, 100, mRightNote[i].Alpha);
 	}
 	//심장
 	mHeartImage.Image->ScaleFrameRender(hdc,WINSIZEX - mHeartImage.Image->GetFrameWidth(), WINSIZEY - 100,
@@ -151,12 +176,14 @@ bool Beat::IsDecision()
 		return true;
 	}
 	//miss
-	NoteReset();//임시로 해둔 것, miss시 노트 처리 추가할 것
+	//콤보시스템을 호출하여 콤보 감소 나중에 추가할 것
+	MissNote();
 	return false;
 }
 
 bool Beat::NextTurn()
 {
+	//Left와 Right가 만나거나 플레이어가 미스가 아닌 커맨드를 입력했을때 true반환
 	return false;
 }
 
@@ -164,6 +191,26 @@ void Beat::SetTiming()
 {
 	mTiming = mRunQueue.front();
 	mRunQueue.pop();
+}
+
+void Beat::MissNote()
+{
+	for (int i = 0; i < mLeftNote.size(); ++i)
+	{
+		if (mLeftNote[i].State == NoteState::Active)
+		{
+			mLeftNote[i].State = NoteState::Miss;
+			break;
+		}
+	}
+	for (int i = 0; i < mRightNote.size(); ++i)
+	{
+		if (mRightNote[i].State == NoteState::Active)
+		{
+			mRightNote[i].State = NoteState::Miss;
+			break;
+		}
+	}
 }
 
 void Beat::SetNote()
@@ -186,23 +233,32 @@ void Beat::SetNote()
 void Beat::NoteReset()
 {
 	//가장 먼저 활성화 된 노트를 찾아 벡터에서 제거 한 후 다시 맨 뒤에 삽입한다 -> 속도가 걱정되면 나중에 우선순위큐를 알아보고 수정할 것
-	if (mLeftNote[0].State ==  NoteState::Active)
+	for (int i = 0; i < mLeftNote.size(); ++i)
 	{
-		Note temp = mLeftNote[0];
-		temp.Pos = { 0, WINSIZEY - 50 };
-		temp.Rc = RectMakeCenter(0, WINSIZEY - 50, 5, 5);
-		temp.State = NoteState::Unactive;
-		mLeftNote.erase(mLeftNote.begin());
-		mLeftNote.push_back(temp);
+		if (mLeftNote[i].State ==  NoteState::Active)
+		{
+			Note temp = mLeftNote[i];
+			temp.Pos = { 0, WINSIZEY - 50 };
+			temp.Rc = RectMakeCenter(0, WINSIZEY - 50, 5, 5);
+			temp.State = NoteState::Unactive;
+			temp.Alpha = 1.f;
+			mLeftNote.erase(mLeftNote.begin());
+			mLeftNote.push_back(temp);
+			break;
+		}
 	}
-
-	if (mRightNote[0].State == NoteState::Active)
+	for (int i = 0; i < mRightNote.size(); ++i)
 	{
-		Note temp = mRightNote[0];
-		temp.Pos = { 0, WINSIZEY - 50 };
-		temp.Rc = RectMakeCenter(0, WINSIZEY - 50, 5, 5);
-		temp.State = NoteState::Unactive;
-		mRightNote.erase(mLeftNote.begin());
-		mRightNote.push_back(temp);
+		if (mRightNote[i].State == NoteState::Active)
+		{
+			Note temp = mRightNote[i];
+			temp.Pos = { 0, WINSIZEY - 50 };
+			temp.Rc = RectMakeCenter(0, WINSIZEY - 50, 5, 5);
+			temp.State = NoteState::Unactive;
+			temp.Alpha = 1.f;
+			mRightNote.erase(mLeftNote.begin());
+			mRightNote.push_back(temp);
+			break;
+		}
 	}
 }

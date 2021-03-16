@@ -17,8 +17,9 @@ private:
 	//Note : 박자를 맞출 용도의 이미지를 출력하기 위한 struct
 	struct Note {
 		POINT Pos;
-		RECT Rc;		//안쓸지도 모르지만 일단 생성
+		RECT Rc;
 		NoteState State;
+		float Alpha = 1.f;
 	};
 	struct FrameImage
 	{
@@ -64,5 +65,6 @@ private:
 	void SetTiming();	//Update내부에서 호출될 함수, 노트의 등장 타이밍
 	void SetNote();		//비활성화된 노트중 
 	void NoteReset();	//Active가 false가 된 노트를 시작 위치에 옮기는 함수
+	void MissNote();
 };
 
