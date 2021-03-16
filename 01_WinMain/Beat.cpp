@@ -27,6 +27,8 @@ Beat::Beat()
 	}
 	//노트 색깔을 변경할 기준값
 	mDeadLine = INT_MAX;
+	//보스전인지 판단
+	mIsBoss = false;
 }
 
 Beat::~Beat()
@@ -52,9 +54,14 @@ void Beat::Update()
 	if (mTiming == SoundPlayer::GetInstance()->GetPosition(mNowMusic))
 	{
 		SetNote();
-		//mRunQueue가 비어있지 않다면
+		//mRunQueue가 비어있지 않다면 다음 Timimg 세팅
 		if(!mRunQueue.empty())
 			SetTiming();
+	}
+	//보스라면 루프시키기 위해 mRunQueue가 비어있을때 mSaveQueue로 덮어씌운다
+	if (mIsBoss && mRunQueue.empty())
+	{
+		mRunQueue = mSaveQueue;
 	}
 
 	//활성화된 노트만 중앙으로 이동시킨다

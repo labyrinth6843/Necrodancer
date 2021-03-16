@@ -42,6 +42,8 @@ private:
 
 	FrameImage mHeartImage;
 	Image* mNoteImage;
+
+	bool mIsBoss;
 public:
 	Beat();
 	~Beat();
@@ -56,6 +58,8 @@ public:
 	bool IsDecision();	//플레이어 커맨드용
 	bool NextTurn();	//몬스터 이동 및 공격 턴 확인용
 
+	bool GetIsBoss() { return mIsBoss; };
+	void SetIsBoss(bool b) { mIsBoss = b; };
 private:
 	void SetTiming();	//Update내부에서 호출될 함수, 노트의 등장 타이밍
 	void SetNote();		//비활성화된 노트중 
