@@ -206,6 +206,7 @@
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="LoadImage.cpp" />
     <ClCompile Include="LoadingScene.cpp" />
+    <ClCompile Include="LoadResource.cpp" />
     <ClCompile Include="MainGame + MainProc.cpp" />
     <ClCompile Include="MainGame.cpp" />
     <ClCompile Include="MapToolCommand.cpp" />
@@ -233,6 +234,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="01_WinMain.ico" />
+    <Image Include="CryptOfTheNecrodancer.ico" />
     <Image Include="pixeldungeon.ico" />
     <Image Include="small.ico" />
   </ItemGroup>

@@ -94,6 +94,9 @@
     <Filter Include="MainGame\System">
       <UniqueIdentifier>{c01fed77-2b46-47e6-8ae5-3ce6490cd8bc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\LoadResource">
+      <UniqueIdentifier>{55c25a64-8a37-4135-984f-1c2141350f12}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -317,6 +320,9 @@
     <ClCompile Include="Beat.cpp">
       <Filter>MainGame\System</Filter>
     </ClCompile>
+    <ClCompile Include="LoadResource.cpp">
+      <Filter>FrameWork\FileManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc">
@@ -331,6 +337,9 @@
       <Filter>리소스 파일</Filter>
     </Image>
     <Image Include="small.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+    <Image Include="CryptOfTheNecrodancer.ico">
       <Filter>리소스 파일</Filter>
     </Image>
   </ItemGroup>

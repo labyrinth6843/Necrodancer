@@ -16,6 +16,7 @@ void MainGame::Init()
 	mBackBuffer->CreateEmpty(WINSIZEX, WINSIZEY);
 	mBackBuffer->LoadAllImage();
 
+	FileManager::GetInstance()->LoadResource();
 	SceneManager::GetInstance()->AddScene(L"MapToolScene", new MapToolScene);
 	SceneManager::GetInstance()->AddScene(L"GameScene", new GameScene);
 	SceneManager::GetInstance()->LoadScene(L"MapToolScene");
