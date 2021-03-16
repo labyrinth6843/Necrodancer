@@ -170,7 +170,6 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="LoadingScene.h" />
-    <ClInclude Include="LoadResource.h" />
     <ClInclude Include="MainGame.h" />
     <ClInclude Include="MapToolScene.h" />
     <ClInclude Include="Math.h" />
@@ -228,7 +227,6 @@
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Time.cpp" />
-    <ClCompile Include="LoadResource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />
