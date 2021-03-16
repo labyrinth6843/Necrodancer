@@ -8,6 +8,7 @@ class GameScene : public Scene
 	vector<wstring>mPallete;
 
 	vector<vector<Tile*>> mGroundList;
+	vector<vector<Tile*>> mWallList;
 	vector<vector<Tile*>> mDecoList;
 	vector<vector<Tile*>> mItemList;
 	vector<vector<Tile*>> mObjectList;

@@ -14,12 +14,14 @@ void GameScene::Init(){
 
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player"));
 
-	SoundPlayer::GetInstance()->Play(L"Game",0.2f);
+	SoundPlayer::GetInstance()->Play(L"zone1_1",0.2f);
+	SoundPlayer::GetInstance()->Play(L"zone1_1_shopkeeper", 0.2f);
 	
 	FileManager::GetInstance()->LoadMap(L"Test00", mGroundList, TileSize);
-	FileManager::GetInstance()->LoadMap(L"Test01", mDecoList, TileSize);
-	FileManager::GetInstance()->LoadMap(L"Test02", mItemList, TileSize);
-	FileManager::GetInstance()->LoadMap(L"Test03", mObjectList, TileSize);
+	FileManager::GetInstance()->LoadMap(L"Test01", mWallList, TileSize);
+	FileManager::GetInstance()->LoadMap(L"Test02", mDecoList, TileSize);
+	FileManager::GetInstance()->LoadMap(L"Test03", mItemList, TileSize);
+	FileManager::GetInstance()->LoadMap(L"Test04", mObjectList, TileSize);
 
 	//Ground»ý¼º
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Background, new Ground("Ground"));
@@ -73,6 +75,7 @@ void GameScene::Render(HDC hdc){
 }
 
 void GameScene::Tool() {
-	SoundPlayer::GetInstance()->Stop(L"Game");
+	SoundPlayer::GetInstance()->Stop(L"zone1_1");
+	SoundPlayer::GetInstance()->Stop(L"zone1_1_shopkeeper");
 	SceneManager::GetInstance()->LoadScene(L"MapToolScene");
 }
