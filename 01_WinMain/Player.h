@@ -7,7 +7,7 @@ class Player:public GameObject{
 	Image* mHeadImage;
 	Image* mBodyImage;
 
-	bool mArmor = false;
+	bool mIsArmor = false;
 	int mArmorType = 0;
 
 	bool direction = true;
