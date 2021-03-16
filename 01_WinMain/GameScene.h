@@ -1,12 +1,10 @@
 #pragma once
 #include "Scene.h"
-class Player;
 class Tile;
 class Button;
 
 class GameScene : public Scene
 {
-	Player* mPlayer;
 	vector<wstring>mPallete;
 
 	vector<vector<Tile*>> mGroundList;

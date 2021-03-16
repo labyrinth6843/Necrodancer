@@ -45,12 +45,12 @@ ItemPallet,3,4,0,0,0
 ItemPallet,4,4,0,0,0
 ItemPallet,5,4,0,0,0
 ItemPallet,6,4,0,0,0
-ItemPallet,7,4,0,0,0
+ItemPallet,7,4,2,0,0
 ItemPallet,8,4,0,0,0
 ItemPallet,9,4,0,0,0
 ItemPallet,0,5,0,0,0
 ItemPallet,1,5,0,0,0
-ItemPallet,2,5,0,0,0
+ItemPallet,2,5,2,0,0
 ItemPallet,3,5,0,0,0
 ItemPallet,4,5,0,0,0
 ItemPallet,5,5,0,0,0
@@ -71,7 +71,7 @@ ItemPallet,9,6,0,0,0
 ItemPallet,0,7,0,0,0
 ItemPallet,1,7,0,0,0
 ItemPallet,2,7,0,0,0
-ItemPallet,3,7,0,0,0
+ItemPallet,3,7,2,0,0
 ItemPallet,4,7,0,0,0
 ItemPallet,5,7,0,0,0
 ItemPallet,6,7,0,0,0

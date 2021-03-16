@@ -71,7 +71,7 @@ void Image::LoadAllImage()//MainGame::Init에서 단 한번 실행 된다
 
 	//{{ 캐릭터 관련 이미지
 	ImageManager::GetInstance()->LoadFromFile(L"Head", Resources(L"Character/Head.bmp"), 112, 22, 8, 2, true);
-	ImageManager::GetInstance()->LoadFromFile(L"Body", Resources(L"CharacterBody.bmp"), 136, 150, 8, 10, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Body", Resources(L"Character/Body.bmp"), 136, 150, 8, 10, true);
 	//}}
 
 	//{{ 적 관련 이미지

@@ -12,13 +12,12 @@ void GameScene::Init(){
 	SoundPlayer::GetInstance()->LoadFromFile(L"Main", Resources(L"theme.mp3"),true);
 	SoundPlayer::GetInstance()->LoadFromFile(L"Game", Resources(L"game.mp3"), true);
 
-	mPlayer = new Player("Player");
-	mPlayer->Init();
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player"));
 
 	SoundPlayer::GetInstance()->Play(L"Game",0.2f);
 	
-	//FileManager::GetInstance()->LoadMap(L"Test00", mGroundList, TileSize);
-	//FileManager::GetInstance()->LoadMap(L"Test01", mDecoList, TileSize);
+	FileManager::GetInstance()->LoadMap(L"Test00", mGroundList, TileSize);
+	FileManager::GetInstance()->LoadMap(L"Test01", mDecoList, TileSize);
 	FileManager::GetInstance()->LoadMap(L"Test02", mItemList, TileSize);
 	FileManager::GetInstance()->LoadMap(L"Test03", mObjectList, TileSize);
 
@@ -27,7 +26,7 @@ void GameScene::Init(){
 
 	//camera
 	Camera* camera = new Camera();
-	camera->SetTarget(mPlayer);
+	camera->SetTarget(ObjectManager::GetInstance()->FindObject("Player"));
 	CameraManager::GetInstance()->SetMainCamera(camera);
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, camera);
 
@@ -36,8 +35,6 @@ void GameScene::Init(){
 }
 
 void GameScene::Release(){
-	mPlayer->Release();
-	SafeDelete(mPlayer);
 	SafeDelete(mToolButton);
 
 	ObjectManager::GetInstance()->FindObject("Ground")->SetIsDestroy(true);
@@ -45,7 +42,6 @@ void GameScene::Release(){
 
 void GameScene::Update(){
 	ObjectManager::GetInstance()->Update();
-	mPlayer->Update();
 	mToolButton->Update();
 }
 
@@ -74,7 +70,6 @@ void GameScene::Render(HDC hdc){
 	}
 
 	mToolButton->Render(hdc);
-	mPlayer->Render(hdc);
 }
 
 void GameScene::Tool() {

@@ -9,12 +9,12 @@ void Player::Init() {
 	mBodyImage = ImageManager::GetInstance()->FindImage(L"Body");
 
 	mHeadLeftAnimation = new Animation();
-	mHeadLeftAnimation->InitFrameByStartEnd(4, mArmor,7, mArmor,false);
+	mHeadLeftAnimation->InitFrameByStartEnd(4, mIsArmor,7, mIsArmor,false);
 	mHeadLeftAnimation->SetIsLoop(true);
 	mHeadLeftAnimation->Play();
 
 	mHeadRightAnimation = new Animation();
-	mHeadRightAnimation->InitFrameByStartEnd(0, mArmor,3, mArmor,false);
+	mHeadRightAnimation->InitFrameByStartEnd(0, mIsArmor,3, mIsArmor,false);
 	mHeadRightAnimation->SetIsLoop(true);
 	mHeadRightAnimation->Play();
 
@@ -82,6 +82,11 @@ void Player::Update() {
 	else {
 		mX += TileSize*2 * Time::GetInstance()->DeltaTime() *  cosf(Math::GetAngle(mX, mY, destindexX, destindexY));
 		mY += TileSize*2 * Time::GetInstance()->DeltaTime() * -sinf(Math::GetAngle(mX, mY, destindexX, destindexY));
+
+		if (Math::GetDistance(mX, mY, destindexX, destindexY) < TileSize / 2)
+			mY += 0.1;
+		else
+			mY -= 0.1;
 
 		if (fabs(destindexX - mX) <= 0.5 && fabs(destindexY - mY) <= 0.5) {
 			mX = destindexX;
