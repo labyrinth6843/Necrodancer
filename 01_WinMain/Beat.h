@@ -1,12 +1,5 @@
-#pragma once
+ï»¿#pragma once
 #include <queue>
-
-//Note : ¹ÚÀÚ¸¦ ¸ÂÃâ ¿ëµµÀÇ ÀÌ¹ÌÁö¸¦ Ãâ·ÂÇÏ±â À§ÇÑ struct
-struct Note {
-	POINT Pos;
-	RECT Rc;		//¾È¾µÁöµµ ¸ğ¸£Áö¸¸ ÀÏ´Ü »ı¼º
-	bool Active = false;
-};
 
 class Beat
 {
@@ -14,32 +7,58 @@ private:
 	Singleton(Beat);
 
 private:
+	enum class NoteState
+	{
+		Active,
+		Unactive,
+		Miss,
+		end
+	};
+	//Note : ë°•ìë¥¼ ë§ì¶œ ìš©ë„ì˜ ì´ë¯¸ì§€ë¥¼ ì¶œë ¥í•˜ê¸° ìœ„í•œ struct
+	struct Note {
+		POINT Pos;
+		RECT Rc;		//ì•ˆì“¸ì§€ë„ ëª¨ë¥´ì§€ë§Œ ì¼ë‹¨ ìƒì„±
+		NoteState State;
+	};
+	struct FrameImage
+	{
+		Image* Image;
+		int FrameX;
+		int FrameY;
+		float FrameCount = 0.f;
+	};
+private:
 	wstring mNowMusic;
 
-	int mTiming;	//³ëÆ®¼¼ÆÃ ½ÃÁ¡ Ã¼Å©¿ë
-	queue<int> mRunQueue;	//txt¸¦ ÀĞ¾î ³ëÆ®¼¼ÆÃ Å¸ÀÌ¹Ö ÀúÀå¿ë
-	queue<int> mSaveQueue;	//º¸½ºÀü Ã³·³ ¹İº¹ Àç»ı¿ë
+	int mTiming;	//ë…¸íŠ¸ì„¸íŒ… ì‹œì  ì²´í¬ìš©
+	queue<int> mRunQueue;	//txtë¥¼ ì½ì–´ ë…¸íŠ¸ì„¸íŒ… íƒ€ì´ë° ì €ì¥ìš©
+	queue<int> mSaveQueue;	//ë³´ìŠ¤ì „ì²˜ëŸ¼ ë°˜ë³µ ì¬ìƒìš©
 	
-	vector<Note> mLeftNote;	//¿ŞÂÊ¿¡¼­ Áß¾ÓÀ¸·Î ¿À´Â ³ëÆ®
-	vector<Note> mRightNote;//¿À¸¥ÂÊ¿¡¼­ Áß¾ÓÀ¸·Î ¿À´Â ³ëÆ®
+	vector<Note> mLeftNote;	//ì™¼ìª½ì—ì„œ ì¤‘ì•™ìœ¼ë¡œ ì˜¤ëŠ” ë…¸íŠ¸
+	vector<Note> mRightNote; //ì˜¤ë¥¸ìª½ì—ì„œ ì¤‘ì•™ìœ¼ë¡œ ì˜¤ëŠ” ë…¸íŠ¸
 
 	RECT mHeart;
-	bool mDeadLine;
+	float mDeadLine;
 
-	Image* mHeartImage;
+	FrameImage mHeartImage;
 	Image* mNoteImage;
 public:
 	Beat();
 	~Beat();
 
 	void Init();
-	void Release();
+	void Release();	//mRun/SaveQueueë§Œ ë¹„ìš´ë‹¤
 	void Update();
-	void Render();
+	void Render(HDC hdc);
 
 public:
-	void SetMusic(const wstring &keyname);//½ºÅ×ÀÌÁö(ÇÊµå) ½ÃÀÛ½Ã À½¾Ç¿¡ ´ëÇÑ ¼¼ÆÃÀ» ÇÒ ÇÔ¼ö
-	bool IsDecision();	//ÇÃ·¹ÀÌ¾î Ä¿¸Çµå¿ë
-	bool NextTurn();	//¸ó½ºÅÍ ÀÌµ¿ È¤Àº °ø°İ ÅÏ È®ÀÎ¿ë
+	void SetMusic(const wstring &keyname, const wstring& beatfilename);//ìŠ¤í…Œì´ì§€(í•„ë“œ) ì‹œì‘ì‹œ ìŒì•…ì— ëŒ€í•œ ì„¸íŒ…ì„ í•  í•¨ìˆ˜
+	bool IsDecision();	//í”Œë ˆì´ì–´ ì»¤ë§¨ë“œìš©
+	bool NextTurn();	//ëª¬ìŠ¤í„° ì´ë™ ë° ê³µê²© í„´ í™•ì¸ìš©
+
+private:
+	void SetTiming();	//Updateë‚´ë¶€ì—ì„œ í˜¸ì¶œë  í•¨ìˆ˜, ë…¸íŠ¸ì˜ ë“±ì¥ íƒ€ì´ë°
+	void SetNote();		//ë¹„í™œì„±í™”ëœ ë…¸íŠ¸ì¤‘ 
+	void NoteReset();	//Activeê°€ falseê°€ ëœ ë…¸íŠ¸ë¥¼ ì‹œì‘ ìœ„ì¹˜ì— ì˜®ê¸°ëŠ” í•¨ìˆ˜
 };
 

@@ -9,7 +9,7 @@ template<typename T >inline void StackClear(stack< T >& Stacks)
 	}
 };
 
-template<typename T >inline void QueueClear(stack< T >& Queue)
+template<typename T >inline void QueueClear(queue< T >& Queue)
 {
 	while (false == Queue.empty())
 	{
