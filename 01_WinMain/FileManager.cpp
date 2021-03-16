@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "FileManager.h"
 #include "Tile.h"
 #include <stack>
@@ -10,7 +10,7 @@ void FileManager::LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int
 	ifstream loadStream(L"../04_Data/" + filename + L".txt");
 
 	bool isNew = false;
-	if (saveList.size() == 0)	//»õ·Î¿î º¤ÅÍ¿¡ ¸ÊÀ» ³ÖÀ»°Å³Ä
+	if (saveList.size() == 0)	//ìƒˆë¡œìš´ ë²¡í„°ì— ë§µì„ ë„£ì„ê±°ëƒ
 		isNew = true;
 	else
 	{
@@ -30,7 +30,7 @@ void FileManager::LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int
 
 	vector<vector<Tile*>> YList;
 	vector<Tile*> XList;
-	bool sizeCheck = false;	//¸¸¾à ³ªÁß¿¡ Å©±â°¡ ´Ù¸¥ º¤ÅÍ¿¡ »õ ¸ÊÀ» ³ÖÀ¸·Á°í ÇÒ¶§ ¾´°Å
+	bool sizeCheck = false;	//ë§Œì•½ ë‚˜ì¤‘ì— í¬ê¸°ê°€ ë‹¤ë¥¸ ë²¡í„°ì— ìƒˆ ë§µì„ ë„£ìœ¼ë ¤ê³  í• ë•Œ ì“´ê±°
 	int sizeY = 0;
 	int sizeX = 0;
 
@@ -39,26 +39,26 @@ void FileManager::LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int
 		while (loadStream.eof() == false)
 		{
 			string line;
-			getline(loadStream, line);	//¸ÇÀ§ ÇÑÁÙÀ» line¿¡ ³Ö´Â´Ù
+			getline(loadStream, line);	//ë§¨ìœ„ í•œì¤„ì„ lineì— ë„£ëŠ”ë‹¤
 
-			vector<string> subList;	//ÇÏ³ªÀÇ [y][x]¿¡ ³ÖÀ»°Å
+			vector<string> subList;	//í•˜ë‚˜ì˜ [y][x]ì— ë„£ì„ê±°
 			//0 key, 1 indexX, 2 indexY, 3 frameX, 4 frameY, 5 ObjectType, 6 TileType
-			//ÀÌ·¸°Ô ÇÏ¸é lineÇÏ³ª ºÒ·¯¿ÍÁ³À¸´Ï±î 
+			//ì´ë ‡ê²Œ í•˜ë©´ lineí•˜ë‚˜ ë¶ˆëŸ¬ì™€ì¡Œìœ¼ë‹ˆê¹Œ 
 			while (true)
 			{
-				int cutIndex = line.find(",");	// find°¡ ÅäÅ«(,)À» line¾È¿¡¼­ ¸øÃ£À¸¸é -1
-				if (cutIndex == -1)	//0~-1´Â °ªÀ» ¸øÃ£´Âµ¥ ³²Àº lineÀÌ ÀÖÀ¸´Ï±î
+				int cutIndex = line.find(",");	// findê°€ í† í°(,)ì„ lineì•ˆì—ì„œ ëª»ì°¾ìœ¼ë©´ -1
+				if (cutIndex == -1)	//0~-1ëŠ” ê°’ì„ ëª»ì°¾ëŠ”ë° ë‚¨ì€ lineì´ ìˆìœ¼ë‹ˆê¹Œ
 				{
-					subList.push_back(line);//³Ö¾îÁÖ°í break
+					subList.push_back(line);//ë„£ì–´ì£¼ê³  break
 					break;
 				}
-				string sub = line.substr(0, cutIndex);	//0ºÎÅÍ cutIndex±îÁö ºĞ¸®
-				line = line.substr(cutIndex + 1, line.length());	//ºĞ¸®ÇÑ ´ÙÀ½¿¡ lineÀ» ÁÙÀÌ°í
-				subList.push_back(sub);//ÀúÀåÇÏ°í
-			}//ÆÄÀÏ¿¡¼­ ÇÑÁÙ ÀĞ±â ³¡
+				string sub = line.substr(0, cutIndex);	//0ë¶€í„° cutIndexê¹Œì§€ ë¶„ë¦¬
+				line = line.substr(cutIndex + 1, line.length());	//ë¶„ë¦¬í•œ ë‹¤ìŒì— lineì„ ì¤„ì´ê³ 
+				subList.push_back(sub);//ì €ì¥í•˜ê³ 
+			}//íŒŒì¼ì—ì„œ í•œì¤„ ì½ê¸° ë
 
 
-			if (subList.size() <= 1)	//size = 1 ÀÌ¸é °ø¹é¸»°ï ÀĞ¾îµéÀÎ°Ô ¾ø´Ù.
+			if (subList.size() <= 1)	//size = 1 ì´ë©´ ê³µë°±ë§ê³¤ ì½ì–´ë“¤ì¸ê²Œ ì—†ë‹¤.
 			{
 				if (isNew)
 				{
@@ -70,12 +70,12 @@ void FileManager::LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int
 			}
 
 
-			//ÀĞÀº°Å ÀúÀå
+			//ì½ì€ê±° ì €ì¥
 			/*
 			*/
 			if (!isNew)
 			{
-				//¹æ¹ı1 Å©±â°¡ ¸Â´Â º¤ÅÍ
+				//ë°©ë²•1 í¬ê¸°ê°€ ë§ëŠ” ë²¡í„°
 				int x = stoi(subList[1]);
 				int y = stoi(subList[2]);
 
@@ -94,11 +94,11 @@ void FileManager::LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int
 				wstring wstr;
 				wstr.assign(subList[0].begin(), subList[0].end());
 
-				//Å©±â ´Ã¸®´Â°Å
+				//í¬ê¸° ëŠ˜ë¦¬ëŠ”ê±°
 				Tile* tile = new Tile(ImageManager::GetInstance()->FindImage(wstr),
 					tilesizeX * x, tilesizeY * y, tilesizeX, tilesizeY,
 					stof(subList[3]), stof(subList[4]), (TileType)stoi(subList[5]));
-				//¿ø·¡ »çÀÌÁî
+				//ì›ë˜ ì‚¬ì´ì¦ˆ
 
 				if (sizeY == y - 1)
 				{
@@ -117,6 +117,37 @@ void FileManager::LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int
 						sizeX++;
 				}
 			}
+		}
+		loadStream.close();
+	}
+}
+
+void FileManager::LoatBeat(wstring filename, queue<int> &savequeue)
+{
+	//ê²½ë¡œ ì¡°ì • í•„ìš”í•¨
+	ifstream loadStream(L"../02_Resources/Sound/ost/"+filename+L".txt");	//íŒŒì¼ ì—´ê¸°
+
+
+	if (loadStream.is_open())
+	{
+		while (loadStream.eof() == false)	//íŒŒì¼ì˜ ëì— ë„ë‹¬í•˜ë©´ -1ì„ ë°˜í™˜í•œë‹¤
+		{
+			string line;
+			getline(loadStream, line);	//í•œì¤„ì„ ì½ì–´ë“¤ìŒ, ë¹„íŠ¸txtëŠ” í•œì¤„ë¡œ ì´ë£¨ì–´ì ¸ ìˆì–´ ëª¨ë‘ ì½ì€ ê²ƒê³¼ ë§ˆì°¬ê°€ì§€
+
+			while (true)
+			{
+				int cutIndex = line.find(",");	//,ë¥¼ í† í°ìœ¼ë¡œ ë¶„ë¦¬í•¨
+				if (cutIndex == -1)	//,ë¥¼ ì°¾ì§€ëª»í•œ ê²½ìš°
+				{
+					savequeue.emplace(stoi(line));
+					break;
+				}
+				int sub =stoi(line.substr(0, cutIndex));	//ì•ì—ì„œë¶€í„° ì°¾ì•„ë‚¸ cutIndex(,ê°€ ìˆëŠ” ìœ„ì¹˜)ê¹Œì§€ ì˜ë¼ëƒ„
+				line = line.substr(cutIndex + 1, line.length());//lineì—ì„œ subì— í•´ë‹¹ë˜ëŠ” ë¶€ë¶„ì„ ì œê±°í•¨
+				savequeue.emplace(sub);
+			}
+
 		}
 	}
 }
