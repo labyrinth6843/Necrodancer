@@ -122,7 +122,7 @@ void FileManager::LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int
 	}
 }
 
-void FileManager::LoatBeat(wstring filename, queue<int> &savequeue)
+void FileManager::LoadBeat(wstring filename, queue<int> &savequeue)
 {
 	//경로 조정 필요함
 	ifstream loadStream(L"../02_Resources/Sound/ost/"+filename+L".txt");	//파일 열기

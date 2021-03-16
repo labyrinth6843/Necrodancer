@@ -9,6 +9,6 @@ class FileManager
 
 public:
 	void LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int tilesizeX = TileSize, int tilesizeY = TileSize);
-	void LoatBeat(wstring filename);
+	void LoadBeat(wstring filename, queue<int> &savequeue);
 };
 
