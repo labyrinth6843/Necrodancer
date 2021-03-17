@@ -42,7 +42,7 @@ using namespace std;
 #include "Gizmo.h"
 #include "Helper.h"
 #include "FileManager.h"
-
+#include "Beat.h"
 
 extern POINT _mousePosition;	//마우스 좌표
 extern HWND	_hWnd;
