@@ -31,7 +31,7 @@ private:
 private:
 	wstring mNowMusic;
 
-	int mTiming;	//노트세팅 시점 체크용
+	float mTiming;	//노트세팅 시점 체크용
 	queue<int> mRunQueue;	//txt를 읽어 노트세팅 타이밍 저장용
 	queue<int> mSaveQueue;	//보스전처럼 반복 재생용
 	

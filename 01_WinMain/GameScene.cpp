@@ -16,9 +16,9 @@ void GameScene::Init(){
 
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player"));
 
-	Beat::GetInstance()->SetMusic(L"zone1_1",L"zone1_1");
 	SoundPlayer::GetInstance()->Play(L"zone1_1",0.2f);
 	SoundPlayer::GetInstance()->Play(L"zone1_1_shopkeeper", 0.2f);
+	Beat::GetInstance()->SetMusic(L"zone1_1",L"zone1_1");
 	
 	FileManager::GetInstance()->LoadMap(L"Test00", mGroundList, TileSize);
 	FileManager::GetInstance()->LoadMap(L"Test01", mWallList, TileSize);
@@ -41,7 +41,7 @@ void GameScene::Init(){
 
 void GameScene::Release(){
 	SafeDelete(mToolButton);
-
+	Beat::GetInstance()->Release();
 	ObjectManager::GetInstance()->FindObject("Ground")->SetIsDestroy(true);
 }
 
@@ -74,8 +74,8 @@ void GameScene::Render(HDC hdc){
 				mObjectList[y][x]->MoveRender(hdc, 100, 200);
 		}
 	}
-	Beat::GetInstance()->Render(hdc);
 	mToolButton->Render(hdc);
+	Beat::GetInstance()->Render(hdc);
 }
 
 void GameScene::Tool() {

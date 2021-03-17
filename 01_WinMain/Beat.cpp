@@ -4,7 +4,7 @@
 Beat::Beat()
 {
 	mNowMusic = L"";
-	mTiming = 0;
+	mTiming = 0.f;
 	//이미지, 단 이미지 파일을 추가하고 주석을 제거할 것
 	mHeartImage.Image = IMAGEMANAGER->FindImage(L"BeatHeart");
 	mHeartImage.FrameX = 0;
@@ -18,11 +18,11 @@ Beat::Beat()
 	for (int i = 0; i < 30; ++i)
 	{
 		POINT lpos = { 0, WINSIZEY - 50 };
-		Note ltemp = { lpos, RectMakeCenter(0, WINSIZEY - 50,5,5), NoteState::Unactive};
+		Note ltemp = { lpos, RectMakeCenter(0, WINSIZEY - 70,5,5), NoteState::Unactive, 1.f};
 		mLeftNote.push_back(ltemp);
 
 		POINT rpos = { WINSIZEX, WINSIZEY - 50 };
-		Note rtemp = { rpos, RectMakeCenter(WINSIZEX, WINSIZEY - 50,5,5),  NoteState::Unactive };
+		Note rtemp = { rpos, RectMakeCenter(WINSIZEX, WINSIZEY - 70,5,5),  NoteState::Unactive, 1.f };
 		mRightNote.push_back(rtemp);
 	}
 	//노트 색깔을 변경할 기준값
@@ -61,7 +61,7 @@ void Beat::Update()
 	//기본적으로 매 프레임마다 턴조건 초기화
 	mTurn = false;
 	//현재 재생중인 음악의 Position이 mTiming과 같으면 노트를 활성화 한다
-	if (mTiming == SoundPlayer::GetInstance()->GetPosition(mNowMusic))
+	if (mTiming <= SoundPlayer::GetInstance()->GetPosition(mNowMusic))
 	{
 		SetNote();
 		//mRunQueue가 비어있지 않다면 다음 Timimg 세팅
@@ -80,43 +80,44 @@ void Beat::Update()
 		//노트 이동
 		if (mLeftNote[i].State == NoteState::Active)
 		{
-			mLeftNote[i].Pos.x += 500 * Time::GetInstance()->DeltaTime();	//속도는 임의로 설정했기때문에 조정 필요
+			mLeftNote[i].Pos.x += 300 * Time::GetInstance()->DeltaTime();	//속도는 임의로 설정했기때문에 조정 필요
 			mLeftNote[i].Rc = RectMakeCenter(mLeftNote[i].Pos.x, WINSIZEY - 50, 5, 5);
 		}
 		else if (mLeftNote[i].State == NoteState::Miss)
 		{
-			mLeftNote[i].Pos.y -= 50 * Time::GetInstance()->DeltaTime();
+			mLeftNote[i].Pos.y -= 100 * Time::GetInstance()->DeltaTime();
 			mLeftNote[i].Rc = RectMakeCenter(mLeftNote[i].Pos.x, mLeftNote[i].Pos.y, 5, 5);
-			mLeftNote[i].Alpha -= 20 * Time::GetInstance()->DeltaTime();
+			mLeftNote[i].Alpha -= 20.f * Time::GetInstance()->DeltaTime();
 		}
 
 		if (mRightNote[i].State == NoteState::Active)
 		{
-			mRightNote[i].Pos.x -= 500 * Time::GetInstance()->DeltaTime();
+			mRightNote[i].Pos.x -= 300 * Time::GetInstance()->DeltaTime();
 			mRightNote[i].Rc = RectMakeCenter(mRightNote[i].Pos.x, WINSIZEY - 50, 5, 5);
 		}
 		else if (mRightNote[i].State == NoteState::Miss)
 		{
-			mRightNote[i].Pos.y -= 50 * Time::GetInstance()->DeltaTime();
+			mRightNote[i].Pos.y -= 100 * Time::GetInstance()->DeltaTime();
 			mRightNote[i].Rc = RectMakeCenter(mRightNote[i].Pos.x, mRightNote[i].Pos.y, 5, 5);
-			mRightNote[i].Alpha -= 20.f * Time::GetInstance()->DeltaTime();
+			mRightNote[i].Alpha -= 30.f * Time::GetInstance()->DeltaTime();
+		}
+
+		//Left와 Right끼리 충돌하면  Miss 처리
+		RECT temp;
+		if (mLeftNote[i].State == NoteState::Active && mRightNote[i].State == NoteState::Active &&
+			IntersectRect(&temp, &mLeftNote[i].Rc, &mRightNote[i].Rc))
+		{
+			MissNote();
 		}
 		if (mLeftNote[i].Alpha <= 0 && mRightNote[i].Alpha <= 0)
 		{
 			//플레이어가 커맨드를 입력하지 않고 지나가면 몬스터의 턴 진행
 			mTurn = true;
-			//플레이어가 커맨드를 입력하면 몬스터의 
-			NoteReset();
-		}
-
-		
-		//Left와 Right끼리 충돌하면  Miss 처리
-		RECT temp;
-		if (IntersectRect(&temp, &mLeftNote[i].Rc, &mRightNote[i].Rc))
-		{
-			MissNote();
-		}
+			mLeftNote[i].State = NoteState::Unactive;
+			mRightNote[i].State = NoteState::Unactive;
+		}	
 	}
+	NoteReset();
 
 	//음악의 재생시간이 mDeadLine을 넘어가면 노트 이미지를 변경한다
 	if (mNowMusic != L"")
@@ -131,7 +132,7 @@ void Beat::Update()
 	//심장의 프레임을 변경한다
 	if (mHeartImage.FrameX == 0)
 	{
-		mHeartImage.FrameCount += Time::GetInstance()->DeltaTime();
+		mHeartImage.FrameCount += 10 * Time::GetInstance()->DeltaTime();
 		if (mHeartImage.FrameCount > 5.f)
 		{
 			mHeartImage.FrameX = 1;
@@ -139,7 +140,7 @@ void Beat::Update()
 		}
 	}else if (mHeartImage.FrameX == 1)
 	{
-		mHeartImage.FrameCount += Time::GetInstance()->DeltaTime();
+		mHeartImage.FrameCount += 10 * Time::GetInstance()->DeltaTime();
 		if (mHeartImage.FrameCount > 2.f)
 		{
 			mHeartImage.FrameX = 0;
@@ -160,8 +161,13 @@ void Beat::Render(HDC hdc)
 			mNoteImage->AlphaScaleRender(hdc, mRightNote[i].Pos.x - 12, mRightNote[i].Pos.y - 50, 25, 100, mRightNote[i].Alpha);
 	}
 	//심장
-	mHeartImage.Image->ScaleFrameRender(hdc,WINSIZEX - mHeartImage.Image->GetFrameWidth(), WINSIZEY - 100,
-		82, 100, mHeartImage.FrameX, mHeartImage.FrameY);
+	mHeartImage.Image->ScaleFrameRender(hdc, WINSIZEX/2 - mHeartImage.Image->GetFrameWidth(), WINSIZEY - 120,
+		mHeartImage.FrameX, mHeartImage.FrameY, 82, 100);
+
+	//테스팅
+	float t = SoundPlayer::GetInstance()->GetPosition(mNowMusic);
+	wstring test = to_wstring(t);
+	TextOut(hdc,10,10,test.c_str(),test.length());
 }
 
 void Beat::SetMusic(const wstring& keyname, const wstring& beatfilename)
@@ -172,6 +178,8 @@ void Beat::SetMusic(const wstring& keyname, const wstring& beatfilename)
 	FileManager::GetInstance()->LoadBeat(beatfilename,mSaveQueue);
 	mRunQueue = mSaveQueue;
 
+	mTiming = mRunQueue.front();
+	mRunQueue.pop();
 }
 
 bool Beat::IsDecision()
@@ -227,12 +235,16 @@ void Beat::SetNote()
 	{
 		if (mLeftNote[i].State == NoteState::Unactive)
 		{
-			mLeftNote[i].State == NoteState::Active;
+			mLeftNote[i].State = NoteState::Active;
+			break;
 		}
-
+	}
+	for (int i = 0; i < 30; ++i)
+	{
 		if (mRightNote[i].State == NoteState::Unactive)
 		{
-			mRightNote[i].State == NoteState::Active;
+			mRightNote[i].State = NoteState::Active;
+			break;
 		}
 	}
 }
@@ -242,30 +254,36 @@ void Beat::NoteReset()
 	//가장 먼저 활성화 된 노트를 찾아 벡터에서 제거 한 후 다시 맨 뒤에 삽입한다 -> 속도가 걱정되면 나중에 우선순위큐를 알아보고 수정할 것
 	for (int i = 0; i < mLeftNote.size(); ++i)
 	{
-		if (mLeftNote[i].State ==  NoteState::Active)
+		if (mLeftNote[i].State ==  NoteState::Unactive)
 		{
-			Note temp = mLeftNote[i];
-			temp.Pos = { 0, WINSIZEY - 50 };
-			temp.Rc = RectMakeCenter(0, WINSIZEY - 50, 5, 5);
-			temp.State = NoteState::Unactive;
-			temp.Alpha = 1.f;
-			mLeftNote.erase(mLeftNote.begin());
-			mLeftNote.push_back(temp);
-			break;
+			if (mLeftNote[i].Pos.x != 0)
+			{
+				Note temp = mLeftNote[i];
+				temp.Pos = { 0, WINSIZEY - 50 };
+				temp.Rc = RectMakeCenter(0, WINSIZEY - 50, 5, 5);
+				temp.State = NoteState::Unactive;
+				temp.Alpha = 1.f;
+				mLeftNote.erase(mLeftNote.begin()+i);
+				mLeftNote.push_back(temp);
+				break;
+			}
 		}
 	}
 	for (int i = 0; i < mRightNote.size(); ++i)
 	{
-		if (mRightNote[i].State == NoteState::Active)
+		if (mRightNote[i].State == NoteState::Unactive)
 		{
-			Note temp = mRightNote[i];
-			temp.Pos = { 0, WINSIZEY - 50 };
-			temp.Rc = RectMakeCenter(0, WINSIZEY - 50, 5, 5);
-			temp.State = NoteState::Unactive;
-			temp.Alpha = 1.f;
-			mRightNote.erase(mLeftNote.begin());
-			mRightNote.push_back(temp);
-			break;
+			if (mRightNote[i].Pos.x != WINSIZEX)
+			{
+				Note temp = mRightNote[i];
+				temp.Pos = { WINSIZEX, WINSIZEY - 50 };
+				temp.Rc = RectMakeCenter(WINSIZEX, WINSIZEY - 50, 5, 5);
+				temp.State = NoteState::Unactive;
+				temp.Alpha = 1.f;
+				mRightNote.erase(mRightNote.begin()+i);
+				mRightNote.push_back(temp);
+				break;
+			}
 		}
 	}
 }
