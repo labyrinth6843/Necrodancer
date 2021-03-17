@@ -13,7 +13,7 @@ Beat::Beat()
 	mHeartImage.FrameY = 0;
 
 	//판정 기준이 될 하트Rect
-	mHeart = RectMakeCenter(WINSIZEX/2, mDefaultY, 120, 100);
+	mHeart = RectMakeCenter(WINSIZEX/2, mDefaultY, 150, 100);
 
 	//반복 사용할 노트 30 x2
 	for (int i = 0; i < 30; ++i)
@@ -61,7 +61,7 @@ void Beat::Release()
 
 void Beat::Update()
 {
-	if (Input::GetInstance()->GetKeyDown('N'))
+	if (Input::GetInstance()->GetKeyDown('N'))//노트 절반 날림 + 
 	{
 		for (int i = 0; i < mRunQueue.size() / 2; ++i)
 		{
