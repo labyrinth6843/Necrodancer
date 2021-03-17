@@ -100,6 +100,18 @@
     <Filter Include="MainGame\Scene\TitleScene">
       <UniqueIdentifier>{1471720d-02d1-4584-9c75-0640a14daf9d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Object\Wall">
+      <UniqueIdentifier>{f73da758-bcb7-45af-a433-38158860e4d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Object\Item">
+      <UniqueIdentifier>{859f5fe4-1d65-4a8b-a098-608ed24f2007}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Path">
+      <UniqueIdentifier>{67b0857f-e51f-4a0f-9748-c3028980059d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\StringHelper">
+      <UniqueIdentifier>{d17c5e4e-1a59-4c0e-a7c1-4c44e95b7ba9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -189,9 +201,6 @@
     <ClInclude Include="Player.h">
       <Filter>MainGame\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>MainGame\Object</Filter>
-    </ClInclude>
     <ClInclude Include="Enemy.h">
       <Filter>MainGame\Object\Enemy</Filter>
     </ClInclude>
@@ -215,6 +224,18 @@
     </ClInclude>
     <ClInclude Include="TitleScene.h">
       <Filter>MainGame\Scene\TitleScene</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>MainGame\Object\Wall</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>MainGame\Object\Item</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>FrameWork\Path</Filter>
+    </ClInclude>
+    <ClInclude Include="StringHelper.h">
+      <Filter>FrameWork\StringHelper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -293,9 +314,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>MainGame\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>MainGame\Object</Filter>
-    </ClCompile>
     <ClCompile Include="Enemy.cpp">
       <Filter>MainGame\Object\Enemy</Filter>
     </ClCompile>
@@ -328,6 +346,18 @@
     </ClCompile>
     <ClCompile Include="TitleScene.cpp">
       <Filter>MainGame\Scene\TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>MainGame\Object\Wall</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>MainGame\Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Path.cpp">
+      <Filter>FrameWork\Path</Filter>
+    </ClCompile>
+    <ClCompile Include="StringHelper.cpp">
+      <Filter>FrameWork\StringHelper</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

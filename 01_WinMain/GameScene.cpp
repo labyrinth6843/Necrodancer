@@ -22,7 +22,7 @@ void GameScene::Init(){
 	
 
 	//Ground»ý¼º
-	ObjectManager::GetInstance()->AddObject(ObjectLayer::Background, new Ground("Ground"));
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Ground, new Ground("Ground"));
 
 	//camera
 	Camera* camera = new Camera();

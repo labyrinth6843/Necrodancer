@@ -114,8 +114,34 @@ void Player::Render(HDC hdc) {
 }
 
 void Player::Move(int x, int y) {
-	//무조건 이동하는 방식이 아닌 목적지 타일의 여러 상태를 확인한 후 넘어가야 할 듯함
-	destIndexX = mX + TileSize * x;
-	destIndexY = mY + TileSize * y;
-	mIsMove = true;
+	if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Monster, POINT{ (int)destIndexX, (int)destIndexY }) != nullptr) {
+		Attack();
+
+		//if(ObjectManager::GetInstance()->FindObject(ObjectLayer::Monster, POINT{ destIndexX, destIndexY })->GetHp)
+	}
+		
+
+	else {
+		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, POINT{ (int)destIndexX, (int)destIndexY }) != nullptr)
+			Dig();
+		else if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Item, POINT{ (int)destIndexX, (int)destIndexY }) != nullptr)
+			Equip();
+
+		destIndexX = mX + TileSize * x;
+		destIndexY = mY + TileSize * y;
+		mIsMove = true;
+	}
+	
+}
+
+void Player::Dig() {
+
+}
+
+void Player::Attack() {
+
+}
+
+void Player::Equip() {
+
 }

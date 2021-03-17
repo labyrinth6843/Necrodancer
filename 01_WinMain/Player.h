@@ -41,6 +41,9 @@ public:
 	void Render(HDC hdc)override;
 
 	void Move(int x, int y);
+	void Dig();
+	void Attack();
+	void Equip();
 
 	void SetHp(float hp) { mHp = hp; }
 	float GetHp() { return mHp; }
@@ -49,7 +52,9 @@ public:
 
 	float GetDef() { return mDef; }
 
-	POINT GetCord() { return { initIndexX, initIndexY }; }
+	POINT GetPos() { return { initIndexX, initIndexY }; }
+	float GetPosX() { return initIndexX; }
+	float GetPosY() { return initIndexY; }
 
 	void SetCoin(int coin) { mCoin = coin; }
 	int GetCoin() { return mCoin; }

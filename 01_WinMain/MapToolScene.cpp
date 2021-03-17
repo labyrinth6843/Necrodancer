@@ -4,6 +4,7 @@
 #include "Tile.h"
 #include "Image.h"
 #include "Button.h"
+#include "Path.h"
 #include <fstream>
 
 void MapToolScene::Init()
@@ -79,6 +80,8 @@ void MapToolScene::Init()
 	mButtonList.insert(make_pair(L"Save", new Button(L"Save", L"Save", 250, 50, 200, 50, bind(&MapToolScene::Save, this))));
 	mButtonList.insert(make_pair(L"Load", new Button(L"Load", L"Load", 350, 50, 200, 50, [this]() 
 		{
+			Path::OpenFileDialog(L"", nullptr, L"../04_Data/", nullptr, _hWnd);
+
 			FileManager::GetInstance()->LoadMap(L"Test00", mGroundList, TileSize);
 			FileManager::GetInstance()->LoadMap(L"Test01", mWallList, TileSize, 72);
 			FileManager::GetInstance()->LoadMap(L"Test02", mDecoList, TileSize);
@@ -515,7 +518,8 @@ void MapToolScene::TileListRender(HDC hdc,const vector <vector<Tile*>>&tilelist)
 	}
 }
 
-void MapToolScene::Save(){
+void MapToolScene::Save()
+{
 	int i = 0;
 	ofstream saveStream(L"../04_Data/Test0" + to_wstring(i) + L".txt");
 	if (saveStream.is_open()){
@@ -647,7 +651,11 @@ void MapToolScene::Save(){
 	saveStream.close();
 }
 
-void MapToolScene::Load(){	//이제 사용 안함
+void MapToolScene::Load()
+{	
+
+	
+	//이제 사용 안함
 	int i = 0;
 	ifstream loadStream(L"../04_Data/Test0" + to_wstring(i) + L".txt");
 	if (loadStream.is_open()){
