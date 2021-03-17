@@ -25,10 +25,10 @@ class Player:public GameObject{
 	float mDef = 0;
 
 	int mCoin = 0;
-	int initindexX;
-	int initindexY;
-	float destindexX;
-	float destindexY;
+	int initIndexX;
+	int initIndexY;
+	float destIndexX;
+	float destIndexY;
 	bool mIsMove;
 
 	int mSpeed;
@@ -49,7 +49,7 @@ public:
 
 	float GetDef() { return mDef; }
 
-	POINT GetCord() { return { initindexX, initindexY }; }
+	POINT GetCord() { return { initIndexX, initIndexY }; }
 
 	void SetCoin(int coin) { mCoin = coin; }
 	int GetCoin() { return mCoin; }

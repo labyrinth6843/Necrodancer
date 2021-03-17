@@ -1,13 +1,15 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Player.h"
 Player::Player(const string& name) : GameObject(name) {
 
 }
 
 void Player::Init() {
+	//이미지 로드
 	mHeadImage = ImageManager::GetInstance()->FindImage(L"Head");
 	mBodyImage = ImageManager::GetInstance()->FindImage(L"Body");
 
+	//방향에 따른 머리, 몸통 애니메이션
 	mHeadLeftAnimation = new Animation();
 	mHeadLeftAnimation->InitFrameByStartEnd(4, mIsArmor,7, mIsArmor,false);
 	mHeadLeftAnimation->SetIsLoop(true);
@@ -32,12 +34,12 @@ void Player::Init() {
 	mBodyRightAnimation->SetFrameUpdateTime(0.1f);
 	mBodyRightAnimation->Play();
 
+	//초기 설정이 필요한 값 입력
 	mHp = 6;
-	mX = 100 + TileSize * 5;
-	mY = 200 + TileSize * 4;
-	initindexX = mX / TileSize;
-	initindexY = mY / TileSize;
-
+	mX = TileSize * 5;
+	mY = TileSize * 4;
+	initIndexX = mX / TileSize;
+	initIndexY = mY / TileSize;
 	mCurrentHeadAnimation = mHeadRightAnimation;
 	mCurrentBodyAnimation = mBodyRightAnimation;
 }
@@ -50,16 +52,17 @@ void Player::Release() {
 }
 
 void Player::Update() {
-	initindexX = (mX - 100) / TileSize;
-	initindexY = (mY - 200) / TileSize;
+	//현재 인덱스값 계산
+	initIndexX = mX / TileSize;
+	initIndexY = mY / TileSize;
 
 	if (mIsMove == false) {
 		if (Input::GetInstance()->GetKeyDown(VK_UP) || Input::GetInstance()->GetKeyDown('W'))
-			if (initindexY > 0)
+			if (initIndexY > 0)
 				Move(0, -1);
 
 		if (Input::GetInstance()->GetKeyDown(VK_RIGHT) || Input::GetInstance()->GetKeyDown('D'))
-			if (initindexX < 9) {
+			if (initIndexX < 9) {
 				if (direction == false) {
 					direction = true;
 					mCurrentHeadAnimation = mHeadRightAnimation;
@@ -69,7 +72,7 @@ void Player::Update() {
 			}
 	
 		if (Input::GetInstance()->GetKeyDown(VK_LEFT) || Input::GetInstance()->GetKeyDown('A')) {
-			if (initindexX > 0) {
+			if (initIndexX > 0) {
 				if (direction == true) {
 					direction = false;
 					mCurrentHeadAnimation = mHeadLeftAnimation;
@@ -80,21 +83,21 @@ void Player::Update() {
 		}
 			
 		if (Input::GetInstance()->GetKeyDown(VK_DOWN) || Input::GetInstance()->GetKeyDown('S'))
-			if (initindexY < 9)
+			if (initIndexY < 9)
 				Move(0, 1);
 	}
 	else {
-		mX += TileSize*2 * Time::GetInstance()->DeltaTime() *  cosf(Math::GetAngle(mX, mY, destindexX, destindexY));
-		mY += TileSize*2 * Time::GetInstance()->DeltaTime() * -sinf(Math::GetAngle(mX, mY, destindexX, destindexY));
+		mX += TileSize*2 * Time::GetInstance()->DeltaTime() *  cosf(Math::GetAngle(mX, mY, destIndexX, destIndexY));
+		mY += TileSize*2 * Time::GetInstance()->DeltaTime() * -sinf(Math::GetAngle(mX, mY, destIndexX, destIndexY));
 
-		if (Math::GetDistance(mX, mY, destindexX, destindexY) < TileSize / 2)
+		if (Math::GetDistance(mX, mY, destIndexX, destIndexY) < TileSize / 2)
 			mY += 0.2;
 		else
 			mY -= 0.2;
 
-		if (fabs(destindexX - mX) <= 0.5 && fabs(destindexY - mY) <= 0.5) {
-			mX = destindexX;
-			mY = destindexY;
+		if (fabs(destIndexX - mX) <= 0.5 && fabs(destIndexY - mY) <= 0.5) {
+			mX = destIndexX;
+			mY = destIndexY;
 			mIsMove = false;
 		}
 	}
@@ -103,15 +106,20 @@ void Player::Update() {
 }
 
 void Player::Render(HDC hdc) {
+	//수정이 많이 필요한 부분
 	//mBodyImage->TileFrameRender(hdc, initindexX, initindexY, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY());
 	//mHeadImage->TileFrameRender(hdc, initindexX, initindexY, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY());
 
-	mBodyImage->ScaleFrameRender(hdc, mX, mY, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(),34,30);
-	mHeadImage->ScaleFrameRender(hdc, mX+2, mY-18, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(),28,22);
+	//mBodyImage->ScaleFrameRender(hdc, mX, mY, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(),34,30);
+	//mHeadImage->ScaleFrameRender(hdc, mX+2, mY-18, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(),28,22);
+
+	mBodyImage->TileScaleFrameRender(hdc, initIndexX, initIndexY, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
+	mHeadImage->TileScaleFrameRender(hdc, initIndexX, initIndexY, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22, -10, -20);
 }
 
 void Player::Move(int x, int y) {
-	destindexX = mX + TileSize * x;
-	destindexY = mY + TileSize * y;
+	//무조건 이동하는 방식이 아닌 목적지 타일의 여러 상태를 확인한 후 넘어가야 할 듯함
+	destIndexX = mX + TileSize * x;
+	destIndexY = mY + TileSize * y;
 	mIsMove = true;
 }

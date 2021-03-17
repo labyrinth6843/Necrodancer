@@ -66,12 +66,21 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"ShopKeeper", Resources(L"NPC/ShopKeeper.bmp"), 376, 76, 8, 2, true);
 	//}}
 
-	//{{ 맵 타일
-	ImageManager::GetInstance()->LoadFromFile(L"GroundTile", Resources(L"Tile/GroundTile.bmp"), 156, 52, 6, 2, true);
+	//{{ 맵 타일 이미지
+	ImageManager::GetInstance()->LoadFromFile(L"GroundTile", Resources(L"Tile/GroundTile.bmp"), 208, 52, 8, 2, true);
 	ImageManager::GetInstance()->LoadFromFile(L"WallTile", Resources(L"Tile/WallTile.bmp"), 125, 240, 5, 5, true);
 	//}}
 
-	//{{ost
+	//{{ HUD 관련 이미지
+	ImageManager::GetInstance()->LoadFromFile(L"BeatMark1", Resources(L"HUD/BeatMark1.bmp"), 6, 32, true);
+	ImageManager::GetInstance()->LoadFromFile(L"BeatMark2", Resources(L"HUD/BeatMark2.bmp"), 6, 32, true);
+	ImageManager::GetInstance()->LoadFromFile(L"BeatMark3", Resources(L"HUD/BeatMark3.bmp"), 6, 32, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Heart", Resources(L"HUD/Heart.bmp"), 82, 52, 2, 1, true);
+	ImageManager::GetInstance()->LoadFromFile(L"HUDCoin", Resources(L"HUD/HUDCoin.bmp"), 20, 20, true);
+	ImageManager::GetInstance()->LoadFromFile(L"HUDHealth", Resources(L"HUD/HUDHealth.bmp"), 72, 22, 3, 1, true);
+	//}}
+
+	//{{ ost 사운드
 	SoundPlayer::GetInstance()->LoadFromFile(L"zone1_1", Resources(L"Sound/ost/zone1_1.mp3"),false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"zone1_1_shopkeeper", Resources(L"Sound/ost/zone1_1_shopkeeper.mp3"), false);
 
@@ -84,7 +93,7 @@ void FileManager::LoadResource()
 	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga", Resources(L"Sound/ost/kingconga.mp3"), true);
 	//}}
 
-	//{{캐릭터 대사
+	//{{캐릭터 관련 사운드
 	SoundPlayer::GetInstance()->LoadFromFile(L"melee_1_1", Resources(L"Sound/voice/Player/melee/vo_cad_melee_1_01.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"melee_1_2", Resources(L"Sound/voice/Player/melee/vo_cad_melee_1_02.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"melee_1_3", Resources(L"Sound/voice/Player/melee/vo_cad_melee_1_03.mp3"), false);
@@ -128,5 +137,33 @@ void FileManager::LoadResource()
 	SoundPlayer::GetInstance()->LoadFromFile(L"dig_4", Resources(L"Sound/voice/Player/dig/vo_cad_dig_04.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"dig_5", Resources(L"Sound/voice/Player/dig/vo_cad_dig_05.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"dig_6", Resources(L"Sound/voice/Player/dig/vo_cad_dig_06.mp3"), false);
+	//}}
+
+	//{{ 좀비 관련 사운드
+	SoundPlayer::GetInstance()->LoadFromFile(L"zombie_attack", Resources(L"Sound/voice/Enemy/zombie/en_zombie_attack.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"zombie_death", Resources(L"Sound/voice/Enemy/zombie/en_zombie_death.mp3"), false);
+	//}}
+
+	//{{ 킹콩가 관련 사운드
+	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_announcer", Resources(L"Sound/voice/Enemy/kingconga/vo_announcer_kingconga.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_cry_1", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_cry_01.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_cry_2", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_cry_02.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_attack_1", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_attack_01.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_attack_2", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_attack_02.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_attack_3", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_attack_03.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_hit_1", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_hit_01.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_hit_2", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_hit_02.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_hit_3", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_hit_03.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_death", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_death.mp3"), false);
+	//}}
+	
+	//{{ 슬라임 관련 사운드
+	SoundPlayer::GetInstance()->LoadFromFile(L"slime_attack", Resources(L"Sound/voice/Enemy/slime/en_slime_attack.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"slime_hit_1", Resources(L"Sound/voice/Enemy/slime/en_slime_hit_01.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"slime_hit_2", Resources(L"Sound/voice/Enemy/slime/en_slime_hit_02.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"slime_hit_3", Resources(L"Sound/voice/Enemy/slime/en_slime_hit_03.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"slime_death_1", Resources(L"Sound/voice/Enemy/slime/en_slime_death_01.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"slime_death_2", Resources(L"Sound/voice/Enemy/slime/en_slime_death_02.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"slime_death_3", Resources(L"Sound/voice/Enemy/slime/en_slime_death_03.mp3"), false);
 	//}}
 }

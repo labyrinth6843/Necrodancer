@@ -2,6 +2,7 @@
 #include "MainGame.h"
 
 #include "Image.h"
+#include "TitleScene.h"
 #include "MapToolScene.h"
 #include "GameScene.h"
 
@@ -14,11 +15,12 @@ void MainGame::Init()
 {
 	mBackBuffer = new Image();
 	mBackBuffer->CreateEmpty(WINSIZEX, WINSIZEY);
-	mBackBuffer->LoadAllImage();
 
 	FileManager::GetInstance()->LoadResource();
+	SceneManager::GetInstance()->AddScene(L"TitleScene", new TitleScene);
 	SceneManager::GetInstance()->AddScene(L"MapToolScene", new MapToolScene);
 	SceneManager::GetInstance()->AddScene(L"GameScene", new GameScene);
+	//SceneManager::GetInstance()->LoadScene(L"TitleScene");
 	SceneManager::GetInstance()->LoadScene(L"MapToolScene");
 }
 
@@ -27,19 +29,16 @@ Release : 메모리 해제할 때 불러주는 함수
 유니티라면 OnDestroy
 해당 클래스 인스턴스가 메모리 해제 될 때 단 한번 호출해주는 녀석
 */
-void MainGame::Release()
-{
+void MainGame::Release(){
 	Random::ReleaseInstance();	//싱글톤 인스턴스 삭제
 
 	SafeDelete(mBackBuffer);
-
 }
 
 /*
 Update : 매 프레임 실행되는 함수, 여기서 연산 처리 한다.
 */
-void MainGame::Update()
-{
+void MainGame::Update(){
 	SceneManager::GetInstance()->Update();
 }
 
@@ -49,8 +48,7 @@ Render : 매 프레임 실행되는 함수, Update가 끝나고 Render가 실행된다.
 
 매개변수 hdc : 윈도우 창의 HDC가 들어옴
 */
-void MainGame::Render(HDC hdc)
-{
+void MainGame::Render(HDC hdc){
 	//백버퍼의 HDC 가져온다
 	HDC backDC = mBackBuffer->GetHDC();
 	//HDC 영역을 특정 색으로 밀어버리는 녀석
@@ -65,8 +63,7 @@ void MainGame::Render(HDC hdc)
 	mBackBuffer->Render(hdc, 0, 0);
 }
 
-void MainGame::RenderTime(HDC hdc)
-{
+void MainGame::RenderTime(HDC hdc){
 	float worldTime = Time::GetInstance()->GetWorldTime();
 	float deltaTime = Time::GetInstance()->DeltaTime();
 	ULONG fps = Time::GetInstance()->GetmFrameRate();
@@ -78,4 +75,3 @@ void MainGame::RenderTime(HDC hdc)
 	TextOut(hdc, 10, 25, strDeltaTime.c_str(), strDeltaTime.length());
 	TextOut(hdc, 10, 40, strFPS.c_str(), strFPS.length());
 }
-

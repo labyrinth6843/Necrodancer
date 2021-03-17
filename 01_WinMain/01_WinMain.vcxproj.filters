@@ -210,6 +210,9 @@
     <ClInclude Include="Beat.h">
       <Filter>MainGame\System</Filter>
     </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>MainGame\Scene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -302,9 +305,6 @@
     <ClCompile Include="FileManager.cpp">
       <Filter>FrameWork\FileManager</Filter>
     </ClCompile>
-    <ClCompile Include="LoadImage.cpp">
-      <Filter>FrameWork\Image</Filter>
-    </ClCompile>
     <ClCompile Include="MapToolProc+SetSize.cpp">
       <Filter>MainGame\Scene\MapToolScene\MapToolFunc</Filter>
     </ClCompile>
@@ -322,6 +322,9 @@
     </ClCompile>
     <ClCompile Include="LoadResource.cpp">
       <Filter>FrameWork\FileManager</Filter>
+    </ClCompile>
+    <ClCompile Include="TitleScene.cpp">
+      <Filter>MainGame\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
