@@ -9,8 +9,14 @@
 #include "Ground.h"
 #include "Camera.h"
 void GameScene::Init(){
+	Beat::GetInstance()->Init();
+
+	SoundPlayer::GetInstance()->LoadFromFile(L"Main", Resources(L"theme.mp3"),true);
+	SoundPlayer::GetInstance()->LoadFromFile(L"Game", Resources(L"game.mp3"), true);
+
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player"));
 
+	Beat::GetInstance()->SetMusic(L"zone1_1",L"zone1_1");
 	SoundPlayer::GetInstance()->Play(L"zone1_1",0.2f);
 	SoundPlayer::GetInstance()->Play(L"zone1_1_shopkeeper", 0.2f);
 	
@@ -40,6 +46,7 @@ void GameScene::Release(){
 }
 
 void GameScene::Update(){
+	Beat::GetInstance()->Update();
 	ObjectManager::GetInstance()->Update();
 	mToolButton->Update();
 }
@@ -67,7 +74,7 @@ void GameScene::Render(HDC hdc){
 				mObjectList[y][x]->MoveRender(hdc, 100, 200);
 		}
 	}
-
+	Beat::GetInstance()->Render(hdc);
 	mToolButton->Render(hdc);
 }
 

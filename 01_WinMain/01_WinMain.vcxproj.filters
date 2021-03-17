@@ -97,6 +97,9 @@
     <Filter Include="FrameWork\LoadResource">
       <UniqueIdentifier>{55c25a64-8a37-4135-984f-1c2141350f12}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Scene\TitleScene">
+      <UniqueIdentifier>{1471720d-02d1-4584-9c75-0640a14daf9d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -211,7 +214,7 @@
       <Filter>MainGame\System</Filter>
     </ClInclude>
     <ClInclude Include="TitleScene.h">
-      <Filter>MainGame\Scene</Filter>
+      <Filter>MainGame\Scene\TitleScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -324,7 +327,7 @@
       <Filter>FrameWork\FileManager</Filter>
     </ClCompile>
     <ClCompile Include="TitleScene.cpp">
-      <Filter>MainGame\Scene</Filter>
+      <Filter>MainGame\Scene\TitleScene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

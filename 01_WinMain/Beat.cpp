@@ -6,10 +6,10 @@ Beat::Beat()
 	mNowMusic = L"";
 	mTiming = 0;
 	//이미지, 단 이미지 파일을 추가하고 주석을 제거할 것
-	//mHeartImage.Image = IMAGEMANAGER->FindImage(L"BeatHeart");
-	//mHeartImage.FrameX = 0;
-	//mHeartImage.FrameY = 0;
-	//mNoteImage = IMAGEMANAGER->FindImage(L"BeatNote");
+	mHeartImage.Image = IMAGEMANAGER->FindImage(L"BeatHeart");
+	mHeartImage.FrameX = 0;
+	mHeartImage.FrameY = 0;
+	mNoteImage = IMAGEMANAGER->FindImage(L"BeatBlue");
 
 	//판정 기준이 될 하트Rect
 	mHeart = RectMakeBottom(WINSIZEX/2, WINSIZEY, 40, 100);
@@ -58,6 +58,8 @@ void Beat::Release()
 
 void Beat::Update()
 {
+	//기본적으로 매 프레임마다 턴조건 초기화
+	mTurn = false;
 	//현재 재생중인 음악의 Position이 mTiming과 같으면 노트를 활성화 한다
 	if (mTiming == SoundPlayer::GetInstance()->GetPosition(mNowMusic))
 	{
@@ -100,7 +102,12 @@ void Beat::Update()
 			mRightNote[i].Alpha -= 20.f * Time::GetInstance()->DeltaTime();
 		}
 		if (mLeftNote[i].Alpha <= 0 && mRightNote[i].Alpha <= 0)
+		{
+			//플레이어가 커맨드를 입력하지 않고 지나가면 몬스터의 턴 진행
+			mTurn = true;
+			//플레이어가 커맨드를 입력하면 몬스터의 
 			NoteReset();
+		}
 
 		
 		//Left와 Right끼리 충돌하면  Miss 처리
@@ -117,13 +124,11 @@ void Beat::Update()
 		if (mDeadLine <= SoundPlayer::GetInstance()->GetPosition(mNowMusic))
 		{
 			//이미지 삽입 후 주석 제거
-			//mNoteImage = IMAGEMANAGER->FindImage(L"빨간노트이미지이름");
+			mNoteImage = IMAGEMANAGER->FindImage(L"BeatRed");
 		}
 	}
 
 	//심장의 프레임을 변경한다
-	//심장 이미지 삽입 후 주석 제거
-	/*
 	if (mHeartImage.FrameX == 0)
 	{
 		mHeartImage.FrameCount += Time::GetInstance()->DeltaTime();
@@ -141,7 +146,7 @@ void Beat::Update()
 			mHeartImage.FrameCount = 0.f;
 		}
 	}
-	*/
+	
 }
 
 void Beat::Render(HDC hdc)
@@ -186,8 +191,7 @@ bool Beat::IsDecision()
 bool Beat::NextTurn()
 {
 	//Left와 Right가 만나거나 플레이어가 미스가 아닌 커맨드를 입력했을때 true반환
-
-	return false;
+	return mTurn;
 }
 
 void Beat::SetTiming()

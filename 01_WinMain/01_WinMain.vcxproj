@@ -184,6 +184,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Tile.h" />
     <ClInclude Include="Time.h" />
+    <ClInclude Include="TitleScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
@@ -204,7 +205,6 @@
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Item.cpp" />
-    <ClCompile Include="LoadImage.cpp" />
     <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="LoadResource.cpp" />
     <ClCompile Include="MainGame + MainProc.cpp" />
@@ -228,6 +228,7 @@
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="Tile.cpp" />
     <ClCompile Include="Time.cpp" />
+    <ClCompile Include="TitleScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

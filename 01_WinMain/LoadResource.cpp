@@ -72,10 +72,10 @@ void FileManager::LoadResource()
 	//}}
 
 	//{{ HUD 관련 이미지
-	ImageManager::GetInstance()->LoadFromFile(L"BeatMark1", Resources(L"HUD/BeatMark1.bmp"), 6, 32, true);
-	ImageManager::GetInstance()->LoadFromFile(L"BeatMark2", Resources(L"HUD/BeatMark2.bmp"), 6, 32, true);
-	ImageManager::GetInstance()->LoadFromFile(L"BeatMark3", Resources(L"HUD/BeatMark3.bmp"), 6, 32, true);
-	ImageManager::GetInstance()->LoadFromFile(L"Heart", Resources(L"HUD/Heart.bmp"), 82, 52, 2, 1, true);
+	ImageManager::GetInstance()->LoadFromFile(L"BeatBlue", Resources(L"HUD/BeatMark1.bmp"), 6, 32, true);
+	ImageManager::GetInstance()->LoadFromFile(L"BeatGreen", Resources(L"HUD/BeatMark2.bmp"), 6, 32, true);
+	ImageManager::GetInstance()->LoadFromFile(L"BeatRed", Resources(L"HUD/BeatMark3.bmp"), 6, 32, true);
+	ImageManager::GetInstance()->LoadFromFile(L"BeatHeart", Resources(L"HUD/Heart.bmp"), 82, 52, 2, 1, true);
 	ImageManager::GetInstance()->LoadFromFile(L"HUDCoin", Resources(L"HUD/HUDCoin.bmp"), 20, 20, true);
 	ImageManager::GetInstance()->LoadFromFile(L"HUDHealth", Resources(L"HUD/HUDHealth.bmp"), 72, 22, 3, 1, true);
 	//}}
