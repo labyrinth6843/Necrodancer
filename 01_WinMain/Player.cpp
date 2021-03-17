@@ -1,5 +1,7 @@
 ﻿#include "pch.h"
 #include "Player.h"
+#include "Camera.h"
+
 Player::Player(const string& name) : GameObject(name) {
 
 }
@@ -87,13 +89,13 @@ void Player::Update() {
 				Move(0, 1);
 	}
 	else {
-		mX += TileSize*2 * Time::GetInstance()->DeltaTime() *  cosf(Math::GetAngle(mX, mY, destIndexX, destIndexY));
-		mY += TileSize*2 * Time::GetInstance()->DeltaTime() * -sinf(Math::GetAngle(mX, mY, destIndexX, destIndexY));
+		mX += TileSize * 3 * Time::GetInstance()->DeltaTime() *  cosf(Math::GetAngle(mX, mY, destIndexX, destIndexY));
+		mY += TileSize * 3 * Time::GetInstance()->DeltaTime() * -sinf(Math::GetAngle(mX, mY, destIndexX, destIndexY));
 
 		if (Math::GetDistance(mX, mY, destIndexX, destIndexY) < TileSize / 2)
-			mY += 0.2;
+			mY += 1;
 		else
-			mY -= 0.2;
+			mY -= 1;
 
 		if (fabs(destIndexX - mX) <= 0.5 && fabs(destIndexY - mY) <= 0.5) {
 			mX = destIndexX;
@@ -107,14 +109,8 @@ void Player::Update() {
 
 void Player::Render(HDC hdc) {
 	//수정이 많이 필요한 부분
-	//mBodyImage->TileFrameRender(hdc, initindexX, initindexY, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY());
-	//mHeadImage->TileFrameRender(hdc, initindexX, initindexY, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY());
-
-	//mBodyImage->ScaleFrameRender(hdc, mX, mY, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(),34,30);
-	//mHeadImage->ScaleFrameRender(hdc, mX+2, mY-18, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(),28,22);
-
-	mBodyImage->TileScaleFrameRender(hdc, initIndexX, initIndexY, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
-	mHeadImage->TileScaleFrameRender(hdc, initIndexX, initIndexY, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22, -10, -20);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX, mY, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, mX + 2, mY - 18, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
 }
 
 void Player::Move(int x, int y) {
