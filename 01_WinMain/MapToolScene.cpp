@@ -35,7 +35,7 @@ void MapToolScene::Init()
 		for (int x = 0; x < mMaxSizeX; ++x)
 		{
 			GList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"GroundPallet"), TileSize * x , TileSize * y , TileSize, TileSize, 0, 0));
-			WList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"WallTile"), TileSize * x , TileSize * y , TileSize, 72, 1, 0));
+			WList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"WallTile"), TileSize * x , TileSize * y , TileSize, 72, 0, 0));
 			DList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"WallPallet"), TileSize * x , TileSize * y , TileSize, TileSize, 0, 0));
 			IList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"ItemPallet"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
 			OList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"MonsterPallet"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));

@@ -45,6 +45,7 @@ private:
 	Image* mNoteImage;
 
 	bool mIsBoss;
+	bool mTurn;
 public:
 	Beat();
 	~Beat();

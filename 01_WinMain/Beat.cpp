@@ -29,6 +29,8 @@ Beat::Beat()
 	mDeadLine = INT_MAX;
 	//보스전인지 판단
 	mIsBoss = false;
+	//몬스터 행동 조건
+	mTurn = false;
 }
 
 Beat::~Beat()
@@ -184,6 +186,7 @@ bool Beat::IsDecision()
 bool Beat::NextTurn()
 {
 	//Left와 Right가 만나거나 플레이어가 미스가 아닌 커맨드를 입력했을때 true반환
+
 	return false;
 }
 
