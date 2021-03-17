@@ -11,9 +11,6 @@
 void GameScene::Init(){
 	Beat::GetInstance()->Init();
 
-	SoundPlayer::GetInstance()->LoadFromFile(L"Main", Resources(L"theme.mp3"),true);
-	SoundPlayer::GetInstance()->LoadFromFile(L"Game", Resources(L"game.mp3"), true);
-
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player"));
 
 	SoundPlayer::GetInstance()->Play(L"zone1_1",0.2f);
