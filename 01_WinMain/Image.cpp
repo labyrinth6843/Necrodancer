@@ -548,4 +548,36 @@ void Image::TileScaleFrameRender(HDC hdc, int indexX, int indexY, int frameX, in
 	}
 }
 
+void Image::TileScaleFrameRender(HDC hdc, int indexX, int indexY, int frameX, int frameY, int width, int height, int addX, int addY){
+	if (mIsTrans)
+	{
+		GdiTransparentBlt(
+			hdc,
+			indexX * TileSize - mImageBuffer->width / 2 + TileSize / 2 + addX,
+			indexY * TileSize - mImageBuffer->frameHeight + TileSize + addY,
+			width, 
+			height,
+			mImageBuffer->hdc, 
+			mImageBuffer->frameWidth * frameX, 
+			mImageBuffer->frameHeight * frameY,
+			mImageBuffer->frameWidth, 
+			mImageBuffer->frameHeight, 
+			mTransColor);
+	}
+	else
+	{
+		BitBlt(
+			hdc, 
+			indexX * TileSize - mImageBuffer->width / 2 + TileSize / 2 + addX,
+			indexY * TileSize - mImageBuffer->frameHeight + TileSize + addY,
+			width, 
+			height, 
+			mImageBuffer->hdc, 
+			mImageBuffer->frameWidth * frameX,
+			mImageBuffer->frameHeight * frameY,
+			SRCCOPY);
+	}
+
+}
+
 
