@@ -1,14 +1,23 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "SoundPlayer.h"
 
 using namespace FMOD;
 
 SoundPlayer::SoundPlayer()
 {
-	//´ëºÎºĞÀÇ ¶óÀÌºê·¯¸®´Â ÇÔºÎ·Î ³»ºÎ ¿ä¼Ò¸¦ »ı¼º,»èÁ¦ ÇÏÁö ¸øÇÏ°Ô µÇ¾îÀÖ´Ù. 
-	//±×·¡¼­ ÆÑÅä¸®ÆĞÅÏÀÌ¶ó´Â µğÀÚÀÎ ÆĞÅÏÀ» »ç¿ëÇØ¼­ »ı¼ºÇÏ°Ô ²û À¯µµÇÔ
+	//ëŒ€ë¶€ë¶„ì˜ ë¼ì´ë¸ŒëŸ¬ë¦¬ëŠ” í•¨ë¶€ë¡œ ë‚´ë¶€ ìš”ì†Œë¥¼ ìƒì„±,ì‚­ì œ í•˜ì§€ ëª»í•˜ê²Œ ë˜ì–´ìˆë‹¤. 
+	//ê·¸ë˜ì„œ íŒ©í† ë¦¬íŒ¨í„´ì´ë¼ëŠ” ë””ìì¸ íŒ¨í„´ì„ ì‚¬ìš©í•´ì„œ ìƒì„±í•˜ê²Œ ë” ìœ ë„í•¨
 	FMOD::System_Create(&mSystem);
-	mSystem->init(MaxChannelBuffer, FMOD_INIT_NORMAL, NULL);
+	
+	FMOD_RESULT fr = mSystem->init(MaxChannelBuffer, FMOD_INIT_NORMAL, NULL);
+	if (fr == FMOD_ERR_OUTPUT_INIT)
+	{
+		mSystem->release();	//ì™¸ë¶€ ë¼ì´ë¸ŒëŸ¬ë¦¬ëŠ” ì™¸ë¶€ì—ì„œ ì§€ìš°ë ¤ê³  í•˜ë©´ ë‚´ë¶€ìš”ì†Œë¥¼ ëª¨ë‘ íŒŒê´´í•œë‹¤ -> rekeaseí˜¸ì¶œ
+
+		FMOD::System_Create(&mSystem);
+		mSystem->setOutput(FMOD_OUTPUTTYPE_NOSOUND);
+		fr = mSystem->init(MaxChannelBuffer, FMOD_INIT_NORMAL, NULL);
+	}
 }
 
 SoundPlayer::~SoundPlayer()
@@ -20,8 +29,8 @@ SoundPlayer::~SoundPlayer()
 
 	for (SoundIter iter = mSoundList.begin(); iter != mSoundList.end(); ++iter)
 	{
-		//¶óÀÌºê·¯¸®ÀÇ Å¬·¡½ºµéÀº ´ëºÎºĞ »ı¼ºÀÚ ¼Ò¸êÀÚ ¸ğµÎ privateµÇ¾î ÀÖÀ½
-		//¿ÜºÎ¿¡¼­ »èÁ¦ÇÏ·Á¸é releaseÇÔ¼ö¸¦ È£ÃâÇÏ°Ô²û Â¥¿©Á® ÀÖ´Ù.
+		//ë¼ì´ë¸ŒëŸ¬ë¦¬ì˜ í´ë˜ìŠ¤ë“¤ì€ ëŒ€ë¶€ë¶„ ìƒì„±ì ì†Œë©¸ì ëª¨ë‘ privateë˜ì–´ ìˆìŒ
+		//ì™¸ë¶€ì—ì„œ ì‚­ì œí•˜ë ¤ë©´ releaseí•¨ìˆ˜ë¥¼ í˜¸ì¶œí•˜ê²Œë” ì§œì—¬ì ¸ ìˆë‹¤.
 		iter->second->release();
 	}
 
@@ -50,7 +59,7 @@ void SoundPlayer::Update()
 
 void SoundPlayer::LoadFromFile(const wstring & keyName, const wstring & fileName, bool isLoop)
 {
-	// {{ ÀÌ¹Ì ºÒ·¯¿ÂÀûÀÌ ÀÖ´Â ÆÄÀÏÀÎÁö °Ë»ç
+	// {{ ì´ë¯¸ ë¶ˆëŸ¬ì˜¨ì ì´ ìˆëŠ” íŒŒì¼ì¸ì§€ ê²€ì‚¬
 	SoundIter iter = mSoundList.find(keyName);
 	if (iter != mSoundList.end())
 		return;
@@ -79,7 +88,7 @@ void SoundPlayer::LoadFromFile(const wstring & keyName, const wstring & fileName
 void SoundPlayer::Play(const wstring & keyName, float volume)
 {
 
-	//ÀÏ½ÃÁ¤Áö µÇ¾î ÀÖ´Â »ç¿îµå ÀÎÁö ÆÇ´Ü
+	//ì¼ì‹œì •ì§€ ë˜ì–´ ìˆëŠ” ì‚¬ìš´ë“œ ì¸ì§€ íŒë‹¨
 	for (int i = 0; i < mActiveChannels.size(); ++i)
 	{
 		if (mActiveChannels[i].SoundName == keyName)
@@ -97,7 +106,7 @@ void SoundPlayer::Play(const wstring & keyName, float volume)
 	if (mActiveChannels.size() >= MaxChannelBuffer)
 		return;
 
-	//ÇØ´ç ÀÌ¸§ÀÇ »ç¿îµå°¡ ¾ø´Ù¸é return 
+	//í•´ë‹¹ ì´ë¦„ì˜ ì‚¬ìš´ë“œê°€ ì—†ë‹¤ë©´ return 
 	SoundIter iter = mSoundList.find(keyName);
 	if (iter == mSoundList.end())
 		return;
@@ -183,7 +192,7 @@ float SoundPlayer::GetPosition(const wstring& keyName)
 		{
 			unsigned int pos = 0;
 			mActiveChannels[i].Channel->getPosition(&pos, FMOD_TIMEUNIT_MS);
-			return pos;
+			return float(pos);
 		}
 	}
 }

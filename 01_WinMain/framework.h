@@ -44,6 +44,8 @@ using namespace std;
 #include "FileManager.h"
 #include "Beat.h"
 
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+
 extern POINT _mousePosition;	//마우스 좌표
 extern HWND	_hWnd;
 extern HINSTANCE	_hInstance;

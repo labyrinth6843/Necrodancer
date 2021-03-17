@@ -3,26 +3,27 @@
 
 Beat::Beat()
 {
+	mDefaultY = WINSIZEY - 70;
+
 	mNowMusic = L"";
 	mTiming = 0.f;
 	//이미지, 단 이미지 파일을 추가하고 주석을 제거할 것
 	mHeartImage.Image = IMAGEMANAGER->FindImage(L"BeatHeart");
 	mHeartImage.FrameX = 0;
 	mHeartImage.FrameY = 0;
-	mNoteImage = IMAGEMANAGER->FindImage(L"BeatBlue");
 
 	//판정 기준이 될 하트Rect
-	mHeart = RectMakeBottom(WINSIZEX/2, WINSIZEY, 40, 100);
+	mHeart = RectMakeCenter(WINSIZEX/2, mDefaultY, 120, 100);
 
 	//반복 사용할 노트 30 x2
 	for (int i = 0; i < 30; ++i)
 	{
-		POINT lpos = { 0, WINSIZEY - 50 };
-		Note ltemp = { lpos, RectMakeCenter(0, WINSIZEY - 70,5,5), NoteState::Unactive, 1.f};
+		POINT lpos = { 0, mDefaultY };
+		Note ltemp = { IMAGEMANAGER->FindImage(L"BeatBlue"), lpos, RectMakeCenter(0, mDefaultY, 5,5), NoteState::Unactive, 1.f};
 		mLeftNote.push_back(ltemp);
 
-		POINT rpos = { WINSIZEX, WINSIZEY - 50 };
-		Note rtemp = { rpos, RectMakeCenter(WINSIZEX, WINSIZEY - 70,5,5),  NoteState::Unactive, 1.f };
+		POINT rpos = { WINSIZEX, mDefaultY };
+		Note rtemp = { IMAGEMANAGER->FindImage(L"BeatBlue"), rpos, RectMakeCenter(WINSIZEX, mDefaultY, 5,5),  NoteState::Unactive, 1.f };
 		mRightNote.push_back(rtemp);
 	}
 	//노트 색깔을 변경할 기준값
@@ -31,6 +32,8 @@ Beat::Beat()
 	mIsBoss = false;
 	//몬스터 행동 조건
 	mTurn = false;
+	//노래종료
+	mMusicEnd = false;
 }
 
 Beat::~Beat()
@@ -51,22 +54,33 @@ void Beat::Release()
 	QueueClear(mSaveQueue);
 	for (int i = 0; i < 30; ++i)
 	{
-		mLeftNote[i] = { { 0, WINSIZEY - 50 } , RectMakeCenter(0, WINSIZEY - 50,5,5), NoteState::Unactive , 1.f};
-		mRightNote[i] = { { WINSIZEX, WINSIZEY - 50 }, RectMakeCenter(WINSIZEX, WINSIZEY - 50,5,5),  NoteState::Unactive, 1.f };
+		mLeftNote[i] = { IMAGEMANAGER->FindImage(L"BeatBlue") ,{ 0, mDefaultY } , RectMakeCenter(0, mDefaultY,5,5), NoteState::Unactive , 1.f};
+		mRightNote[i] = { IMAGEMANAGER->FindImage(L"BeatBlue"), { WINSIZEX,mDefaultY }, RectMakeCenter(WINSIZEX, mDefaultY,5,5),  NoteState::Unactive, 1.f };
 	}
 }
 
 void Beat::Update()
 {
+	if (Input::GetInstance()->GetKeyDown('N'))
+	{
+		for (int i = 0; i < mRunQueue.size() / 2; ++i)
+		{
+			mRunQueue.pop();
+		}
+		SetTiming();
+		SoundPlayer::GetInstance()->SetPosition(mNowMusic,mTiming);
+	}
+	if (Input::GetInstance()->GetKeyDown('B'))
+		IsDecision();
 	//기본적으로 매 프레임마다 턴조건 초기화
 	mTurn = false;
 	//현재 재생중인 음악의 Position이 mTiming과 같으면 노트를 활성화 한다
-	if (mTiming <= SoundPlayer::GetInstance()->GetPosition(mNowMusic))
+	float position = SoundPlayer::GetInstance()->GetPosition(mNowMusic);
+	cout << position << endl;
+	if (mTiming <= position && !mMusicEnd)
 	{
 		SetNote();
-		//mRunQueue가 비어있지 않다면 다음 Timimg 세팅
-		if(!mRunQueue.empty())
-			SetTiming();
+		SetTiming();
 	}
 	//보스라면 루프시키기 위해 mRunQueue가 비어있을때 mSaveQueue로 덮어씌운다
 	if (mIsBoss && mRunQueue.empty())
@@ -81,31 +95,31 @@ void Beat::Update()
 		if (mLeftNote[i].State == NoteState::Active)
 		{
 			mLeftNote[i].Pos.x += 300 * Time::GetInstance()->DeltaTime();	//속도는 임의로 설정했기때문에 조정 필요
-			mLeftNote[i].Rc = RectMakeCenter(mLeftNote[i].Pos.x, WINSIZEY - 50, 5, 5);
+			mLeftNote[i].Rc = RectMakeCenter(mLeftNote[i].Pos.x, mLeftNote[i].Pos.y, 5, 5);
 		}
 		else if (mLeftNote[i].State == NoteState::Miss)
 		{
 			mLeftNote[i].Pos.y -= 100 * Time::GetInstance()->DeltaTime();
 			mLeftNote[i].Rc = RectMakeCenter(mLeftNote[i].Pos.x, mLeftNote[i].Pos.y, 5, 5);
-			mLeftNote[i].Alpha -= 20.f * Time::GetInstance()->DeltaTime();
+			mLeftNote[i].Alpha -= 2.f* Time::GetInstance()->DeltaTime();
 		}
 
 		if (mRightNote[i].State == NoteState::Active)
 		{
 			mRightNote[i].Pos.x -= 300 * Time::GetInstance()->DeltaTime();
-			mRightNote[i].Rc = RectMakeCenter(mRightNote[i].Pos.x, WINSIZEY - 50, 5, 5);
+			mRightNote[i].Rc = RectMakeCenter(mRightNote[i].Pos.x, mLeftNote[i].Pos.y, 5, 5);
 		}
 		else if (mRightNote[i].State == NoteState::Miss)
 		{
 			mRightNote[i].Pos.y -= 100 * Time::GetInstance()->DeltaTime();
 			mRightNote[i].Rc = RectMakeCenter(mRightNote[i].Pos.x, mRightNote[i].Pos.y, 5, 5);
-			mRightNote[i].Alpha -= 30.f * Time::GetInstance()->DeltaTime();
+			mRightNote[i].Alpha -= 2.f* Time::GetInstance()->DeltaTime();
 		}
 
 		//Left와 Right끼리 충돌하면  Miss 처리
 		RECT temp;
 		if (mLeftNote[i].State == NoteState::Active && mRightNote[i].State == NoteState::Active &&
-			IntersectRect(&temp, &mLeftNote[i].Rc, &mRightNote[i].Rc))
+			(mLeftNote[i].Pos.x >= mRightNote[i].Pos.x))
 		{
 			MissNote();
 		}
@@ -119,20 +133,10 @@ void Beat::Update()
 	}
 	NoteReset();
 
-	//음악의 재생시간이 mDeadLine을 넘어가면 노트 이미지를 변경한다
-	if (mNowMusic != L"")
-	{
-		if (mDeadLine <= SoundPlayer::GetInstance()->GetPosition(mNowMusic))
-		{
-			//이미지 삽입 후 주석 제거
-			mNoteImage = IMAGEMANAGER->FindImage(L"BeatRed");
-		}
-	}
-
 	//심장의 프레임을 변경한다
 	if (mHeartImage.FrameX == 0)
 	{
-		mHeartImage.FrameCount += 10 * Time::GetInstance()->DeltaTime();
+		mHeartImage.FrameCount += 15 * Time::GetInstance()->DeltaTime();
 		if (mHeartImage.FrameCount > 5.f)
 		{
 			mHeartImage.FrameX = 1;
@@ -140,7 +144,7 @@ void Beat::Update()
 		}
 	}else if (mHeartImage.FrameX == 1)
 	{
-		mHeartImage.FrameCount += 10 * Time::GetInstance()->DeltaTime();
+		mHeartImage.FrameCount += 15 * Time::GetInstance()->DeltaTime();
 		if (mHeartImage.FrameCount > 2.f)
 		{
 			mHeartImage.FrameX = 0;
@@ -156,15 +160,23 @@ void Beat::Render(HDC hdc)
 	for (int i = 0; i < 30; ++i)
 	{
 		if (mLeftNote[i].State != NoteState::Unactive)
-			mNoteImage->AlphaScaleRender(hdc, mLeftNote[i].Pos.x - 12, mLeftNote[i].Pos.y - 50, 25, 100, mLeftNote[i].Alpha);
-		if(mRightNote[i].State != NoteState::Unactive)
-			mNoteImage->AlphaScaleRender(hdc, mRightNote[i].Pos.x - 12, mRightNote[i].Pos.y - 50, 25, 100, mRightNote[i].Alpha);
+		{
+			mLeftNote[i].Image->AlphaScaleRender(hdc, mLeftNote[i].Pos.x - 12, mLeftNote[i].Pos.y - 50, 15, 100, mLeftNote[i].Alpha);
+			//Gizmo::GetInstance()->DrawRect(hdc, mLeftNote[i].Rc, Gizmo::Color::Green);
+		}
+		if (mRightNote[i].State != NoteState::Unactive)
+		{
+			mRightNote[i].Image->AlphaScaleRender(hdc, mRightNote[i].Pos.x - 12, mRightNote[i].Pos.y - 50, 15, 100, mRightNote[i].Alpha);
+			//Gizmo::GetInstance()->DrawRect(hdc, mRightNote[i].Rc, Gizmo::Color::Green);
+		}
 	}
 	//심장
-	mHeartImage.Image->ScaleFrameRender(hdc, WINSIZEX/2 - mHeartImage.Image->GetFrameWidth(), WINSIZEY - 120,
-		mHeartImage.FrameX, mHeartImage.FrameY, 82, 100);
+	Gizmo::GetInstance()->DrawRect(hdc, mHeart, Gizmo::Color::Green);
+	mHeartImage.Image->ScaleFrameRender(hdc, WINSIZEX/2 - 60, WINSIZEY - 160,
+		mHeartImage.FrameX, mHeartImage.FrameY, 120, 150);
 
 	//테스팅
+	//Gizmo::GetInstance()->DrawRect(hdc, RectMake(0, 0, WINSIZEX / 2, WINSIZEY), Gizmo::Color::Red);
 	float t = SoundPlayer::GetInstance()->GetPosition(mNowMusic);
 	wstring test = to_wstring(t);
 	TextOut(hdc,10,10,test.c_str(),test.length());
@@ -187,7 +199,8 @@ bool Beat::IsDecision()
 	if (PtInRect(&mHeart, mLeftNote[0].Pos))
 	{
 		//커맨드 입력에 성공했을때 몬스터를 잡는다면 콤보가 증가함 -> 이 작업은 콤보 시스템에서 처리
-		NoteReset();
+
+		NoteSuccess();
 		return true;
 	}
 	//miss
@@ -204,12 +217,19 @@ bool Beat::NextTurn()
 
 void Beat::SetTiming()
 {
+	if (mRunQueue.empty())
+	{
+		mMusicEnd = true;
+		return;
+	}
+
 	mTiming = mRunQueue.front();
 	mRunQueue.pop();
 }
 
 void Beat::MissNote()
 {
+	//활성화된 노트중 가장 심장에 가까운 노트를 찾아 Miss상태로 만든다
 	for (int i = 0; i < mLeftNote.size(); ++i)
 	{
 		if (mLeftNote[i].State == NoteState::Active)
@@ -236,6 +256,15 @@ void Beat::SetNote()
 		if (mLeftNote[i].State == NoteState::Unactive)
 		{
 			mLeftNote[i].State = NoteState::Active;
+			//음악의 재생시간이 mDeadLine을 넘어가면 노트 이미지를 변경한다
+			if (mNowMusic != L"")
+			{
+				if (mDeadLine <= SoundPlayer::GetInstance()->GetPosition(mNowMusic))
+				{
+					//이미지 삽입 후 주석 제거
+					mLeftNote[i].Image = IMAGEMANAGER->FindImage(L"BeatRed");
+				}
+			}
 			break;
 		}
 	}
@@ -244,11 +273,37 @@ void Beat::SetNote()
 		if (mRightNote[i].State == NoteState::Unactive)
 		{
 			mRightNote[i].State = NoteState::Active;
+			if (mNowMusic != L"")
+			{
+				if (mDeadLine <= SoundPlayer::GetInstance()->GetPosition(mNowMusic))
+				{
+					//이미지 삽입 후 주석 제거
+					mRightNote[i].Image = IMAGEMANAGER->FindImage(L"BeatRed");
+				}
+			}
 			break;
 		}
 	}
 }
-
+void Beat::NoteSuccess()
+{
+	for (int i = 0; i < mLeftNote.size(); ++i)
+	{
+		if (mLeftNote[i].State == NoteState::Active)
+		{
+			mLeftNote[i].State = NoteState::Unactive;
+			break;
+		}
+	}
+	for (int i = 0; i < mRightNote.size(); ++i)
+	{
+		if (mRightNote[i].State == NoteState::Active)
+		{
+			mRightNote[i].State = NoteState::Unactive;
+			break;
+		}
+	}
+}
 void Beat::NoteReset()
 {
 	//가장 먼저 활성화 된 노트를 찾아 벡터에서 제거 한 후 다시 맨 뒤에 삽입한다 -> 속도가 걱정되면 나중에 우선순위큐를 알아보고 수정할 것
@@ -259,8 +314,8 @@ void Beat::NoteReset()
 			if (mLeftNote[i].Pos.x != 0)
 			{
 				Note temp = mLeftNote[i];
-				temp.Pos = { 0, WINSIZEY - 50 };
-				temp.Rc = RectMakeCenter(0, WINSIZEY - 50, 5, 5);
+				temp.Pos = { 0, mDefaultY };
+				temp.Rc = RectMakeCenter(0, mDefaultY, 5, 5);
 				temp.State = NoteState::Unactive;
 				temp.Alpha = 1.f;
 				mLeftNote.erase(mLeftNote.begin()+i);
@@ -276,8 +331,8 @@ void Beat::NoteReset()
 			if (mRightNote[i].Pos.x != WINSIZEX)
 			{
 				Note temp = mRightNote[i];
-				temp.Pos = { WINSIZEX, WINSIZEY - 50 };
-				temp.Rc = RectMakeCenter(WINSIZEX, WINSIZEY - 50, 5, 5);
+				temp.Pos = { WINSIZEX, mDefaultY };
+				temp.Rc = RectMakeCenter(WINSIZEX, mDefaultY, 5, 5);
 				temp.State = NoteState::Unactive;
 				temp.Alpha = 1.f;
 				mRightNote.erase(mRightNote.begin()+i);

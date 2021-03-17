@@ -16,6 +16,7 @@ private:
 	};
 	//Note : 박자를 맞출 용도의 이미지를 출력하기 위한 struct
 	struct Note {
+		Image* Image;
 		POINT Pos;
 		RECT Rc;
 		NoteState State;
@@ -29,6 +30,8 @@ private:
 		float FrameCount = 0.f;
 	};
 private:
+	int mDefaultY;	//노트의 기본 Y
+
 	wstring mNowMusic;
 
 	float mTiming;	//노트세팅 시점 체크용
@@ -42,10 +45,10 @@ private:
 	float mDeadLine;
 
 	FrameImage mHeartImage;
-	Image* mNoteImage;
 
 	bool mIsBoss;
 	bool mTurn;
+	bool mMusicEnd;
 public:
 	Beat();
 	~Beat();
@@ -65,6 +68,7 @@ public:
 private:
 	void SetTiming();	//Update내부에서 호출될 함수, 노트의 등장 타이밍
 	void SetNote();		//비활성화된 노트중 
+	void NoteSuccess();
 	void NoteReset();	//Active가 false가 된 노트를 시작 위치에 옮기는 함수
 	void MissNote();
 };

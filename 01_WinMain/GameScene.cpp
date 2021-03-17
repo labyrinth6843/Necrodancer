@@ -20,11 +20,6 @@ void GameScene::Init(){
 	SoundPlayer::GetInstance()->Play(L"zone1_1_shopkeeper", 0.2f);
 	Beat::GetInstance()->SetMusic(L"zone1_1",L"zone1_1");
 	
-	FileManager::GetInstance()->LoadMap(L"Test00", mGroundList, TileSize);
-	FileManager::GetInstance()->LoadMap(L"Test01", mWallList, TileSize);
-	FileManager::GetInstance()->LoadMap(L"Test02", mDecoList, TileSize);
-	FileManager::GetInstance()->LoadMap(L"Test03", mItemList, TileSize);
-	FileManager::GetInstance()->LoadMap(L"Test04", mObjectList, TileSize);
 
 	//Ground»ý¼º
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Background, new Ground("Ground"));
@@ -63,17 +58,7 @@ void GameScene::Render(HDC hdc){
 
 	//Ground
 	ObjectManager::GetInstance()->Render(hdc);
-	//
-	for (int y = 0; y < TileCountY; ++y) {
-		for (int x = 0; x < TileCountX; ++x) {
-				//mGroundList[y][x]->MoveRender(hdc, 100, 200);
-				//mDecoList[y][x]->MoveRender(hdc, 100, 200);
-			if (mItemList[y][x] != NULL)
-				mItemList[y][x]->MoveRender(hdc, 100, 200);
-			if(mObjectList[y][x] != NULL)
-				mObjectList[y][x]->MoveRender(hdc, 100, 200);
-		}
-	}
+
 	mToolButton->Render(hdc);
 	Beat::GetInstance()->Render(hdc);
 }
