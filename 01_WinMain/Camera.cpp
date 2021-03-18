@@ -27,12 +27,16 @@ void Camera::Update()
 	case Camera::Mode::Follow:
 		if (mTarget)
 		{
-			//mX = mTarget->GetX();
-			//mY = mTarget->GetY();
-			//멀리있으면 빨리 쫓아가야하고 가까이 있으면 천천히 쫓아가야함
+			mX = mTarget->GetX();
+			mY = mTarget->GetY();
+			mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
+		}
+		break;
+	case Camera::Mode::Smooth:
+		if(mTarget)
+		{
 			mX = Math::Lerp(mX, mTarget->GetX(), 2.f * Time::GetInstance()->DeltaTime());
 			mY = Math::Lerp(mY, mTarget->GetY(), 2.f * Time::GetInstance()->DeltaTime());
-
 			mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
 		}
 		break;

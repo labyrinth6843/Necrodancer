@@ -6,7 +6,7 @@ class Camera : public GameObject
 public:
 	enum class Mode : int
 	{
-		Follow, Free
+		Follow, Smooth, Free
 	};
 protected:
 	Mode mMode;
