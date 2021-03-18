@@ -93,6 +93,14 @@ void FileManager::LoadResource()
 	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga", Resources(L"Sound/ost/kingconga.mp3"), true);
 	//}}
 
+
+	//{{ 효과음 관련 사운드
+	SoundPlayer::GetInstance()->LoadFromFile(L"move_dirt", Resources(L"Sound/sfx/move/mov_dig_dirt.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"move_stone", Resources(L"Sound/sfx/move/mov_dig_stone.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"move_brick", Resources(L"Sound/sfx/move/mov_dig_brick.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"move_fail", Resources(L"Sound/sfx/move/mov_dig_fail.mp3"), false);
+	//}}
+
 	//{{캐릭터 관련 사운드
 	SoundPlayer::GetInstance()->LoadFromFile(L"melee_1_1", Resources(L"Sound/voice/Player/melee/vo_cad_melee_1_01.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"melee_1_2", Resources(L"Sound/voice/Player/melee/vo_cad_melee_1_02.mp3"), false);

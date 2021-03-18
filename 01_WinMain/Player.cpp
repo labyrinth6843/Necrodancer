@@ -61,10 +61,17 @@ void Player::Update() {
 	StartIndexX = mX / TileSize;
 	StartIndexY = mY / TileSize;
 
+	//이동 중이지 않을 때 각 입력에 대한 처리
 	if (mIsMove == false) {
 		if (Input::GetInstance()->GetKeyDown(VK_UP) || Input::GetInstance()->GetKeyDown('W'))
-			if (StartIndexY > 0)
-				Move(0, -1);
+			if (StartIndexY > 0) {
+				//이동하려는 타일에 오브젝트가 존재하는가 확인
+				if (TileCheck(0, -1) == false)
+					Move(0, -1);
+				//무엇인가가 존재하므로 상호작용 처리
+				else
+					Interaction(0, -1);
+			}
 
 		if (Input::GetInstance()->GetKeyDown(VK_RIGHT) || Input::GetInstance()->GetKeyDown('D'))
 			if (StartIndexX < 9) {
@@ -73,7 +80,10 @@ void Player::Update() {
 					mCurrentHeadAnimation = mHeadRightAnimation;
 					mCurrentBodyAnimation = mBodyRightAnimation;
 				}
-				Move(1, 0);
+				if (TileCheck(1, 0) == false)
+					Move(1, 0);
+				else
+					Interaction(1, 0);
 			}
 	
 		if (Input::GetInstance()->GetKeyDown(VK_LEFT) || Input::GetInstance()->GetKeyDown('A')) {
@@ -83,23 +93,34 @@ void Player::Update() {
 					mCurrentHeadAnimation = mHeadLeftAnimation;
 					mCurrentBodyAnimation = mBodyLeftAnimation;
 				}
-				Move(-1, 0);
+				if (TileCheck(-1, 0) == false)
+					Move(-1, 0);
+				else
+					Interaction(-1, 0);
 			}
 		}
 			
 		if (Input::GetInstance()->GetKeyDown(VK_DOWN) || Input::GetInstance()->GetKeyDown('S'))
-			if (StartIndexY < 9)
-				Move(0, 1);
+			if (StartIndexY < 9) {
+				if (TileCheck(0, 1) == false)
+					Move(0, 1);
+				else
+					Interaction(0, 1);
+			}
+				
 	}
 	else {
+		//목표 좌표로 서서히 움직이는 처리
 		mX += TileSize * 3 * Time::GetInstance()->DeltaTime() *  cosf(Math::GetAngle(mX, mY, EndX, EndY));
 		mY += TileSize * 3 * Time::GetInstance()->DeltaTime() * -sinf(Math::GetAngle(mX, mY, EndX, EndY));
 
+		//목표지점까지 거리를 확인하여 포물선으로 움직이게끔 구현
 		if (Math::GetDistance(mX, mY, EndX, EndY) < TileSize / 2)
 			mY += 1;
 		else
 			mY -= 1;
 
+		//완벽하게 도착할 수 없으니 시각적으로 문제가 없을 거리가 되면 이동이 완료되게끔 보정
 		if (fabs(EndX - mX) <= 0.5 && fabs(EndY - mY) <= 0.5) {
 			mX = EndX;
 			mY = EndY;
@@ -111,9 +132,21 @@ void Player::Update() {
 }
 
 void Player::Render(HDC hdc) {
-	//수정이 많이 필요한 부분
 	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX, mY, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
 	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, mX + 2, mY - 14, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
+}
+
+bool Player::TileCheck(int x, int y) {
+	EndX = mX + TileSize * x;
+	EndY = mY + TileSize * y;
+
+	EndIndexX = EndX / TileSize;
+	EndIndexY = EndY / TileSize;
+
+	if (ObjectManager::GetInstance()->FindObject(POINT{ (int)EndIndexX, (int)EndIndexY }) == nullptr)
+		return false;
+	else
+		return true;
 }
 
 void Player::Move(int x, int y) {
@@ -122,10 +155,6 @@ void Player::Move(int x, int y) {
 
 	EndIndexX = EndX / TileSize;
 	EndIndexY = EndY / TileSize;
-
-	Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Monster, POINT{ (int)EndIndexX, (int)EndIndexY }));
-	Dig(ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, POINT{ (int)EndIndexX, (int)EndIndexY }));
-	Equip(ObjectManager::GetInstance()->FindObject(ObjectLayer::Item, POINT{ (int)EndIndexX, (int)EndIndexY }));
 
 	mIsMove = true;
 }
@@ -162,4 +191,17 @@ void Player::Equip(GameObject* object) {
 	Item* temp = (Item*)object;
 
 	
+}
+
+void Player::Interaction(int x, int y)
+{
+	EndX = mX + TileSize * x;
+	EndY = mY + TileSize * y;
+
+	EndIndexX = EndX / TileSize;
+	EndIndexY = EndY / TileSize;
+
+	Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Monster, POINT{ (int)EndIndexX, (int)EndIndexY }));
+	Dig(ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, POINT{ (int)EndIndexX, (int)EndIndexY }));
+	Equip(ObjectManager::GetInstance()->FindObject(ObjectLayer::Item, POINT{ (int)EndIndexX, (int)EndIndexY }));
 }

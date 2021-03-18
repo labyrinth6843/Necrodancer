@@ -18,6 +18,5 @@ public:
 
 	void SetHp(float hp) { mHp = hp; }
 	float GetHp() { return mHp; }
-
 };
 

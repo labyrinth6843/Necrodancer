@@ -114,10 +114,31 @@ GameObject * ObjectManager::FindObject(ObjectLayer layer, const string & name)
 	return nullptr;
 }
 
-GameObject* ObjectManager::FindObject(ObjectLayer layer, POINT index){
+GameObject* ObjectManager::FindObject(POINT index)
+{
+	ObjectIter iter = mObjectList.begin();
+	
+	for (; iter != mObjectList.end(); ++iter)
+	{
+		for (int i = 0; i < iter->second.size(); ++i)
+		{
+			if (iter->second[i]->GetX() / TileSize == index.x && iter->second[i]->GetY() / TileSize == index.y)
+			{
+				return iter->second[i];
+			}
+		}
+	}
+	return nullptr;
+}
+
+GameObject* ObjectManager::FindObject(ObjectLayer layer, POINT index)
+{
 	ObjectIter iter = mObjectList.find(layer);
-	for (int i = 0; i < iter->second.size(); i++) {
-		if (iter->second[i]->GetX() / TileSize == index.x && iter->second[i]->GetY() / TileSize == index.y) {
+
+	for (int i = 0; i < iter->second.size(); i++)
+	{
+		if (iter->second[i]->GetX() / TileSize == index.x && iter->second[i]->GetY() / TileSize == index.y)
+		{
 			return iter->second[i];
 		}
 	}
@@ -160,9 +181,4 @@ vector<class GameObject*> ObjectManager::FindObjects(ObjectLayer layer, const st
 vector<class GameObject*> ObjectManager::GetObjectList(ObjectLayer layer)
 {
 	return mObjectList[layer];
-}
-
-vector<class GameObject*>* ObjectManager::GetObjectListPt(ObjectLayer layer)
-{
-	return &mObjectList[layer];
 }

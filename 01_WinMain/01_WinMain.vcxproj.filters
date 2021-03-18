@@ -94,9 +94,6 @@
     <Filter Include="MainGame\System">
       <UniqueIdentifier>{c01fed77-2b46-47e6-8ae5-3ce6490cd8bc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\LoadResource">
-      <UniqueIdentifier>{55c25a64-8a37-4135-984f-1c2141350f12}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MainGame\Scene\TitleScene">
       <UniqueIdentifier>{1471720d-02d1-4584-9c75-0640a14daf9d}</UniqueIdentifier>
     </Filter>

@@ -32,11 +32,11 @@ public:
 
 	void AddObject(ObjectLayer layer, class GameObject* object);
 	class GameObject* FindObject(const string& name);
+	class GameObject* FindObject(POINT index);
 	class GameObject* FindObject(ObjectLayer layer, const string& name);
-	class GameObject* FindObject(ObjectLayer layer, POINT point);
+	class GameObject* FindObject(ObjectLayer layer, POINT index);
 	vector<class GameObject*> FindObjects(const string& name);
 	vector<class GameObject*> FindObjects(ObjectLayer layer, const string& name);
 	vector<class GameObject*> GetObjectList(ObjectLayer layer);
-	vector<class GameObject*>* GetObjectListPt(ObjectLayer layer);
 };
 

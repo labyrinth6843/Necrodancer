@@ -10,9 +10,7 @@ void Ground::Init()
 {
 	mBack = IMAGEMANAGER->FindImage(L"Black");
 	FileManager::LoadMap(L"Test00",mGroundList, TileSize);
-	FileManager::LoadMap(L"Test01", mWallList, TileSize, 72);
-	FileManager::LoadMap(L"Test02", mDecoList, TileSize);
-
+	
 	mMapSizeY = mGroundList.size();
 	mMapSizeX = mGroundList[0].size();
 
@@ -53,13 +51,10 @@ void Ground::Release()
 		for (int x = 0; x < mMapSizeX; ++x)
 		{
 			SafeDelete(mGroundList[y][x]);
-			SafeDelete(mDecoList[y][x]);
 		}
 	}
 	mGroundList.clear();
 	mGroundList.shrink_to_fit();
-	mDecoList.clear();
-	mDecoList.shrink_to_fit();
 }
 
 void Ground::Update()
@@ -137,26 +132,6 @@ void Ground::Render(HDC hdc)
 			}
 		}
 	}
-	//Wall은 Wall 클래스 작업이 진행되면 제거
-	for (int y = 0; y < mMapSizeY; ++y)
-	{
-		for (int x = 0; x < mMapSizeX; ++x)
-		{
-			int posx = x * TileSize;
-			int posy = y * TileSize;
-			if (CameraManager::GetInstance()->GetMainCamera()->IsInCameraArea(posx, posy, TileSize))
-			{
-				if (mWallList[y][x]->GetImage() != NULL)
-				{
-					CameraManager::GetInstance()->GetMainCamera()->AlphaScaleFrameRender(hdc, mWallList[y][x]->GetImage(),
-						posx, posy, mWallList[y][x]->GetFrameIndexX(), mWallList[y][x]->GetFrameIndexY(),
-						mWallList[y][x]->Getwidth(), mWallList[y][x]->GetHeight(), 1.0f);
-					int a = 1;
-				}
-			}
-		}
-	}
-
 }
 
 bool Ground::GetSight()

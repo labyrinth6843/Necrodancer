@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "GameScene.h"
 #include "Player.h"
 #include "Tile.h"
@@ -7,6 +7,10 @@
 #include <fstream>
 
 #include "Ground.h"
+#include "Wall.h"
+#include "Item.h"
+#include "Enemy.h"
+
 #include "Camera.h"
 void GameScene::Init(){
 	Beat::GetInstance()->Init();
@@ -17,10 +21,12 @@ void GameScene::Init(){
 	SoundPlayer::GetInstance()->Play(L"zone1_1_shopkeeper", 0.2f);
 	Beat::GetInstance()->SetMusic(L"zone1_1",L"zone1_1");
 	
-
-	//Ground����
+	//게임씬에서 사용할 오브젝트들 생성
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Ground, new Ground("Ground"));
-
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Wall, new Wall("Wall"));
+	//ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, new Wall("Item"));
+	//ObjectManager::GetInstance()->AddObject(ObjectLayer::Monster, new Wall("Monster"));
+	
 	//camera
 	Camera* camera = new Camera();
 	camera->SetTarget(ObjectManager::GetInstance()->FindObject("Player"));

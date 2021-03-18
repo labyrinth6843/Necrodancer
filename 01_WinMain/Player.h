@@ -67,7 +67,9 @@ public:
 	void Update()override;
 	void Render(HDC hdc)override;
 
+	bool TileCheck(int x, int y);
 	void Move(int x, int y);
+	void Interaction(int x, int y);
 	void Dig(GameObject* object);
 	void Attack(GameObject* object);
 	void Equip(GameObject* object);
