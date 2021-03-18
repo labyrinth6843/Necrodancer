@@ -3,12 +3,31 @@
 #include "GameObject.h"
 #include "Animation.h"
 
+enum class WeaponType {
+	None,
+	Dagger,
+	Broadsword,
+	Spear,
+	Rapier,
+	Bow,
+	End
+};
+
+enum class ArmorType {
+	None,
+	Leather,
+	Chainmail,
+	Plate,
+	HeavyPlate,
+	Obsidian,
+	Glass,
+	Karate,
+	End
+};
+
 class Player:public GameObject{
 	Image* mHeadImage;
 	Image* mBodyImage;
-
-	bool mIsArmor = false;
-	int mArmorType = 0;
 
 	bool direction = true;
 
@@ -21,14 +40,22 @@ class Player:public GameObject{
 	Animation* mCurrentBodyAnimation;
 	
 	float mHp = 6;
-	float mDmg = 1;
 	float mDef = 0;
+	int mShovelPower = 1;
+	int mWeaponPower = 1;
+	bool mIsArmor = false;
+	ArmorType mArmorType = ArmorType::None;
+	WeaponType mWeaponType = WeaponType::Dagger;
 
 	int mCoin = 0;
-	int initIndexX;
-	int initIndexY;
-	float destIndexX;
-	float destIndexY;
+	float StartX;
+	float StartY;
+	int StartIndexX;
+	int StartIndexY;
+	float EndX;
+	float EndY;
+	int EndIndexX;
+	int EndIndexY;
 	bool mIsMove;
 
 	int mSpeed;
@@ -41,20 +68,23 @@ public:
 	void Render(HDC hdc)override;
 
 	void Move(int x, int y);
-	void Dig();
-	void Attack();
-	void Equip();
+	void Dig(GameObject* object);
+	void Attack(GameObject* object);
+	void Equip(GameObject* object);
 
 	void SetHp(float hp) { mHp = hp; }
 	float GetHp() { return mHp; }
 
-	float GetDmg() { return mDmg; }
+	float GetDmg() { return mWeaponPower; }
 
 	float GetDef() { return mDef; }
 
-	POINT GetPos() { return { initIndexX, initIndexY }; }
-	float GetPosX() { return initIndexX; }
-	float GetPosY() { return initIndexY; }
+	float GetX() { return StartX; }
+	float GetY() { return StartY; }
+
+	POINT GetIndex() { return { StartIndexX, StartIndexY }; }
+	float GetndexX() { return StartIndexX; }
+	float GetndexY() { return StartIndexY; }
 
 	void SetCoin(int coin) { mCoin = coin; }
 	int GetCoin() { return mCoin; }

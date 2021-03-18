@@ -1,6 +1,9 @@
 ﻿#include "pch.h"
 #include "Player.h"
 #include "Camera.h"
+#include "Enemy.h"
+#include "Wall.h"
+#include "Item.h"
 
 Player::Player(const string& name) : GameObject(name) {
 
@@ -25,23 +28,23 @@ void Player::Init() {
 	mHeadRightAnimation->Play();
 
 	mBodyLeftAnimation = new Animation();
-	mBodyLeftAnimation->InitFrameByStartEnd(4, mArmorType, 7, mArmorType, false);
+	mBodyLeftAnimation->InitFrameByStartEnd(4, (int)mArmorType, 7, (int)mArmorType, false);
 	mBodyLeftAnimation->SetIsLoop(true);
 	mBodyLeftAnimation->SetFrameUpdateTime(0.1f);
 	mBodyLeftAnimation->Play();
 
 	mBodyRightAnimation = new Animation();
-	mBodyRightAnimation->InitFrameByStartEnd(0, mArmorType,3, mArmorType,false);
+	mBodyRightAnimation->InitFrameByStartEnd(0, (int)mArmorType,3, (int)mArmorType,false);
 	mBodyRightAnimation->SetIsLoop(true);
 	mBodyRightAnimation->SetFrameUpdateTime(0.1f);
 	mBodyRightAnimation->Play();
 
 	//초기 설정이 필요한 값 입력
 	mHp = 6;
-	mX = TileSize * 5;
-	mY = TileSize * 4;
-	initIndexX = mX / TileSize;
-	initIndexY = mY / TileSize;
+	StartX = TileSize * 5;
+	StartY = TileSize * 4;
+	StartIndexX = StartX / TileSize;
+	StartIndexY = StartY / TileSize;
 	mCurrentHeadAnimation = mHeadRightAnimation;
 	mCurrentBodyAnimation = mBodyRightAnimation;
 }
@@ -55,16 +58,16 @@ void Player::Release() {
 
 void Player::Update() {
 	//현재 인덱스값 계산
-	initIndexX = mX / TileSize;
-	initIndexY = mY / TileSize;
+	StartIndexX = StartX / TileSize;
+	StartIndexY = StartY / TileSize;
 
 	if (mIsMove == false) {
 		if (Input::GetInstance()->GetKeyDown(VK_UP) || Input::GetInstance()->GetKeyDown('W'))
-			if (initIndexY > 0)
+			if (StartIndexY > 0)
 				Move(0, -1);
 
 		if (Input::GetInstance()->GetKeyDown(VK_RIGHT) || Input::GetInstance()->GetKeyDown('D'))
-			if (initIndexX < 9) {
+			if (StartIndexX < 9) {
 				if (direction == false) {
 					direction = true;
 					mCurrentHeadAnimation = mHeadRightAnimation;
@@ -74,7 +77,7 @@ void Player::Update() {
 			}
 	
 		if (Input::GetInstance()->GetKeyDown(VK_LEFT) || Input::GetInstance()->GetKeyDown('A')) {
-			if (initIndexX > 0) {
+			if (StartIndexX > 0) {
 				if (direction == true) {
 					direction = false;
 					mCurrentHeadAnimation = mHeadLeftAnimation;
@@ -85,21 +88,21 @@ void Player::Update() {
 		}
 			
 		if (Input::GetInstance()->GetKeyDown(VK_DOWN) || Input::GetInstance()->GetKeyDown('S'))
-			if (initIndexY < 9)
+			if (StartIndexY < 9)
 				Move(0, 1);
 	}
 	else {
-		mX += TileSize * 3 * Time::GetInstance()->DeltaTime() *  cosf(Math::GetAngle(mX, mY, destIndexX, destIndexY));
-		mY += TileSize * 3 * Time::GetInstance()->DeltaTime() * -sinf(Math::GetAngle(mX, mY, destIndexX, destIndexY));
+		StartX += TileSize * 3 * Time::GetInstance()->DeltaTime() *  cosf(Math::GetAngle(StartX, StartY, EndX, EndY));
+		StartY += TileSize * 3 * Time::GetInstance()->DeltaTime() * -sinf(Math::GetAngle(StartX, StartY, EndX, EndY));
 
-		if (Math::GetDistance(mX, mY, destIndexX, destIndexY) < TileSize / 2)
-			mY += 1;
+		if (Math::GetDistance(StartX, StartY, EndX, EndY) < TileSize / 2)
+			StartY += 1;
 		else
-			mY -= 1;
+			StartY -= 1;
 
-		if (fabs(destIndexX - mX) <= 0.5 && fabs(destIndexY - mY) <= 0.5) {
-			mX = destIndexX;
-			mY = destIndexY;
+		if (fabs(EndX - StartX) <= 0.5 && fabs(EndY - StartY) <= 0.5) {
+			StartX = EndX;
+			StartY = EndY;
 			mIsMove = false;
 		}
 	}
@@ -109,39 +112,32 @@ void Player::Update() {
 
 void Player::Render(HDC hdc) {
 	//수정이 많이 필요한 부분
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX, mY, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, mX + 2, mY - 18, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, StartX, StartY, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, StartX + 2, StartY - 14, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
 }
 
 void Player::Move(int x, int y) {
-	if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Monster, POINT{ (int)destIndexX, (int)destIndexY }) != nullptr) {
-		Attack();
+	EndX = StartX + TileSize * x;
+	EndY = StartY + TileSize * y;
 
-		//if(ObjectManager::GetInstance()->FindObject(ObjectLayer::Monster, POINT{ destIndexX, destIndexY })->GetHp)
-	}
-		
+	EndIndexX = EndX / TileSize;
+	EndIndexY = EndY / TileSize;
 
-	else {
-		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, POINT{ (int)destIndexX, (int)destIndexY }) != nullptr)
-			Dig();
-		else if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Item, POINT{ (int)destIndexX, (int)destIndexY }) != nullptr)
-			Equip();
+	Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Monster, POINT{ (int)EndIndexX, (int)EndIndexY }));
+	Dig(ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, POINT{ (int)EndIndexX, (int)EndIndexY }));
+	Equip(ObjectManager::GetInstance()->FindObject(ObjectLayer::Item, POINT{ (int)EndIndexX, (int)EndIndexY }));
 
-		destIndexX = mX + TileSize * x;
-		destIndexY = mY + TileSize * y;
-		mIsMove = true;
-	}
-	
+	mIsMove = true;
 }
 
-void Player::Dig() {
+void Player::Dig(GameObject* object) {
+	Wall* temp = (Wall*)object;
+}
+
+void Player::Attack(GameObject* object) {
 
 }
 
-void Player::Attack() {
-
-}
-
-void Player::Equip() {
+void Player::Equip(GameObject* object) {
 
 }
