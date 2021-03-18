@@ -76,11 +76,7 @@ public:
 	float GetHp() { return mHp; }
 
 	float GetDmg() { return mWeaponPower; }
-
 	float GetDef() { return mDef; }
-
-	float GetX() { return StartX; }
-	float GetY() { return StartY; }
 
 	POINT GetIndex() { return { StartIndexX, StartIndexY }; }
 	float GetndexX() { return StartIndexX; }

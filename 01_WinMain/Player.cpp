@@ -41,10 +41,10 @@ void Player::Init() {
 
 	//초기 설정이 필요한 값 입력
 	mHp = 6;
-	StartX = TileSize * 5;
-	StartY = TileSize * 4;
-	StartIndexX = StartX / TileSize;
-	StartIndexY = StartY / TileSize;
+	mX = TileSize * 5;
+	mY = TileSize * 4;
+	StartIndexX = mX / TileSize;
+	StartIndexY = mY / TileSize;
 	mCurrentHeadAnimation = mHeadRightAnimation;
 	mCurrentBodyAnimation = mBodyRightAnimation;
 }
@@ -58,8 +58,8 @@ void Player::Release() {
 
 void Player::Update() {
 	//현재 인덱스값 계산
-	StartIndexX = StartX / TileSize;
-	StartIndexY = StartY / TileSize;
+	StartIndexX = mX / TileSize;
+	StartIndexY = mY / TileSize;
 
 	if (mIsMove == false) {
 		if (Input::GetInstance()->GetKeyDown(VK_UP) || Input::GetInstance()->GetKeyDown('W'))
@@ -92,17 +92,17 @@ void Player::Update() {
 				Move(0, 1);
 	}
 	else {
-		StartX += TileSize * 3 * Time::GetInstance()->DeltaTime() *  cosf(Math::GetAngle(StartX, StartY, EndX, EndY));
-		StartY += TileSize * 3 * Time::GetInstance()->DeltaTime() * -sinf(Math::GetAngle(StartX, StartY, EndX, EndY));
+		mX += TileSize * 3 * Time::GetInstance()->DeltaTime() *  cosf(Math::GetAngle(mX, mY, EndX, EndY));
+		mY += TileSize * 3 * Time::GetInstance()->DeltaTime() * -sinf(Math::GetAngle(mX, mY, EndX, EndY));
 
-		if (Math::GetDistance(StartX, StartY, EndX, EndY) < TileSize / 2)
-			StartY += 1;
+		if (Math::GetDistance(mX, mY, EndX, EndY) < TileSize / 2)
+			mY += 1;
 		else
-			StartY -= 1;
+			mY -= 1;
 
-		if (fabs(EndX - StartX) <= 0.5 && fabs(EndY - StartY) <= 0.5) {
-			StartX = EndX;
-			StartY = EndY;
+		if (fabs(EndX - mX) <= 0.5 && fabs(EndY - mY) <= 0.5) {
+			mX = EndX;
+			mY = EndY;
 			mIsMove = false;
 		}
 	}
@@ -112,13 +112,13 @@ void Player::Update() {
 
 void Player::Render(HDC hdc) {
 	//수정이 많이 필요한 부분
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, StartX, StartY, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, StartX + 2, StartY - 14, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX, mY, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, mX + 2, mY - 14, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
 }
 
 void Player::Move(int x, int y) {
-	EndX = StartX + TileSize * x;
-	EndY = StartY + TileSize * y;
+	EndX = mX + TileSize * x;
+	EndY = mY + TileSize * y;
 
 	EndIndexX = EndX / TileSize;
 	EndIndexY = EndY / TileSize;
@@ -131,13 +131,35 @@ void Player::Move(int x, int y) {
 }
 
 void Player::Dig(GameObject* object) {
+	if (object == nullptr)
+		return;
+
 	Wall* temp = (Wall*)object;
+
+	if (mShovelPower >= temp->GetDigLevel()) {
+		object->SetIsActive(false);
+		object->SetIsDestroy(true);
+	}
 }
 
 void Player::Attack(GameObject* object) {
+	if (object == nullptr)
+		return;
+	Enemy* temp = (Enemy*)object;
 
+	temp->SetHp(temp->GetHp() - mWeaponPower);
+
+	if (temp->GetHp() <= 0) {
+		object->SetIsActive(false);
+		object->SetIsDestroy(true);
+	}
 }
 
 void Player::Equip(GameObject* object) {
+	if (object == nullptr)
+		return;
 
+	Item* temp = (Item*)object;
+
+	
 }
