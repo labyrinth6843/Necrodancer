@@ -43,7 +43,9 @@ using namespace std;
 #include "Helper.h"
 #include "FileManager.h"
 #include "Beat.h"
+#include "Combo.h"
 
+//Test용 콘솔창
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 
 extern POINT _mousePosition;	//마우스 좌표

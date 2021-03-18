@@ -61,7 +61,7 @@ void Beat::Release()
 
 void Beat::Update()
 {
-	if (Input::GetInstance()->GetKeyDown('N'))//노트 절반 날림 + 
+	if (Input::GetInstance()->GetKeyDown('N'))//테스트용 : 남은 음악의 절반만 남기기
 	{
 		for (int i = 0; i < mRunQueue.size() / 2; ++i)
 		{
@@ -69,14 +69,15 @@ void Beat::Update()
 		}
 		SetTiming();
 		SoundPlayer::GetInstance()->SetPosition(mNowMusic,mTiming);
+		SoundPlayer::GetInstance()->SetPosition(mNowMusic+L"_shopkeeper", mTiming);
 	}
 	if (Input::GetInstance()->GetKeyDown('B'))
 		IsDecision();
 	//기본적으로 매 프레임마다 턴조건 초기화
 	mTurn = false;
+
 	//현재 재생중인 음악의 Position이 mTiming과 같으면 노트를 활성화 한다
 	float position = SoundPlayer::GetInstance()->GetPosition(mNowMusic);
-	cout << position << endl;
 	if (mTiming <= position && !mMusicEnd)
 	{
 		SetNote();
@@ -121,6 +122,7 @@ void Beat::Update()
 		if (mLeftNote[i].State == NoteState::Active && mRightNote[i].State == NoteState::Active &&
 			(mLeftNote[i].Pos.x >= mRightNote[i].Pos.x))
 		{
+			COMBO->ComboDown();
 			MissNote();
 		}
 		if (mLeftNote[i].Alpha <= 0 && mRightNote[i].Alpha <= 0)
@@ -187,7 +189,7 @@ void Beat::SetMusic(const wstring& keyname, const wstring& beatfilename)
 	//스테이지(필드) 진입시 해당 함수 호출
 	mNowMusic = keyname;
 	mDeadLine = SoundPlayer::GetInstance()->GetFullPosition(keyname) / 7 * 3;
-	FileManager::GetInstance()->LoadBeat(beatfilename,mSaveQueue);
+	FileManager::LoadBeat(beatfilename,mSaveQueue);
 	mRunQueue = mSaveQueue;
 
 	mTiming = mRunQueue.front();
@@ -198,13 +200,12 @@ bool Beat::IsDecision()
 {
 	if (PtInRect(&mHeart, mLeftNote[0].Pos))
 	{
-		//커맨드 입력에 성공했을때 몬스터를 잡는다면 콤보가 증가함 -> 이 작업은 콤보 시스템에서 처리
-
+		COMBO->ComboUp(); //테스트용
 		NoteSuccess();
 		return true;
 	}
 	//miss
-	//콤보시스템을 호출하여 콤보 감소 나중에 추가할 것
+	COMBO->ComboDown();
 	MissNote();
 	return false;
 }

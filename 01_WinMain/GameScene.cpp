@@ -33,12 +33,12 @@ void GameScene::Init(){
 
 void GameScene::Release(){
 	SafeDelete(mToolButton);
-	Beat::GetInstance()->Release();
+	BEAT->Release();
 	ObjectManager::GetInstance()->FindObject("Ground")->SetIsDestroy(true);
 }
 
 void GameScene::Update(){
-	Beat::GetInstance()->Update();
+	BEAT->Update();
 	ObjectManager::GetInstance()->Update();
 	mToolButton->Update();
 }
@@ -57,7 +57,9 @@ void GameScene::Render(HDC hdc){
 	ObjectManager::GetInstance()->Render(hdc);
 
 	mToolButton->Render(hdc);
-	Beat::GetInstance()->Render(hdc);
+	COMBO->Render(hdc);
+	BEAT->Render(hdc);
+
 }
 
 void GameScene::Tool() {

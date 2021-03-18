@@ -9,9 +9,9 @@ Ground::Ground(const string &name, int startx, int starty) : GameObject(name)
 void Ground::Init()
 {
 	mBack = IMAGEMANAGER->FindImage(L"Black");
-	FileManager::GetInstance()->LoadMap(L"Test00",mGroundList, TileSize);
-	FileManager::GetInstance()->LoadMap(L"Test01", mWallList, TileSize, 72);
-	FileManager::GetInstance()->LoadMap(L"Test02", mDecoList, TileSize);
+	FileManager::LoadMap(L"Test00",mGroundList, TileSize);
+	FileManager::LoadMap(L"Test01", mWallList, TileSize, 72);
+	FileManager::LoadMap(L"Test02", mDecoList, TileSize);
 
 	mMapSizeY = mGroundList.size();
 	mMapSizeX = mGroundList[0].size();

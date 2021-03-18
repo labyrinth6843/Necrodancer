@@ -82,11 +82,11 @@ void MapToolScene::Init()
 		{
 			Path::OpenFileDialog(L"", nullptr, L"../04_Data/", nullptr, _hWnd);
 
-			FileManager::GetInstance()->LoadMap(L"Test00", mGroundList, TileSize);
-			FileManager::GetInstance()->LoadMap(L"Test01", mWallList, TileSize, 72);
-			FileManager::GetInstance()->LoadMap(L"Test02", mDecoList, TileSize);
-			FileManager::GetInstance()->LoadMap(L"Test03", mItemList, TileSize);
-			FileManager::GetInstance()->LoadMap(L"Test04", mObjectList, TileSize);
+			FileManager::LoadMap(L"Test00", mGroundList, TileSize);
+			FileManager::LoadMap(L"Test01", mWallList, TileSize, 72);
+			FileManager::LoadMap(L"Test02", mDecoList, TileSize);
+			FileManager::LoadMap(L"Test03", mItemList, TileSize);
+			FileManager::LoadMap(L"Test04", mObjectList, TileSize);
 			mMaxSizeY = mGroundList.size();
 			mMaxSizeX = mGroundList[mMaxSizeY - 1].size();
 			mInputX = to_string(mMaxSizeX);
