@@ -61,6 +61,8 @@ void Beat::Release()
 
 void Beat::Update()
 {
+	//기본적으로 매 프레임마다 턴조건 초기화
+	mTurn = false;
 	if (Input::GetInstance()->GetKeyDown('N'))//테스트용 : 남은 음악의 절반만 남기기
 	{
 		for (int i = 0; i < mRunQueue.size() / 2; ++i)
@@ -73,8 +75,6 @@ void Beat::Update()
 	}
 	if (Input::GetInstance()->GetKeyDown('B'))
 		IsDecision();
-	//기본적으로 매 프레임마다 턴조건 초기화
-	mTurn = false;
 
 	//현재 재생중인 음악의 Position이 mTiming과 같으면 노트를 활성화 한다
 	float position = SoundPlayer::GetInstance()->GetPosition(mNowMusic);
@@ -127,7 +127,7 @@ void Beat::Update()
 		}
 		if (mLeftNote[i].Alpha <= 0 && mRightNote[i].Alpha <= 0)
 		{
-			//플레이어가 커맨드를 입력하지 않고 지나가면 몬스터의 턴 진행
+			//플레이어가 커맨드를 입력하지 않아도 지나가면 몬스터의 턴 진행
 			mTurn = true;
 			mLeftNote[i].State = NoteState::Unactive;
 			mRightNote[i].State = NoteState::Unactive;
@@ -200,6 +200,7 @@ bool Beat::IsDecision()
 {
 	if (PtInRect(&mHeart, mLeftNote[0].Pos))
 	{
+		mTurn = true;
 		COMBO->ComboUp(); //테스트용
 		NoteSuccess();
 		return true;
