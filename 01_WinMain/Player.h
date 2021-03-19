@@ -40,19 +40,21 @@ enum class ArmorType {
 
 //삽 종류
 enum class ShovelType {
-	None,
-	Basic,
-	Blood,
-	Titanium,
-	Glass,
-	Crystal,
-	Obsidian,
+	None = 0,
+	Basic = 1,
+	Blood = 2,
+	Titanium = 3,
+	Glass = 4,
+	Crystal = 5,
+	Obsidian = 6,
 	End
 };
 
 class Player:public GameObject{
 	Image* mHeadImage;
 	Image* mBodyImage;
+
+	Image* mShovelImage;
 
 	bool direction = true;
 
@@ -69,6 +71,10 @@ class Player:public GameObject{
 	int mShovelPower = 3;
 	int mWeaponPower = 1;
 	bool mIsArmor = false;
+	
+	ShovelType mShovelType = ShovelType::Basic;
+	bool mShowShovel = false;
+	float mShowShovelFrame;
 
 	ArmorType mArmorType = ArmorType::None;
 	WeaponType mWeaponType = WeaponType::Dagger;
@@ -106,7 +112,9 @@ public:
 	void Interaction(int x, int y);
 
 	void Dig(int x, int y);
-	void ShowShovel(int x, int y);
+
+
+
 	void Attack(GameObject* object);
 	void Equip(GameObject* object);
 

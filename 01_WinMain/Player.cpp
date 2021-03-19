@@ -13,6 +13,7 @@ void Player::Init() {
 	//이미지 로드
 	mHeadImage = ImageManager::GetInstance()->FindImage(L"Head");
 	mBodyImage = ImageManager::GetInstance()->FindImage(L"Body");
+	mShovelImage = ImageManager::GetInstance()->FindImage(L"Shovel");
 
 	//방향에 따른 머리, 몸통 애니메이션
 	mHeadLeftAnimation = new Animation();
@@ -63,52 +64,63 @@ void Player::Update() {
 
 	//이동 중이지 않을 때 각 입력에 대한 처리
 	if (mIsMove == false) {
-		if (Input::GetInstance()->GetKeyDown(VK_UP) || Input::GetInstance()->GetKeyDown('W'))
-			if (StartIndexY > 0) {
-				//이동하려는 타일에 오브젝트가 존재하는가 확인
-				if (TileCheck(0, -1) == false)
-					Move(0, -1);
-				//무엇인가가 존재하므로 상호작용 처리
-				else
-					Interaction(0, -1);
-			}
-
-		if (Input::GetInstance()->GetKeyDown(VK_RIGHT) || Input::GetInstance()->GetKeyDown('D'))
-			if (StartIndexX < 9) {
-				if (direction == false) {
-					direction = true;
-					mCurrentHeadAnimation = mHeadRightAnimation;
-					mCurrentBodyAnimation = mBodyRightAnimation;
+		if (Input::GetInstance()->GetKeyDown(VK_UP) || Input::GetInstance()->GetKeyDown('W')) {
+			if (Beat::GetInstance()->IsDecision() == true) {
+				if (StartIndexY > 0) {
+					//이동하려는 타일에 오브젝트가 존재하는가 확인
+					if (TileCheck(0, -1) == false)
+						Move(0, -1);
+					//무엇인가가 존재하므로 상호작용 처리
+					else
+						Interaction(0, -1);
 				}
-				if (TileCheck(1, 0) == false)
-					Move(1, 0);
-				else
-					Interaction(1, 0);
-			}
-	
-		if (Input::GetInstance()->GetKeyDown(VK_LEFT) || Input::GetInstance()->GetKeyDown('A')) {
-			if (StartIndexX > 0) {
-				if (direction == true) {
-					direction = false;
-					mCurrentHeadAnimation = mHeadLeftAnimation;
-					mCurrentBodyAnimation = mBodyLeftAnimation;
-				}
-				if (TileCheck(-1, 0) == false)
-					Move(-1, 0);
-				else
-					Interaction(-1, 0);
 			}
 		}
-			
-		if (Input::GetInstance()->GetKeyDown(VK_DOWN) || Input::GetInstance()->GetKeyDown('S'))
-			if (StartIndexY < 9) {
-				if (TileCheck(0, 1) == false)
-					Move(0, 1);
-				else
-					Interaction(0, 1);
+
+		if (Input::GetInstance()->GetKeyDown(VK_RIGHT) || Input::GetInstance()->GetKeyDown('D')) {
+			if (Beat::GetInstance()->IsDecision() == true) {
+				if (StartIndexX < 9) {
+					if (direction == false) {
+						direction = true;
+						mCurrentHeadAnimation = mHeadRightAnimation;
+						mCurrentBodyAnimation = mBodyRightAnimation;
+					}
+					if (TileCheck(1, 0) == false)
+						Move(1, 0);
+					else
+						Interaction(1, 0);
+				}
 			}
-				
+		}
+
+		if (Input::GetInstance()->GetKeyDown(VK_LEFT) || Input::GetInstance()->GetKeyDown('A')) {
+			if (Beat::GetInstance()->IsDecision() == true) {
+				if (StartIndexX > 0) {
+					if (direction == true) {
+						direction = false;
+						mCurrentHeadAnimation = mHeadLeftAnimation;
+						mCurrentBodyAnimation = mBodyLeftAnimation;
+					}
+					if (TileCheck(-1, 0) == false)
+						Move(-1, 0);
+					else
+						Interaction(-1, 0);
+				}
+			}
+		}
+
+		if (Input::GetInstance()->GetKeyDown(VK_DOWN) || Input::GetInstance()->GetKeyDown('S')) {
+			if (Beat::GetInstance()->IsDecision() == true) {
+				if (StartIndexY < 9) {
+					if (TileCheck(0, 1) == false)
+						Move(0, 1);
+					else
+						Interaction(0, 1);
+				}
+			}
+		}
 	}
+		
 	else {
 		//목표 좌표로 서서히 움직이는 처리
 		mX += TileSize * 3 * Time::GetInstance()->DeltaTime() *  cosf(Math::GetAngle(mX, mY, EndX, EndY));
@@ -127,6 +139,13 @@ void Player::Update() {
 			mIsMove = false;
 		}
 	}
+
+	if (mShowShovel == true) {
+		mShowShovelFrame-=0.1f;
+		if (mShowShovelFrame <= 0.f)
+			mShowShovel = false;
+	}
+
 	mCurrentHeadAnimation->Update();
 	mCurrentBodyAnimation->Update();
 }
@@ -134,6 +153,8 @@ void Player::Update() {
 void Player::Render(HDC hdc) {
 	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX+5, mY+6, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
 	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, mX+5 + 2, mY+6 - 14, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
+	if (mShowShovel == true)
+		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mShovelImage, EndX, EndY, (int)mShovelType - 1, 0, TileSize, TileSize);
 }
 
 float Player::DistanceShopkeeper(GameObject* object) {
@@ -183,6 +204,9 @@ void Player::Dig(int x, int y) {
 	if (temp->GetFrameIndexX(x, y) == 0 && temp->GetFrameIndexY(x, y) == 0)
 		return;
 
+	mShowShovel = true;
+	mShowShovelFrame = 01.0f;
+
 	if (temp->GetFrameIndexY(x, y) == 6) {
 		SoundPlayer::GetInstance()->Play(L"move_fail", 1.f);
 		return;
@@ -202,10 +226,6 @@ void Player::Dig(int x, int y) {
 	}
 }
 
-void Player::ShowShovel(int x, int y) {
-
-}
-
 void Player::Attack(GameObject* object) {
 	if (object == nullptr)
 		return;
@@ -216,7 +236,7 @@ void Player::Attack(GameObject* object) {
 	if (temp->GetHp() <= 0) {
 		object->SetIsActive(false);
 		object->SetIsDestroy(true);
-
+		Combo::GetInstance()->ComboUp();
 	}
 }
 
