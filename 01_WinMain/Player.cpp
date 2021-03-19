@@ -41,7 +41,7 @@ void Player::Init() {
 
 	//초기 설정이 필요한 값 입력
 	mHp = 6;
-	mX = TileSize * 5;
+	mX = TileSize * 8;
 	mY = TileSize * 4;
 	StartIndexX = mX / TileSize;
 	StartIndexY = mY / TileSize;
@@ -136,12 +136,30 @@ void Player::Render(HDC hdc) {
 	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, mX + 2, mY - 14, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
 }
 
+float Player::DistanceShopkeeper(GameObject* object) {
+	//직선거리로 10칸을 넘어가는지 확인, 넘어갔다면 소리가 아예 들리지 않는다
+	if (Math::GetDistance(StartIndexX, StartIndexY, object->GetX() / TileSize, object->GetY() / TileSize) < 10)
+		return 0.f;
+	//나온 직선거리를 역수를 취해 볼륨값으로 반환
+	else
+		return 1 / Math::GetDistance(StartIndexX, StartIndexY, object->GetX() / TileSize, object->GetY() / TileSize);
+}
+
 bool Player::TileCheck(int x, int y) {
 	EndX = mX + TileSize * x;
 	EndY = mY + TileSize * y;
 
 	EndIndexX = EndX / TileSize;
 	EndIndexY = EndY / TileSize;
+
+	if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, "Wall") != nullptr) {
+		Wall* temp = (Wall*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, "Wall");
+
+		if (temp->GetFrameIndexX(EndIndexX, EndIndexY) == 0 && temp->GetFrameIndexY(EndIndexX, EndIndexY) == 0)
+			return false;
+		else
+			return true;
+	}
 
 	if (ObjectManager::GetInstance()->FindObject(POINT{ (int)EndIndexX, (int)EndIndexY }) == nullptr)
 		return false;
@@ -159,16 +177,22 @@ void Player::Move(int x, int y) {
 	mIsMove = true;
 }
 
-void Player::Dig(GameObject* object) {
-	if (object == nullptr)
+void Player::Dig(int x, int y) {
+	Wall* temp = (Wall*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, "Wall");
+
+	if (temp->GetFrameIndexX(x, y) == 0 && temp->GetFrameIndexY(x, y) == 0)
 		return;
 
-	Wall* temp = (Wall*)object;
-
+	//파일 저장할 때 벽 경도 저장하면 좋을 거 같긴 한데 어려울려나
 	if (mShovelPower >= temp->GetDigLevel()) {
-		object->SetIsActive(false);
-		object->SetIsDestroy(true);
+		temp->SetFrameIndexX(x, y, 0);
+		temp->SetFrameIndexY(x, y, 0);
 	}
+
+	//if (mShovelPower >= temp->GetDigLevel()) {
+	//	object->SetIsActive(false);
+	//	object->SetIsDestroy(true);
+	//}
 }
 
 void Player::Attack(GameObject* object) {
@@ -201,7 +225,7 @@ void Player::Interaction(int x, int y)
 	EndIndexX = EndX / TileSize;
 	EndIndexY = EndY / TileSize;
 
+	Dig(EndIndexX, EndIndexY);
 	Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Monster, POINT{ (int)EndIndexX, (int)EndIndexY }));
-	Dig(ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, POINT{ (int)EndIndexX, (int)EndIndexY }));
 	Equip(ObjectManager::GetInstance()->FindObject(ObjectLayer::Item, POINT{ (int)EndIndexX, (int)EndIndexY }));
 }

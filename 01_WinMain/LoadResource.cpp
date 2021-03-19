@@ -6,26 +6,26 @@
 void FileManager::LoadResource()
 {
 	//{{ 버튼 관련 이미지 ~
-	ImageManager::GetInstance()->LoadFromFile(L"Save", Resources(L"Save.bmp"), 72, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Load", Resources(L"Load.bmp"), 72, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Undo", Resources(L"Undo.bmp"), 72, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Redo", Resources(L"Redo.bmp"), 72, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Clear", Resources(L"Clear.bmp"), 88, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Play", Resources(L"Play.bmp"), 72, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Tool", Resources(L"Tool.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Save", Resources(L"ButtonIcon/Save.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Load", Resources(L"ButtonIcon/Load.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Undo", Resources(L"ButtonIcon/Undo.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Redo", Resources(L"ButtonIcon/Redo.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Clear", Resources(L"ButtonIcon/Clear.bmp"), 88, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Play", Resources(L"ButtonIcon/Play.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Tool", Resources(L"ButtonIcon/Tool.bmp"), 72, 48, 1, 2, false);
 
-	ImageManager::GetInstance()->LoadFromFile(L"Ground", Resources(L"Ground.bmp"), 104, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Wall", Resources(L"Wall.bmp"), 72, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Deco", Resources(L"Deco.bmp"), 72, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Item", Resources(L"Item.bmp"), 72, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Object", Resources(L"Object.bmp"), 104, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Ground", Resources(L"ButtonIcon/Ground.bmp"), 104, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Wall", Resources(L"ButtonIcon/Wall.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Deco", Resources(L"ButtonIcon/Deco.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Item", Resources(L"ButtonIcon/Item.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Object", Resources(L"ButtonIcon/Object.bmp"), 104, 48, 1, 2, false);
 
-	ImageManager::GetInstance()->LoadFromFile(L"Prev", Resources(L"Prev.bmp"), 72, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Next", Resources(L"Next.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Prev", Resources(L"ButtonIcon/Prev.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Next", Resources(L"ButtonIcon/Next.bmp"), 72, 48, 1, 2, false);
 
-	ImageManager::GetInstance()->LoadFromFile(L"Paint", Resources(L"Paint.bmp"), 88, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Pencil", Resources(L"Pencil.bmp"), 104, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Select", Resources(L"Select.bmp"), 104, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Paint", Resources(L"ButtonIcon/Paint.bmp"), 88, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Pencil", Resources(L"ButtonIcon/Pencil.bmp"), 104, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Select", Resources(L"ButtonIcon/Select.bmp"), 104, 48, 1, 2, false);
 	//}}
 
 	//{{ 맵 + 오브젝트 관련 이미지

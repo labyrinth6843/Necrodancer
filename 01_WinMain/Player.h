@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Image.h"
 #include "GameObject.h"
 #include "Animation.h"
@@ -67,10 +67,18 @@ public:
 	void Update()override;
 	void Render(HDC hdc)override;
 
+	//상점 주인과 거리를 판별해 float값 반환
+	//반환된 값을 바로 GameScene에서 사용하면 된다.
+	float DistanceShopkeeper(GameObject* object);
+
+	//이동하려는 타일에 오브젝트 유무 확인
 	bool TileCheck(int x, int y);
+	//Tilecheck가 false면 실행
 	void Move(int x, int y);
+	//아래 세 함수를 하나로 묶기 위함
 	void Interaction(int x, int y);
-	void Dig(GameObject* object);
+
+	void Dig(int x, int y);
 	void Attack(GameObject* object);
 	void Equip(GameObject* object);
 
