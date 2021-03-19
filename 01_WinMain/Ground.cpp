@@ -80,9 +80,6 @@ void Ground::Update()
 		{
 			for (int x = mMinIndexX; x < mMaxIndexX; ++x)
 			{
-				int posx = x * TileSize;
-				int posy = y * TileSize;
-
 				if (mGroundList[y][x]->GetImage() != NULL)
 				{
 					if (COMBO->GetCombo() >= 3)
@@ -114,7 +111,6 @@ void Ground::Update()
 							mGroundList[y][x]->SetFrameIndexX(mEvenFrame.x);
 						}
 					}
-
 				}
 			}
 		}

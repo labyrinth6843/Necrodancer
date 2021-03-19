@@ -45,8 +45,8 @@ void GameScene::Release(){
 }
 
 void GameScene::Update(){
-	BEAT->Update();
 	ObjectManager::GetInstance()->Update();
+	BEAT->Update();
 	mToolButton->Update();
 }
 

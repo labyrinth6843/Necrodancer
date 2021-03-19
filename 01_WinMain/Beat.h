@@ -17,10 +17,12 @@ private:
 	//Note : 박자를 맞출 용도의 이미지를 출력하기 위한 struct
 	struct Note {
 		Image* Image;
-		POINT Pos;
+		float X;
+		float Y;
 		RECT Rc;
 		NoteState State;
 		float Alpha = 1.f;
+		float Speed = 10.f;
 	};
 	struct FrameImage
 	{
@@ -30,11 +32,12 @@ private:
 		float FrameCount = 0.f;
 	};
 private:
-	int mDefaultY;	//노트의 기본 Y
+	float mDefaultY;	//노트의 기본 Y
 
 	wstring mNowMusic;
 
 	float mTiming;	//노트세팅 시점 체크용
+	float mArrive;
 	queue<int> mRunQueue;	//txt를 읽어 노트세팅 타이밍 저장용
 	queue<int> mSaveQueue;	//보스전처럼 반복 재생용
 	
@@ -49,6 +52,7 @@ private:
 	bool mIsBoss;
 	bool mTurn;
 	bool mMusicEnd;
+	bool mNotCall;
 
 	int mFrontNote;
 public:

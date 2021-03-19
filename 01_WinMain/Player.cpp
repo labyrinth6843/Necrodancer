@@ -64,7 +64,7 @@ void Player::Update() {
 
 	//이동 중이지 않을 때 각 입력에 대한 처리
 	if (mIsMove == false) {
-		if (Input::GetInstance()->GetKeyDown(VK_UP) || Input::GetInstance()->GetKeyDown('W')) {
+		if (Input::GetInstance()->GetKeyDown(VK_UP) || Input::GetInstance()->GetKeyDown('W')){
 			if (Beat::GetInstance()->IsDecision() == true) {
 				if (StartIndexY > 0) {
 					//이동하려는 타일에 오브젝트가 존재하는가 확인
