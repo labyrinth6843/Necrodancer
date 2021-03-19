@@ -132,8 +132,8 @@ void Player::Update() {
 }
 
 void Player::Render(HDC hdc) {
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX, mY, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, mX + 2, mY - 14, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX+5, mY+6, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, mX+5 + 2, mY+6 - 14, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
 }
 
 float Player::DistanceShopkeeper(GameObject* object) {
@@ -202,6 +202,10 @@ void Player::Dig(int x, int y) {
 	}
 }
 
+void Player::ShowShovel(int x, int y) {
+
+}
+
 void Player::Attack(GameObject* object) {
 	if (object == nullptr)
 		return;
@@ -212,6 +216,7 @@ void Player::Attack(GameObject* object) {
 	if (temp->GetHp() <= 0) {
 		object->SetIsActive(false);
 		object->SetIsDestroy(true);
+
 	}
 }
 

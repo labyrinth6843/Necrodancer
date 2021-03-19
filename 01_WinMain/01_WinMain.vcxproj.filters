@@ -115,6 +115,9 @@
     <Filter Include="MainGame\System\Combo">
       <UniqueIdentifier>{57edc1b4-1659-49ac-80bf-cd8aabf46c4a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\InteractionManager">
+      <UniqueIdentifier>{f4bf2a20-6cf3-41de-ac4b-07d1310c1db1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -243,6 +246,9 @@
     <ClInclude Include="Combo.h">
       <Filter>MainGame\System\Combo</Filter>
     </ClInclude>
+    <ClInclude Include="InteractionManager.h">
+      <Filter>FrameWork\InteractionManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -367,6 +373,9 @@
     </ClCompile>
     <ClCompile Include="Combo.cpp">
       <Filter>MainGame\System\Combo</Filter>
+    </ClCompile>
+    <ClCompile Include="InteractionManager.cpp">
+      <Filter>FrameWork\InteractionManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

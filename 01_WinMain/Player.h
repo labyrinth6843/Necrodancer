@@ -43,7 +43,11 @@ enum class ShovelType {
 	None,
 	Basic,
 	Blood,
-
+	Titanium,
+	Glass,
+	Crystal,
+	Obsidian,
+	End
 };
 
 class Player:public GameObject{
@@ -65,6 +69,7 @@ class Player:public GameObject{
 	int mShovelPower = 3;
 	int mWeaponPower = 1;
 	bool mIsArmor = false;
+
 	ArmorType mArmorType = ArmorType::None;
 	WeaponType mWeaponType = WeaponType::Dagger;
 	WeaponMaterial mWeaponMaterial = WeaponMaterial::Basic;
@@ -101,6 +106,7 @@ public:
 	void Interaction(int x, int y);
 
 	void Dig(int x, int y);
+	void ShowShovel(int x, int y);
 	void Attack(GameObject* object);
 	void Equip(GameObject* object);
 

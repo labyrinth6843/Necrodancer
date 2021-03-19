@@ -40,6 +40,7 @@ void GameScene::Init(){
 void GameScene::Release(){
 	SafeDelete(mToolButton);
 	BEAT->Release();
+	ObjectManager::GetInstance()->FindObject("Player")->SetIsDestroy(true);
 	ObjectManager::GetInstance()->FindObject("Ground")->SetIsDestroy(true);
 }
 
