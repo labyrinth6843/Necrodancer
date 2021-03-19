@@ -47,7 +47,7 @@ WallTile,5,4,0,0,0
 WallTile,6,4,0,0,0
 WallTile,7,4,0,0,0
 WallTile,8,4,0,0,0
-WallTile,9,4,1,0,0
+WallTile,9,4,0,4,0
 WallTile,0,5,1,0,0
 WallTile,1,5,0,0,0
 WallTile,2,5,0,0,0
@@ -57,7 +57,7 @@ WallTile,5,5,0,0,0
 WallTile,6,5,0,0,0
 WallTile,7,5,0,0,0
 WallTile,8,5,0,0,0
-WallTile,9,5,1,0,0
+WallTile,9,5,0,5,0
 WallTile,0,6,1,0,0
 WallTile,1,6,0,0,0
 WallTile,2,6,0,0,0
@@ -67,7 +67,7 @@ WallTile,5,6,0,0,0
 WallTile,6,6,0,0,0
 WallTile,7,6,0,0,0
 WallTile,8,6,0,0,0
-WallTile,9,6,1,0,0
+WallTile,9,6,0,6,0
 WallTile,0,7,1,0,0
 WallTile,1,7,0,0,0
 WallTile,2,7,0,0,0

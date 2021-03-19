@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "Animation.h"
 
+//무기 종류
 enum class WeaponType {
 	None,
 	Dagger,
@@ -13,6 +14,18 @@ enum class WeaponType {
 	End
 };
 
+//무기 재료
+enum class WeaponMaterial {
+	Basic,
+	Blood,
+	Glass,
+	Gold,
+	Obsidian,
+	Titanium,
+	End
+};
+
+//갑옷 종류
 enum class ArmorType {
 	None,
 	Leather,
@@ -23,6 +36,14 @@ enum class ArmorType {
 	Glass,
 	Karate,
 	End
+};
+
+//삽 종류
+enum class ShovelType {
+	None,
+	Basic,
+	Blood,
+
 };
 
 class Player:public GameObject{
@@ -41,11 +62,12 @@ class Player:public GameObject{
 	
 	float mHp = 6;
 	float mDef = 0;
-	int mShovelPower = 1;
+	int mShovelPower = 3;
 	int mWeaponPower = 1;
 	bool mIsArmor = false;
 	ArmorType mArmorType = ArmorType::None;
 	WeaponType mWeaponType = WeaponType::Dagger;
+	WeaponMaterial mWeaponMaterial = WeaponMaterial::Basic;
 
 	int mCoin = 0;
 	float StartX;

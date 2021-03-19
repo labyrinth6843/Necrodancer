@@ -183,16 +183,23 @@ void Player::Dig(int x, int y) {
 	if (temp->GetFrameIndexX(x, y) == 0 && temp->GetFrameIndexY(x, y) == 0)
 		return;
 
+	if (temp->GetFrameIndexY(x, y) == 6) {
+		SoundPlayer::GetInstance()->Play(L"move_fail", 1.f);
+		return;
+	}
+
 	//파일 저장할 때 벽 경도 저장하면 좋을 거 같긴 한데 어려울려나
 	if (mShovelPower >= temp->GetDigLevel()) {
+		if (temp->GetFrameIndexY(x, y) < 4)
+			SoundPlayer::GetInstance()->Play(L"move_dirt", 1.f);
+		else if (temp->GetFrameIndexY(x, y) < 5)
+			SoundPlayer::GetInstance()->Play(L"move_stone", 1.f);
+		else if (temp->GetFrameIndexY(x, y) < 6)
+			SoundPlayer::GetInstance()->Play(L"move_brick", 1.f);			
+
 		temp->SetFrameIndexX(x, y, 0);
 		temp->SetFrameIndexY(x, y, 0);
 	}
-
-	//if (mShovelPower >= temp->GetDigLevel()) {
-	//	object->SetIsActive(false);
-	//	object->SetIsDestroy(true);
-	//}
 }
 
 void Player::Attack(GameObject* object) {

@@ -14,11 +14,11 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"Play", Resources(L"ButtonIcon/Play.bmp"), 72, 48, 1, 2, false);
 	ImageManager::GetInstance()->LoadFromFile(L"Tool", Resources(L"ButtonIcon/Tool.bmp"), 72, 48, 1, 2, false);
 
-	ImageManager::GetInstance()->LoadFromFile(L"Ground", Resources(L"ButtonIcon/Ground.bmp"), 104, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Wall", Resources(L"ButtonIcon/Wall.bmp"), 72, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Deco", Resources(L"ButtonIcon/Deco.bmp"), 72, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Item", Resources(L"ButtonIcon/Item.bmp"), 72, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Object", Resources(L"ButtonIcon/Object.bmp"), 104, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"GroundButton", Resources(L"ButtonIcon/Ground.bmp"), 104, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"WallButton", Resources(L"ButtonIcon/Wall.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"DecoButton", Resources(L"ButtonIcon/Deco.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"ItemButton", Resources(L"ButtonIcon/Item.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"ObjectButton", Resources(L"ButtonIcon/Object.bmp"), 104, 48, 1, 2, false);
 
 	ImageManager::GetInstance()->LoadFromFile(L"Prev", Resources(L"ButtonIcon/Prev.bmp"), 72, 48, 1, 2, false);
 	ImageManager::GetInstance()->LoadFromFile(L"Next", Resources(L"ButtonIcon/Next.bmp"), 72, 48, 1, 2, false);
@@ -34,8 +34,10 @@ void FileManager::LoadResource()
 	
 	//{{ 팔레트 관련 이미지
 	ImageManager::GetInstance()->LoadFromFile(L"GroundPallet", Resources(L"Pallet/GroundPallet.bmp"), 130, 26, 5, 1, true);
-	ImageManager::GetInstance()->LoadFromFile(L"WallPallet", Resources(L"Pallet/WallPallet.bmp"), 130, 130, 5, 5, true);
-	ImageManager::GetInstance()->LoadFromFile(L"ItemPallet", Resources(L"Pallet/ItemPallet.bmp"), 130, 234, 5, 9, true);
+	ImageManager::GetInstance()->LoadFromFile(L"WallPallet", Resources(L"Pallet/WallPallet.bmp"), 130, 182, 5, 7, true);
+	ImageManager::GetInstance()->LoadFromFile(L"DecoPallet", Resources(L"Pallet/DecoPallet.bmp"), 130, 26, 5, 1, true);
+	ImageManager::GetInstance()->LoadFromFile(L"ItemPallet1", Resources(L"Pallet/ItemPallet1.bmp"), 130, 260, 5, 10, true);
+	ImageManager::GetInstance()->LoadFromFile(L"ItemPallet2", Resources(L"Pallet/ItemPallet2.bmp"), 130, 78, 5, 3, true);
 	ImageManager::GetInstance()->LoadFromFile(L"MonsterPallet", Resources(L"Pallet/MonsterPallet.bmp"), 130, 52, 5, 2, true);
 	//}}
 
@@ -43,6 +45,7 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"Weapon", Resources(L"Item/Weapon.bmp"), 243, 324, 9, 12, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Armor", Resources(L"Item/Armor.bmp"), 260, 52, 10, 2, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Torch", Resources(L"Item/Torch.bmp"), 189, 54, 7, 2, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Shovel", Resources(L"Item/Shovel.bmp"), 208, 52, 8, 2, true);
 	//}}
 
 	//{{ 캐릭터 관련 이미지
@@ -68,7 +71,7 @@ void FileManager::LoadResource()
 
 	//{{ 맵 타일 이미지
 	ImageManager::GetInstance()->LoadFromFile(L"GroundTile", Resources(L"Tile/GroundTile.bmp"), 208, 52, 8, 2, true);
-	ImageManager::GetInstance()->LoadFromFile(L"WallTile", Resources(L"Tile/WallTile.bmp"), 125, 240, 5, 5, true);
+	ImageManager::GetInstance()->LoadFromFile(L"WallTile", Resources(L"Tile/WallTile.bmp"), 125, 336, 5, 7, true);
 	//}}
 
 	//{{ HUD 관련 이미지

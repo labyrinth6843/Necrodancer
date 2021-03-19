@@ -10,11 +10,11 @@
 void MapToolScene::Init()
 {
 	//Image LoadFromFile은 필터 -> LoadImage.cpp로 옮김
-
 	mPalleteList.push_back(L"GroundPallet");
 	mPalleteList.push_back(L"WallTile");
-	mPalleteList.push_back(L"WallPallet");
-	mPalleteList.push_back(L"ItemPallet");
+	mPalleteList.push_back(L"DecoPallet");
+	mPalleteList.push_back(L"ItemPallet1");
+	mPalleteList.push_back(L"ItemPallet2");
 	mPalleteList.push_back(L"MonsterPallet");
 
 	mMaxSizeX = TileCountX;
@@ -37,8 +37,9 @@ void MapToolScene::Init()
 		{
 			GList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"GroundPallet"), TileSize * x , TileSize * y , TileSize, TileSize, 0, 0));
 			WList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"WallTile"), TileSize * x , TileSize * y , TileSize, 72, 0, 0));
-			DList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"WallPallet"), TileSize * x , TileSize * y , TileSize, TileSize, 0, 0));
-			IList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"ItemPallet"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+			DList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"DecoPallet"), TileSize * x , TileSize * y , TileSize, TileSize, 0, 0));
+			IList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"ItemPallet1"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
+			IList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"ItemPallet2"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
 			OList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"MonsterPallet"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
 		}
 		mGroundList.push_back(GList);
@@ -97,11 +98,11 @@ void MapToolScene::Init()
 	mButtonList.insert(make_pair(L"Clear", new Button(L"Clear", L"Clear", 450, 50, 200, 50, bind(&MapToolScene::Clear, this))));
 	mButtonList.insert(make_pair(L"Play", new Button(L"Play", L"Play", 550, 50, 200, 50, bind(&MapToolScene::Play, this))));
 
-	mButtonList.insert(make_pair(L"Ground", new Button(L"Ground", L"Ground", 650, 150, 200, 50, bind(&MapToolScene::GroundPallete, this))));
-	mButtonList.insert(make_pair(L"Wall", new Button(L"Wall", L"Wall", 775, 150, 220, 50, bind(&MapToolScene::WallPallete, this))));
-	mButtonList.insert(make_pair(L"Deco", new Button(L"Deco", L"Deco", 875, 150, 200, 50, bind(&MapToolScene::DecoPallete, this))));
-	mButtonList.insert(make_pair(L"Item", new Button(L"Item", L"Item", 975, 150, 200, 50, bind(&MapToolScene::ItemPallete, this))));
-	mButtonList.insert(make_pair(L"Object", new Button(L"Object", L"Object", 1075, 150, 200, 50, bind(&MapToolScene::ObjectPallete, this))));
+	mButtonList.insert(make_pair(L"Ground", new Button(L"GroundButton", L"Ground", 650, 150, 200, 50, bind(&MapToolScene::GroundPallete, this))));
+	mButtonList.insert(make_pair(L"Wall", new Button(L"WallButton", L"Wall", 775, 150, 220, 50, bind(&MapToolScene::WallPallete, this))));
+	mButtonList.insert(make_pair(L"Deco", new Button(L"DecoButton", L"Deco", 875, 150, 200, 50, bind(&MapToolScene::DecoPallete, this))));
+	mButtonList.insert(make_pair(L"Item", new Button(L"ItemButton", L"Item", 975, 150, 200, 50, bind(&MapToolScene::ItemPallete, this))));
+	mButtonList.insert(make_pair(L"Object", new Button(L"ObjectButton", L"Object", 1075, 150, 200, 50, bind(&MapToolScene::ObjectPallete, this))));
 	
 	mButtonList.insert(make_pair(L"Prev", new Button(L"Prev", L"Prev", 800, 600, 200, 50, bind(&MapToolScene::PrevPallete, this))));
 	mButtonList.insert(make_pair(L"Next", new Button(L"Next", L"Next", 900, 600, 200, 50, bind(&MapToolScene::NextPallete, this))));
@@ -653,8 +654,6 @@ void MapToolScene::Save()
 
 void MapToolScene::Load()
 {	
-
-	
 	//이제 사용 안함
 	int i = 0;
 	ifstream loadStream(L"../04_Data/Test0" + to_wstring(i) + L".txt");
@@ -864,7 +863,7 @@ void MapToolScene::Clear(){
 				0
 			);
 			mDecoList[y][x] = new Tile(
-				ImageManager::GetInstance()->FindImage(L"WallPallet"),
+				ImageManager::GetInstance()->FindImage(L"DecoPallet"),
 				TileSize * x,
 				TileSize * y,
 				TileSize,
@@ -873,7 +872,7 @@ void MapToolScene::Clear(){
 				0
 			);
 			mItemList[y][x] = new Tile(
-				ImageManager::GetInstance()->FindImage(L"ItemPallet"),
+				ImageManager::GetInstance()->FindImage(L"ItemPallet1"),
 				TileSize * x,
 				TileSize * y,
 				TileSize,
@@ -894,7 +893,6 @@ void MapToolScene::Clear(){
 	}
 }
 
-
 void MapToolScene::GroundPallete(){
 	mCurrentPage = 0;
 }
@@ -912,7 +910,7 @@ void MapToolScene::ItemPallete(){
 }
 
 void MapToolScene::ObjectPallete(){
-	mCurrentPage = 4;
+	mCurrentPage = 5;
 }
 
 void MapToolScene::PrevPallete(){
@@ -926,7 +924,6 @@ void MapToolScene::NextPallete(){
 		mCurrentPage = 0;
 	else mCurrentPage++;
 }
-
 
 void MapToolScene::Play() {
 	SceneManager::GetInstance()->LoadScene(L"GameScene");
