@@ -34,6 +34,8 @@ Beat::Beat()
 	mTurn = false;
 	//노래종료
 	mMusicEnd = false;
+
+	mFrontNote = 0;
 }
 
 Beat::~Beat()
@@ -57,6 +59,7 @@ void Beat::Release()
 		mLeftNote[i] = { IMAGEMANAGER->FindImage(L"BeatBlue") ,{ 0, mDefaultY } , RectMakeCenter(0, mDefaultY,5,5), NoteState::Unactive , 1.f};
 		mRightNote[i] = { IMAGEMANAGER->FindImage(L"BeatBlue"), { WINSIZEX,mDefaultY }, RectMakeCenter(WINSIZEX, mDefaultY,5,5),  NoteState::Unactive, 1.f };
 	}
+	mFrontNote = 0;
 }
 
 void Beat::Update()
@@ -73,7 +76,7 @@ void Beat::Update()
 		SoundPlayer::GetInstance()->SetPosition(mNowMusic,mTiming);
 		SoundPlayer::GetInstance()->SetPosition(mNowMusic+L"_shopkeeper", mTiming);
 	}
-	if (Input::GetInstance()->GetKeyDown('B'))
+	if (Input::GetInstance()->GetKeyDown('B'))//테스트용, 플레이어에서 IsDecision을 사용하면 제거
 		IsDecision();
 
 	//현재 재생중인 음악의 Position이 mTiming과 같으면 노트를 활성화 한다
@@ -134,6 +137,7 @@ void Beat::Update()
 		}	
 	}
 	NoteReset();
+	CheckFront();
 
 	//심장의 프레임을 변경한다
 	if (mHeartImage.FrameX == 0)
@@ -198,10 +202,10 @@ void Beat::SetMusic(const wstring& keyname, const wstring& beatfilename)
 
 bool Beat::IsDecision()
 {
-	if (PtInRect(&mHeart, mLeftNote[0].Pos))
+	if (PtInRect(&mHeart, mLeftNote[mFrontNote].Pos))
 	{
 		mTurn = true;
-		COMBO->ComboUp(); //테스트용
+		COMBO->ComboUp(); //테스트용, 몬스터 사망시 호출되도록 한다
 		NoteSuccess();
 		return true;
 	}
@@ -341,6 +345,18 @@ void Beat::NoteReset()
 				mRightNote.push_back(temp);
 				break;
 			}
+		}
+	}
+}
+
+void Beat::CheckFront()
+{
+	for (int i = 0; i < mLeftNote.size(); ++i)
+	{
+		if (mLeftNote[i].State == NoteState::Active)
+		{
+			mFrontNote = i;
+			break;
 		}
 	}
 }

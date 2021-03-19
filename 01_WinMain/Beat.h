@@ -49,6 +49,8 @@ private:
 	bool mIsBoss;
 	bool mTurn;
 	bool mMusicEnd;
+
+	int mFrontNote;
 public:
 	Beat();
 	~Beat();
@@ -70,6 +72,7 @@ private:
 	void SetNote();		//비활성화된 노트중 
 	void NoteSuccess();
 	void NoteReset();	//Active가 false가 된 노트를 시작 위치에 옮기는 함수
+	void CheckFront();
 	void MissNote();
 };
 #define BEAT Beat::GetInstance()
