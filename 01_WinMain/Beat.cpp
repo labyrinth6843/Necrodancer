@@ -98,7 +98,7 @@ void Beat::Update()
 		//노트 이동
 		if (mLeftNote[i].State == NoteState::Active)
 		{
-			mLeftNote[i].Pos.x += 300 * Time::GetInstance()->DeltaTime();	//속도는 임의로 설정했기때문에 조정 필요
+			mLeftNote[i].Pos.x += 320 * Time::GetInstance()->DeltaTime();	//속도는 임의로 설정했기때문에 조정 필요
 			mLeftNote[i].Rc = RectMakeCenter(mLeftNote[i].Pos.x, mLeftNote[i].Pos.y, 5, 5);
 		}
 		else if (mLeftNote[i].State == NoteState::Miss)
@@ -110,7 +110,7 @@ void Beat::Update()
 
 		if (mRightNote[i].State == NoteState::Active)
 		{
-			mRightNote[i].Pos.x -= 300 * Time::GetInstance()->DeltaTime();
+			mRightNote[i].Pos.x -= 320 * Time::GetInstance()->DeltaTime();
 			mRightNote[i].Rc = RectMakeCenter(mRightNote[i].Pos.x, mLeftNote[i].Pos.y, 5, 5);
 		}
 		else if (mRightNote[i].State == NoteState::Miss)
@@ -167,12 +167,12 @@ void Beat::Render(HDC hdc)
 	{
 		if (mLeftNote[i].State != NoteState::Unactive)
 		{
-			mLeftNote[i].Image->AlphaScaleRender(hdc, mLeftNote[i].Pos.x - 12, mLeftNote[i].Pos.y - 50, 15, 100, mLeftNote[i].Alpha);
+			mLeftNote[i].Image->AlphaScaleRender(hdc, mLeftNote[i].Pos.x - 5, mLeftNote[i].Pos.y - 50, 10, 70, mLeftNote[i].Alpha);
 			//Gizmo::GetInstance()->DrawRect(hdc, mLeftNote[i].Rc, Gizmo::Color::Green);
 		}
 		if (mRightNote[i].State != NoteState::Unactive)
 		{
-			mRightNote[i].Image->AlphaScaleRender(hdc, mRightNote[i].Pos.x - 12, mRightNote[i].Pos.y - 50, 15, 100, mRightNote[i].Alpha);
+			mRightNote[i].Image->AlphaScaleRender(hdc, mRightNote[i].Pos.x - 5, mRightNote[i].Pos.y - 50, 10, 70, mRightNote[i].Alpha);
 			//Gizmo::GetInstance()->DrawRect(hdc, mRightNote[i].Rc, Gizmo::Color::Green);
 		}
 	}
@@ -182,7 +182,7 @@ void Beat::Render(HDC hdc)
 		mHeartImage.FrameX, mHeartImage.FrameY, 120, 150);
 
 	//테스팅
-	//Gizmo::GetInstance()->DrawRect(hdc, RectMake(0, 0, WINSIZEX / 2, WINSIZEY), Gizmo::Color::Red);
+	Gizmo::GetInstance()->DrawRect(hdc, RectMake(-1, 0, WINSIZEX / 2, WINSIZEY +1), Gizmo::Color::Red);
 	float t = SoundPlayer::GetInstance()->GetPosition(mNowMusic);
 	wstring test = to_wstring(t);
 	TextOut(hdc,10,10,test.c_str(),test.length());

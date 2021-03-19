@@ -9,6 +9,14 @@ class Ground : public GameObject
 
 	int mMapSizeX;
 	int mMapSizeY;
+
+	int mMinIndexX;
+	int mMinIndexY;
+	int mMaxIndexX;
+	int mMaxIndexY;
+
+	POINT mOddFrame; //홀수 프레임
+	POINT mEvenFrame;//짝수 프레임
 public:
 	Ground(const string &name, int startx = 0, int starty = 0);
 	virtual void Init();
@@ -16,6 +24,7 @@ public:
 	virtual void Update();
 	virtual void Render(HDC hdc);
 
+	void SetMinMax();
 	bool GetSight();
 };
 

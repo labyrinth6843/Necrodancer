@@ -40,6 +40,10 @@ public:
 	bool IsInCameraArea(RECT rc);
 
 	bool IsInCameraArea(int x, int y, int range);
+	inline int GetCameraLeft() { return mRect.left; }
+	inline int GetCameraRight() { return mRect.right; }
+	inline int GetCameraTop() { return mRect.top; }
+	inline int GetCameraBottom() { return mRect.bottom; }
 
 	inline float GetMoveSpeed()const { return mMoveSpeed; }
 	inline void SetMoveSpeed(float speed) { mMoveSpeed = speed; }

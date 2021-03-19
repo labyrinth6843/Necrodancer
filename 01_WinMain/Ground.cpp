@@ -14,6 +14,9 @@ void Ground::Init()
 	mMapSizeY = mGroundList.size();
 	mMapSizeX = mGroundList[0].size();
 
+	SetMinMax();
+	mOddFrame = { 0,0 };
+	mEvenFrame = { 1,0 };
 	//원활한 작업을 위해타일의 이미지 포인터 변경
 	for (int y = 0; y < mMapSizeY; ++y)
 	{
@@ -59,51 +62,59 @@ void Ground::Release()
 
 void Ground::Update()
 {
+	SetMinMax();
 	//턴마다 타일 변경하기
+
 	if(BEAT->NextTurn())
 	{
-		for (int y = 0; y < mMapSizeY; ++y)
-		{
-			for (int x = 0; x < mMapSizeX; ++x)
-			{
+		if (mOddFrame.x == 0)
+			mOddFrame.x = 1;
+		else if (mOddFrame.x == 1)
+			mOddFrame.x = 0;
+		if (mEvenFrame.x == 0)
+			mEvenFrame.x = 1;
+		else if (mEvenFrame.x == 1)
+			mEvenFrame.x = 0;
 
+		for (int y = mMinIndexY; y < mMaxIndexY; ++y)
+		{
+			for (int x = mMinIndexX; x < mMaxIndexX; ++x)
+			{
 				int posx = x * TileSize;
 				int posy = y * TileSize;
-				if (CameraManager::GetInstance()->GetMainCamera()->IsInCameraArea(posx, posy, TileSize))
-				{
-					if (mGroundList[y][x]->GetImage() != NULL)
-					{
-						if (COMBO->GetCombo() >= 3)
-						{
-							mGroundList[y][x]->SetFrameIndexY(1);
-							//홀
-							if ((x + y) & 1)
-							{
-								if (mGroundList[y][x]->GetFrameIndexX() == 0)
-									mGroundList[y][x]->SetFrameIndexX(1);
-								else
-									mGroundList[y][x]->SetFrameIndexX(0);
-							}
-							//짝
-							else
-							{
-								if (mGroundList[y][x]->GetFrameIndexX() == 0)
-									mGroundList[y][x]->SetFrameIndexX(2);
-								else
-									mGroundList[y][x]->SetFrameIndexX(0);
-							}
 
+				if (mGroundList[y][x]->GetImage() != NULL)
+				{
+					if (COMBO->GetCombo() >= 3)
+					{
+						mGroundList[y][x]->SetFrameIndexY(1);
+						//홀
+						if ((x + y) & 1)
+						{
+								mGroundList[y][x]->SetFrameIndexX(mOddFrame.x);
 						}
+						//짝
 						else
 						{
-							mGroundList[y][x]->SetFrameIndexY(0);
-							if (mGroundList[y][x]->GetFrameIndexX() == 0)
-								mGroundList[y][x]->SetFrameIndexX(1);
-							else
-								mGroundList[y][x]->SetFrameIndexX(0);
+							mGroundList[y][x]->SetFrameIndexX(mEvenFrame.x*2);
 						}
 
 					}
+					else
+					{
+						mGroundList[y][x]->SetFrameIndexY(0);
+						//홀
+						if ((x + y) & 1)
+						{
+							mGroundList[y][x]->SetFrameIndexX(mOddFrame.x);
+						}
+						//짝 : 홀이랑 다른 이미지
+						else
+						{
+							mGroundList[y][x]->SetFrameIndexX(mEvenFrame.x);
+						}
+					}
+
 				}
 			}
 		}
@@ -116,22 +127,36 @@ void Ground::Render(HDC hdc)
 	mBack->ScaleRender(hdc, 0, 0, WINSIZEX, WINSIZEY);
 
 	//바닥 타일찍기
-	for (int y = 0; y < mMapSizeY; ++y)
+	for (int y = mMinIndexY; y < mMaxIndexY; ++y)
 	{
-		for (int x = 0; x < mMapSizeX; ++x)
+		for (int x = mMinIndexX; x < mMaxIndexX; ++x)
 		{
 			//맵 전체를 랜더하면 엄청 느려지니 처리 생각하기
 			int posx = x * TileSize;
 			int posy = y * TileSize;
-			if (CameraManager::GetInstance()->GetMainCamera()->IsInCameraArea(posx, posy, TileSize))
-			{
-				if(mGroundList[y][x]->GetImage() != NULL)
+
+			if(mGroundList[y][x]->GetImage() != NULL)
 					CameraManager::GetInstance()->GetMainCamera()->AlphaScaleFrameRender(hdc, mGroundList[y][x]->GetImage(),
 					posx, posy, mGroundList[y][x]->GetFrameIndexX(), mGroundList[y][x]->GetFrameIndexY(),
 					mGroundList[y][x]->Getwidth(), mGroundList[y][x]->GetHeight(), 1.0f);
-			}
 		}
 	}
+}
+
+void Ground::SetMinMax()
+{
+	mMinIndexX = CameraManager::GetInstance()->GetMainCamera()->GetCameraLeft() / TileSize -1;
+	if (mMinIndexX < 0)
+		mMinIndexX = 0;
+	mMinIndexY = CameraManager::GetInstance()->GetMainCamera()->GetCameraTop() / TileSize - 1;
+	if (mMinIndexY < 0)
+		mMinIndexY = 0;
+	mMaxIndexX = CameraManager::GetInstance()->GetMainCamera()->GetCameraRight() / TileSize +1;
+	if (mMaxIndexX > mMapSizeX)
+		mMaxIndexX = mMapSizeX;
+	mMaxIndexY = CameraManager::GetInstance()->GetMainCamera()->GetCameraBottom() / TileSize +1;
+	if (mMaxIndexY > mMapSizeY)
+		mMaxIndexY = mMapSizeY;
 }
 
 bool Ground::GetSight()
