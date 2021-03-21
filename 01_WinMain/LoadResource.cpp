@@ -23,9 +23,11 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"Prev", Resources(L"ButtonIcon/Prev.bmp"), 72, 48, 1, 2, false);
 	ImageManager::GetInstance()->LoadFromFile(L"Next", Resources(L"ButtonIcon/Next.bmp"), 72, 48, 1, 2, false);
 
-	ImageManager::GetInstance()->LoadFromFile(L"Paint", Resources(L"ButtonIcon/Paint.bmp"), 88, 48, 1, 2, false);
-	ImageManager::GetInstance()->LoadFromFile(L"Pencil", Resources(L"ButtonIcon/Pencil.bmp"), 104, 48, 1, 2, false);
 	ImageManager::GetInstance()->LoadFromFile(L"Select", Resources(L"ButtonIcon/Select.bmp"), 104, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Drag", Resources(L"ButtonIcon/Drag.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Fill", Resources(L"ButtonIcon/Fill.bmp"), 72, 48, 1, 2, false);
+	ImageManager::GetInstance()->LoadFromFile(L"Set", Resources(L"ButtonIcon/Set.bmp"), 56, 48, 1, 2, false);
+
 	//}}
 
 	//{{ 맵 + 오브젝트 관련 이미지

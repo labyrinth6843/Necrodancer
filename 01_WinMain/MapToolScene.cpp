@@ -108,7 +108,7 @@ void MapToolScene::Init()
 	mButtonList.insert(make_pair(L"Next", new Button(L"Next", L"Next", 900, 600, 200, 50, bind(&MapToolScene::NextPallete, this))));
 
 	//선택 툴
-	mButtonList.insert(make_pair(L"SelectMod", new Button(L"", L"Select", 80, 100, 60, 25, [this]()
+	mButtonList.insert(make_pair(L"SelectMod", new Button(L"Select", L"Select", 50, 90, 50, 25, [this]()
 		{
 			mFillMod = false;
 			mDragMod = false;
@@ -116,7 +116,7 @@ void MapToolScene::Init()
 			mSelectIndex.clear();
 			mSelectIndex.shrink_to_fit();
 		})));
-	mButtonList.insert(make_pair(L"DragMod", new Button(L"", L"Drag", 160, 100, 60, 25, [this]()
+	mButtonList.insert(make_pair(L"DragMod", new Button(L"Drag", L"Drag", 160, 90, 50, 25, [this]()
 		{
 			mFillMod = false;
 			mSelectRectShow = false;
@@ -126,7 +126,7 @@ void MapToolScene::Init()
 			mSelectIndex.shrink_to_fit();
 		})));
 	//채우기
-	mButtonList.insert(make_pair(L"Fill", new Button(L"", L"Fill", 240, 100, 60, 25, bind(&MapToolScene::Fill,this))));
+	mButtonList.insert(make_pair(L"Fill", new Button(L"Fill", L"Fill", 240, 90, 50, 25, bind(&MapToolScene::Fill,this))));
 
 	mSelectRectShow = false;
 	mSelectMod = false;
@@ -138,7 +138,7 @@ void MapToolScene::Init()
 	mInputX = to_string(TileCountX);
 	mInputY = to_string(TileCountY);
 
-	mButtonList.insert(make_pair(L"Set", new Button(L"",L"Set", 600, 100, 50, 25, bind(&MapToolScene::SetSize, this))));
+	mButtonList.insert(make_pair(L"Set", new Button(L"Set",L"Set", 600, 90, 50, 25, bind(&MapToolScene::SetSize, this))));
 	mButtonList.insert(make_pair(L"SizeX", new Button(L"", L"", 420, 100, 50, 25, [this]() { mIsInput = 1; })));
 	mButtonList.insert(make_pair(L"SizeY", new Button(L"", L"", 490, 100, 50, 25, [this]() { mIsInput = 2; })));
 	mIsInput = 0;
