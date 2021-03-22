@@ -59,7 +59,7 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"Zombie", Resources(L"Enemy/Zombie.bmp"), 320, 150, 16, 6, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Slime1", Resources(L"Enemy/Slime1.bmp"), 104, 104, 4, 4, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Slime2", Resources(L"Enemy/Slime2.bmp"), 104, 104, 4, 4, true);
-	ImageManager::GetInstance()->LoadFromFile(L"Slime3", Resources(L"Enemy/Slime3.bmp"), 208, 104, 8, 5, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Slime3", Resources(L"Enemy/Slime3.bmp"), 208, 104, 8, 4, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Skeleton1", Resources(L"Enemy/Skeleton1.bmp"), 208, 208, 8, 8, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Skeleton2", Resources(L"Enemy/Skeleton2.bmp"), 234, 208, 9, 8, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Skeleton3", Resources(L"Enemy/Skeleton3.bmp"), 234, 208, 9, 8, true);

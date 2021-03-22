@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Tile.h"
 #include "Button.h"
+#include "EnemyManager.h"
 
 #include <fstream>
 
@@ -20,12 +21,13 @@ void GameScene::Init(){
 	SoundPlayer::GetInstance()->Play(L"zone1_1",0.2f);
 	SoundPlayer::GetInstance()->Play(L"zone1_1_shopkeeper", 0.2f);
 	Beat::GetInstance()->SetMusic(L"zone1_1",L"zone1_1");
-	
+	EnemyManager* mEnemyManager = new EnemyManager;
+	mEnemyManager->LoadEnemy();
 	//게임씬에서 사용할 오브젝트들 생성
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Ground, new Ground("Ground"));
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Wall, new Wall("Wall"));
 	//ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, new Wall("Item"));
-	//ObjectManager::GetInstance()->AddObject(ObjectLayer::Monster, new Wall("Monster"));
+	//ObjectManager::GetInstance()->AddObject(ObjectLayer::Monster, new Enemy("Monster"));
 	
 	//camera
 	Camera* camera = new Camera();

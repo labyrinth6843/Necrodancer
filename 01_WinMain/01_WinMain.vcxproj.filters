@@ -115,8 +115,11 @@
     <Filter Include="MainGame\System\Combo">
       <UniqueIdentifier>{57edc1b4-1659-49ac-80bf-cd8aabf46c4a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FrameWork\InteractionManager">
-      <UniqueIdentifier>{f4bf2a20-6cf3-41de-ac4b-07d1310c1db1}</UniqueIdentifier>
+    <Filter Include="MainGame\Object\Enemy\Slime">
+      <UniqueIdentifier>{c0c191a9-ac82-4170-8cb6-44be430d1cc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\System\Interaction">
+      <UniqueIdentifier>{2e6d8c08-4aaa-4ccc-8a04-dc94cf44606b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -246,8 +249,20 @@
     <ClInclude Include="Combo.h">
       <Filter>MainGame\System\Combo</Filter>
     </ClInclude>
-    <ClInclude Include="InteractionManager.h">
-      <Filter>FrameWork\InteractionManager</Filter>
+    <ClInclude Include="YellowSlime.h">
+      <Filter>MainGame\Object\Enemy\Slime</Filter>
+    </ClInclude>
+    <ClInclude Include="GreenSlime.h">
+      <Filter>MainGame\Object\Enemy\Slime</Filter>
+    </ClInclude>
+    <ClInclude Include="BlueSlime.h">
+      <Filter>MainGame\Object\Enemy\Slime</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyManager.h">
+      <Filter>MainGame\Object\Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="Interaction.h">
+      <Filter>MainGame\System\Interaction</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -374,8 +389,20 @@
     <ClCompile Include="Combo.cpp">
       <Filter>MainGame\System\Combo</Filter>
     </ClCompile>
-    <ClCompile Include="InteractionManager.cpp">
-      <Filter>FrameWork\InteractionManager</Filter>
+    <ClCompile Include="YellowSlime.cpp">
+      <Filter>MainGame\Object\Enemy\Slime</Filter>
+    </ClCompile>
+    <ClCompile Include="GreenSlime.cpp">
+      <Filter>MainGame\Object\Enemy\Slime</Filter>
+    </ClCompile>
+    <ClCompile Include="BlueSlime.cpp">
+      <Filter>MainGame\Object\Enemy\Slime</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyManager.cpp">
+      <Filter>MainGame\Object\Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="Interaction.cpp">
+      <Filter>MainGame\System\Interaction</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

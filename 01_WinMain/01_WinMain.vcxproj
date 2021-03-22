@@ -150,12 +150,14 @@
     <ClInclude Include="01_WinMain.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Beat.h" />
+    <ClInclude Include="BlueSlime.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Combo.h" />
     <ClInclude Include="DefineHeader.h" />
     <ClInclude Include="Enemy.h" />
+    <ClInclude Include="EnemyManager.h" />
     <ClInclude Include="Figure.h" />
     <ClInclude Include="FileManager.h" />
     <ClInclude Include="framework.h" />
@@ -164,12 +166,13 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Gizmo.h" />
+    <ClInclude Include="GreenSlime.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Helper.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Input.h" />
-    <ClInclude Include="InteractionManager.h" />
+    <ClInclude Include="Interaction.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="MainGame.h" />
@@ -190,27 +193,31 @@
     <ClInclude Include="Time.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Wall.h" />
+    <ClInclude Include="YellowSlime.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Beat.cpp" />
+    <ClCompile Include="BlueSlime.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Combo.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyManager.cpp" />
     <ClCompile Include="FileManager.cpp" />
     <ClCompile Include="GameEvent.cpp" />
     <ClCompile Include="GameEventManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Gizmo.cpp" />
+    <ClCompile Include="GreenSlime.cpp" />
     <ClCompile Include="Ground.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Input.cpp" />
-    <ClCompile Include="InteractionManager.cpp" />
+    <ClCompile Include="Interaction.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="LoadResource.cpp" />
@@ -239,6 +246,7 @@
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Wall.cpp" />
+    <ClCompile Include="YellowSlime.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

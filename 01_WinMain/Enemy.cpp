@@ -13,6 +13,8 @@ void Enemy::Update()
 
 void Enemy::Release()
 {
+	SafeDelete(mLeftAnimation);
+	SafeDelete(mRightAnimation);
 }
 
 void Enemy::Render(HDC hdc)

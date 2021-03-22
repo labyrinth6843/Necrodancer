@@ -2,19 +2,27 @@
 #include"GameObject.h"
 #include"Image.h"
 #include"Animation.h"
+#include"Camera.h"
 
 class Enemy:public GameObject
 {
+public:
+	Image* mImage;
+
+	Animation* mCurrentAnimation;
+	Animation* mLeftAnimation;
+	Animation* mRightAnimation;
+
 	int mHp;
 	int mAtk;
 	int mCoin;
 public:
 	Enemy(const string& name);
 
-	void Init()override;
-	void Update()override;
-	void Release()override;
-	void Render(HDC hdc)override;
+	virtual void Init()override;
+	virtual void Update()override;
+	virtual void Release()override;
+	virtual void Render(HDC hdc)override;
 
 	void SetHp(float hp) { mHp = hp; }
 	float GetHp() { return mHp; }
