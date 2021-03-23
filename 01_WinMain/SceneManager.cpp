@@ -21,14 +21,14 @@ void SceneManager::Update()
 {
 	if (mCurrentScene != nullptr)
 		mCurrentScene->Update();
+	if (mSaveName != L"")
+		LoadScene(mSaveName);
 }
 
 void SceneManager::Render(HDC hdc)
 {
 	if (mCurrentScene != nullptr)
 		mCurrentScene->Render(hdc);
-	if (mSaveName != L"")
-		LoadScene(mSaveName);
 }
 
 void SceneManager::AddScene(const wstring& sceneName,Scene * scene)

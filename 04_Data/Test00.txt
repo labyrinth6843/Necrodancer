@@ -43,7 +43,7 @@ GroundPallet,1,4,1,0,0
 GroundPallet,2,4,1,0,0
 GroundPallet,3,4,1,0,0
 GroundPallet,4,4,1,0,0
-GroundPallet,5,4,1,0,0
+GroundPallet,5,4,3,0,0
 GroundPallet,6,4,1,0,0
 GroundPallet,7,4,1,0,0
 GroundPallet,8,4,1,0,0

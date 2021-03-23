@@ -3,6 +3,11 @@
 
 #include "Image.h"
 
+Camera::Camera()
+{
+	mName = "Camera";
+}
+
 void Camera::Init()
 {
 	mMode = Mode::Follow;

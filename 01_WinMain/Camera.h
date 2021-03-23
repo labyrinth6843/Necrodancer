@@ -14,6 +14,7 @@ protected:
 
 	float mMoveSpeed;
 public:
+	Camera();
 	void Init()override; 
 	void Release()override; 
 	void Update()override; 

@@ -16,21 +16,26 @@
 void GameScene::Init(){
 	Beat::GetInstance()->Init();
 
-	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player"));
+	mPlayer = new Player("Player");
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, mPlayer);
+	//ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player"));
 
 	SoundPlayer::GetInstance()->Play(L"zone1_1",0.2f);
 	SoundPlayer::GetInstance()->Play(L"zone1_1_shopkeeper", 0.2f);
 	Beat::GetInstance()->SetMusic(L"zone1_1",L"zone1_1");
+
+	//
 	EnemyManager* mEnemyManager = new EnemyManager;
 	mEnemyManager->LoadEnemy();
+
 	//게임씬에서 사용할 오브젝트들 생성
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Ground, new Ground("Ground"));
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Wall, new Wall("Wall"));
-	//ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, new Wall("Item"));
-	//ObjectManager::GetInstance()->AddObject(ObjectLayer::Monster, new Enemy("Monster"));
+
 	
 	//camera
 	Camera* camera = new Camera();
+	//camera->SetTarget(mPlayer);
 	camera->SetTarget(ObjectManager::GetInstance()->FindObject("Player"));
 	CameraManager::GetInstance()->SetMainCamera(camera);
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, camera);
@@ -42,8 +47,10 @@ void GameScene::Init(){
 void GameScene::Release(){
 	SafeDelete(mToolButton);
 	BEAT->Release();
-	ObjectManager::GetInstance()->FindObject("Player")->SetIsDestroy(true);
-	ObjectManager::GetInstance()->FindObject("Ground")->SetIsDestroy(true);
+	//ObjectManager::GetInstance()->FindObject("Player")->SetIsDestroy(true);
+	//ObjectManager::GetInstance()->FindObject("Ground")->SetIsDestroy(true);
+	//mPlayer->SetIsDestroy(true);
+	ObjectManager::GetInstance()->AllDistroy();
 }
 
 void GameScene::Update(){

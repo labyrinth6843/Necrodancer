@@ -46,7 +46,7 @@ using namespace std;
 #include "Combo.h"
 
 //Test용 콘솔창
-#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+//#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 
 extern POINT _mousePosition;	//마우스 좌표
 extern HWND	_hWnd;

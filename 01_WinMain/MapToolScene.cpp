@@ -431,7 +431,7 @@ void MapToolScene::Render(HDC hdc){
 			if (mShowGrid)
 			{
 				RECT temp = RectMake(100 + TileSize * x, 200 + TileSize * y, TileSize, TileSize);
-				Gizmo::GetInstance()->DrawRect(hdc, temp, Gizmo::Color::Blue);
+				Gizmo::GetInstance()->DrawRect(hdc, temp, Gizmo::Color::White);
 			}
 		}
 	}

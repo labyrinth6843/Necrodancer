@@ -2,13 +2,14 @@
 #include "Scene.h"
 class Tile;
 class Button;
+class Player;
 
 class GameScene : public Scene
 {
 	vector<wstring>mPallete;
 
 	Button* mToolButton;
-
+	Player* mPlayer;
 	bool mIsEnd;
 public:
 	void Init()override;

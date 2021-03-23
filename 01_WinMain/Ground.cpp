@@ -27,19 +27,34 @@ void Ground::Init()
 				//채워진 타일일때
 				if (mGroundList[y][x]->GetFrameIndexX() != 0 || mGroundList[y][x]->GetFrameIndexY() != 0)
 				{
-					//홀수일때
-					if ((x + y) & 1)
+					mGroundList[y][x]->SetImage(IMAGEMANAGER->GetInstance()->FindImage(L"GroundTile"));
+
+					//다음스테이지
+					if (mGroundList[y][x]->GetFrameIndexX() == 4 && mGroundList[y][x]->GetFrameIndexY() == 0)
 					{
-						mGroundList[y][x]->SetImage(IMAGEMANAGER->GetInstance()->FindImage(L"GroundTile"));
-						mGroundList[y][x]->SetFrameIndexX(0);
+						mGroundList[y][x]->SetFrameIndexX(6);
 						mGroundList[y][x]->SetFrameIndexY(0);
 					}
-					//짝수일때
+					//shop
+					else if (mGroundList[y][x]->GetFrameIndexX() == 3 && mGroundList[y][x]->GetFrameIndexY() == 0)
+					{
+						mGroundList[y][x]->SetFrameIndexX(7);
+						mGroundList[y][x]->SetFrameIndexY(0);
+					}
 					else
 					{
-						mGroundList[y][x]->SetImage(IMAGEMANAGER->GetInstance()->FindImage(L"GroundTile"));
-						mGroundList[y][x]->SetFrameIndexX(1);
-						mGroundList[y][x]->SetFrameIndexY(0);
+						//홀수일때
+						if ((x + y) & 1)
+						{
+							mGroundList[y][x]->SetFrameIndexX(0);
+							mGroundList[y][x]->SetFrameIndexY(0);
+						}
+						//짝수일때
+						else
+						{
+							mGroundList[y][x]->SetFrameIndexX(1);
+							mGroundList[y][x]->SetFrameIndexY(0);
+						}
 					}
 				}
 			}
@@ -82,6 +97,10 @@ void Ground::Update()
 			{
 				if (mGroundList[y][x]->GetImage() != NULL)
 				{
+					//스위칭될 이미지가 아니면 continue
+					if (mGroundList[y][x]->GetFrameIndexX() > 5)
+						continue;
+
 					if (COMBO->GetCombo() >= 3)
 					{
 						mGroundList[y][x]->SetFrameIndexY(1);

@@ -13,5 +13,5 @@ Combo::~Combo()
 
 void Combo::Render(HDC hdc)
 {
-	cout << mCombo << endl;
+	//몇 콤보인지 표시하는거 추가예정 -> Font작업?
 }
