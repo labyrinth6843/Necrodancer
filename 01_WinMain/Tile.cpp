@@ -13,6 +13,9 @@ Tile::Tile(Image * image, float x, float y, float sizeX, float sizeY, int frameI
 	mFrameIndexY = frameIndexY;
 	mLayer = TileLayer::End;
 	mType = tiletype;
+
+	mIndexX = mX / mSizeX; 
+	mIndexY = mY / mSizeY;
 }
 
 void Tile::Render(HDC hdc){

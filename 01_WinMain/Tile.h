@@ -29,6 +29,8 @@ private:
 	RECT mRect;
 	int mFrameIndexX;
 	int mFrameIndexY;
+	int mIndexX;
+	int mIndexY;
 public:
 	Tile(class Image* image, float x, float y, float sizeX, float sizeY,int frameIndexX, int frameIndexY, TileType tiletype = TileType::Normal);
 	

@@ -121,6 +121,12 @@
     <Filter Include="MainGame\System\Interaction">
       <UniqueIdentifier>{2e6d8c08-4aaa-4ccc-8a04-dc94cf44606b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FrameWork\PathFinder">
+      <UniqueIdentifier>{1673f5ba-81b1-4c2b-afe7-a65bba926dfa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FrameWork\Tile">
+      <UniqueIdentifier>{164f287d-069b-4bc2-a708-cbbbdff74104}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -213,9 +219,6 @@
     <ClInclude Include="Enemy.h">
       <Filter>MainGame\Object\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="Tile.h">
-      <Filter>FrameWork\FileManager</Filter>
-    </ClInclude>
     <ClInclude Include="MapToolScene.h">
       <Filter>MainGame\Scene\MapToolScene</Filter>
     </ClInclude>
@@ -263,6 +266,12 @@
     </ClInclude>
     <ClInclude Include="Interaction.h">
       <Filter>MainGame\System\Interaction</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFinder.h">
+      <Filter>FrameWork\PathFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>FrameWork\Tile</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -344,9 +353,6 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>MainGame\Object\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="Tile.cpp">
-      <Filter>FrameWork\FileManager</Filter>
-    </ClCompile>
     <ClCompile Include="MapToolScene.cpp">
       <Filter>MainGame\Scene\MapToolScene</Filter>
     </ClCompile>
@@ -403,6 +409,12 @@
     </ClCompile>
     <ClCompile Include="Interaction.cpp">
       <Filter>MainGame\System\Interaction</Filter>
+    </ClCompile>
+    <ClCompile Include="PathFinder.cpp">
+      <Filter>FrameWork\PathFinder</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>FrameWork\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
