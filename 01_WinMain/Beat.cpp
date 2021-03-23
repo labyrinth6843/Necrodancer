@@ -14,7 +14,7 @@ Beat::Beat()
 	mHeartImage.FrameY = 0;
 
 	//판정 기준이 될 하트Rect
-	mHeart = RectMakeCenter(WINSIZEX/2, mDefaultY, 150, 100);
+	mHeart = RectMakeCenter(WINSIZEX/2, mDefaultY, 180, 100);
 
 	//반복 사용할 노트 30 x2
 	for (int i = 0; i < 30; ++i)
@@ -235,8 +235,7 @@ void Beat::SetTiming()
 		return;
 	}
 
-	mTiming = (float)mRunQueue.front();
-	mRunQueue.pop();
+	mTiming = mArrive;
 	mArrive = (float)mRunQueue.front();
 	mRunQueue.pop();
 }
@@ -265,7 +264,7 @@ void Beat::MissNote()
 
 void Beat::SetNote()
 {
-	float speed = (WINSIZEX / 2) / (mArrive - mTiming) * 175.f;
+	float speed = (WINSIZEX / 2) / (mArrive - mTiming) * 275.f;
 	//비활성화된 노트 중 가장 앞에있는 노트를 찾아 활성화
 	for (int i = 0; i < 30; ++i)
 	{
