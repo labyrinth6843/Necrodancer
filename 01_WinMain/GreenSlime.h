@@ -7,7 +7,8 @@ public:
 
 public:
 	GreenSlime(const string& name, int x, int y);
-	GreenSlime(const string&);
+
+	void GetDmg(int dmg)override;
 
 	void Init()override;
 	void Update()override;

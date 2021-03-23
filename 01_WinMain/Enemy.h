@@ -24,6 +24,8 @@ public:
 	virtual void Update()override;
 	virtual void Release()override;
 	virtual void Render(HDC hdc)override;
+	
+	virtual void GetDmg(int dmg) = 0;
 
 	void SetHp(float hp) { mHp = hp; }
 	float GetHp() { return mHp; }

@@ -127,6 +127,12 @@
     <Filter Include="FrameWork\Tile">
       <UniqueIdentifier>{164f287d-069b-4bc2-a708-cbbbdff74104}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Object\Enemy\Skeleton">
+      <UniqueIdentifier>{20295e41-a2dd-4f9e-9a64-4ec0b8c12e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Object\Enemy\Zombie">
+      <UniqueIdentifier>{7e8e55d8-b649-4940-a40e-dff239a8e5d9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -273,6 +279,18 @@
     <ClInclude Include="Tile.h">
       <Filter>FrameWork\Tile</Filter>
     </ClInclude>
+    <ClInclude Include="BlackSkeleton.h">
+      <Filter>MainGame\Object\Enemy\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="WhiteSkeleton.h">
+      <Filter>MainGame\Object\Enemy\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="YellowSkeleton.h">
+      <Filter>MainGame\Object\Enemy\Skeleton</Filter>
+    </ClInclude>
+    <ClInclude Include="Zombie.h">
+      <Filter>MainGame\Object\Enemy\Zombie</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -415,6 +433,18 @@
     </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>FrameWork\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="BlackSkeleton.cpp">
+      <Filter>MainGame\Object\Enemy\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="WhiteSkeleton.cpp">
+      <Filter>MainGame\Object\Enemy\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="YellowSkeleton.cpp">
+      <Filter>MainGame\Object\Enemy\Skeleton</Filter>
+    </ClCompile>
+    <ClCompile Include="Zombie.cpp">
+      <Filter>MainGame\Object\Enemy\Zombie</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

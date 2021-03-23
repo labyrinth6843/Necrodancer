@@ -1,5 +1,11 @@
 #pragma once
-class BlackSkeleton
+#include "Enemy.h"
+
+class BlackSkeleton:public Enemy
 {
+public:
+
+public:
+	void GetDmg(int dmg)override;
 };
 

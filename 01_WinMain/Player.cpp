@@ -176,16 +176,15 @@ bool Player::TileCheck(int x, int y) {
 	if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, "Wall") != nullptr) {
 		Wall* temp = (Wall*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, "Wall");
 
-		if (temp->GetFrameIndexX(EndIndexX, EndIndexY) == 0 && temp->GetFrameIndexY(EndIndexX, EndIndexY) == 0)
-			return false;
+		if (temp->GetFrameIndexX(EndIndexX, EndIndexY) == 0 && temp->GetFrameIndexY(EndIndexX, EndIndexY) == 0) {
+			if (ObjectManager::GetInstance()->FindObject(POINT{ (int)EndIndexX, (int)EndIndexY }) == nullptr)
+				return false;
+			else
+				return true;
+		}
 		else
 			return true;
 	}
-
-	if (ObjectManager::GetInstance()->FindObject(POINT{ (int)EndIndexX, (int)EndIndexY }) == nullptr)
-		return false;
-	else
-		return true;
 }
 
 void Player::Move(int x, int y) {
@@ -212,7 +211,6 @@ void Player::Dig(int x, int y) {
 		return;
 	}
 
-	//파일 저장할 때 벽 경도 저장하면 좋을 거 같긴 한데 어려울려나
 	if (mShovelPower >= temp->GetDigLevel()) {
 		if (temp->GetFrameIndexY(x, y) < 4)
 			SoundPlayer::GetInstance()->Play(L"move_dirt", 1.f);
@@ -230,14 +228,10 @@ void Player::Attack(GameObject* object) {
 	if (object == nullptr)
 		return;
 	Enemy* temp = (Enemy*)object;
-
-	temp->SetHp(temp->GetHp() - mWeaponPower);
-
-	if (temp->GetHp() <= 0) {
-		object->SetIsActive(false);
-		object->SetIsDestroy(true);
-		Combo::GetInstance()->ComboUp();
-	}
+	
+	temp->GetDmg(mWeaponPower);
+	Combo::GetInstance()->ComboUp();
+	
 }
 
 void Player::Equip(GameObject* object) {
@@ -258,6 +252,6 @@ void Player::Interaction(int x, int y)
 	EndIndexY = EndY / TileSize;
 
 	Dig(EndIndexX, EndIndexY);
-	Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Monster, POINT{ (int)EndIndexX, (int)EndIndexY }));
-	Equip(ObjectManager::GetInstance()->FindObject(ObjectLayer::Item, POINT{ (int)EndIndexX, (int)EndIndexY }));
+	Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Monster, POINT{ EndIndexX, EndIndexY }));
+	Equip(ObjectManager::GetInstance()->FindObject(ObjectLayer::Item, POINT{ EndIndexX, EndIndexY }));
 }

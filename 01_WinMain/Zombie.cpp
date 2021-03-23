@@ -27,3 +27,16 @@ Zombie::Zombie(const string& name, int x, int y):Enemy(name)
 	else
 		mCurrentAnimation = mRightAnimation;
 }
+
+void Zombie::GetDmg(int dmg)
+{
+	mHp -= dmg;
+
+	if (mHp <= 0) {
+		SoundPlayer::GetInstance()->Play(L"zombie_death", 1.f);
+
+		this->SetIsActive(false);
+		this->SetIsDestroy(true);
+		Combo::GetInstance()->ComboUp();
+	}
+}

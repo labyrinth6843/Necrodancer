@@ -58,7 +58,7 @@ vector<class Tile*> PathFinder::FindPath(const vector<vector<class Tile*>>& tile
 	{
 		//개조필요함
 		/*
-		//뭔가 잘못되었다??? 
+		//뭔가 잘못되었다???
 		if (currentTile == nullptr)return result;
 
 		int currentIndexX = currentTile->mIndexX;
@@ -85,7 +85,7 @@ vector<class Tile*> PathFinder::FindPath(const vector<vector<class Tile*>>& tile
 					dummyList[y][x].IsOpen = true;
 					continue;
 				}
-				//검사하려는 타일이 처음 검사하는 타일이라면 
+				//검사하려는 타일이 처음 검사하는 타일이라면
 				if (dummyList[y][x].IsOpen == false)
 				{
 					dummyList[y][x].IsOpen = true;
@@ -115,7 +115,7 @@ vector<class Tile*> PathFinder::FindPath(const vector<vector<class Tile*>>& tile
 				}
 			}
 		}
-		// }} 
+		// }}
 
 		// {{ openList에서 가장 적은 비용의 타일 검사 ~
 		Tile* tileMin = nullptr;
@@ -172,8 +172,9 @@ vector<class Tile*> PathFinder::FindPath(const vector<vector<class Tile*>>& tile
 		}
 		// }}
 	}
-	// }} 
+	// }}
 
 	*/
-	return result;
+		return result;
+	}
 }

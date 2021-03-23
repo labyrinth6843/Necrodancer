@@ -5,6 +5,10 @@ YellowSlime::YellowSlime(const string& name, int x, int y) :Enemy(name) {
 	mX = x;
 	mY = y;
 
+	mHp = 1;
+	mCoin = 2;
+	mAtk = 0.5f;
+
 	mImage = ImageManager::GetInstance()->FindImage(L"Slime3");
 
 	direction = Random::GetInstance()->RandomInt(100) % 2;
@@ -25,6 +29,29 @@ YellowSlime::YellowSlime(const string& name, int x, int y) :Enemy(name) {
 		mCurrentAnimation = mLeftAnimation;
 	else
 		mCurrentAnimation = mRightAnimation;
+}
+
+void YellowSlime::GetDmg(int dmg)
+{
+	mHp -= dmg;
+	if (mHp <= 0) {
+		int random = Random::GetInstance()->RandomInt(100) % 3;
+		switch (random) {
+		case 0:
+			SoundPlayer::GetInstance()->Play(L"slime_death_1", 1.f);
+			break;
+		case 1:
+			SoundPlayer::GetInstance()->Play(L"slime_death_2", 1.f);
+			break;
+		case 2:
+			SoundPlayer::GetInstance()->Play(L"slime_death_3", 1.f);
+			break;
+		}
+
+		this->SetIsActive(false);
+		this->SetIsDestroy(true);
+		Combo::GetInstance()->ComboUp();
+	}
 }
 
 void YellowSlime::Init()

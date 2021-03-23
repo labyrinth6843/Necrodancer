@@ -4,3 +4,7 @@
 WhiteSkeleton::WhiteSkeleton(const string& name, int x, int y):Enemy(name)
 {
 }
+
+void WhiteSkeleton::GetDmg(int dmg)
+{
+}

@@ -10,6 +10,11 @@ public:
 public:
 	BlueSlime(const string& name, int x, int y);
 
+	void Move(int destX, int destY);
+	void Attack();
+
+	void GetDmg(int dmg)override;
+
 	void Init()override;
 	void Update()override;
 	void Release()override;
