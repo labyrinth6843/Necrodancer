@@ -4,7 +4,6 @@
 class BlueSlime:public Enemy
 {
 public:
-	int direction;
 	int destX;
 	int destY;
 

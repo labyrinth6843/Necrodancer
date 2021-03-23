@@ -13,6 +13,7 @@ public:
 	Animation* mLeftAnimation;
 	Animation* mRightAnimation;
 
+	int direction;
 	int mHp;
 	int mAtk;
 	int mCoin;

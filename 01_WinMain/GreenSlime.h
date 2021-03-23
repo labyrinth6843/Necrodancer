@@ -4,10 +4,10 @@
 class GreenSlime:public Enemy
 {
 public:
-	int direction;
 
 public:
 	GreenSlime(const string& name, int x, int y);
+	GreenSlime(const string&);
 
 	void Init()override;
 	void Update()override;
