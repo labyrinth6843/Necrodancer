@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Tile.h"
 #include "GameObject.h"
 
@@ -15,8 +15,8 @@ class Ground : public GameObject
 	int mMaxIndexX;
 	int mMaxIndexY;
 
-	POINT mOddFrame; //Ȧ�� ������
-	POINT mEvenFrame;//¦�� ������
+	POINT mOddFrame; //홀수 프레임
+	POINT mEvenFrame;//짝수 프레임
 public:
 	Ground(const string &name, int startx = 0, int starty = 0);
 	virtual void Init();
@@ -26,5 +26,12 @@ public:
 
 	void SetMinMax();
 	bool GetSight();
+	bool IsMove(int indexX, int indexY);	//이동하고자 하는 바닥타일의 인덱스를 인자로 받는다
+
+	POINT GetMapSize()
+	{
+		POINT pt = { mMapSizeX,mMapSizeY };
+		return pt;
+	}
 };
 

@@ -3,6 +3,7 @@
 #include "Camera.h"
 #include "Enemy.h"
 #include "Wall.h"
+#include "Ground.h"
 #include "Item.h"
 
 Player::Player(const string& name) : GameObject(name) {
@@ -66,61 +67,52 @@ void Player::Update() {
 	if (mIsMove == false) {
 		if (Input::GetInstance()->GetKeyDown(VK_UP) || Input::GetInstance()->GetKeyDown('W')){
 			if (Beat::GetInstance()->IsDecision() == true) {
-				if (StartIndexY > 0) {
-					//이동하려는 타일에 오브젝트가 존재하는가 확인
-					if (TileCheck(0, -1) == false)
-						Move(0, -1);
-					//무엇인가가 존재하므로 상호작용 처리
-					else
-						Interaction(0, -1);
-				}
+				//이동하려는 타일에 오브젝트가 존재하는가 확인
+				if (TileCheck(0, -1) == false)
+					Move(0, -1);
+				//무엇인가가 존재하므로 상호작용 처리
+				else
+					Interaction(0, -1);
 			}
 		}
 
 		if (Input::GetInstance()->GetKeyDown(VK_RIGHT) || Input::GetInstance()->GetKeyDown('D')) {
 			if (Beat::GetInstance()->IsDecision() == true) {
-				if (StartIndexX < 9) {
-					if (direction == false) {
-						direction = true;
-						mCurrentHeadAnimation = mHeadRightAnimation;
-						mCurrentBodyAnimation = mBodyRightAnimation;
-					}
-					if (TileCheck(1, 0) == false)
-						Move(1, 0);
-					else
-						Interaction(1, 0);
+				if (direction == false) {
+					direction = true;
+					mCurrentHeadAnimation = mHeadRightAnimation;
+					mCurrentBodyAnimation = mBodyRightAnimation;
 				}
+				if (TileCheck(1, 0) == false)
+					Move(1, 0);
+				else
+					Interaction(1, 0);
 			}
 		}
 
 		if (Input::GetInstance()->GetKeyDown(VK_LEFT) || Input::GetInstance()->GetKeyDown('A')) {
 			if (Beat::GetInstance()->IsDecision() == true) {
-				if (StartIndexX > 0) {
-					if (direction == true) {
-						direction = false;
-						mCurrentHeadAnimation = mHeadLeftAnimation;
-						mCurrentBodyAnimation = mBodyLeftAnimation;
-					}
-					if (TileCheck(-1, 0) == false)
-						Move(-1, 0);
-					else
-						Interaction(-1, 0);
+				if (direction == true) {
+					direction = false;
+					mCurrentHeadAnimation = mHeadLeftAnimation;
+					mCurrentBodyAnimation = mBodyLeftAnimation;
 				}
+				if (TileCheck(-1, 0) == false)
+					Move(-1, 0);
+				else
+					Interaction(-1, 0);
 			}
 		}
 
 		if (Input::GetInstance()->GetKeyDown(VK_DOWN) || Input::GetInstance()->GetKeyDown('S')) {
 			if (Beat::GetInstance()->IsDecision() == true) {
-				if (StartIndexY < 9) {
 					if (TileCheck(0, 1) == false)
 						Move(0, 1);
 					else
 						Interaction(0, 1);
-				}
 			}
 		}
 	}
-		
 	else {
 		//목표 좌표로 서서히 움직이는 처리
 		mX += TileSize * 3 * Time::GetInstance()->DeltaTime() *  cosf(Math::GetAngle(mX, mY, EndX, EndY));
@@ -176,6 +168,10 @@ bool Player::TileCheck(int x, int y) {
 	if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, "Wall") != nullptr) {
 		Wall* temp = (Wall*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, "Wall");
 
+		POINT mapsize = temp->GetMapSize();
+		if (EndIndexX < 0 || EndIndexX >= mapsize.x || EndIndexY < 0 || EndIndexY >= mapsize.y)
+			return false;
+
 		if (temp->GetFrameIndexX(EndIndexX, EndIndexY) == 0 && temp->GetFrameIndexY(EndIndexX, EndIndexY) == 0) {
 			if (ObjectManager::GetInstance()->FindObject(POINT{ (int)EndIndexX, (int)EndIndexY }) == nullptr)
 				return false;
@@ -188,13 +184,24 @@ bool Player::TileCheck(int x, int y) {
 }
 
 void Player::Move(int x, int y) {
+
+	//이동용 Ground
+	Ground* ground;
+	if (ObjectManager::GetInstance()->FindObject("Ground"))
+		ground = (Ground*)ObjectManager::GetInstance()->FindObject("Ground");
+	else
+		return;
+
 	EndX = mX + TileSize * x;
 	EndY = mY + TileSize * y;
 
 	EndIndexX = EndX / TileSize;
 	EndIndexY = EndY / TileSize;
 
-	mIsMove = true;
+	if(ground->IsMove(EndIndexX, EndIndexY))
+		mIsMove = true;
+	else
+		mIsMove = false;
 }
 
 void Player::Dig(int x, int y) {

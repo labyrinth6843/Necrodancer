@@ -35,5 +35,11 @@ public:
 
 	void SetFrameIndexX(int indexX, int indexY, int input) { mWallList[indexY][indexX]->SetFrameIndexX(input); }
 	void SetFrameIndexY(int indexX, int indexY, int input) { mWallList[indexY][indexX]->SetFrameIndexY(input); }
+
+	POINT GetMapSize() 
+	{ 
+		POINT pt = { mMapSizeX,mMapSizeY };
+		return pt;
+	}
 };
 

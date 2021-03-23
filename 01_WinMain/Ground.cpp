@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Ground.h"
 #include "Camera.h"
 Ground::Ground(const string &name, int startx, int starty) : GameObject(name)
@@ -17,19 +17,19 @@ void Ground::Init()
 	SetMinMax();
 	mOddFrame = { 0,0 };
 	mEvenFrame = { 1,0 };
-	//¿øÈ°ÇÑ ÀÛ¾÷À» À§ÇØÅ¸ÀÏÀÇ ÀÌ¹ÌÁö Æ÷ÀÎÅÍ º¯°æ
+	//ì›í™œí•œ ì‘ì—…ì„ ìœ„í•´íƒ€ì¼ì˜ ì´ë¯¸ì§€ í¬ì¸í„° ë³€ê²½
 	for (int y = 0; y < mMapSizeY; ++y)
 	{
 		for (int x = 0; x < mMapSizeX; ++x)
 		{
 			if (mGroundList[y][x]->GetImage() != NULL)
 			{
-				//Ã¤¿öÁø Å¸ÀÏÀÏ¶§
+				//ì±„ì›Œì§„ íƒ€ì¼ì¼ë•Œ
 				if (mGroundList[y][x]->GetFrameIndexX() != 0 || mGroundList[y][x]->GetFrameIndexY() != 0)
 				{
 					mGroundList[y][x]->SetImage(IMAGEMANAGER->GetInstance()->FindImage(L"GroundTile"));
 
-					//´ÙÀ½½ºÅ×ÀÌÁö
+					//ë‹¤ìŒìŠ¤í…Œì´ì§€
 					if (mGroundList[y][x]->GetFrameIndexX() == 4 && mGroundList[y][x]->GetFrameIndexY() == 0)
 					{
 						mGroundList[y][x]->SetFrameIndexX(6);
@@ -43,19 +43,26 @@ void Ground::Init()
 					}
 					else
 					{
-						//È¦¼öÀÏ¶§
+						//í™€ìˆ˜ì¼ë•Œ
 						if ((x + y) & 1)
 						{
 							mGroundList[y][x]->SetFrameIndexX(0);
 							mGroundList[y][x]->SetFrameIndexY(0);
 						}
-						//Â¦¼öÀÏ¶§
+						//ì§ìˆ˜ì¼ë•Œ
 						else
 						{
 							mGroundList[y][x]->SetFrameIndexX(1);
 							mGroundList[y][x]->SetFrameIndexY(0);
 						}
 					}
+				}
+				//ë¹ˆ íƒ€ì¼ì¼ë•Œ
+				else
+				{
+					mGroundList[y][x]->SetImage(IMAGEMANAGER->GetInstance()->FindImage(L"GroundTile"));
+					mGroundList[y][x]->SetFrameIndexX(7);
+					mGroundList[y][x]->SetFrameIndexY(1);
 				}
 			}
 		}
@@ -78,7 +85,7 @@ void Ground::Release()
 void Ground::Update()
 {
 	SetMinMax();
-	//ÅÏ¸¶´Ù Å¸ÀÏ º¯°æÇÏ±â
+	//í„´ë§ˆë‹¤ íƒ€ì¼ ë³€ê²½í•˜ê¸°
 
 	if(BEAT->NextTurn())
 	{
@@ -97,19 +104,19 @@ void Ground::Update()
 			{
 				if (mGroundList[y][x]->GetImage() != NULL)
 				{
-					//½ºÀ§ÄªµÉ ÀÌ¹ÌÁö°¡ ¾Æ´Ï¸é continue
+					//ìŠ¤ìœ„ì¹­ë  ì´ë¯¸ì§€ê°€ ì•„ë‹ˆë©´ continue
 					if (mGroundList[y][x]->GetFrameIndexX() > 5)
 						continue;
 
 					if (COMBO->GetCombo() >= 3)
 					{
 						mGroundList[y][x]->SetFrameIndexY(1);
-						//È¦
+						//í™€
 						if ((x + y) & 1)
 						{
 								mGroundList[y][x]->SetFrameIndexX(mOddFrame.x);
 						}
-						//Â¦
+						//ì§
 						else
 						{
 							mGroundList[y][x]->SetFrameIndexX(mEvenFrame.x*2);
@@ -119,12 +126,12 @@ void Ground::Update()
 					else
 					{
 						mGroundList[y][x]->SetFrameIndexY(0);
-						//È¦
+						//í™€
 						if ((x + y) & 1)
 						{
 							mGroundList[y][x]->SetFrameIndexX(mOddFrame.x);
 						}
-						//Â¦ : È¦ÀÌ¶û ´Ù¸¥ ÀÌ¹ÌÁö
+						//ì§ : í™€ì´ë‘ ë‹¤ë¥¸ ì´ë¯¸ì§€
 						else
 						{
 							mGroundList[y][x]->SetFrameIndexX(mEvenFrame.x);
@@ -138,15 +145,15 @@ void Ground::Update()
 
 void Ground::Render(HDC hdc)
 {
-	//¹è°æ°ËÁ¤»ö
+	//ë°°ê²½ê²€ì •ìƒ‰
 	mBack->ScaleRender(hdc, 0, 0, WINSIZEX, WINSIZEY);
 
-	//¹Ù´Ú Å¸ÀÏÂï±â
+	//ë°”ë‹¥ íƒ€ì¼ì°ê¸°
 	for (int y = mMinIndexY; y < mMaxIndexY; ++y)
 	{
 		for (int x = mMinIndexX; x < mMaxIndexX; ++x)
 		{
-			//¸Ê ÀüÃ¼¸¦ ·£´õÇÏ¸é ¾öÃ» ´À·ÁÁö´Ï Ã³¸® »ı°¢ÇÏ±â
+			//ë§µ ì „ì²´ë¥¼ ëœë”í•˜ë©´ ì—„ì²­ ëŠë ¤ì§€ë‹ˆ ì²˜ë¦¬ ìƒê°í•˜ê¸°
 			int posx = x * TileSize;
 			int posy = y * TileSize;
 
@@ -176,5 +183,16 @@ void Ground::SetMinMax()
 
 bool Ground::GetSight()
 {
+	return false;
+}
+
+bool Ground::IsMove(int indexX, int indexY)
+{
+	//ì¥ì™¸ì²˜ë¦¬
+	if(indexX < 0 || indexX >= mMapSizeX || indexY < 0 || indexY >= mMapSizeY)
+		return false;
+
+	if (mGroundList[indexY][indexX]->GetFrameIndexX() != 7 || mGroundList[indexY][indexX]->GetFrameIndexY() != 1)
+		return true;
 	return false;
 }
