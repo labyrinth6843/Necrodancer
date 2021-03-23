@@ -44,6 +44,7 @@ using namespace std;
 #include "FileManager.h"
 #include "Beat.h"
 #include "Combo.h"
+#include "PathFinder.h"
 
 //Test용 콘솔창
 //#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")

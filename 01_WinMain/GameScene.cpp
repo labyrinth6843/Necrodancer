@@ -35,8 +35,8 @@ void GameScene::Init(){
 	
 	//camera
 	Camera* camera = new Camera();
-	//camera->SetTarget(mPlayer);
-	camera->SetTarget(ObjectManager::GetInstance()->FindObject("Player"));
+	camera->SetTarget(mPlayer);
+	//camera->SetTarget(ObjectManager::GetInstance()->FindObject("Player"));	//이걸로 하면 버그발생 -> 왜?
 	CameraManager::GetInstance()->SetMainCamera(camera);
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, camera);
 
@@ -47,9 +47,6 @@ void GameScene::Init(){
 void GameScene::Release(){
 	SafeDelete(mToolButton);
 	BEAT->Release();
-	//ObjectManager::GetInstance()->FindObject("Player")->SetIsDestroy(true);
-	//ObjectManager::GetInstance()->FindObject("Ground")->SetIsDestroy(true);
-	//mPlayer->SetIsDestroy(true);
 	ObjectManager::GetInstance()->AllDistroy();
 }
 
