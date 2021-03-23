@@ -150,6 +150,7 @@
     <ClInclude Include="01_WinMain.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Beat.h" />
+    <ClInclude Include="BlackSkeleton.h" />
     <ClInclude Include="BlueSlime.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
@@ -194,12 +195,16 @@
     <ClInclude Include="Time.h" />
     <ClInclude Include="TitleScene.h" />
     <ClInclude Include="Wall.h" />
+    <ClInclude Include="WhiteSkeleton.h" />
+    <ClInclude Include="YellowSkeleton.h" />
     <ClInclude Include="YellowSlime.h" />
+    <ClInclude Include="Zombie.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Beat.cpp" />
+    <ClCompile Include="BlackSkeleton.cpp" />
     <ClCompile Include="BlueSlime.cpp" />
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
@@ -248,7 +253,10 @@
     <ClCompile Include="Time.cpp" />
     <ClCompile Include="TitleScene.cpp" />
     <ClCompile Include="Wall.cpp" />
+    <ClCompile Include="WhiteSkeleton.cpp" />
+    <ClCompile Include="YellowSkeleton.cpp" />
     <ClCompile Include="YellowSlime.cpp" />
+    <ClCompile Include="Zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc" />

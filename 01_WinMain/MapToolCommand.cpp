@@ -182,9 +182,9 @@ void MapToolScene::FloodFill(vector<vector<Tile*>>& tileList, int indexX, int in
 		int checkIndexY = check->GetY() / TileSize;
 
 		//index 확인
-		if (checkIndexX < mMinIndexX || checkIndexX >= mMaxSizeX)
+		if (checkIndexX < 0 || checkIndexX >= mMaxSizeX)
 			continue;
-		if (checkIndexY < mMinIndexX || checkIndexY >= mMaxSizeY)
+		if (checkIndexY < 0 || checkIndexY >= mMaxSizeY)
 			continue;
 
 		//확장할 조건 : 모든 정보가 시작점과 같으면
