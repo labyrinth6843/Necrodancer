@@ -19,28 +19,40 @@ void EnemyManager::LoadEnemy()
 				{
 					if (mEnemyList[y][x]->GetFrameIndexX() == 1 && mEnemyList[y][x]->GetFrameIndexY() == 0) {
 						Zombie* zombie = new Zombie("Zombie", x, y);
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Monster, (GameObject*)zombie);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)zombie);
 					}
 
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 2 && mEnemyList[y][x]->GetFrameIndexY() == 0) {
 						GreenSlime* greenslime = new GreenSlime("GreenSlime", x, y);
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Monster, (GameObject*)greenslime);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)greenslime);
 					}
 
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 3 && mEnemyList[y][x]->GetFrameIndexY() == 0) {
 						BlueSlime* blueslime = new BlueSlime("BlueSlime", x, y);
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Monster, (GameObject*)blueslime);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)blueslime);
 					}
 
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 4 && mEnemyList[y][x]->GetFrameIndexY() == 0) {
 						YellowSlime* yellowslime = new YellowSlime("YellowSlime", x, y);
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Monster, (GameObject*)yellowslime);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)yellowslime);
 					}
 
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 0 && mEnemyList[y][x]->GetFrameIndexY() == 1) {
-						WhiteSkeleton* skeleton = new WhiteSkeleton("Skeleton", x, y);
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Monster, (GameObject*)skeleton);
+						WhiteSkeleton* whiteskeleton = new WhiteSkeleton("WhiteSkeleton", x, y);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)whiteskeleton);
 					}
+
+					else if (mEnemyList[y][x]->GetFrameIndexX() == 1 && mEnemyList[y][x]->GetFrameIndexY() == 1) {
+						YellowSkeleton* yellowskeleton = new YellowSkeleton("YellowSkeleton", x, y);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)yellowskeleton);
+					}
+
+					else if (mEnemyList[y][x]->GetFrameIndexX() == 2 && mEnemyList[y][x]->GetFrameIndexY() == 1) {
+						BlackSkeleton* blackskeleton = new BlackSkeleton("BlackSkeleton", x, y);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)blackskeleton);
+					}
+
+					
 				}
 			}
 		}

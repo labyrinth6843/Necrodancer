@@ -291,9 +291,6 @@
     <ClInclude Include="Zombie.h">
       <Filter>MainGame\Object\Enemy\Zombie</Filter>
     </ClInclude>
-    <ClInclude Include="Weapon.h">
-      <Filter>MainGame\Object\Item</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -448,9 +445,6 @@
     </ClCompile>
     <ClCompile Include="Zombie.cpp">
       <Filter>MainGame\Object\Enemy\Zombie</Filter>
-    </ClCompile>
-    <ClCompile Include="Weapon.cpp">
-      <Filter>MainGame\Object\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

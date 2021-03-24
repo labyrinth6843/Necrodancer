@@ -11,7 +11,7 @@ enum class ObjectLayer : int
 	Ground,
 	Wall,
 	Item,
-	Monster,
+	Enemy,
 	Player,
 	End
 };
