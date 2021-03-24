@@ -2,8 +2,8 @@
 #include "BlueSlime.h"
 
 BlueSlime::BlueSlime(const string& name, int x, int y) : Enemy(name){
-	mX = x;
-	mY = y;
+	mX = x* TileSize;
+	mY = y* TileSize;
 
 	mHp = 2;
 	mCoin = 2;
@@ -13,43 +13,68 @@ BlueSlime::BlueSlime(const string& name, int x, int y) : Enemy(name){
 
 	direction = Random::GetInstance()->RandomInt(100) % 4;
 
-	mLeftAnimation = new Animation();
-	mLeftAnimation->InitFrameByStartEnd(0, 0, 3, 0, false);
-	mLeftAnimation->SetFrameUpdateTime(0.5f);
-	mLeftAnimation->SetIsLoop(true);
-	mLeftAnimation->Play();
+	mLeftIdleAnimation = new Animation();
+	mLeftIdleAnimation->InitFrameByStartEnd(0, 0, 3, 0, false);
+	mLeftIdleAnimation->SetFrameUpdateTime(0.1f);
+	mLeftIdleAnimation->SetIsLoop(true);
+	mLeftIdleAnimation->Play();
 
-	mRightAnimation = new Animation();
-	mRightAnimation->InitFrameByStartEnd(0, 2, 3, 2, false);
-	mRightAnimation->SetFrameUpdateTime(0.5f);
-	mRightAnimation->SetIsLoop(true);
-	mRightAnimation->Play();
+	mLeftMoveAnimation = new Animation();
+	mLeftMoveAnimation->InitFrameByStartEnd(4,0,7,0, false);
+	mLeftMoveAnimation->SetFrameUpdateTime(0.1f);
+	mLeftMoveAnimation->SetIsLoop(true);
+	mLeftMoveAnimation->Play();
 
-	if (direction == 0)
-		mCurrentAnimation = mLeftAnimation;
+	mRightIdleAnimation = new Animation();
+	mRightIdleAnimation->InitFrameByStartEnd(0, 2, 3, 2, false);
+	mRightIdleAnimation->SetFrameUpdateTime(0.1f);
+	mRightIdleAnimation->SetIsLoop(true);
+	mRightIdleAnimation->Play();
+
+	mRightMoveAnimation = new Animation();
+	mRightMoveAnimation->InitFrameByStartEnd(4, 2, 7, 2, false);
+	mRightMoveAnimation->SetFrameUpdateTime(0.1f);
+	mRightMoveAnimation->SetIsLoop(true);
+	mRightMoveAnimation->Play();
+
+	mLeftAnimation = mLeftIdleAnimation;
+	mRightAnimation = mRightIdleAnimation;
+	
+	if (Random::GetInstance()->RandomInt(2) == 0)
+		mIsLeft = true;
 	else
-		mCurrentAnimation = mRightAnimation;
+		mIsLeft = false;
 
 	switch (direction) {
 	case 0:
-		destX = mX;
-		destY = mY - TileSize;
+		mDestX = mX;
+		mDestY = mY - TileSize;
+		if (mIsLeft == true)
+			mCurrentAnimation = mLeftAnimation;
+		else
+			mCurrentAnimation = mRightAnimation;
 		break;
 	case 1:
-		destX = mX - TileSize;
-		destY = mY;
+		mDestX = mX - TileSize;
+		mDestY = mY;
 		mCurrentAnimation = mLeftAnimation;
 		break;
 	case 2:
-		destX = mX + TileSize;
-		destY = mY;
+		mDestX = mX + TileSize;
+		mDestY = mY;
 		mCurrentAnimation = mRightAnimation;
 		break;
 	case 3:
-		destX = mX;
-		destY = mY + TileSize;
+		mDestX = mX;
+		mDestY = mY + TileSize;
+		if (mIsLeft == true)
+			mCurrentAnimation = mLeftAnimation;
+		else
+			mCurrentAnimation = mRightAnimation;
 		break;
 	}
+	mDestIndexX = mDestX / TileSize;
+	mDestIndexY = mDestY / TileSize;
 };
 
 void BlueSlime::Init()
@@ -60,11 +85,32 @@ void BlueSlime::Init()
 void BlueSlime::Update()
 {
 	if (Beat::GetInstance()->NextTurn() == true) {
-		Move(destX, destY);
+		if (WallCheck((mDestX - mX) / TileSize, (mDestY - mY) / TileSize) == false)
+			Move((mDestX - mX) / TileSize, (mDestY - mY) / TileSize);
 	}
+	if (mIsMove == true) {	
+		mMoveTime += Time::GetInstance()->DeltaTime();
+		float ratio = mMoveTime / 0.15f;
+		mX = Math::Lerp(mInitX, mDestX, ratio);
+		mY = Math::Lerp(mInitY, mDestY, ratio);
 
+		mCorrectionY -= mJumpPower * Time::GetInstance()->DeltaTime();
+		mJumpPower -= 200.f * Time::GetInstance()->DeltaTime();
 
-
+		if (ratio >= 1.f)
+		{
+			mX = mDestX;
+			mY = mDestY;
+			mIsMove = false;
+			mLeftAnimation = mLeftIdleAnimation;
+			mRightAnimation = mRightIdleAnimation;
+			mCorrectionY = 0.f;
+			mDestX = mInitX;
+			mDestY = mInitY;
+			mInitX = mX;
+			mInitY = mY;
+		}
+	}
 	mCurrentAnimation->Update();
 }
 
@@ -74,28 +120,61 @@ void BlueSlime::Release()
 
 void BlueSlime::Render(HDC hdc)
 {
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX * TileSize, mY * TileSize, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), 39, 39);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY + mCorrectionY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), 39, 39);
 }
 
-void BlueSlime::Move(int destX, int destY) {
-	if (ObjectManager::GetInstance()->FindObject(POINT{ destX, destY }) == NULL) {
-		mX += 3*cosf(Math::GetAngle(mX, mY, destX, destY));
-		mY += 3*-sinf(Math::GetAngle(mX, mY, destX, destY));
+void BlueSlime::Move(int dirX, int dirY) {
+	mMoveTime = 0.f;
+	mIsMove = true;
+	
+	Ground* ground;
+	if (ObjectManager::GetInstance()->FindObject("Ground"))
+		ground = (Ground*)ObjectManager::GetInstance()->FindObject("Ground");
+	else
+		return;
 
-		if (Math::GetDistance(mX, mY, destX, destY) <= 0.5) {
-			mX = destX;
-			mY = destY;
-		}
+	mDestX = mX + TileSize * dirX;
+	mDestY = mY + TileSize * dirY;
+
+	mDestIndexX = mDestX / TileSize;
+	mDestIndexY = mDestY / TileSize;
+
+	if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, POINT{ mDestIndexX, mDestIndexY }) != NULL)
+		Attack(mDestIndexX, mDestIndexY);
+	else {
+		mInitX = mX;
+		mInitY = mY;
+		mMoveTime = 0.f;
+		mCorrectionY = 0.f;
+		mJumpPower = 150.f;
+		mLeftAnimation = mLeftMoveAnimation;
+		mRightAnimation = mRightMoveAnimation;
+
+		if (mIsLeft == true)
+			mCurrentAnimation = mLeftAnimation;
+		else
+			mCurrentAnimation = mRightAnimation;
+
+		if (dirX > 0)
+			mCurrentAnimation = mRightAnimation;
+		else if (dirX < 0)
+			mCurrentAnimation = mLeftAnimation;
+		
+
+		if (ground->IsMove(mDestIndexX, mDestIndexY))
+			mIsMove = true;
+		else
+			mIsMove = false;
 	}
-	else if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, POINT{destX, destY}) != NULL)
-		Attack();
 }
 
-void BlueSlime::Attack() {
-
+void BlueSlime::Attack(int destX, int destY) {
+	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, POINT{ mDestIndexX, mDestIndexY });
+	
+	temp->SetHp(GetHp() - mAtk);
 }
 
-void BlueSlime::GetDmg(int dmg)
+void BlueSlime::IsAttacked(int dmg)
 {
 	mHp -= dmg;
 	if (mHp <= 0) {

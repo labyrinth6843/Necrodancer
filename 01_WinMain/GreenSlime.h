@@ -8,7 +8,8 @@ public:
 public:
 	GreenSlime(const string& name, int x, int y);
 
-	void GetDmg(int dmg)override;
+	void Attack(int destX, int destY)override;
+	void IsAttacked(int dmg)override;
 
 	void Init()override;
 	void Update()override;

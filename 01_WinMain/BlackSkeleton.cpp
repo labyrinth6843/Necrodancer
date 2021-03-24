@@ -10,6 +10,12 @@ BlackSkeleton::BlackSkeleton(const string& name, int x, int y) : Enemy(name){
 
 }
 
-void BlackSkeleton::GetDmg(int dmg) {
+void BlackSkeleton::Attack(int destX, int destY) {
+	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, POINT{ mDestIndexX, mDestIndexY });
+
+	temp->SetHp(GetHp() - mAtk);
+}
+
+void BlackSkeleton::IsAttacked(int dmg) {
 
 }

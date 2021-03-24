@@ -32,7 +32,13 @@ GreenSlime::GreenSlime(const string & name, int x, int y):Enemy(name)
 		mCurrentAnimation = mRightAnimation;
 }
 
-void GreenSlime::GetDmg(int dmg)
+void GreenSlime::Attack(int destX, int destY) {
+	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, POINT{ mDestIndexX, mDestIndexY });
+
+	temp->SetHp(GetHp() - mAtk);
+}
+
+void GreenSlime::IsAttacked(int dmg)
 {
 	mHp -= dmg;
 	if (mHp <= 0) {

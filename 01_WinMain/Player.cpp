@@ -157,31 +157,6 @@ float Player::DistanceShopkeeper(GameObject* object) {
 		return 1 / Math::GetDistance(mStartIndexX, mStartIndexY, object->GetX() / TileSize, object->GetY() / TileSize);
 }
 
-bool Player::TileCheck(int x, int y) {
-	mEndX = mX + TileSize * x;
-	mEndY = mY + TileSize * y;
-
-	mEndIndexX = mEndX / TileSize;
-	mEndIndexY = mEndY / TileSize;
-
-	if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, "Wall") != nullptr) {
-		Wall* temp = (Wall*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, "Wall");
-
-		POINT mapsize = temp->GetMapSize();
-		if (mEndIndexX < 0 || mEndIndexX >= mapsize.x || mEndIndexY < 0 || mEndIndexY >= mapsize.y)
-			return false;
-
-		if (temp->GetFrameIndexX(mEndIndexX, mEndIndexY) == 0 && temp->GetFrameIndexY(mEndIndexX, mEndIndexY) == 0) {
-			if (ObjectManager::GetInstance()->FindObject(POINT{ (int)mEndIndexX, (int)mEndIndexY }) == nullptr)
-				return false;
-			else
-				return true;
-		}
-		else
-			return true;
-	}
-}
-
 void Player::Move(int x, int y) {
 	//이동용 Ground
 	Ground* ground;
@@ -269,7 +244,7 @@ void Player::Attack(GameObject* object) {
 		return;
 	Enemy* temp = (Enemy*)object;
 	
-	temp->GetDmg(mWeaponPower);
+	temp->IsAttacked(mWeaponPower);
 	Combo::GetInstance()->ComboUp();
 }
 

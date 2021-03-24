@@ -28,7 +28,13 @@ Zombie::Zombie(const string& name, int x, int y):Enemy(name)
 		mCurrentAnimation = mRightAnimation;
 }
 
-void Zombie::GetDmg(int dmg)
+void Zombie::Attack(int destX, int destY) {
+	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, POINT{ mDestIndexX, mDestIndexY });
+
+	temp->SetHp(GetHp() - mAtk);
+}
+
+void Zombie::IsAttacked(int dmg)
 {
 	mHp -= dmg;
 

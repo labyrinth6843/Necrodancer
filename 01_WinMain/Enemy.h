@@ -3,6 +3,9 @@
 #include"Image.h"
 #include"Animation.h"
 #include"Camera.h"
+#include "Wall.h"
+#include "Ground.h"
+#include "Player.h"
 
 class Enemy:public GameObject
 {
@@ -12,6 +15,18 @@ public:
 	Animation* mCurrentAnimation;
 	Animation* mLeftAnimation;
 	Animation* mRightAnimation;
+
+	float mInitX;
+	float mInitY;
+	float mDestX;
+	float mDestY;
+	int mDestIndexX;
+	int mDestIndexY;
+
+	float mMoveTime;
+	float mCorrectionY;
+	float mJumpPower;
+	bool mIsMove;
 
 	int direction;
 	int mHp;
@@ -24,8 +39,10 @@ public:
 	virtual void Update()override;
 	virtual void Release()override;
 	virtual void Render(HDC hdc)override;
-	
-	virtual void GetDmg(int dmg) = 0;
+
+	bool WallCheck(int x, int y);
+	virtual void Attack(int x, int y) = 0;
+	virtual void IsAttacked(int dmg) = 0;
 
 	void SetHp(float hp) { mHp = hp; }
 	float GetHp() { return mHp; }
