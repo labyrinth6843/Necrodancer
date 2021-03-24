@@ -244,7 +244,7 @@ void Player::Attack(GameObject* object) {
 		return;
 	Enemy* temp = (Enemy*)object;
 	
-	temp->GetDmg(mAtk);
+	temp->IsAttacked(mAtk);
 	Combo::GetInstance()->ComboUp();
 }
 
