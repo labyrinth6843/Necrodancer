@@ -69,7 +69,7 @@ void Player::Update() {
 		if (Input::GetInstance()->GetKeyDown(VK_UP) || Input::GetInstance()->GetKeyDown('W')){
 			if (Beat::GetInstance()->IsDecision() == true) {
 				//목적지 타일의 벽 유무 검사
-				if (WallCheck(0, -1) == false)
+				if (WallCheck(0, -1) == true)
 					Dig(0, -1);//있으면 채광
 				else
 					Interaction(0, -1);//없으면 다른 상호작용
@@ -83,7 +83,7 @@ void Player::Update() {
 					mCurrentHeadAnimation = mHeadRightAnimation;
 					mCurrentBodyAnimation = mBodyRightAnimation;
 				}
-				if (WallCheck(1, 0) == false)
+				if (WallCheck(1, 0) == true)
 					Dig(1, 0);
 				else
 					Interaction(1, 0);					
@@ -97,7 +97,7 @@ void Player::Update() {
 					mCurrentHeadAnimation = mHeadLeftAnimation;
 					mCurrentBodyAnimation = mBodyLeftAnimation;
 				}
-				if (WallCheck(-1, 0) == false)
+				if (WallCheck(-1, 0) == true)
 					Dig(-1, 0);
 				else
 					Interaction(-1, 0);
@@ -106,7 +106,7 @@ void Player::Update() {
 
 		if (Input::GetInstance()->GetKeyDown(VK_DOWN) || Input::GetInstance()->GetKeyDown('S')) {
 			if (Beat::GetInstance()->IsDecision() == true) {
-				if (WallCheck(0, 1) == false)
+				if (WallCheck(0, 1) == true)
 					Dig(0, 1);
 				else
 					Interaction(0, 1);
@@ -222,38 +222,45 @@ bool Player::WallCheck(int x, int y)
 		POINT mapsize = temp->GetMapSize();
 		if (mEndIndexX < 0 || mEndIndexX >= mapsize.x || mEndIndexY < 0 || mEndIndexY >= mapsize.y)
 			return false;
+
+		if (temp->GetFrameIndexX(mEndIndexX, mEndIndexY) == 0 && temp->GetFrameIndexY(mEndIndexX, mEndIndexY) == 0)
+			return false;
 		else
 			return true;
 	}
-	else
-		return false;
 }
 
 void Player::Dig(int x, int y) {
+	mEndX = mX + TileSize * x;
+	mEndY = mY + TileSize * y;
+
+	mEndIndexX = mEndX / TileSize;
+	mEndIndexY = mEndY / TileSize;
+
 	Wall* temp = (Wall*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, "Wall");
 
-	if (temp->GetFrameIndexX(x, y) == 0 && temp->GetFrameIndexY(x, y) == 0)
+	if (temp->GetFrameIndexX(mEndIndexX, mEndIndexY) == 0 && temp->GetFrameIndexY(mEndIndexX, mEndIndexY) == 0)
 		return;
 
 	mShowShovel = true;
 	mShowShovelFrame = 01.0f;
 
-	if (temp->GetFrameIndexY(x, y) == 6) {
+	if (temp->GetFrameIndexY(mEndIndexX, mEndIndexY) == 6) {
 		SoundPlayer::GetInstance()->Play(L"move_fail", 1.f);
 		Combo::GetInstance()->ComboReset();
 		return;
 	}
 
 	if (mShovelPower >= temp->GetDigLevel()) {
-		if (temp->GetFrameIndexY(x, y) < 4)
+		if (temp->GetFrameIndexY(mEndIndexX, mEndIndexY) < 4)
 			SoundPlayer::GetInstance()->Play(L"move_dirt", 1.f);
-		else if (temp->GetFrameIndexY(x, y) < 5)
+		else if (temp->GetFrameIndexY(mEndIndexX, mEndIndexY) < 5)
 			SoundPlayer::GetInstance()->Play(L"move_stone", 1.f);
-		else if (temp->GetFrameIndexY(x, y) < 6)
+		else if (temp->GetFrameIndexY(mEndIndexX, mEndIndexY) < 6)
 			SoundPlayer::GetInstance()->Play(L"move_brick", 1.f);			
 
-		temp->SetFrameIndexX(x, y, 0);
-		temp->SetFrameIndexY(x, y, 0);
+		temp->SetFrameIndexX(mEndIndexX, mEndIndexY, 0);
+		temp->SetFrameIndexY(mEndIndexX, mEndIndexY, 0);
 	}
 }
 
