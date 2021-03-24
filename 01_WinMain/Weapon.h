@@ -49,11 +49,6 @@ class Weapon final : public Item
 	float mX;
 	float mY;
 
-	vector<POINT> mLeftRange;
-	vector<POINT> mRightRange;
-	vector<POINT> mTopRange;
-	vector<POINT> mBottomRange;
-
 	WeaponType mType;
 	WeaponMaterial mMaterial;
 	WeaponAttribute mAttribute;
