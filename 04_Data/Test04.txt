@@ -126,7 +126,7 @@ MonsterPallet,4,6,0,0,0
 MonsterPallet,5,6,0,0,0
 MonsterPallet,6,6,0,0,0
 MonsterPallet,7,6,0,0,0
-MonsterPallet,8,6,4,0,0
+MonsterPallet,8,6,0,0,0
 MonsterPallet,9,6,0,0,0
 MonsterPallet,10,6,0,0,0
 MonsterPallet,11,6,0,0,0
@@ -145,8 +145,8 @@ MonsterPallet,3,7,0,0,0
 MonsterPallet,4,7,0,0,0
 MonsterPallet,5,7,0,0,0
 MonsterPallet,6,7,0,0,0
-MonsterPallet,7,7,4,0,0
-MonsterPallet,8,7,0,0,0
+MonsterPallet,7,7,0,0,0
+MonsterPallet,8,7,3,0,0
 MonsterPallet,9,7,0,0,0
 MonsterPallet,10,7,0,0,0
 MonsterPallet,11,7,0,0,0
@@ -160,11 +160,11 @@ MonsterPallet,18,7,0,0,0
 MonsterPallet,19,7,0,0,0
 MonsterPallet,0,8,0,0,0
 MonsterPallet,1,8,0,0,0
-MonsterPallet,2,8,0,0,0
+MonsterPallet,2,8,3,0,0
 MonsterPallet,3,8,0,0,0
-MonsterPallet,4,8,0,0,0
+MonsterPallet,4,8,3,0,0
 MonsterPallet,5,8,0,0,0
-MonsterPallet,6,8,4,0,0
+MonsterPallet,6,8,3,0,0
 MonsterPallet,7,8,0,0,0
 MonsterPallet,8,8,0,0,0
 MonsterPallet,9,8,0,0,0

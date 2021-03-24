@@ -8,7 +8,13 @@ YellowSkeleton::YellowSkeleton(const string& name, int x, int y) : Enemy(name) {
 	mImage = ImageManager::GetInstance()->FindImage(L"Skeleton2");
 }
 
-void YellowSkeleton::GetDmg(int dmg) {
+void YellowSkeleton::Attack(int destX, int destY) {
+	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, POINT{ mDestIndexX, mDestIndexY });
+
+	temp->SetHp(GetHp() - mAtk);
+}
+
+void YellowSkeleton::IsAttacked(int dmg) {
 	mHp -= dmg;
 	if (mHp <= 0) {
 		this->SetIsActive(false);

@@ -4,16 +4,23 @@
 class BlueSlime:public Enemy
 {
 public:
-	int destX;
-	int destY;
+	int mDestX;
+	int mDestY;
 
+	bool mIsLeft;
+
+	Animation* mLeftIdleAnimation;
+	Animation* mLeftMoveAnimation;
+
+	Animation* mRightIdleAnimation;
+	Animation* mRightMoveAnimation;
 public:
 	BlueSlime(const string& name, int x, int y);
 
 	void Move(int destX, int destY);
-	void Attack();
 
-	void GetDmg(int dmg)override;
+	void Attack(int destX, int destY)override;
+	void IsAttacked(int dmg)override;
 
 	void Init()override;
 	void Update()override;

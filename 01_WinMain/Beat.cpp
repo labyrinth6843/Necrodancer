@@ -207,10 +207,10 @@ void Beat::SetMusic(const wstring& keyname, const wstring& beatfilename)
 bool Beat::IsDecision()
 {
 	mNotCall = false;
-	mTurn = true;
 	POINT pos = { mLeftNote[mFrontNote].X, mLeftNote[mFrontNote].Y };
 	if (PtInRect(&mHeart, pos))
 	{
+		mTurn = true;
 		COMBO->ComboUp(); //테스트용, 몬스터 사망시 호출되도록 한다
 		NoteSuccess();
 		return true;
