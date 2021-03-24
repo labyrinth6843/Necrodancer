@@ -2,29 +2,7 @@
 #include "Image.h"
 #include "GameObject.h"
 #include "Animation.h"
-
-//무기 종류
-enum class WeaponType {
-	None,
-	Dagger,
-	Broadsword,
-	Longsword,
-	Spear,
-	Rapier,
-	Bow,
-	End
-};
-
-//무기 재료
-enum class WeaponMaterial {
-	Basic,
-	Blood,
-	Glass,
-	Gold,
-	Obsidian,
-	Titanium,
-	End
-};
+#include "Weapon.h"
 
 //갑옷 종류
 enum class ArmorType {
@@ -69,8 +47,8 @@ class Player:public GameObject{
 	
 	float mHp = 6;
 	float mDef = 0;
+	int mAtk = 1;
 	int mShovelPower = 3;
-	int mWeaponPower = 1;
 	bool mIsArmor = false;
 	
 	ShovelType mShovelType = ShovelType::Basic;
@@ -138,7 +116,10 @@ public:
 	void SetHp(float hp) { mHp = hp; }
 	float GetHp() { return mHp; }
 
-	float GetDmg() { return mWeaponPower; }
+	void SetAtk(float atk) { mAtk = atk; }
+	void SetDef(float def) { mAtk = def; }
+
+	float GetAtk() { return mAtk; }
 	float GetDef() { return mDef; }
 
 	POINT GetIndex() { return { mStartIndexX, mStartIndexY }; }

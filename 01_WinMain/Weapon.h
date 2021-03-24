@@ -5,6 +5,7 @@ enum class WeaponType {
 	None,
 	Dagger,
 	Broadsword,
+	Longsword,
 	Spear,
 	Rapier,
 	Bow,
@@ -21,20 +22,32 @@ enum class WeaponMaterial {
 	Titanium,
 	End
 };
+//무기 특성
+enum class WeaponAttribute {
+	Normal,
+	Pierce,
+	Throw,
+	End
+};
 
 //착용상태
 enum class WeaponState {
 	NotOwned,
-	Owned
+	Owned,
+	End
 };
 
 class Weapon
 {
-	vector<POINT> mRange;
+	vector<POINT> mLeftRange;
+	vector<POINT> mRightRange;
+	vector<POINT> mTopRange;
+	vector<POINT> mBottomRange;
 	int mAtk;
 
 	WeaponType mType;
 	WeaponMaterial mMaterial;
+	WeaponAttribute mAttribute;
 	WeaponState mState;
 public:
 	void Init(WeaponType type, WeaponMaterial material, WeaponState state = WeaponState::NotOwned);
