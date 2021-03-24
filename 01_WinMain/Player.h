@@ -2,28 +2,8 @@
 #include "Image.h"
 #include "GameObject.h"
 #include "Animation.h"
+#include "Weapon.h"
 
-//무기 종류
-enum class WeaponType {
-	None,
-	Dagger,
-	Broadsword,
-	Spear,
-	Rapier,
-	Bow,
-	End
-};
-
-//무기 재료
-enum class WeaponMaterial {
-	Basic,
-	Blood,
-	Glass,
-	Gold,
-	Obsidian,
-	Titanium,
-	End
-};
 
 //갑옷 종류
 enum class ArmorType {
