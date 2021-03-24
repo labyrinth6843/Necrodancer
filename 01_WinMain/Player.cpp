@@ -269,7 +269,7 @@ void Player::Attack(GameObject* object) {
 		return;
 	Enemy* temp = (Enemy*)object;
 	
-	temp->GetDmg(mWeaponPower);
+	temp->GetDmg(mAtk);
 	Combo::GetInstance()->ComboUp();
 }
 

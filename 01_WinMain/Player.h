@@ -123,8 +123,8 @@ public:
 	float GetDef() { return mDef; }
 
 	POINT GetIndex() { return { mStartIndexX, mStartIndexY }; }
-	float GetndexX() { return mStartIndexX; }
-	float GetndexY() { return mStartIndexY; }
+	float GetIndexX() { return mStartIndexX; }
+	float GetIndexY() { return mStartIndexY; }
 
 	void SetCoin(int coin) { mCoin = coin; }
 	int GetCoin() { return mCoin; }

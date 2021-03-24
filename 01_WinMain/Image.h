@@ -1,4 +1,14 @@
 ﻿#pragma once
+struct FrameImage {
+	Image* Image;
+	int PositionX;
+	int PositionY;
+	int FrameX;
+	int FrameY;
+	int FrameWidth;
+	int FrameHeight;
+};
+
 class Image
 {
 private:
