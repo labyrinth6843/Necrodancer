@@ -32,13 +32,6 @@ enum class WeaponAttribute {
 	End
 };
 
-//착용상태
-enum class WeaponState {
-	NotOwned,
-	Owned,
-	End
-};
-
 class Weapon final : public Item
 {
 	Player* mPlayer;
@@ -53,10 +46,10 @@ class Weapon final : public Item
 	WeaponMaterial mMaterial;
 	WeaponAttribute mAttribute;
 
-	WeaponState mState;	//Render와 Update?에서 사용
+	ItemState mState;	//Render와 Update?에서 사용
 
 public:
-	void Init(float posx, float posy, WeaponType type, WeaponMaterial material, WeaponState state = WeaponState::NotOwned);
+	void Init(float posx, float posy, WeaponType type, WeaponMaterial material, ItemState state = ItemState::NotOwned);
 	void Release();
 	void Update();
 	void Render(HDC hdc);
@@ -65,13 +58,13 @@ public:
 	void SetAtk(int atk) { mAtk = atk; }
 	void SetWeaponType(WeaponType type) { mType = type; }
 	void SetWeaponMaterial(WeaponMaterial mat) { mMaterial = mat; }
-	void SetWeaponState(WeaponState state) { mState = state; }
+	void SetWeaponState(ItemState state) { mState = state; }
 	void SetWeaponAttribute(WeaponAttribute att) { mAttribute = att; }
 
 	int GetAtk() { return mAtk; }
 	WeaponType GetWeaponType() { return mType; }
 	WeaponMaterial GetWeaponMaterial() { return mMaterial; }
-	WeaponState GetWeaponState() { return mState; }
+	ItemState GetWeaponState() { return mState; }
 	WeaponAttribute GetAttribute() { return mAttribute; }
 
 	bool GetRange(const int key, vector<POINT> &range);	//Player에서 호출할 함수

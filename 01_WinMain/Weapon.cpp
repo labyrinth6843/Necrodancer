@@ -3,7 +3,7 @@
 #include "Player.h"
 #include "Camera.h"
 
-void Weapon::Init(float posx, float posy, WeaponType type, WeaponMaterial material, WeaponState state)
+void Weapon::Init(float posx, float posy, WeaponType type, WeaponMaterial material, ItemState state)
 {
 	if (ObjectManager::GetInstance()->FindObject("Player"))
 		mPlayer = (Player*)ObjectManager::GetInstance()->FindObject("Player");
@@ -94,7 +94,7 @@ void Weapon::Update()
 {
 
 	//습득했을때
-	if (mState == WeaponState::Owned)
+	if (mState == ItemState::Owned)
 	{
 		//옵시디언 타입이면
 		if (mMaterial == WeaponMaterial::Obsidian)
@@ -111,7 +111,7 @@ void Weapon::Render(HDC hdc)
 {
 	if (mImage.Image)
 	{
-		if (mState == WeaponState::NotOwned)
+		if (mState == ItemState::NotOwned)
 			CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc,mImage.Image, mImage.PositionX, mImage.PositionY,
 				mImage.FrameX, mImage.FrameY, mImage.FrameWidth, mImage.FrameHeight);
 	}
@@ -206,40 +206,18 @@ bool Weapon::SetRange(const int &key, vector<POINT> &range)
 	return false;
 }
 
-bool Weapon::GetRange(const int key, vector<POINT> &range)
+bool Weapon::GetRange(const int key, vector<POINT>& range)
 {
 	range.clear();
 	range.shrink_to_fit();
 
-	if (key == VK_LEFT || 'A')
+	if (key == VK_LEFT || 'A' ||
+		key == VK_RIGHT || 'D' ||
+		key == VK_UP || 'W' ||
+		key == VK_DOWN || 'S' )
 	{
-		if (SetRange(key, mLeftRange))
+		if (SetRange(key, range))
 		{
-			range = mLeftRange;
-			return true;
-		}
-	}
-	else if (key == VK_RIGHT || 'D')
-	{
-		if (SetRange(key, mRightRange))
-		{
-			range = mRightRange;
-			return true;
-		}
-	}
-	else if (key == VK_UP || 'W')
-	{
-		if (SetRange(key, mTopRange))
-		{
-			range = mTopRange;
-			return true;
-		}
-	}
-	else if (key == VK_DOWN || 'S')
-	{
-		if (SetRange(key, mBottomRange))
-		{
-			range = mBottomRange;
 			return true;
 		}
 	}
