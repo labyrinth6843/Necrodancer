@@ -1,17 +1,19 @@
 ﻿#include "pch.h"
 #include "Weapon.h"
+#include "Item.h"
 #include "Player.h"
 #include "Camera.h"
 
-void Weapon::Init(float posx, float posy, WeaponType type, WeaponMaterial material, ItemState state)
+Weapon::Weapon(float posx, float posy, WeaponType type, WeaponMaterial material, ItemState state)
 {
+
 	if (ObjectManager::GetInstance()->FindObject("Player"))
 		mPlayer = (Player*)ObjectManager::GetInstance()->FindObject("Player");
 	else
 		mPlayer = nullptr;
 
-	mType = type;
-	mMaterial = material;
+	mWeaponType = type;
+	mWeaponMaterial = material;
 	mState = state;
 
 	mImage.Image = IMAGEMANAGER->FindImage(L"Weapon");
@@ -20,27 +22,27 @@ void Weapon::Init(float posx, float posy, WeaponType type, WeaponMaterial materi
 	switch (type)
 	{
 		case WeaponType::Dagger:
-			mAttribute = WeaponAttribute::Throw;
+			mWeaponAttribute = WeaponAttribute::Throw;
 			mImage.FrameY = 0;
 			break;
 		case WeaponType::Broadsword:
-			mAttribute = WeaponAttribute::Splash;
+			mWeaponAttribute = WeaponAttribute::Splash;
 			mImage.FrameY = 2;
 			break;
 		case WeaponType::Rapier:
-			mAttribute = WeaponAttribute::Splash;
+			mWeaponAttribute = WeaponAttribute::Splash;
 			mImage.FrameY = 4;
 			break;
 		case WeaponType::Spear:
-			mAttribute = WeaponAttribute::Throw;
+			mWeaponAttribute = WeaponAttribute::Throw;
 			mImage.FrameY = 6;
 			break;
 		case WeaponType::Longsword:
-			mAttribute = WeaponAttribute::Splash;
+			mWeaponAttribute = WeaponAttribute::Splash;
 			mImage.FrameY = 8;
 			break;
 		case WeaponType::Bow:
-			mAttribute = WeaponAttribute::Normal;
+			mWeaponAttribute = WeaponAttribute::Normal;
 			mImage.FrameY = 10;
 			break;
 		case WeaponType::None:
@@ -50,11 +52,11 @@ void Weapon::Init(float posx, float posy, WeaponType type, WeaponMaterial materi
 	}
 	switch (material)
 	{
-	case WeaponMaterial::Basic:	
+	case WeaponMaterial::Basic:
 		mAtk = 1;
 		mImage.FrameX = 0;
 		break;
-	case WeaponMaterial::Blood:	
+	case WeaponMaterial::Blood:
 		mAtk = 1;
 		mImage.FrameX = 1;
 		break;
@@ -62,7 +64,7 @@ void Weapon::Init(float posx, float posy, WeaponType type, WeaponMaterial materi
 		mImage.FrameX = 2;
 		mAtk = 4;
 		break;
-	case WeaponMaterial::Gold:	
+	case WeaponMaterial::Gold:
 		mAtk = 1;
 		mImage.FrameX = 3;
 		break;
@@ -78,8 +80,8 @@ void Weapon::Init(float posx, float posy, WeaponType type, WeaponMaterial materi
 
 	if (mImage.Image)
 	{
-		mImage.PositionX = posx;
-		mImage.PositionY = posy;
+		mImage.PositionX = mX = posx;
+		mImage.PositionY = mY = posy;
 		mImage.FrameWidth = mImage.Image->GetFrameWidth();
 		mImage.FrameHeight = mImage.Image->GetFrameHeight();
 	}
@@ -92,12 +94,11 @@ void Weapon::Release()
 
 void Weapon::Update()
 {
-
 	//습득했을때
 	if (mState == ItemState::Owned)
 	{
 		//옵시디언 타입이면
-		if (mMaterial == WeaponMaterial::Obsidian)
+		if (mMaterial == ItemMaterial::Obsidian)
 		{
 			mAtk = COMBO->GetCombo();
 			if (mAtk >= 3)	//1...3
@@ -112,8 +113,18 @@ void Weapon::Render(HDC hdc)
 	if (mImage.Image)
 	{
 		if (mState == ItemState::NotOwned)
-			CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc,mImage.Image, mImage.PositionX, mImage.PositionY,
-				mImage.FrameX, mImage.FrameY, mImage.FrameWidth, mImage.FrameHeight);
+		{
+			if (CameraManager::GetInstance()->GetMainCamera()->IsInCameraArea(mX, mY))
+			{
+				CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc,mImage.Image,
+					mImage.PositionX, mImage.PositionY ,
+					mImage.FrameX, mImage.FrameY, TileSize, TileSize);
+			}
+		}
+		else if (mState == ItemState::Owned)
+		{
+			mImage.Image->ScaleFrameRender(hdc, 50, 50, mImage.FrameX, mImage.FrameY, 64, 64);
+		}
 	}
 }
 
@@ -127,25 +138,25 @@ bool Weapon::SetRange(const int &key, vector<POINT> &range)
 	int disx = 0;
 	int disy = 0;
 
-	if (key == VK_LEFT || 'A')
+	if (key == VK_LEFT || key == 'A')
 	{
 		disx = - 1;
 	}
-	else if (key == VK_RIGHT || 'D')
+	else if (key == VK_RIGHT || key == 'D')
 	{
 		disx = 1;
 	}
-	else if (key == VK_UP || 'W')
+	else if (key == VK_UP || key == 'W')
 	{
 		disy = - 1;
 	}
-	else if (key == VK_DOWN || 'S')
+	else if (key == VK_DOWN || key == 'S')
 	{
 		disy = 1;
 	}
 
 
-	switch (mType)
+	switch (mWeaponType)
 	{
 	case WeaponType::Dagger:
 		range.push_back(POINT{ posx+disx, posy+disy });
@@ -211,10 +222,10 @@ bool Weapon::GetRange(const int key, vector<POINT>& range)
 	range.clear();
 	range.shrink_to_fit();
 
-	if (key == VK_LEFT || 'A' ||
-		key == VK_RIGHT || 'D' ||
-		key == VK_UP || 'W' ||
-		key == VK_DOWN || 'S' )
+	if (key == VK_LEFT || key == 'A' ||
+		key == VK_RIGHT || key == 'D' ||
+		key == VK_UP || key == 'W' ||
+		key == VK_DOWN || key == 'S' )
 	{
 		if (SetRange(key, range))
 		{

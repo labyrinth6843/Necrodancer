@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "Item.h"
+#include "Weapon.h"
 
-Item::Item(const string& name):GameObject(name)
+Item::Item()
 {
 }
 

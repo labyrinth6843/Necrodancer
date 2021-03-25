@@ -4,7 +4,7 @@
 #include "Tile.h"
 #include "Button.h"
 #include "EnemyManager.h"
-
+#include "ItemManager.h"
 #include <fstream>
 
 #include "Ground.h"
@@ -24,7 +24,7 @@ void GameScene::Init(){
 	SoundPlayer::GetInstance()->Play(L"zone1_1_shopkeeper", 0.2f);
 	Beat::GetInstance()->SetMusic(L"zone1_1",L"zone1_1");
 
-	//
+	//몬스터
 	EnemyManager* mEnemyManager = new EnemyManager;
 	mEnemyManager->LoadEnemy();
 
@@ -32,7 +32,16 @@ void GameScene::Init(){
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Ground, new Ground("Ground"));
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Wall, new Wall("Wall"));
 
-	
+	//아이템
+	ItemManager::LoadItem(L"Test03");
+
+	//테스트용
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)new Weapon
+	(
+		-10.f, -10.f,
+		WeaponType::Longsword, WeaponMaterial::Glass, ItemState::Owned
+	));
+
 	//camera
 	Camera* camera = new Camera();
 	camera->SetTarget(mPlayer);
