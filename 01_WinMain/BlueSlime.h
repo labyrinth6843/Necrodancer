@@ -8,6 +8,7 @@ public:
 	int mDestY;
 
 	bool mIsLeft;
+	bool mMoveBeat;
 
 	Animation* mLeftIdleAnimation;
 	Animation* mLeftMoveAnimation;

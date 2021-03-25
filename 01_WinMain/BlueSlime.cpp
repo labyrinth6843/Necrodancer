@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "BlueSlime.h"
 
-BlueSlime::BlueSlime(const string& name, int x, int y) : Enemy(name){
-	mX = x* TileSize;
-	mY = y* TileSize;
+BlueSlime::BlueSlime(const string& name, int x, int y) : Enemy(name) {
+	mX = x * TileSize;
+	mY = y * TileSize;
 
 	mHp = 2;
 	mCoin = 2;
@@ -20,7 +20,7 @@ BlueSlime::BlueSlime(const string& name, int x, int y) : Enemy(name){
 	mLeftIdleAnimation->Play();
 
 	mLeftMoveAnimation = new Animation();
-	mLeftMoveAnimation->InitFrameByStartEnd(4,0,7,0, false);
+	mLeftMoveAnimation->InitFrameByStartEnd(4, 0, 7, 0, false);
 	mLeftMoveAnimation->SetFrameUpdateTime(0.1f);
 	mLeftMoveAnimation->SetIsLoop(true);
 	mLeftMoveAnimation->Play();
@@ -39,11 +39,13 @@ BlueSlime::BlueSlime(const string& name, int x, int y) : Enemy(name){
 
 	mLeftAnimation = mLeftIdleAnimation;
 	mRightAnimation = mRightIdleAnimation;
-	
+
 	if (Random::GetInstance()->RandomInt(2) == 0)
 		mIsLeft = true;
 	else
 		mIsLeft = false;
+
+	mMoveBeat = false;
 
 	switch (direction) {
 	case 0:
@@ -85,10 +87,24 @@ void BlueSlime::Init()
 void BlueSlime::Update()
 {
 	if (Beat::GetInstance()->NextTurn() == true) {
-		if (WallCheck((mDestX - mX) / TileSize, (mDestY - mY) / TileSize) == false)
-			Move((mDestX - mX) / TileSize, (mDestY - mY) / TileSize);
+		mMoveBeat = !mMoveBeat;
+		mLeftAnimation = mLeftIdleAnimation;
+		mRightAnimation = mRightIdleAnimation;
+		if (mIsLeft == true)
+			mCurrentAnimation = mLeftAnimation;
+		else
+			mCurrentAnimation = mRightAnimation;
+		if (mMoveBeat == true) {
+			if (WallCheck((mDestX - mX) / TileSize, (mDestY - mY) / TileSize) == false) {
+				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX ||
+					ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY)
+					Attack(mDestIndexX, mDestIndexY);
+				else
+					Move((mDestX - mX) / TileSize, (mDestY - mY) / TileSize);
+			}
+		}
 	}
-	if (mIsMove == true) {	
+	if (mIsMove == true) {
 		mMoveTime += Time::GetInstance()->DeltaTime();
 		float ratio = mMoveTime / 0.15f;
 		mX = Math::Lerp(mInitX, mDestX, ratio);
@@ -126,7 +142,7 @@ void BlueSlime::Render(HDC hdc)
 void BlueSlime::Move(int dirX, int dirY) {
 	mMoveTime = 0.f;
 	mIsMove = true;
-	
+
 	Ground* ground;
 	if (ObjectManager::GetInstance()->FindObject("Ground"))
 		ground = (Ground*)ObjectManager::GetInstance()->FindObject("Ground");
@@ -139,38 +155,33 @@ void BlueSlime::Move(int dirX, int dirY) {
 	mDestIndexX = mDestX / TileSize;
 	mDestIndexY = mDestY / TileSize;
 
-	if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, POINT{ mDestIndexX, mDestIndexY }) != NULL)
-		Attack(mDestIndexX, mDestIndexY);
-	else {
-		mInitX = mX;
-		mInitY = mY;
-		mMoveTime = 0.f;
-		mCorrectionY = 0.f;
-		mJumpPower = 150.f;
-		mLeftAnimation = mLeftMoveAnimation;
-		mRightAnimation = mRightMoveAnimation;
+	mInitX = mX;
+	mInitY = mY;
+	mMoveTime = 0.f;
+	mCorrectionY = 0.f;
+	mJumpPower = 150.f;
+	mLeftAnimation = mLeftMoveAnimation;
+	mRightAnimation = mRightMoveAnimation;
 
-		if (mIsLeft == true)
-			mCurrentAnimation = mLeftAnimation;
-		else
-			mCurrentAnimation = mRightAnimation;
+	if (mIsLeft == true)
+		mCurrentAnimation = mLeftAnimation;
+	else
+		mCurrentAnimation = mRightAnimation;
 
-		if (dirX > 0)
-			mCurrentAnimation = mRightAnimation;
-		else if (dirX < 0)
-			mCurrentAnimation = mLeftAnimation;
-		
+	if (dirX > 0)
+		mCurrentAnimation = mRightAnimation;
+	else if (dirX < 0)
+		mCurrentAnimation = mLeftAnimation;
 
-		if (ground->IsMove(mDestIndexX, mDestIndexY))
-			mIsMove = true;
-		else
-			mIsMove = false;
-	}
+
+	if (ground->IsMove(mDestIndexX, mDestIndexY))
+		mIsMove = true;
+	else
+		mIsMove = false;
 }
 
 void BlueSlime::Attack(int destX, int destY) {
-	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, POINT{ mDestIndexX, mDestIndexY });
-	
+	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	temp->SetHp(GetHp() - mAtk);
 }
 
@@ -194,5 +205,19 @@ void BlueSlime::IsAttacked(int dmg)
 		this->SetIsActive(false);
 		this->SetIsDestroy(true);
 		Combo::GetInstance()->ComboUp();
+	}
+	else {
+		int random = Random::GetInstance()->RandomInt(100) % 3;
+		switch (random) {
+		case 0:
+			SoundPlayer::GetInstance()->Play(L"slime_hit_1", 1.f);
+			break;
+		case 1:
+			SoundPlayer::GetInstance()->Play(L"slime_hit_2", 1.f);
+			break;
+		case 2:
+			SoundPlayer::GetInstance()->Play(L"slime_hit_3", 1.f);
+			break;
+		}
 	}
 }
