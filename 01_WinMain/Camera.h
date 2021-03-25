@@ -37,10 +37,11 @@ public:
 	void RenderEllipse(HDC hdc, float x, float y, float radius);
 	void RenderTextBox(HDC hdc, RECT rc, wstring st);
 
+	bool IsInCameraArea(int x, int y);
+	bool IsInCameraArea(int x, int y, int range);
 	bool IsInCameraArea(float x, float y, float width, float height);
 	bool IsInCameraArea(RECT rc);
 
-	bool IsInCameraArea(int x, int y, int range);
 	inline int GetCameraLeft() { return mRect.left; }
 	inline int GetCameraRight() { return mRect.right; }
 	inline int GetCameraTop() { return mRect.top; }

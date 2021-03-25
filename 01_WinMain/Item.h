@@ -31,6 +31,10 @@ protected:
 	ItemMaterial mMaterial;
 	ItemState mState;
 
+	int mMinIndexX;
+	int mMinIndexY;
+	int mMaxIndexX;
+	int mMaxIndexY;
 public:
 	Item();
 

@@ -167,16 +167,16 @@ void Ground::Render(HDC hdc)
 
 void Ground::SetMinMax()
 {
-	mMinIndexX = CameraManager::GetInstance()->GetMainCamera()->GetCameraLeft() / TileSize -1;
+	mMinIndexX = CameraManager::GetInstance()->GetMainCamera()->GetCameraLeft() / TileSize -2;
 	if (mMinIndexX < 0)
 		mMinIndexX = 0;
-	mMinIndexY = CameraManager::GetInstance()->GetMainCamera()->GetCameraTop() / TileSize - 1;
+	mMinIndexY = CameraManager::GetInstance()->GetMainCamera()->GetCameraTop() / TileSize - 2;
 	if (mMinIndexY < 0)
 		mMinIndexY = 0;
-	mMaxIndexX = CameraManager::GetInstance()->GetMainCamera()->GetCameraRight() / TileSize +1;
+	mMaxIndexX = CameraManager::GetInstance()->GetMainCamera()->GetCameraRight() / TileSize + 2;
 	if (mMaxIndexX > mMapSizeX)
 		mMaxIndexX = mMapSizeX;
-	mMaxIndexY = CameraManager::GetInstance()->GetMainCamera()->GetCameraBottom() / TileSize +1;
+	mMaxIndexY = CameraManager::GetInstance()->GetMainCamera()->GetCameraBottom() / TileSize +2;
 	if (mMaxIndexY > mMapSizeY)
 		mMaxIndexY = mMapSizeY;
 }

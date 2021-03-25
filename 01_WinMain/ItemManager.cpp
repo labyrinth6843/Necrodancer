@@ -11,6 +11,10 @@ void ItemManager::LoadItem(wstring filename)	//filename : 로드할 맵의 아�
 	int mapSizeY = itemList.size();
 	int mapSizeX = itemList.size();
 
+	//카메라 클리핑을 위한 정보 -> 다른방법도 생각해봄 일단 보류
+	//int minX, minY, maxX, maxY;
+	//FileManager::SetMinMaxIndex(itemList, minX, minY, maxX, maxY);
+
 	//아이템 생성
 	for (int y = 0; y < mapSizeY; ++y)
 	{

@@ -33,8 +33,7 @@ void GameScene::Init(){
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Wall, new Wall("Wall"));
 
 	//아이템
-	ItemManager* itemManager = new ItemManager;
-	itemManager->LoadItem(L"Test03");
+	ItemManager::LoadItem(L"Test03");
 
 	//테스트용
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)new Weapon
