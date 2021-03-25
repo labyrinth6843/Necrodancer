@@ -11,7 +11,7 @@ YellowSlime::YellowSlime(const string& name, int x, int y) :Enemy(name) {
 
 	mImage = ImageManager::GetInstance()->FindImage(L"Slime3");
 
-	direction = Random::GetInstance()->RandomInt(100) % 2;
+	mDirection = Random::GetInstance()->RandomInt(100) % 2;
 
 	mLeftAnimation = new Animation();
 	mLeftAnimation->InitFrameByStartEnd(0, 0, 3, 0, false);
@@ -25,7 +25,7 @@ YellowSlime::YellowSlime(const string& name, int x, int y) :Enemy(name) {
 	mRightAnimation->SetIsLoop(true);
 	mRightAnimation->Play();
 
-	if (direction == 0) {
+	if (mDirection == 0) {
 		mCurrentAnimation = mLeftAnimation;
 		mDestX = mX + TileSize;
 		mDestY = mY;
@@ -40,34 +40,6 @@ YellowSlime::YellowSlime(const string& name, int x, int y) :Enemy(name) {
 	mMoveState = 0;
 }
 
-void YellowSlime::Attack(int destX, int destY) {
-	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
-	temp->SetHp(GetHp() - mAtk);
-}
-
-void YellowSlime::IsAttacked(int dmg)
-{
-	mHp -= dmg;
-	if (mHp <= 0) {
-		int random = Random::GetInstance()->RandomInt(100) % 3;
-		switch (random) {
-		case 0:
-			SoundPlayer::GetInstance()->Play(L"slime_death_1", 1.f);
-			break;
-		case 1:
-			SoundPlayer::GetInstance()->Play(L"slime_death_2", 1.f);
-			break;
-		case 2:
-			SoundPlayer::GetInstance()->Play(L"slime_death_3", 1.f);
-			break;
-		}
-
-		this->SetIsActive(false);
-		this->SetIsDestroy(true);
-		Combo::GetInstance()->ComboUp();
-	}
-}
-
 void YellowSlime::Init()
 {
 
@@ -76,17 +48,19 @@ void YellowSlime::Init()
 void YellowSlime::Update()
 {
 	if (Beat::GetInstance()->NextTurn() == true) {
-		if (mIsLeft == true)
-			mCurrentAnimation = mLeftAnimation;
-		else
-			mCurrentAnimation = mRightAnimation;
-
-		if (WallCheck((mDestX - mX) / TileSize, (mDestY - mY) / TileSize) == false) {
-			if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX ||
-				ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY)
-				Attack(mDestIndexX, mDestIndexY);
+		if (mIsMove == false) {
+			if (mIsLeft == true)
+				mCurrentAnimation = mLeftAnimation;
 			else
-				Move(MoveDirection(mMoveState).x, MoveDirection(mMoveState).y);
+				mCurrentAnimation = mRightAnimation;
+
+			if (WallCheck((mDestX - mX) / TileSize, (mDestY - mY) / TileSize) == false) {
+				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX + MoveDirection(mMoveState).x &&
+					ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY + MoveDirection(mMoveState).y)
+					Attack(MoveDirection(mMoveState).x, MoveDirection(mMoveState).y);
+				else
+					Move(MoveDirection(mMoveState).x, MoveDirection(mMoveState).y);
+			}
 		}
 	}
 	if (mIsMove == true) {
@@ -119,6 +93,35 @@ void YellowSlime::Release()
 void YellowSlime::Render(HDC hdc)
 {
 	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY + mCorrectionY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), 39, 39);
+}
+
+void YellowSlime::Attack(int destX, int destY) {
+	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
+	temp->SetHp(GetHp() - mAtk);
+	SoundPlayer::GetInstance()->Play(L"slime_attack", 1.f);
+}
+
+void YellowSlime::IsAttacked(int dmg)
+{
+	mHp -= dmg;
+	if (mHp <= 0) {
+		int random = Random::GetInstance()->RandomInt(100) % 3;
+		switch (random) {
+		case 0:
+			SoundPlayer::GetInstance()->Play(L"slime_death_1", 1.f);
+			break;
+		case 1:
+			SoundPlayer::GetInstance()->Play(L"slime_death_2", 1.f);
+			break;
+		case 2:
+			SoundPlayer::GetInstance()->Play(L"slime_death_3", 1.f);
+			break;
+		}
+
+		this->SetIsActive(false);
+		this->SetIsDestroy(true);
+		Combo::GetInstance()->ComboUp();
+	}
 }
 
 POINT YellowSlime::MoveDirection(int moveState) {

@@ -12,7 +12,7 @@ GreenSlime::GreenSlime(const string & name, int x, int y):Enemy(name)
 
 	mImage = ImageManager::GetInstance()->FindImage(L"Slime1");
 
-	direction = Random::GetInstance()->RandomInt(100) % 2;
+	mDirection = Random::GetInstance()->RandomInt(100) % 2;
 
 	mLeftAnimation = new Animation();
 	mLeftAnimation->InitFrameByStartEnd(0, 0, 3, 0, false);
@@ -26,16 +26,16 @@ GreenSlime::GreenSlime(const string & name, int x, int y):Enemy(name)
 	mRightAnimation->SetIsLoop(true);
 	mRightAnimation->Play();
 
-	if (direction == 0)
+	if (mDirection == 0)
 		mCurrentAnimation = mLeftAnimation;
 	else
 		mCurrentAnimation = mRightAnimation;
 }
 
 void GreenSlime::Attack(int destX, int destY) {
-	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, POINT{ mDestIndexX, mDestIndexY });
-
+	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	temp->SetHp(GetHp() - mAtk);
+	SoundPlayer::GetInstance()->Play(L"slime_attack", 1.f);
 }
 
 void GreenSlime::IsAttacked(int dmg)

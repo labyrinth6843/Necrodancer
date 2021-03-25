@@ -9,8 +9,7 @@ YellowSkeleton::YellowSkeleton(const string& name, int x, int y) : Enemy(name) {
 }
 
 void YellowSkeleton::Attack(int destX, int destY) {
-	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, POINT{ mDestIndexX, mDestIndexY });
-
+	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	temp->SetHp(GetHp() - mAtk);
 }
 
@@ -20,4 +19,20 @@ void YellowSkeleton::IsAttacked(int dmg) {
 		this->SetIsActive(false);
 		this->SetIsDestroy(true);
 	}
+}
+
+void YellowSkeleton::Init()
+{
+}
+
+void YellowSkeleton::Update()
+{
+}
+
+void YellowSkeleton::Release()
+{
+}
+
+void YellowSkeleton::Render(HDC hdc)
+{
 }

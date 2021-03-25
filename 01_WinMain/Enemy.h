@@ -28,7 +28,7 @@ public:
 	float mJumpPower;
 	bool mIsMove;
 
-	int direction;
+	int mDirection;
 	int mHp;
 	int mAtk;
 	int mCoin;

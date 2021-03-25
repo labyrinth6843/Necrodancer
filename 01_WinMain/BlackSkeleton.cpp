@@ -11,11 +11,26 @@ BlackSkeleton::BlackSkeleton(const string& name, int x, int y) : Enemy(name){
 }
 
 void BlackSkeleton::Attack(int destX, int destY) {
-	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, POINT{ mDestIndexX, mDestIndexY });
-
+	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	temp->SetHp(GetHp() - mAtk);
 }
 
 void BlackSkeleton::IsAttacked(int dmg) {
 
+}
+
+void BlackSkeleton::Init()
+{
+}
+
+void BlackSkeleton::Update()
+{
+}
+
+void BlackSkeleton::Release()
+{
+}
+
+void BlackSkeleton::Render(HDC hdc)
+{
 }

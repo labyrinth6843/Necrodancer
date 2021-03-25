@@ -10,11 +10,26 @@ WhiteSkeleton::WhiteSkeleton(const string& name, int x, int y):Enemy(name)
 }
 
 void WhiteSkeleton::Attack(int destX, int destY) {
-	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, POINT{ mDestIndexX, mDestIndexY });
-
+	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	temp->SetHp(GetHp() - mAtk);
 }
 
 void WhiteSkeleton::IsAttacked(int dmg)
+{
+}
+
+void WhiteSkeleton::Init()
+{
+}
+
+void WhiteSkeleton::Update()
+{
+}
+
+void WhiteSkeleton::Release()
+{
+}
+
+void WhiteSkeleton::Render(HDC hdc)
 {
 }
