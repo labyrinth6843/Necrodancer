@@ -4,6 +4,7 @@
 #include <stack>
 #include <fstream>
 #include <iostream>
+#include "Camera.h"
 
 void FileManager::LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int tilesizeX, int tilesizeY)
 {
@@ -150,4 +151,27 @@ void FileManager::LoadBeat(wstring filename, queue<int> &savequeue)
 
 		}
 	}
+}
+
+bool FileManager::SetMinMaxIndex(vector<vector<Tile*>>& tilelist, int& minx, int& miny, int& maxx, int& maxy)
+{
+	int mapSizeY = tilelist.size();
+	int mapSizeX = tilelist[0].size();
+	if (CameraManager::GetInstance()->GetMainCamera())
+	{
+		minx = CameraManager::GetInstance()->GetMainCamera()->GetCameraLeft() / TileSize - 1;
+		if (minx < 0)
+			minx = 0;
+		miny = CameraManager::GetInstance()->GetMainCamera()->GetCameraTop() / TileSize - 1;
+		if (miny < 0)
+			miny = 0;
+		maxx = CameraManager::GetInstance()->GetMainCamera()->GetCameraRight() / TileSize + 1;
+		if (maxx > mapSizeX)
+			maxx = mapSizeX;
+		maxy = CameraManager::GetInstance()->GetMainCamera()->GetCameraBottom() / TileSize + 1;
+		if (maxy > mapSizeY)
+			maxy = mapSizeY;
+		return true;
+	}
+	return false;
 }

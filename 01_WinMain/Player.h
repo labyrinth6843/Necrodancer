@@ -55,7 +55,10 @@ class Player:public GameObject{
 	bool mShowShovel = false;
 	float mShowShovelFrame;
 
+	//장착중인 아이템
 	ArmorType mArmorType = ArmorType::None;
+
+	Weapon* mWeapon;
 	WeaponType mWeaponType = WeaponType::Longsword;
 	WeaponMaterial mWeaponMaterial = WeaponMaterial::Basic;
 

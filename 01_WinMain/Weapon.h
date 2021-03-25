@@ -24,6 +24,7 @@ enum class WeaponMaterial {
 	Titanium,//공격력2
 	End
 };
+
 //무기 특성
 enum class WeaponAttribute {
 	Normal,	//일반 : 범위중 하나의 대상만 공격
@@ -37,35 +38,27 @@ class Weapon final : public Item
 	Player* mPlayer;
 	int mAtk;
 
-	//출력용
-	FrameImage mImage;
-	float mX;
-	float mY;
-
-	WeaponType mType;
-	WeaponMaterial mMaterial;
-	WeaponAttribute mAttribute;
-
-	ItemState mState;	//Render와 Update?에서 사용
+	WeaponType mWeaponType;
+	WeaponAttribute mWeaponAttribute;
+	WeaponMaterial mWeaponMaterial;
 
 public:
-	void Init(float posx, float posy, WeaponType type, WeaponMaterial material, ItemState state = ItemState::NotOwned);
-	void Release();
-	void Update();
-	void Render(HDC hdc);
+	Weapon(float posx, float posy, WeaponType type, WeaponMaterial material, ItemState state = ItemState::NotOwned);
+
+	void Release() override;
+	void Update() override;
+	void Render(HDC hdc) override;
 
 public:
 	void SetAtk(int atk) { mAtk = atk; }
-	void SetWeaponType(WeaponType type) { mType = type; }
-	void SetWeaponMaterial(WeaponMaterial mat) { mMaterial = mat; }
-	void SetWeaponState(ItemState state) { mState = state; }
-	void SetWeaponAttribute(WeaponAttribute att) { mAttribute = att; }
+	void SetWeaponType(WeaponType type) { mWeaponType = type; }
+	void SetWeaponAttribute(WeaponAttribute att) { mWeaponAttribute = att; }
+	void SetWeaponMaterial(WeaponMaterial mt) { mWeaponMaterial = mt; }
 
 	int GetAtk() { return mAtk; }
-	WeaponType GetWeaponType() { return mType; }
-	WeaponMaterial GetWeaponMaterial() { return mMaterial; }
-	ItemState GetWeaponState() { return mState; }
-	WeaponAttribute GetAttribute() { return mAttribute; }
+	WeaponType GetWeaponType() { return mWeaponType; }
+	WeaponAttribute GetWeaponAttribute() { return mWeaponAttribute; }
+	WeaponMaterial GetWeaponMaterial() { return mWeaponMaterial; }
 
 	bool GetRange(const int key, vector<POINT> &range);	//Player에서 호출할 함수
 

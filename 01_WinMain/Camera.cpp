@@ -149,3 +149,13 @@ bool Camera::IsInCameraArea(int x, int y, int range)
 
 	return true;
 }
+
+bool Camera::IsInCameraArea(int x, int y)
+{
+	if (x < mRect.left)return false;
+	if (x > mRect.right)return false;
+	if (y < mRect.top)return false;
+	if (y > mRect.bottom)return false;
+
+	return true;
+}
