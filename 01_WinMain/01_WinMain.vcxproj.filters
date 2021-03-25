@@ -133,6 +133,15 @@
     <Filter Include="MainGame\Object\Enemy\Zombie">
       <UniqueIdentifier>{7e8e55d8-b649-4940-a40e-dff239a8e5d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Object\Enemy\Bat">
+      <UniqueIdentifier>{6d1f9cff-2c00-4908-a08c-d02ff9d54fc2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Object\Enemy\KingConga">
+      <UniqueIdentifier>{0bc0d075-fed1-4f16-8050-c2e701a84692}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Object\Enemy\Minotaur">
+      <UniqueIdentifier>{cdf0a980-0847-42aa-9c51-7140acc3ed6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -297,6 +306,15 @@
     <ClInclude Include="ItemManager.h">
       <Filter>MainGame\Object\Item</Filter>
     </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>MainGame\Object\Enemy\Bat</Filter>
+    </ClInclude>
+    <ClInclude Include="Minotaur.h">
+      <Filter>MainGame\Object\Enemy\Minotaur</Filter>
+    </ClInclude>
+    <ClInclude Include="KingConga.h">
+      <Filter>MainGame\Object\Enemy\KingConga</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -457,6 +475,15 @@
     </ClCompile>
     <ClCompile Include="ItemManager.cpp">
       <Filter>MainGame\Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>MainGame\Object\Enemy\Bat</Filter>
+    </ClCompile>
+    <ClCompile Include="Minotaur.cpp">
+      <Filter>MainGame\Object\Enemy\Minotaur</Filter>
+    </ClCompile>
+    <ClCompile Include="KingConga.cpp">
+      <Filter>MainGame\Object\Enemy\KingConga</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
