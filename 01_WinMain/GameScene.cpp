@@ -35,13 +35,6 @@ void GameScene::Init(){
 	//아이템
 	ItemManager::LoadItem(L"Test03");
 
-	//테스트용
-	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)new Weapon
-	(
-		-10.f, -10.f,
-		WeaponType::Longsword, WeaponMaterial::Glass, ItemState::Owned
-	));
-
 	//camera
 	Camera* camera = new Camera();
 	camera->SetTarget(mPlayer);

@@ -133,8 +133,8 @@ bool Weapon::SetRange(const int &key, vector<POINT> &range)
 	range.clear();
 	range.shrink_to_fit();
 
-	int posx = mPlayer->GetIndexX() / TileSize;
-	int posy = mPlayer->GetIndexY() / TileSize;
+	int posx = mPlayer->GetIndexX();
+	int posy = mPlayer->GetIndexY();
 	int disx = 0;
 	int disy = 0;
 
@@ -165,15 +165,15 @@ bool Weapon::SetRange(const int &key, vector<POINT> &range)
 	case WeaponType::Broadsword:
 		if (disx)	//disx !=0 && disy == 0, 즉 좌우 공격(x고정 + y변경)
 		{
-			range.push_back(POINT{ posx + disx, posy - 1 });
 			range.push_back(POINT{ posx + disx, posy });
+			range.push_back(POINT{ posx + disx, posy - 1 });
 			range.push_back(POINT{ posx + disx, posy + 1});
 			return true;
 		}
 		else		//disx ==0 && disy != 0, 즉 상하 공격(x변경 + y고정)
 		{
-			range.push_back(POINT{ posx - 1, posy + disy });
 			range.push_back(POINT{ posx , posy + disy });
+			range.push_back(POINT{ posx - 1, posy + disy });
 			range.push_back(POINT{ posx + 1, posy + disy });
 			return true;
 		}

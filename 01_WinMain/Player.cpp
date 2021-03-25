@@ -50,6 +50,11 @@ void Player::Init() {
 	mStartIndexY = mY / TileSize;
 	mCurrentHeadAnimation = mHeadRightAnimation;
 	mCurrentBodyAnimation = mBodyRightAnimation;
+
+	//초반 장착 아이템
+	mWeapon = new Weapon(-10.f, -10.f, WeaponType::Dagger, WeaponMaterial::Glass, ItemState::Owned);
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)mWeapon);
+	//
 }
 
 void Player::Release() { 
@@ -72,7 +77,7 @@ void Player::Update() {
 				if (WallCheck(0, -1) == true)
 					Dig(0, -1);//있으면 채광
 				else
-					Interaction(0, -1);//없으면 다른 상호작용
+					Interaction(0, -1, VK_UP);//없으면 다른 상호작용
 			}
 		}
 
@@ -86,7 +91,7 @@ void Player::Update() {
 				if (WallCheck(1, 0) == true)
 					Dig(1, 0);
 				else
-					Interaction(1, 0);					
+					Interaction(1, 0, VK_RIGHT);
 			}
 		}
 
@@ -100,7 +105,7 @@ void Player::Update() {
 				if (WallCheck(-1, 0) == true)
 					Dig(-1, 0);
 				else
-					Interaction(-1, 0);
+					Interaction(-1, 0, VK_LEFT);
 			}
 		}
 
@@ -109,7 +114,7 @@ void Player::Update() {
 				if (WallCheck(0, 1) == true)
 					Dig(0, 1);
 				else
-					Interaction(0, 1);
+					Interaction(0, 1, VK_DOWN);
 			}
 		}
 	}
@@ -257,204 +262,75 @@ void Player::Equip(GameObject* object) {
 	
 }
 
-bool Player::AttackRangeCheck(WeaponType weapontype, int destX, int destY, int dirX, int dirY) {
-	switch (weapontype) {
-	case WeaponType::None:
-		return false;
-		break;
+bool Player::AttackRangeCheck(const int& key)
+{
+	vector<POINT> range;
+	mWeapon->GetRange(key, range);
+	bool attackCheck = false;	//공격을 한번이라도 했는지
 
-	case WeaponType::Dagger:
-		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }) != nullptr) {
-			Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }));
-			return true;
+	for (int i = 0; i < range.size(); ++i)
+	{
+		//벽이 있는지 유무 체크
+		if (WallCheck(range[i].x, range[i].y))
+		{
+			//벽이 있다면 공격 중단
+			break;
 		}
-		else
-			return false;
-		break;
 
-	case WeaponType::Broadsword:
-		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }) != nullptr) {
-			Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }));
+		//무기타입이 레이피어인 경우 아래의 동작이 아닌 다른 동작을 취하도록 한다
+		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, range[i]) != nullptr)
+		{
+			Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, range[i]));
+			attackCheck = true;
 		}
-		else{
-			if (dirY == 0) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 1 }) != nullptr ||
-					ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 1 }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 1 }));
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 1 }));
-				}
-			}
-			else {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 1, destY }) != nullptr ||
-					ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 1, destY }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 1, destY }));
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 1, destY }));
-				}
-			}
-			return true;
-		}
-		return false;
-		break;
-
-	case WeaponType::Longsword:
-		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }) != nullptr) {
-			Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }));
-			if (dirX == 1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 1, destY }) != nullptr)
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 1, destY }));
-			}
-
-			else if (dirX == -1) {
-				if(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 1, destY }) != nullptr)
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 1, destY }));
-			}
-				
-			else if (dirY == 1) {
-				if(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 1 }) != nullptr)
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 1 }));
-			}
-				
-			else if (dirY == -1) {
-				if(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 1 }) != nullptr)
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 1 }));
-			}
-			return true;
-		}
-		else
-			return false;
-		break;
-
-	case WeaponType::Spear:
-		//입력 방향에 오브젝트 유무 확인 후 있다면 공격
-		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }) != nullptr) {
-			Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }));
-			return true;
-		}
-		//없으면 그 너머 범위까지 체크
-		else {
-			if (dirX == 1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 1, destY }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 1, destY }));
-					return true;
-				}
-			}
-
-			else if (dirX == -1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 1, destY }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 1, destY }));
-					return true;
-				}
-			}
-
-			else if (dirY == 1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 1 }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 1 }));
-					return true;;
-				}
-			}
-
-			else if (dirY == -1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 1 }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 1 }));
-					return true;
-				}
-			}
-			return false;
-		}
-		break;
-
-	case WeaponType::Bow:
-		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }) != nullptr) {
-			Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }));
-			return true;
-		}
-		else {
-			if (dirX == 1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 1, destY }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 1, destY }));
-					return true;
-				}
-				else if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 2, destY }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 2, destY }));
-					return true;
-				}
-			}
-			else if (dirX == -1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 1, destY }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 1, destY }));
-					return true;
-				}
-				else if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 2, destY }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 2, destY }));
-					return true;
-				}
-			}
-
-			else if (dirY == 1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 1 }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 1 }));
-					return true;
-				}
-				else if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 2 }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 2 }));
-					return true;
-				}
-			}
-
-			else if (dirY == -1) {
-				if(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 1 }) != nullptr)
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 1 }));
-				else if(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 2 }) != nullptr)
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 2 }));
-			}
-			return false;
-		}
-		break;
-		
-	case WeaponType::Rapier:
-		//입력 방향에 오브젝트 유무 확인 후 있다면 공격
-		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }) != nullptr) {
-			Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }));
-			return true;
-		}
-		//없으면 그 너머 범위까지 체크
-		else {
-			if (dirX == 1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 1, destY }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 1, destY }));
-					Move(destX, destY);
-					return true;
-				}
-			}
-			else if (dirX == -1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 1, destY }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 1, destY }));
-					Move(destX, destY);
-					return true;
-				}
-			}
-			else if (dirY == 1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 1 }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 1 }));
-					Move(destX, destY);
-					return true;
-				}
-			}
-			else if (dirY == -1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 1 }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 1 }));
-					Move(destX, destY);
-					return true;
-				}
-			}
-			return false;
-		}
-		break;
 	}
+	return attackCheck;
+}
+
+bool Player::AttackRangeCheck(WeaponType weapontype, int destX, int destY, int dirX, int dirY)
+{
+	//WeaponType::Rapier:
+		//입력 방향에 오브젝트 유무 확인 후 있다면 공격
+		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }) != nullptr) {
+			Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }));
+			return true;
+		}
+		//없으면 그 너머 범위까지 체크
+		else {
+			if (dirX == 1) {
+				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 1, destY }) != nullptr) {
+					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 1, destY }));
+					Move(destX, destY);
+					return true;
+				}
+			}
+			else if (dirX == -1) {
+				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 1, destY }) != nullptr) {
+					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 1, destY }));
+					Move(destX, destY);
+					return true;
+				}
+			}
+			else if (dirY == 1) {
+				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 1 }) != nullptr) {
+					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 1 }));
+					Move(destX, destY);
+					return true;
+				}
+			}
+			else if (dirY == -1) {
+				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 1 }) != nullptr) {
+					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 1 }));
+					Move(destX, destY);
+					return true;
+				}
+			}
+			return false;
+		}
 	return false;
 }
 
-void Player::Interaction(int x, int y)
+void Player::Interaction(int x, int y, const int &key)
 {
 	mEndX = mX + TileSize * x;
 	mEndY = mY + TileSize * y;
@@ -462,7 +338,9 @@ void Player::Interaction(int x, int y)
 	mEndIndexX = mEndX / TileSize;
 	mEndIndexY = mEndY / TileSize;
 
-	if (AttackRangeCheck(mWeaponType, mEndIndexX, mEndIndexY, x, y) == false) {
+	//AttackRangeCheck(mWeaponType, mEndIndexX, mEndIndexY, x, y)
+	//AttackRangeCheck(key)
+	if (AttackRangeCheck(key) == false) {
 		Equip(ObjectManager::GetInstance()->FindObject(ObjectLayer::Item, POINT{ mEndIndexX, mEndIndexY }));
 		Move(x, y);
 	}

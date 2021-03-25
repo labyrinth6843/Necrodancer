@@ -111,8 +111,9 @@ public:
 	//Tilecheck가 false면 실행
 	void Move(int x, int y);
 	//아래 세 함수를 하나로 묶기 위함
-	void Interaction(int x, int y);
+	void Interaction(int x, int y, const int &key = NULL);
 
+	bool AttackRangeCheck(const int& key);
 	bool AttackRangeCheck(WeaponType weapontype, int destX, int destY, int dirX, int dirY);
 
 
@@ -125,9 +126,9 @@ public:
 	float GetAtk() { return mAtk; }
 	float GetDef() { return mDef; }
 
-	POINT GetIndex() { return { mStartIndexX, mStartIndexY }; }
-	float GetIndexX() { return mStartIndexX; }
-	float GetIndexY() { return mStartIndexY; }
+	POINT GetIndex() { return { (long)(mX / TileSize), (long)(mY/TileSize) }; }
+	float GetIndexX() { return mX / TileSize; }
+	float GetIndexY() { return mY / TileSize; }
 
 	void SetCoin(int coin) { mCoin = coin; }
 	int GetCoin() { return mCoin; }
