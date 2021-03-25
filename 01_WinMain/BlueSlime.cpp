@@ -132,6 +132,10 @@ void BlueSlime::Update()
 
 void BlueSlime::Release()
 {
+	SafeDelete(mLeftIdleAnimation)
+	SafeDelete(mLeftMoveAnimation)
+	SafeDelete(mRightIdleAnimation)
+	SafeDelete(mRightMoveAnimation)
 }
 
 void BlueSlime::Render(HDC hdc)
@@ -157,7 +161,6 @@ void BlueSlime::Move(int dirX, int dirY) {
 
 	mInitX = mX;
 	mInitY = mY;
-	mMoveTime = 0.f;
 	mCorrectionY = 0.f;
 	mJumpPower = 150.f;
 	mLeftAnimation = mLeftMoveAnimation;
