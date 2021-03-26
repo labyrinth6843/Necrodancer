@@ -12,9 +12,13 @@ Weapon::Weapon(float posx, float posy, WeaponType type, WeaponMaterial material,
 	else
 		mPlayer = nullptr;
 
+	mType = ItemType::Weapon;
 	mWeaponType = type;
 	mWeaponMaterial = material;
 	mState = state;
+
+	mX = posx;
+	mY = posy;
 
 	mImage.Image = IMAGEMANAGER->FindImage(L"Weapon");
 
@@ -80,8 +84,8 @@ Weapon::Weapon(float posx, float posy, WeaponType type, WeaponMaterial material,
 
 	if (mImage.Image)
 	{
-		mImage.PositionX = mX = posx;
-		mImage.PositionY = mY = posy;
+		mImage.PositionX = posx;
+		mImage.PositionY = posy;
 		mImage.FrameWidth = mImage.Image->GetFrameWidth();
 		mImage.FrameHeight = mImage.Image->GetFrameHeight();
 	}
@@ -117,7 +121,7 @@ void Weapon::Render(HDC hdc)
 			if (CameraManager::GetInstance()->GetMainCamera()->IsInCameraArea(mX, mY))
 			{
 				CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc,mImage.Image,
-					mImage.PositionX, mImage.PositionY ,
+					mX, mY ,
 					mImage.FrameX, mImage.FrameY, TileSize, TileSize);
 			}
 		}

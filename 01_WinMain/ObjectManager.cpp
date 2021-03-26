@@ -183,14 +183,17 @@ vector<class GameObject*> ObjectManager::GetObjectList(ObjectLayer layer)
 	return mObjectList[layer];
 }
 
-void ObjectManager::AllDistroy()
+void ObjectManager::AllDestroy()
 {
 	ObjectIter iter = mObjectList.begin();
 	for (; iter != mObjectList.end(); ++iter)
 	{
 		for (int i = 0; i < iter->second.size(); ++i)
 		{
-			iter->second[i]->SetIsDestroy(true);
+			iter->second[i]->Release();
+			SafeDelete(iter->second[i]);
+			//iter->second[i]->SetIsDestroy(true);
 		}
+		iter->second.clear();
 	}
 }

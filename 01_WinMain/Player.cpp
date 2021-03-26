@@ -52,7 +52,7 @@ void Player::Init() {
 	mCurrentBodyAnimation = mBodyRightAnimation;
 
 	//초반 장착 아이템
-	mWeapon = new Weapon(-10.f, -10.f, WeaponType::Dagger, WeaponMaterial::Glass, ItemState::Owned);
+	mWeapon = new Weapon(-10.f, -10.f, WeaponType::Rapier, WeaponMaterial::Glass, ItemState::Owned);
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)mWeapon);
 	//
 }
@@ -258,12 +258,30 @@ void Player::Attack(GameObject* object) {
 	Combo::GetInstance()->ComboUp();
 }
 
-void Player::Equip(GameObject* object) {
-	if (object == nullptr)
+void Player::Equip(POINT index) {
+
+	Item* newWeapon = (Item*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Item, index);
+
+	if (newWeapon == nullptr)
 		return;
 
-	Item* temp = (Item*)object;
+	switch (newWeapon->GetType())
+	{
+	case ItemType::Weapon:
+		mWeapon->SetState(ItemState::NotOwned);
+		mWeapon->SetPosition(index.x * TileSize, index.y * TileSize);
 
+		mWeapon = (Weapon*)newWeapon;
+		mWeapon->SetState(ItemState::Owned);
+		mWeapon->SetPosition(-10.f, -10.f);
+		mAtk = mWeapon->GetAtk();
+		break;
+
+		//이후에 아이템 등급을 비교해서 교체하도록 기능 추가
+	default:
+		return;
+		break;
+	}
 	
 }
 
@@ -282,9 +300,24 @@ bool Player::AttackRangeCheck(const int& key)
 			break;
 		}
 
-		//무기타입이 레이피어인 경우 아래의 동작이 아닌 다른 동작을 취하도록 한다
 		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, range[i]) != nullptr)
 		{
+			if (mWeapon->GetWeaponType() == WeaponType::Rapier)
+			{
+				Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, range[i]));
+				attackCheck = true;
+				//한칸 공백 너머에 적이 있다면
+				if (i > 0)
+				{
+					//한칸 움직인다
+					Move(range[i].x - mX / TileSize, range[i].y - mY / TileSize);
+				}
+				else
+				{
+					//한칸을 공격하면 그 너머는 공격하지 않는다
+					break;
+				}
+			}
 			Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, range[i]));
 			attackCheck = true;
 		}
@@ -294,16 +327,15 @@ bool Player::AttackRangeCheck(const int& key)
 
 void Player::Interaction(int x, int y, const int &key)
 {
-	mEndX = mX + TileSize * x;
-	mEndY = mY + TileSize * y;
+	if (AttackRangeCheck(key) == false)
+	{
+		mEndX = mX + TileSize * x;
+		mEndY = mY + TileSize * y;
 
-	mEndIndexX = mEndX / TileSize;
-	mEndIndexY = mEndY / TileSize;
+		mEndIndexX = mEndX / TileSize;
+		mEndIndexY = mEndY / TileSize;
 
-	//AttackRangeCheck(mWeaponType, mEndIndexX, mEndIndexY, x, y)
-	//AttackRangeCheck(key)
-	if (AttackRangeCheck(key) == false) {
-		Equip(ObjectManager::GetInstance()->FindObject(ObjectLayer::Item, POINT{ mEndIndexX, mEndIndexY }));
+		Equip(POINT{ mEndIndexX, mEndIndexY });
 		Move(x, y);
 	}
 }

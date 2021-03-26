@@ -58,44 +58,29 @@ void ItemManager::LoadItem(wstring filename)	//filename : 로드할 맵의 아�
 						break;
 
 					}
-
+					Weapon* temp;
 					//무기의 종류를 판별하고 생성한다
 					switch (itemList[y][x]->GetFrameIndexX())
 					{
 					case 0:	//대거
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item,(GameObject*)new Weapon
-						(
-							itemList[y][x]->GetX(), itemList[y][x]->GetY(),
-							WeaponType::Dagger, mt, ItemState::NotOwned
-						));
+						temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Dagger, mt, ItemState::NotOwned);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item,(GameObject*)temp);
 						break;
 					case 1:	//브로드소드
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item,(GameObject*)new Weapon
-						(
-							itemList[y][x]->GetX(), itemList[y][x]->GetY(),
-							WeaponType::Broadsword, mt, ItemState::NotOwned
-						));
+						temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Broadsword, mt, ItemState::NotOwned);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
 						break;
 					case 2: //레이피어
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item,(GameObject*)new Weapon
-						(
-							itemList[y][x]->GetX(), itemList[y][x]->GetY(),
-							WeaponType::Rapier, mt, ItemState::NotOwned
-						));
+						temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Rapier, mt, ItemState::NotOwned);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
 						break;
 					case 3: //창
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item,(GameObject*)new Weapon
-						(
-							itemList[y][x]->GetX(), itemList[y][x]->GetY(),
-							WeaponType::Spear, mt, ItemState::NotOwned
-						));
+						temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Spear, mt, ItemState::NotOwned);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
 						break;
 					case 4: //롱소드
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item,(GameObject*)new Weapon
-						(
-							itemList[y][x]->GetX(), itemList[y][x]->GetY(),
-							WeaponType::Longsword, mt, ItemState::NotOwned
-						));
+						temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Longsword, mt, ItemState::NotOwned);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
 						break;
 					}
 				}

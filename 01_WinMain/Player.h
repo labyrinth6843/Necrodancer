@@ -95,7 +95,7 @@ public:
 	void Dig(int x, int y);
 	void Attack(GameObject* object);
 	//아이템 습득 -> 목적지 타일만 확인
-	void Equip(GameObject* object);
+	void Equip(POINT index);
 	//몬스터 오브젝트가 없다면 이동
 	void Move(int x, int y);
 	

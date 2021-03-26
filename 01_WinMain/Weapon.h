@@ -60,7 +60,8 @@ public:
 	WeaponAttribute GetWeaponAttribute() { return mWeaponAttribute; }
 	WeaponMaterial GetWeaponMaterial() { return mWeaponMaterial; }
 
-	bool GetRange(const int key, vector<POINT> &range);	//Player에서 호출할 함수
+	//Player에서 호출할 함수
+	bool GetRange(const int key, vector<POINT> &range);
 
 private:
 	bool SetRange(const int &key, vector<POINT> &range);	//GetRange에서 반환할 Range를 Player에 보내기 전에 세팅하는 함수

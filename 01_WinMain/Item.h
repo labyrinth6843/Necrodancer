@@ -21,15 +21,23 @@ enum class ItemState {
 	End
 };
 
+//아이템 종류
+enum class ItemType {
+	Weapon,
+	Armor,
+	Shovel,
+	Torch,
+	End
+};
+
 class Item:public GameObject
 {
 protected:
 	FrameImage mImage;
-	float mX;
-	float mY;
 
 	ItemMaterial mMaterial;
 	ItemState mState;
+	ItemType mType;
 
 	int mMinIndexX;
 	int mMinIndexY;
@@ -49,6 +57,7 @@ public:
 	float GetPositionY() { return mY; }
 	ItemMaterial GetMaterial() { return mMaterial; }
 	ItemState GetState() { return mState; }
+	ItemType GetType() { return mType; }
 
 	void SetFrameImage(FrameImage fimage) { mImage = fimage; }
 	void SetPosition(float x, float y) { mX = x; mY = y; }
@@ -56,5 +65,6 @@ public:
 	void SetPositionY(float y) { mY = y; }
 	void SetMaterial(ItemMaterial mt) { mMaterial = mt; }
 	void SetState(ItemState st) { mState = st; }
+	void SetType(ItemType t) { mType = t; }
 };
 

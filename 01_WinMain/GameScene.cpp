@@ -16,9 +16,7 @@
 void GameScene::Init(){
 	Beat::GetInstance()->Init();
 
-	mPlayer = new Player("Player");
-	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, mPlayer);
-	//ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player"));
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player"));
 
 	SoundPlayer::GetInstance()->Play(L"zone1_1",0.2f);
 	SoundPlayer::GetInstance()->Play(L"zone1_1_shopkeeper", 0.2f);
@@ -37,8 +35,8 @@ void GameScene::Init(){
 
 	//camera
 	Camera* camera = new Camera();
-	camera->SetTarget(mPlayer);
-	//camera->SetTarget(ObjectManager::GetInstance()->FindObject("Player"));	//이걸로 하면 버그발생 -> 왜?
+
+	camera->SetTarget(ObjectManager::GetInstance()->FindObject("Player"));	//이걸로 하면 버그발생 -> 왜?
 	CameraManager::GetInstance()->SetMainCamera(camera);
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, camera);
 
@@ -49,7 +47,8 @@ void GameScene::Init(){
 void GameScene::Release(){
 	SafeDelete(mToolButton);
 	BEAT->Release();
-	ObjectManager::GetInstance()->AllDistroy();
+	ObjectManager::GetInstance()->AllDestroy();
+	CameraManager::GetInstance()->SetMainCamera(nullptr);
 }
 
 void GameScene::Update(){
