@@ -60,11 +60,15 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"Slime1", Resources(L"Enemy/Slime1.bmp"), 104, 104, 4, 4, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Slime2", Resources(L"Enemy/Slime2.bmp"), 208, 104, 8, 4, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Slime3", Resources(L"Enemy/Slime3.bmp"), 104, 104, 4, 4, true);
+	ImageManager::GetInstance()->LoadFromFile(L"GreyBat", Resources(L"Enemy/Bat1.bmp"), 96, 96, 4, 4, true);
+	ImageManager::GetInstance()->LoadFromFile(L"RedBat", Resources(L"Enemy/Bat2.bmp"), 96, 96, 4, 4, true);
+	ImageManager::GetInstance()->LoadFromFile(L"DireBat", Resources(L"Enemy/DireBat.bmp"), 144, 100, 4, 4, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Skeleton1", Resources(L"Enemy/Skeleton1.bmp"), 208, 208, 8, 8, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Skeleton2", Resources(L"Enemy/Skeleton2.bmp"), 234, 208, 9, 8, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Skeleton3", Resources(L"Enemy/Skeleton3.bmp"), 234, 208, 9, 8, true);
-	ImageManager::GetInstance()->LoadFromFile(L"Nightmare1", Resources(L"Enemy/Nightmare1.bmp"), 285, 84, 5, 2, true);
-	ImageManager::GetInstance()->LoadFromFile(L"Nightmare2", Resources(L"Enemy/Nightmare2.bmp"), 285, 84, 5, 2, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Nightmare", Resources(L"Enemy/Nightmare.bmp"), 285, 84, 5, 2, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Minotaur", Resources(L"Enemy/Minotaur.bmp"), 450, 196, 9, 4, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Dragon", Resources(L"Enemy/Dragon.bmp"), 427 ,240, 7, 4, true);
 	//}}
 
 	//{{ NPC 관련 이미지
@@ -84,6 +88,10 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"HUDCoin", Resources(L"HUD/HUDCoin.bmp"), 20, 20, true);
 	ImageManager::GetInstance()->LoadFromFile(L"HUDHealth", Resources(L"HUD/HUDHealth.bmp"), 72, 22, 3, 1, true);
 	ImageManager::GetInstance()->LoadFromFile(L"MissText", Resources(L"HUD/Missed.bmp"), 60, 10, true);
+	ImageManager::GetInstance()->LoadFromFile(L"SlotArmor", Resources(L"HUD/SlotArmor.bmp"), 30, 33, true);
+	ImageManager::GetInstance()->LoadFromFile(L"SlotShovel", Resources(L"HUD/SlotShovel.bmp"), 30, 33, true);
+	ImageManager::GetInstance()->LoadFromFile(L"SlotTorch", Resources(L"HUD/SlotTorch.bmp"), 30, 33, true);
+	ImageManager::GetInstance()->LoadFromFile(L"SlotWeapon", Resources(L"HUD/SlotWeapon.bmp"), 30, 33, true);
 	//}}
 
 	//{{ ost 사운드
@@ -159,9 +167,6 @@ void FileManager::LoadResource()
 	//}}
 
 	//{{ 킹콩가 관련 사운드
-	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_announcer", Resources(L"Sound/voice/Enemy/kingconga/vo_announcer_kingconga.mp3"), false);
-	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_cry_1", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_cry_01.mp3"), false);
-	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_cry_2", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_cry_02.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_attack_1", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_attack_01.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_attack_2", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_attack_02.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_attack_3", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_attack_03.mp3"), false);
@@ -169,6 +174,9 @@ void FileManager::LoadResource()
 	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_hit_2", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_hit_02.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_hit_3", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_hit_03.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_death", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_death.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_announcer", Resources(L"Sound/voice/Enemy/kingconga/vo_announcer_kingconga.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_cry_1", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_cry_01.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_cry_2", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_cry_02.mp3"), false);
 	//}}
 	
 	//{{ 슬라임 관련 사운드
@@ -183,12 +191,43 @@ void FileManager::LoadResource()
 
 	//{{ 스켈레톤 관련 사운드
 	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_attack", Resources(L"Sound/voice/Enemy/skeleton/en_skel_attack.mp3"), false);
-	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_death", Resources(L"Sound/voice/Enemy/skeleton/en_skel_eath.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_hit_1", Resources(L"Sound/voice/Enemy/skeleton/en_skel_hit_01.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_hit_2", Resources(L"Sound/voice/Enemy/skeleton/en_skel_hit_02.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_hit_3", Resources(L"Sound/voice/Enemy/skeleton/en_skel_hit_03.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_death", Resources(L"Sound/voice/Enemy/skeleton/en_skel_eath.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_head_loss_1", Resources(L"Sound/voice/Enemy/skeleton/en_skel_head_loss_01.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_head_loss_2", Resources(L"Sound/voice/Enemy/skeleton/en_skel_head_loss_02.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_head_loss_3", Resources(L"Sound/voice/Enemy/skeleton/en_skel_head_loss_03.mp3"), false);
+	//}}
+
+	//{{ 박쥐 관련 사운드
+	SoundPlayer::GetInstance()->LoadFromFile(L"bat_attack", Resources(L"Sound/voice/Enemy/bat/en_bat_attack.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"bat_hit", Resources(L"Sound/voice/Enemy/bat/en_bat_hit.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"bat_death", Resources(L"Sound/voice/Enemy/bat/en_bat_death.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"bat_miniboss_hit", Resources(L"Sound/voice/Enemy/bat/en_bat_miniboss_hit.mp3"), false);
+	//}}
+
+	//{{ 미노타우르스 관련 사운드
+	SoundPlayer::GetInstance()->LoadFromFile(L"minotaur_attack", Resources(L"Sound/voice/Enemy/minotaur/en_minotaur_attack.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"minotaur_hit_1", Resources(L"Sound/voice/Enemy/minotaur/en_minotaur_hit_01.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"minotaur_hit_2", Resources(L"Sound/voice/Enemy/minotaur/en_minotaur_hit_02.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"minotaur_hit_3", Resources(L"Sound/voice/Enemy/minotaur/en_minotaur_hit_03.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"minotaur_death", Resources(L"Sound/voice/Enemy/minotaur/en_minotaur_death.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"minotaur_charge", Resources(L"Sound/voice/Enemy/minotaur/en_minotaur_charge.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"minotaur_cry", Resources(L"Sound/voice/Enemy/minotaur/en_minotaur_cry.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"minotaur_wallimpact", Resources(L"Sound/voice/Enemy/minotaur/en_minotaur_wallimpact.mp3"), false);
+	//}}
+
+	//{{ 나이트메어 관련 사운드
+	SoundPlayer::GetInstance()->LoadFromFile(L"nightmare_attack", Resources(L"Sound/voice/Enemy/nightmare/en_nightmare_attack.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"nightmare_hit_1", Resources(L"Sound/voice/Enemy/nightmare/en_nightmare_hit_01.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"nightmare_hit_2", Resources(L"Sound/voice/Enemy/nightmare/en_nightmare_hit_02.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"nightmare_hit_3", Resources(L"Sound/voice/Enemy/nightmare/en_nightmare_hit_03.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"nightmare_death", Resources(L"Sound/voice/Enemy/nightmare/en_nightmare_death.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"nightmare_cry", Resources(L"Sound/voice/Enemy/nightmare/en_nightmare_cry.mp3"), false);
+	//}}
+
+	//{{ 드래곤 관련 사운드
+
 	//}}
 }

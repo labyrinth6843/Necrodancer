@@ -306,14 +306,14 @@
     <ClInclude Include="ItemManager.h">
       <Filter>MainGame\Object\Item</Filter>
     </ClInclude>
-    <ClInclude Include="Bat.h">
-      <Filter>MainGame\Object\Enemy\Bat</Filter>
-    </ClInclude>
     <ClInclude Include="Minotaur.h">
       <Filter>MainGame\Object\Enemy\Minotaur</Filter>
     </ClInclude>
     <ClInclude Include="KingConga.h">
       <Filter>MainGame\Object\Enemy\KingConga</Filter>
+    </ClInclude>
+    <ClInclude Include="GreyBat.h">
+      <Filter>MainGame\Object\Enemy\Bat</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -476,14 +476,14 @@
     <ClCompile Include="ItemManager.cpp">
       <Filter>MainGame\Object\Item</Filter>
     </ClCompile>
-    <ClCompile Include="Bat.cpp">
-      <Filter>MainGame\Object\Enemy\Bat</Filter>
-    </ClCompile>
     <ClCompile Include="Minotaur.cpp">
       <Filter>MainGame\Object\Enemy\Minotaur</Filter>
     </ClCompile>
     <ClCompile Include="KingConga.cpp">
       <Filter>MainGame\Object\Enemy\KingConga</Filter>
+    </ClCompile>
+    <ClCompile Include="GreyBat.cpp">
+      <Filter>MainGame\Object\Enemy\Bat</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
