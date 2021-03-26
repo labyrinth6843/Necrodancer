@@ -3,28 +3,25 @@
 
 Zombie::Zombie(const string& name, int x, int y) :Enemy(name)
 {
+	mImage = ImageManager::GetInstance()->FindImage(L"Zombie");
 	mX = x * TileSize;
 	mY = y * TileSize;
-
 	mHp = 1;
 	mCoin = 1;
 	mAtk = 1.f;
-
-	mImage = ImageManager::GetInstance()->FindImage(L"Zombie");
-
 	mDirection = Random::GetInstance()->RandomInt(100) % 4;
 
-	mUpLeftAnimation = new Animation();
-	mUpLeftAnimation->InitFrameByStartEnd(0, 0, 7, 0, false);
-	mUpLeftAnimation->SetFrameUpdateTime(0.1f);
-	mUpLeftAnimation->SetIsLoop(true);
-	mUpLeftAnimation->Play();
+	mDownLeftAnimation = new Animation();
+	mDownLeftAnimation->InitFrameByStartEnd(0, 0, 7, 0, false);
+	mDownLeftAnimation->SetFrameUpdateTime(0.1f);
+	mDownLeftAnimation->SetIsLoop(true);
+	mDownLeftAnimation->Play();
 
-	mUpRightAnimation = new Animation();
-	mUpRightAnimation->InitFrameByStartEnd(8, 0, 15, 0, false);
-	mUpRightAnimation->SetFrameUpdateTime(0.1f);
-	mUpRightAnimation->SetIsLoop(true);
-	mUpRightAnimation->Play();
+	mDownRightAnimation = new Animation();
+	mDownRightAnimation->InitFrameByStartEnd(8, 0, 15, 0, false);
+	mDownRightAnimation->SetFrameUpdateTime(0.1f);
+	mDownRightAnimation->SetIsLoop(true);
+	mDownRightAnimation->Play();
 
 	mLeftAnimation = new Animation();
 	mLeftAnimation->InitFrameByStartEnd(0, 2, 7, 2, false);
@@ -38,17 +35,17 @@ Zombie::Zombie(const string& name, int x, int y) :Enemy(name)
 	mRightAnimation->SetIsLoop(true);
 	mRightAnimation->Play();
 
-	mDownLeftAnimation = new Animation();
-	mDownLeftAnimation->InitFrameByStartEnd(0, 4, 7, 4, false);
-	mDownLeftAnimation->SetFrameUpdateTime(0.1f);
-	mDownLeftAnimation->SetIsLoop(true);
-	mDownLeftAnimation->Play();
+	mUpLeftAnimation = new Animation();
+	mUpLeftAnimation->InitFrameByStartEnd(0, 4, 7, 4, false);
+	mUpLeftAnimation->SetFrameUpdateTime(0.1f);
+	mUpLeftAnimation->SetIsLoop(true);
+	mUpLeftAnimation->Play();
 
-	mDownRightAnimation = new Animation();
-	mDownRightAnimation->InitFrameByStartEnd(8, 4, 15, 4, false);
-	mDownRightAnimation->SetFrameUpdateTime(0.1f);
-	mDownRightAnimation->SetIsLoop(true);
-	mDownRightAnimation->Play();
+	mUpRightAnimation = new Animation();
+	mUpRightAnimation->InitFrameByStartEnd(8, 4, 15, 4, false);
+	mUpRightAnimation->SetFrameUpdateTime(0.1f);
+	mUpRightAnimation->SetIsLoop(true);
+	mUpRightAnimation->Play();
 
 	if (Random::GetInstance()->RandomInt(2) == 0)
 		mIsLeft = true;
@@ -57,28 +54,20 @@ Zombie::Zombie(const string& name, int x, int y) :Enemy(name)
 
 	switch (mDirection) {
 	case 0:
-		mDestX = mX;
-		mDestY = mY - TileSize;
 		if (mIsLeft == true)
 			mCurrentAnimation = mUpLeftAnimation;
 		else
 			mCurrentAnimation = mUpRightAnimation;
 		break;
 	case 1:
-		mDestX = mX - TileSize;
-		mDestY = mY;
 		mIsLeft = true;
 		mCurrentAnimation = mLeftAnimation;
 		break;
 	case 2:
-		mDestX = mX + TileSize;
-		mDestY = mY;
 		mIsLeft = false;
 		mCurrentAnimation = mRightAnimation;
 		break;
 	case 3:
-		mDestX = mX;
-		mDestY = mY + TileSize;
 		if (mIsLeft == true)
 			mCurrentAnimation = mDownLeftAnimation;
 		else
@@ -90,6 +79,7 @@ Zombie::Zombie(const string& name, int x, int y) :Enemy(name)
 
 void Zombie::Init()
 {
+
 }
 
 void Zombie::Update()
@@ -97,35 +87,41 @@ void Zombie::Update()
 	if (Beat::GetInstance()->NextTurn() == true) {
 		if (mIsMove == false) {
 			mMoveBeat = !mMoveBeat;
-			if (mIsLeft == true)
-				mCurrentAnimation = mLeftAnimation;
-			else
-				mCurrentAnimation = mRightAnimation;
-
 			if (mMoveBeat == true) 
 			{
-				if (WallCheck((mDestX - mX) / TileSize + MoveDirection(mDirection).x, (mDestY - mY) / TileSize + MoveDirection(mDirection).y) == false) {
-					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX + MoveDirection(mDirection).x &&
-						ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY + MoveDirection(mDirection).y)
-						Attack(MoveDirection(mDirection).x, MoveDirection(mDirection).y);
+				POINT temp = DestinationValidationCheck(mDirection);
+				if (WallCheck(temp.x, temp.y) == false && ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr) {
+					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX &&
+						ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY)
+						Attack();
 					else
-						Move(MoveDirection(mDirection).x, MoveDirection(mDirection).y);
+						Move(temp.x, temp.y);
 				}
 				else {
 					switch (mDirection) {
 					case 0:
 						mDirection = 3;
+						if (mIsLeft == true)
+							mCurrentAnimation = mUpLeftAnimation;
+						else
+							mCurrentAnimation = mUpRightAnimation;
 						break;
 					case 1:
 						mIsLeft = false;
 						mDirection = 2;
+						mCurrentAnimation = mRightAnimation;
 						break;
 					case 2:
 						mIsLeft = true;
 						mDirection = 1;
+						mCurrentAnimation = mLeftAnimation;
 						break;
 					case 3:
 						mDirection = 0;
+						if (mIsLeft == true)
+							mCurrentAnimation = mDownLeftAnimation;
+						else
+							mCurrentAnimation = mDownRightAnimation;
 						break;
 					}
 				}
@@ -167,8 +163,7 @@ void Zombie::Render(HDC hdc)
 	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY + mCorrectionY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), 39, 39);
 }
 
-
-void Zombie::Attack(int destX, int destY) {
+void Zombie::Attack() {
 	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	temp->SetHp(GetHp() - mAtk);
 	SoundPlayer::GetInstance()->Play(L"zombie_attack", 1.f);
@@ -185,17 +180,29 @@ void Zombie::IsAttacked(int dmg)
 	}
 }
 
-POINT Zombie::MoveDirection(int direction)
+POINT Zombie::DestinationValidationCheck(int direction)
 {
+	mDestX = mX;
+	mDestIndexX = mDestX / TileSize;
+	mDestY = mY;
+	mDestIndexY = mDestY / TileSize;
 	switch (direction) {
-	case 0:
-		return { 0,-1 };
+	case 0 :
+		mDestY -= TileSize;
+		mDestIndexY = mDestY / TileSize;
+		return { 0, -1 };
 	case 1:
-		return { -1,0 };
+		mDestX -= TileSize;
+		mDestIndexX = mDestX / TileSize;
+		return { -1, 0 };
 	case 2:
-		return { 1,0 };
-	case 3:
-		return { 0,1 };
+		mDestX += TileSize;
+		mDestIndexX = mDestX / TileSize;
+		return { 1, 0 };
+	case 3: 
+		mDestY -= TileSize;
+		mDestIndexY = mDestY / TileSize;
+		return { 0, 1 };
 	}
 }
 
@@ -209,27 +216,10 @@ void Zombie::Move(int dirX, int dirY) {
 	else
 		return;
 
-	mDestX = mX + TileSize * dirX;
-	mDestY = mY + TileSize * dirY;
-
-	mDestIndexX = mDestX / TileSize;
-	mDestIndexY = mDestY / TileSize;
-
 	mInitX = mX;
 	mInitY = mY;
 	mCorrectionY = 0.f;
 	mJumpPower = 150.f;
-
-	if (mIsLeft == true)
-		mCurrentAnimation = mLeftAnimation;
-	else
-		mCurrentAnimation = mRightAnimation;
-
-	if (dirX > 0)
-		mCurrentAnimation = mRightAnimation;
-	else if (dirX < 0)
-		mCurrentAnimation = mLeftAnimation;
-
 
 	if (ground->IsMove(mDestIndexX, mDestIndexY))
 		mIsMove = true;

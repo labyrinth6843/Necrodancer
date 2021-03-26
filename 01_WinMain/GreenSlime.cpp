@@ -3,8 +3,8 @@
 
 GreenSlime::GreenSlime(const string & name, int x, int y):Enemy(name)
 {
-	mX = x;
-	mY = y;
+	mX = x * TileSize;
+	mY = y * TileSize;
 	
 	mHp = 1;
 	mCoin = 1;
@@ -32,7 +32,7 @@ GreenSlime::GreenSlime(const string & name, int x, int y):Enemy(name)
 		mCurrentAnimation = mRightAnimation;
 }
 
-void GreenSlime::Attack(int destX, int destY) {
+void GreenSlime::Attack() {
 	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	temp->SetHp(GetHp() - mAtk);
 	SoundPlayer::GetInstance()->Play(L"slime_attack", 1.f);
@@ -77,5 +77,5 @@ void GreenSlime::Release()
 
 void GreenSlime::Render(HDC hdc)
 {
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX * TileSize, mY * TileSize, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), 39, 39);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), 39, 39);
 }

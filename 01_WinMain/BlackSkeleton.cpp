@@ -10,7 +10,7 @@ BlackSkeleton::BlackSkeleton(const string& name, int x, int y) : Enemy(name){
 
 }
 
-void BlackSkeleton::Attack(int destX, int destY) {
+void BlackSkeleton::Attack() {
 	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	temp->SetHp(GetHp() - mAtk);
 }

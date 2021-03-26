@@ -41,7 +41,7 @@ public:
 	virtual void Render(HDC hdc)override;
 
 	bool WallCheck(int x, int y);
-	virtual void Attack(int x, int y) = 0;
+	virtual void Attack() = 0;
 	virtual void IsAttacked(int dmg) = 0;
 
 	void SetHp(float hp) { mHp = hp; }

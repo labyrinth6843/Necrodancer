@@ -27,14 +27,10 @@ YellowSlime::YellowSlime(const string& name, int x, int y) :Enemy(name) {
 
 	if (mDirection == 0) {
 		mCurrentAnimation = mLeftAnimation;
-		mDestX = mX + TileSize;
-		mDestY = mY;
 		mClockWise = true;
 	}
 	else {
 		mCurrentAnimation = mRightAnimation;
-		mDestX = mX - TileSize;
-		mDestY = mY;
 		mClockWise = false;
 	}
 	mMoveState = 0;
@@ -53,13 +49,15 @@ void YellowSlime::Update()
 				mCurrentAnimation = mLeftAnimation;
 			else
 				mCurrentAnimation = mRightAnimation;
-
-			if (WallCheck((mDestX - mX) / TileSize, (mDestY - mY) / TileSize) == false) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX + MoveDirection(mMoveState).x &&
-					ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY + MoveDirection(mMoveState).y)
-					Attack(MoveDirection(mMoveState).x, MoveDirection(mMoveState).y);
-				else
-					Move(MoveDirection(mMoveState).x, MoveDirection(mMoveState).y);
+			POINT temp = DestinationValidationCheck(mMoveState);
+			if (WallCheck(temp.x, temp.y) == false) {
+				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr) {
+					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX &&
+						ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY)
+						Attack();
+					else
+						Move(temp.x, temp.y);
+				}
 			}
 		}
 	}
@@ -80,7 +78,6 @@ void YellowSlime::Update()
 			mCorrectionY = 0.f;
 		}
 	}
-
 	mCurrentAnimation->Update();
 }
 
@@ -95,7 +92,7 @@ void YellowSlime::Render(HDC hdc)
 	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY + mCorrectionY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), 39, 39);
 }
 
-void YellowSlime::Attack(int destX, int destY) {
+void YellowSlime::Attack() {
 	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	temp->SetHp(GetHp() - mAtk);
 	SoundPlayer::GetInstance()->Play(L"slime_attack", 1.f);
@@ -124,18 +121,30 @@ void YellowSlime::IsAttacked(int dmg)
 	}
 }
 
-POINT YellowSlime::MoveDirection(int moveState) {
+POINT YellowSlime::DestinationValidationCheck(int moveState) {
+	mDestX = mX;
+	mDestIndexX = mDestX / TileSize;
+	mDestY = mY;
+	mDestIndexY = mDestY / TileSize;
 	if (mClockWise == true) {
 		switch (moveState) {
 		case 0:
 			mIsLeft = false;
+			mDestX += TileSize;
+			mDestIndexX++;
 			return { 1,0 };
 		case 1:
+			mDestY += TileSize;
+			mDestIndexY++;
 			return { 0,1 };
 		case 2:
 			mIsLeft = true;
+			mDestX-= TileSize;
+			mDestIndexX--;
 			return { -1,0 };
 		case 3:
+			mDestY -= TileSize;
+			mDestIndexY--;
 			return { 0,-1 };
 		}
 	}
@@ -143,13 +152,21 @@ POINT YellowSlime::MoveDirection(int moveState) {
 		switch (moveState) {
 		case 0:
 			mIsLeft = true;
+			mDestX -= TileSize;
+			mDestIndexX--;
 			return { -1,0 };
 		case 1:
+			mDestY += TileSize;
+			mDestIndexY++;
 			return { 0,1 };
 		case 2:
 			mIsLeft = false;
+			mDestX += TileSize;
+			mDestIndexX++;
 			return { 1,0 };
 		case 3:
+			mDestY -= TileSize;
+			mDestIndexY--;
 			return { 0,-1 };
 		}
 	}
@@ -166,12 +183,6 @@ void YellowSlime::Move(int dirX, int dirY) {
 		ground = (Ground*)ObjectManager::GetInstance()->FindObject("Ground");
 	else
 		return;
-
-	mDestX = mX + TileSize * dirX;
-	mDestY = mY + TileSize * dirY;
-
-	mDestIndexX = mDestX / TileSize;
-	mDestIndexY = mDestY / TileSize;
 
 	mInitX = mX;
 	mInitY = mY;

@@ -20,7 +20,7 @@ public:
 
 	void Move(int destX, int destY);
 
-	void Attack(int destX, int destY)override;
+	void Attack()override;
 	void IsAttacked(int dmg)override;
 
 	void Init()override;

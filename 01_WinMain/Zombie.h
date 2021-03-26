@@ -14,10 +14,10 @@ public:
 public:
 	Zombie(const string& name, int x, int y);
 
-	void Attack(int destX, int destY)override;
+	void Attack()override;
 	void IsAttacked(int dmg)override;
-	
-	POINT MoveDirection(int direction);
+
+	POINT DestinationValidationCheck(int direction);
 	void Move(int dirX, int dirY);
 
 	void Init()override;
