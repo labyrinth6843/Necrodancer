@@ -9,7 +9,7 @@ WhiteSkeleton::WhiteSkeleton(const string& name, int x, int y):Enemy(name)
 	mImage = ImageManager::GetInstance()->FindImage(L"Skeleton1");
 }
 
-void WhiteSkeleton::Attack(int destX, int destY) {
+void WhiteSkeleton::Attack() {
 	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	temp->SetHp(GetHp() - mAtk);
 }

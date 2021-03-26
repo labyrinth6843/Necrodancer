@@ -16,10 +16,10 @@ public:
 public:
 	YellowSlime(const string& name, int x, int y);
 
-	POINT MoveDirection(int moveState);
+	POINT DestinationValidationCheck(int moveState);
 	void Move(int dirX, int dirY);
 
-	void Attack(int destX, int destY)override;
+	void Attack()override;
 	void IsAttacked(int dmg)override;
 
 	void Init()override;

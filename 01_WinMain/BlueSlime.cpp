@@ -89,20 +89,24 @@ void BlueSlime::Update()
 	if (Beat::GetInstance()->NextTurn() == true) {
 		if (mIsMove == false) {
 			mMoveBeat = !mMoveBeat;
-			mLeftAnimation = mLeftIdleAnimation;
-			mRightAnimation = mRightIdleAnimation;
 			if (mIsLeft == true)
 				mCurrentAnimation = mLeftAnimation;
 			else
 				mCurrentAnimation = mRightAnimation;
 			if (mMoveBeat == true) {
 				if (WallCheck((mDestX - mX) / TileSize, (mDestY - mY) / TileSize) == false) {
-					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX &&
-						ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY)
-						Attack(mDestIndexX, mDestIndexY);
-					else
-						Move((mDestX - mX) / TileSize, (mDestY - mY) / TileSize);
+					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{mDestIndexX, mDestIndexY}) == nullptr) {
+						if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX &&
+							ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY)
+							Attack();
+						else
+							Move((mDestX - mX) / TileSize, (mDestY - mY) / TileSize);
+					}
 				}
+			}
+			else {
+				mLeftAnimation = mLeftIdleAnimation;
+				mRightAnimation = mRightIdleAnimation;
 			}
 		}
 	}
@@ -185,7 +189,7 @@ void BlueSlime::Move(int dirX, int dirY) {
 		mIsMove = false;
 }
 
-void BlueSlime::Attack(int destX, int destY) {
+void BlueSlime::Attack() {
 	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	temp->SetHp(GetHp() - mAtk);
 	SoundPlayer::GetInstance()->Play(L"slime_attack",1.f);
