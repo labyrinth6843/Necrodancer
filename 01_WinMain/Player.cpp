@@ -153,13 +153,18 @@ void Player::Render(HDC hdc) {
 		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mShovelImage, mEndX, mEndY, (int)mShovelType - 1, 0, TileSize, TileSize);
 }
 
-float Player::DistanceShopkeeper(GameObject* object) {
+float Player::DistanceShopkeeper() {
+	GameObject* temp = ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, "ShopKeeper");
+
+	if (temp == nullptr)
+		return 0.f;
+
 	//직선거리로 10칸을 넘어가는지 확인, 넘어갔다면 소리가 아예 들리지 않는다
-	if (Math::GetDistance(mStartIndexX, mStartIndexY, object->GetX() / TileSize, object->GetY() / TileSize) < 10)
+	if (Math::GetDistance(mStartIndexX, mStartIndexY, temp->GetX() / TileSize, temp->GetY() / TileSize) < 10)
 		return 0.f;
 	//나온 직선거리를 역수를 취해 볼륨값으로 반환
 	else
-		return 1 / Math::GetDistance(mStartIndexX, mStartIndexY, object->GetX() / TileSize, object->GetY() / TileSize);
+		return 1 / Math::GetDistance(mStartIndexX, mStartIndexY, temp->GetX() / TileSize, temp->GetY() / TileSize);
 }
 
 void Player::Move(int x, int y) {
@@ -245,7 +250,7 @@ void Player::Dig(int x, int y) {
 }
 
 void Player::Attack(GameObject* object) {
-	if (object == nullptr)
+	if (object == nullptr || object->GetName() == "ShopKeeper")
 		return;
 	Enemy* temp = (Enemy*)object;
 	
@@ -285,49 +290,6 @@ bool Player::AttackRangeCheck(const int& key)
 		}
 	}
 	return attackCheck;
-}
-
-bool Player::AttackRangeCheck(WeaponType weapontype, int destX, int destY, int dirX, int dirY)
-{
-	//WeaponType::Rapier:
-		//입력 방향에 오브젝트 유무 확인 후 있다면 공격
-		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }) != nullptr) {
-			Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY }));
-			return true;
-		}
-		//없으면 그 너머 범위까지 체크
-		else {
-			if (dirX == 1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 1, destY }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX + 1, destY }));
-					Move(destX, destY);
-					return true;
-				}
-			}
-			else if (dirX == -1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 1, destY }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX - 1, destY }));
-					Move(destX, destY);
-					return true;
-				}
-			}
-			else if (dirY == 1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 1 }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY + 1 }));
-					Move(destX, destY);
-					return true;
-				}
-			}
-			else if (dirY == -1) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 1 }) != nullptr) {
-					Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ destX, destY - 1 }));
-					Move(destX, destY);
-					return true;
-				}
-			}
-			return false;
-		}
-	return false;
 }
 
 void Player::Interaction(int x, int y, const int &key)

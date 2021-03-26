@@ -88,34 +88,21 @@ public:
 
 	//상점 주인과 거리를 판별해 float값 반환
 	//반환된 값을 바로 GameScene에서 사용하면 된다.
-	float DistanceShopkeeper(GameObject* object);
+	float DistanceShopkeeper();
 
 	//목적지 타일의 벽 유무 검사
 	bool WallCheck(int x, int y);
 	void Dig(int x, int y);
-	//있으면 채광
-	//dig();
-	//없으면 다른 상호작용
-	//본인 상태에 따라 다른 무기 상호작용 -> 목적지 타일 외 다른 타일 확인 필요
-	
 	void Attack(GameObject* object);
-	
-
 	//아이템 습득 -> 목적지 타일만 확인
 	void Equip(GameObject* object);
 	//몬스터 오브젝트가 없다면 이동
-
-
-	//이동하려는 타일에 오브젝트 유무 확인
-	bool TileCheck(int x, int y);
-	//Tilecheck가 false면 실행
 	void Move(int x, int y);
-	//아래 세 함수를 하나로 묶기 위함
+	
+	//상호작용 함수를 하나로 묶기 위함
 	void Interaction(int x, int y, const int &key = NULL);
 
 	bool AttackRangeCheck(const int& key);
-	bool AttackRangeCheck(WeaponType weapontype, int destX, int destY, int dirX, int dirY);
-
 
 	void SetHp(float hp) { mHp = hp; }
 	float GetHp() { return mHp; }

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 class Combo
 {
 	Singleton(Combo);
@@ -24,7 +24,11 @@ public:
 		if (mCombo < 0)
 			mCombo = 0;
 	}
-	inline void ComboReset() { mCombo = 0; }
+	inline void ComboReset()
+	{ 
+		mCombo = 0; 
+		//SoundPlayer 콤보 끊겼을 때 소리
+	}
 };
 #define COMBO Combo::GetInstance()
 
