@@ -137,6 +137,8 @@ GameObject* ObjectManager::FindObject(ObjectLayer layer, POINT index)
 
 	for (int i = 0; i < iter->second.size(); i++)
 	{
+		float a = iter->second[i]->GetX();
+		float b = iter->second[i]->GetY();
 		if (iter->second[i]->GetX()/TileSize== index.x && iter->second[i]->GetY()/TileSize == index.y)
 		{
 			return iter->second[i];

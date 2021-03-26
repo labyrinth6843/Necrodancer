@@ -24,6 +24,7 @@ public:
 	virtual void Update();
 	virtual void Render(HDC hdc);
 
+public:
 	void SetMinMax();
 	bool GetSight();
 	bool IsMove(int indexX, int indexY);	//이동하고자 하는 바닥타일의 인덱스를 인자로 받는다

@@ -28,6 +28,10 @@ public:
 	void Release()override;
 	void Render(HDC hdc)override;
 
+public:
+
+	bool IsWall(int indexX, int indexY);
+
 	int GetDigLevel() { return mDigLevel; }
 
 	int GetFrameIndexX(int indexX, int indexY) { return mWallList[indexY][indexX]->GetFrameIndexX(); }

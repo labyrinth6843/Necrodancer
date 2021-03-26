@@ -53,8 +53,18 @@ void Camera::Update()
 		mRect = RectMakeCenter(mX, mY, mSizeX, mSizeY);
 		break;
 	}
-}
 
+	if (mShakeCount > 0)
+	{
+		mRect = RectMakeCenter(mX + (1.35f) * (Random::GetInstance()->RandomInt(3) - 1), 
+							   mY + (1.35f) * (Random::GetInstance()->RandomInt(3) - 1), mSizeX, mSizeY);
+		mShakeCount--;
+	}
+}
+void Camera::CameraShake(int strength)
+{
+	mShakeCount = strength * 20;
+}
 void Camera::Render(HDC hdc)
 {
 	//쓸일이 없다 . . . . 

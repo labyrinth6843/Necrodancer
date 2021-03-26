@@ -55,3 +55,14 @@ void Wall::Render(HDC hdc)
 		}
 	}
 }
+
+bool Wall::IsWall(int indexX, int indexY)
+{
+	//장외처리
+	if (indexX < 0 || indexX >= mMapSizeX || indexY < 0 || indexY >= mMapSizeY)
+		return false;
+
+	if (mWallList[indexY][indexX]->GetFrameIndexX() != 0 || mWallList[indexY][indexX]->GetFrameIndexY() != 0)
+		return true;
+	return false;
+}
