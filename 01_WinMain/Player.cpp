@@ -291,15 +291,18 @@ bool Player::AttackRangeCheck(const int& key)
 	mWeapon->GetRange(key, range);
 	bool attackCheck = false;	//공격을 한번이라도 했는지
 
+	Wall* tempWall = (Wall*)ObjectManager::GetInstance()->FindObject("Wall");
+
 	for (int i = 0; i < range.size(); ++i)
 	{
 		//벽이 있는지 유무 체크
-		if (WallCheck(range[i].x, range[i].y))
+		if (tempWall->IsWall(range[i].x, range[i].y))
 		{
 			//벽이 있다면 공격 중단
 			break;
 		}
 
+		//적이 공격범위에 있다면
 		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, range[i]) != nullptr)
 		{
 			Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, range[i]));
@@ -310,16 +313,18 @@ bool Player::AttackRangeCheck(const int& key)
 				if (i > 0)
 				{
 					//한칸 움직인다
-					Move(range[i].x - mX / TileSize, range[i].y - mY / TileSize);
+					Move(range[i-1].x - mX / TileSize, range[i-1].y - mY / TileSize);
 				}
-				else
-				{
-					//한칸을 공격하면 그 너머는 공격하지 않는다
-					break;
-				}
+			}
+			if(mWeapon->GetWeaponType() == WeaponType::Rapier || mWeapon->GetWeaponType() == WeaponType::Spear || mWeapon->GetWeaponType() == WeaponType::Bow)
+			{
+				//한칸을 공격하면 그 너머는 공격하지 않는다
+				break;
 			}
 		}
 	}
+	if(attackCheck)
+		CameraManager::GetInstance()->GetMainCamera()->CameraShake();
 	return attackCheck;
 }
 

@@ -36,7 +36,7 @@ void GameScene::Init(){
 	//camera
 	Camera* camera = new Camera();
 
-	camera->SetTarget(ObjectManager::GetInstance()->FindObject("Player"));	//이걸로 하면 버그발생 -> 왜?
+	camera->SetTarget(ObjectManager::GetInstance()->FindObject("Player"));
 	CameraManager::GetInstance()->SetMainCamera(camera);
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, camera);
 
@@ -47,7 +47,7 @@ void GameScene::Init(){
 void GameScene::Release(){
 	SafeDelete(mToolButton);
 	BEAT->Release();
-	ObjectManager::GetInstance()->AllDestroy();
+	ObjectManager::GetInstance()->AllDestroy();	//함수 구성은 같은데 Release를 사용하면 Player가 nullptr
 	CameraManager::GetInstance()->SetMainCamera(nullptr);
 }
 

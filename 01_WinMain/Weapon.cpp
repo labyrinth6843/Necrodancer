@@ -134,8 +134,8 @@ void Weapon::Render(HDC hdc)
 
 bool Weapon::SetRange(const int &key, vector<POINT> &range)
 {
-	range.clear();
-	range.shrink_to_fit();
+	if (!mPlayer)
+		return;
 
 	int posx = mPlayer->GetIndexX();
 	int posy = mPlayer->GetIndexY();
