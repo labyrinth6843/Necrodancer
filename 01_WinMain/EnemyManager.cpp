@@ -9,6 +9,10 @@ void EnemyManager::LoadEnemy()
 	int mMapSizeY = mEnemyList.size();
 	int mMapSizeX = mEnemyList[0].size();
 
+	//여유 있으면 각 프레임 정보를 저장하는 키를 따로 빼서
+	//스위치문으로 돌릴 것
+	//프레임 안 맞는 거 있으면 계속 돌아서 별로
+
 	for (int y = 0; y < mMapSizeY; ++y)
 	{
 		for (int x = 0; x < mMapSizeX; ++x)
@@ -52,7 +56,34 @@ void EnemyManager::LoadEnemy()
 						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)blackskeleton);
 					}
 
-					
+					else if (mEnemyList[y][x]->GetFrameIndexX() == 3 && mEnemyList[y][x]->GetFrameIndexY() == 1) {
+						//Bat* bat = new Bat("Bat", x, y);
+						//ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)bat);
+					}
+
+					else if (mEnemyList[y][x]->GetFrameIndexX() == 4 && mEnemyList[y][x]->GetFrameIndexY() == 1) {
+						//RedBat* redbat = new RedBat("RedBat", x, y);
+						//ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)redbat);
+					}
+
+					else if (mEnemyList[y][x]->GetFrameIndexX() == 0 && mEnemyList[y][x]->GetFrameIndexY() == 2) {
+						//DireBat* direbat = new RedBat("DireBat", x, y);
+						//ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)direbat);
+					}
+
+					else if (mEnemyList[y][x]->GetFrameIndexX() == 1 & mEnemyList[y][x]->GetFrameIndexY() == 2) {
+						//Minotaur* minotaur = new Minotaur("Minotaur", x, y);
+						//ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)minotaur);
+					}
+
+					else if (mEnemyList[y][x]->GetFrameIndexX() == 2 & mEnemyList[y][x]->GetFrameIndexY() == 2) {
+						//Nightmare* nightmare = new Nightmare("Nightmare", x, y);
+						//ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)nightmare);
+					}
+					else if (mEnemyList[y][x]->GetFrameIndexX() == 3 && mEnemyList[y][x]->GetFrameIndexY() == 2) {
+						//Dragon* dragon = new Dragon("Dragon", x, y);
+						//ObjectManager::GetInstance()->AddObejct(ObjectLayer::Enemy, (GameObject*)dragon);
+					}
 				}
 			}
 		}

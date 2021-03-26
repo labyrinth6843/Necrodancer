@@ -7,12 +7,14 @@
 #include "WhiteSkeleton.h"
 #include "YellowSkeleton.h"
 #include "BlackSkeleton.h"
+#include "Bat.h"
+#include "Minotaur.h"
+#include "KingConga.h"
 
 class EnemyManager
 {
 public:
-	int EnemyImageKey;
-	map<int, string> monsterMap;
+	
 public:
 	void LoadEnemy();
 };
