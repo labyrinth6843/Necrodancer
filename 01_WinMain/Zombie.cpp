@@ -11,17 +11,17 @@ Zombie::Zombie(const string& name, int x, int y) :Enemy(name)
 	mAtk = 1.f;
 	mDirection = Random::GetInstance()->RandomInt(100) % 4;
 
-	mDownLeftAnimation = new Animation();
-	mDownLeftAnimation->InitFrameByStartEnd(0, 0, 7, 0, false);
-	mDownLeftAnimation->SetFrameUpdateTime(0.1f);
-	mDownLeftAnimation->SetIsLoop(true);
-	mDownLeftAnimation->Play();
+	mUpLeftAnimation = new Animation();
+	mUpLeftAnimation->InitFrameByStartEnd(0, 0, 7, 0, false);
+	mUpLeftAnimation->SetFrameUpdateTime(0.1f);
+	mUpLeftAnimation->SetIsLoop(true);
+	mUpLeftAnimation->Play();
 
-	mDownRightAnimation = new Animation();
-	mDownRightAnimation->InitFrameByStartEnd(8, 0, 15, 0, false);
-	mDownRightAnimation->SetFrameUpdateTime(0.1f);
-	mDownRightAnimation->SetIsLoop(true);
-	mDownRightAnimation->Play();
+	mUpRightAnimation = new Animation();
+	mUpRightAnimation->InitFrameByStartEnd(8, 0, 15, 0, false);
+	mUpRightAnimation->SetFrameUpdateTime(0.1f);
+	mUpRightAnimation->SetIsLoop(true);
+	mUpRightAnimation->Play();
 
 	mLeftAnimation = new Animation();
 	mLeftAnimation->InitFrameByStartEnd(0, 2, 7, 2, false);
@@ -35,17 +35,17 @@ Zombie::Zombie(const string& name, int x, int y) :Enemy(name)
 	mRightAnimation->SetIsLoop(true);
 	mRightAnimation->Play();
 
-	mUpLeftAnimation = new Animation();
-	mUpLeftAnimation->InitFrameByStartEnd(0, 4, 7, 4, false);
-	mUpLeftAnimation->SetFrameUpdateTime(0.1f);
-	mUpLeftAnimation->SetIsLoop(true);
-	mUpLeftAnimation->Play();
+	mDownLeftAnimation = new Animation();
+	mDownLeftAnimation->InitFrameByStartEnd(0, 4, 7, 4, false);
+	mDownLeftAnimation->SetFrameUpdateTime(0.1f);
+	mDownLeftAnimation->SetIsLoop(true);
+	mDownLeftAnimation->Play();
 
-	mUpRightAnimation = new Animation();
-	mUpRightAnimation->InitFrameByStartEnd(8, 4, 15, 4, false);
-	mUpRightAnimation->SetFrameUpdateTime(0.1f);
-	mUpRightAnimation->SetIsLoop(true);
-	mUpRightAnimation->Play();
+	mDownRightAnimation = new Animation();
+	mDownRightAnimation->InitFrameByStartEnd(8, 4, 15, 4, false);
+	mDownRightAnimation->SetFrameUpdateTime(0.1f);
+	mDownRightAnimation->SetIsLoop(true);
+	mDownRightAnimation->Play();
 
 	if (Random::GetInstance()->RandomInt(2) == 0)
 		mIsLeft = true;
@@ -102,9 +102,9 @@ void Zombie::Update()
 					case 0:
 						mDirection = 3;
 						if (mIsLeft == true)
-							mCurrentAnimation = mUpLeftAnimation;
+							mCurrentAnimation = mDownLeftAnimation;
 						else
-							mCurrentAnimation = mUpRightAnimation;
+							mCurrentAnimation = mDownRightAnimation;
 						break;
 					case 1:
 						mIsLeft = false;
@@ -119,9 +119,9 @@ void Zombie::Update()
 					case 3:
 						mDirection = 0;
 						if (mIsLeft == true)
-							mCurrentAnimation = mDownLeftAnimation;
+							mCurrentAnimation = mUpLeftAnimation;
 						else
-							mCurrentAnimation = mDownRightAnimation;
+							mCurrentAnimation = mUpRightAnimation;
 						break;
 					}
 				}
