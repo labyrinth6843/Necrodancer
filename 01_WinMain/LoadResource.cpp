@@ -83,6 +83,7 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"BeatHeart", Resources(L"HUD/Heart.bmp"), 82, 52, 2, 1, true);
 	ImageManager::GetInstance()->LoadFromFile(L"HUDCoin", Resources(L"HUD/HUDCoin.bmp"), 20, 20, true);
 	ImageManager::GetInstance()->LoadFromFile(L"HUDHealth", Resources(L"HUD/HUDHealth.bmp"), 72, 22, 3, 1, true);
+	ImageManager::GetInstance()->LoadFromFile(L"MissText", Resources(L"HUD/Missed.bmp"), 60, 10, true);
 	//}}
 
 	//{{ ost 사운드

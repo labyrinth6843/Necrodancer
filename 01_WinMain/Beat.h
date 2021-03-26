@@ -26,6 +26,7 @@ private:
 	};
 	struct FrameImage
 	{
+		RECT Rect;
 		Image* Image;
 		int FrameX;
 		int FrameY;
@@ -44,10 +45,10 @@ private:
 	vector<Note> mLeftNote;	//왼쪽에서 중앙으로 오는 노트
 	vector<Note> mRightNote; //오른쪽에서 중앙으로 오는 노트
 
-	RECT mHeart;
 	float mDeadLine;
 
 	FrameImage mHeartImage;
+	vector<FrameImage> mMiss;
 
 	bool mIsBoss;
 	bool mTurn;
@@ -77,6 +78,7 @@ private:
 	void NoteSuccess();
 	void NoteReset();	//Active가 false가 된 노트를 시작 위치에 옮기는 함수
 	void CheckFront();
+
 	void MissNote();
 };
 #define BEAT Beat::GetInstance()

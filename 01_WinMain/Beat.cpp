@@ -14,7 +14,7 @@ Beat::Beat()
 	mHeartImage.FrameY = 0;
 
 	//판정 기준이 될 하트Rect
-	mHeart = RectMakeCenter(WINSIZEX/2, mDefaultY, 180, 100);
+	mHeartImage = { RectMakeCenter(WINSIZEX / 2, mDefaultY, 180, 100) , IMAGEMANAGER->FindImage(L"BeatHeart") , 0, 0, 0.f};
 
 	//반복 사용할 노트 30 x2
 	for (int i = 0; i < 30; ++i)
@@ -24,6 +24,10 @@ Beat::Beat()
 
 		Note rtemp = { IMAGEMANAGER->FindImage(L"BeatBlue"), WINSIZEX, mDefaultY, RectMakeCenter(WINSIZEX, mDefaultY, 5,5),  NoteState::Unactive, 1.f };
 		mRightNote.push_back(rtemp);
+
+		FrameImage temp = { RectMakeCenter(WINSIZEX / 2, mDefaultY - 50, 60, 10), IMAGEMANAGER->FindImage(L"MissText"), 0, 0, 0.f};
+		mMiss.push_back(temp);
+
 	}
 	//노트 색깔을 변경할 기준값
 	mDeadLine = INT_MAX;
@@ -58,6 +62,7 @@ void Beat::Release()
 	{
 		mLeftNote[i] = { IMAGEMANAGER->FindImage(L"BeatBlue") , 0, mDefaultY , RectMakeCenter(0, mDefaultY,5,5), NoteState::Unactive , 1.f};
 		mRightNote[i] = { IMAGEMANAGER->FindImage(L"BeatBlue"), WINSIZEX, mDefaultY, RectMakeCenter(WINSIZEX, mDefaultY,5,5),  NoteState::Unactive, 1.f };
+		mMiss[i] = { RectMakeCenter(WINSIZEX / 2, mDefaultY - 50, 60, 10), IMAGEMANAGER->FindImage(L"MissText"), 0, 0, 0.f };
 	}
 	mFrontNote = 0;
 }
@@ -67,20 +72,6 @@ void Beat::Update()
 	//기본적으로 매 프레임마다 턴조건 초기화
 	if(mNotCall)
 		mTurn = false;
-
-	if (Input::GetInstance()->GetKeyDown('N'))//테스트용 : 남은 음악의 절반만 남기기
-	{
-		for (int i = 0; i < mRunQueue.size() / 2; ++i)
-		{
-			mRunQueue.pop();
-			mRunQueue.pop();
-		}
-		SetTiming();
-		SoundPlayer::GetInstance()->SetPosition(mNowMusic,mTiming);
-		SoundPlayer::GetInstance()->SetPosition(mNowMusic+L"_shopkeeper", mTiming);
-	}
-	if (Input::GetInstance()->GetKeyDown('B'))//테스트용, 플레이어에서 IsDecision을 사용하면 제거
-		IsDecision();
 
 	//현재 재생중인 음악의 Position이 mTiming과 같으면 노트를 활성화 한다
 	float position = SoundPlayer::GetInstance()->GetPosition(mNowMusic);
@@ -99,41 +90,52 @@ void Beat::Update()
 	for (int i = 0; i < 30; ++i)
 	{
 		//노트 이동
-		if (mLeftNote[i].State == NoteState::Active)
-		{
-			mLeftNote[i].X += mLeftNote[i].Speed * Time::GetInstance()->DeltaTime();
-			mLeftNote[i].Rc = RectMakeCenter(mLeftNote[i].X, mLeftNote[i].Y, 5, 5);
-		}
-		else if (mLeftNote[i].State == NoteState::Miss)
-		{
-			mLeftNote[i].Y -= 100 * Time::GetInstance()->DeltaTime();
-			mLeftNote[i].Rc = RectMakeCenter(mLeftNote[i].X, mLeftNote[i].X, 5, 5);
-			mLeftNote[i].Alpha -= 2.f * Time::GetInstance()->DeltaTime();
-		}
 
-		if (mRightNote[i].State == NoteState::Active)
-		{
-			mRightNote[i].X -= mRightNote[i].Speed * Time::GetInstance()->DeltaTime();
-			mRightNote[i].Rc = RectMakeCenter(mRightNote[i].X, mRightNote[i].Y, 5, 5);
-		}
-		else if (mRightNote[i].State == NoteState::Miss)
-		{
-			mRightNote[i].Y -= 100 * Time::GetInstance()->DeltaTime();
-			mRightNote[i].Rc = RectMakeCenter(mRightNote[i].X, mRightNote[i].Y, 5, 5);
-			mRightNote[i].Alpha -= 2.f* Time::GetInstance()->DeltaTime();
-		}
-
-		//Left와 Right끼리 충돌하면  Miss 처리
+		//중앙에서 만나면 서서히 흐려진다
 		RECT temp;
 		if (mLeftNote[i].State == NoteState::Active && mRightNote[i].State == NoteState::Active &&
 			(mLeftNote[i].X >= mRightNote[i].X))
 		{
-			COMBO->ComboDown();
-			MissNote();
+			mLeftNote[i].Alpha -= 2.f* Time::GetInstance()->DeltaTime();
+			mRightNote[i].Alpha -= 2.f* Time::GetInstance()->DeltaTime();
 		}
+		else
+		{
+			if (mLeftNote[i].State == NoteState::Active)
+			{
+				mLeftNote[i].X += mLeftNote[i].Speed * Time::GetInstance()->DeltaTime();
+				mLeftNote[i].Rc = RectMakeCenter(mLeftNote[i].X, mLeftNote[i].Y, 5, 5);
+			}
+			else if (mLeftNote[i].State == NoteState::Miss)
+			{
+				mLeftNote[i].Alpha -= 2.f * Time::GetInstance()->DeltaTime();
+			}
+
+			if (mRightNote[i].State == NoteState::Active)
+			{
+				mRightNote[i].X -= mRightNote[i].Speed * Time::GetInstance()->DeltaTime();
+				mRightNote[i].Rc = RectMakeCenter(mRightNote[i].X, mRightNote[i].Y, 5, 5);
+			}
+			else if (mRightNote[i].State == NoteState::Miss)
+			{
+				mRightNote[i].Alpha -= 2.f* Time::GetInstance()->DeltaTime();
+			}
+		}
+
+		if (mMiss[i].FrameCount > 0)
+		{
+			mMiss[i].Rect.top -= 2.f * Time::GetInstance()->DeltaTime();
+			mMiss[i].FrameCount -= 0.5f * Time::GetInstance()->DeltaTime();
+		}
+
 		if (mLeftNote[i].Alpha <= 0 && mRightNote[i].Alpha <= 0)
 		{
-			//플레이어가 커맨드를 입력하지 않아도 지나가면 몬스터의 턴 진행
+			if (mLeftNote[i].State == NoteState::Active && mRightNote[i].State == NoteState::Active)
+			{
+				COMBO->ComboReset();
+				MissNote();
+			}
+
 			mLeftNote[i].State = NoteState::Unactive;
 			mRightNote[i].State = NoteState::Unactive;
 		}	
@@ -177,9 +179,13 @@ void Beat::Render(HDC hdc)
 			mRightNote[i].Image->AlphaScaleRender(hdc, mRightNote[i].X - 5, mRightNote[i].Y - 50, 10, 70, mRightNote[i].Alpha);
 			//Gizmo::GetInstance()->DrawRect(hdc, mRightNote[i].Rc, Gizmo::Color::Green);
 		}
+		if (mMiss[i].FrameCount > 0)
+		{
+			mMiss[i].Image->AlphaScaleRender(hdc, mMiss[i].Rect.left, mMiss[i].Rect.top, 60, 10, mMiss[i].FrameCount);
+		}
 	}
 	//심장
-	Gizmo::GetInstance()->DrawRect(hdc, mHeart, Gizmo::Color::Green);
+	Gizmo::GetInstance()->DrawRect(hdc, mHeartImage.Rect, Gizmo::Color::Green);
 	mHeartImage.Image->ScaleFrameRender(hdc, WINSIZEX/2 - 60, WINSIZEY - 160,
 		mHeartImage.FrameX, mHeartImage.FrameY, 120, 150);
 
@@ -208,7 +214,7 @@ bool Beat::IsDecision()
 {
 	mNotCall = false;
 	POINT pos = { mLeftNote[mFrontNote].X, mLeftNote[mFrontNote].Y };
-	if (PtInRect(&mHeart, pos))
+	if (PtInRect(&mHeartImage.Rect, pos))
 	{
 		mTurn = true;
 		COMBO->ComboUp(); //테스트용, 몬스터 사망시 호출되도록 한다
@@ -260,7 +266,18 @@ void Beat::MissNote()
 			break;
 		}
 	}
+	//you missed
+	for (int i = 0; i < mMiss.size(); ++i)
+	{
+		if (mMiss[i].FrameCount <= 0)
+		{
+			mMiss[i].Rect = RectMakeCenter(WINSIZEX / 2, mDefaultY - 50, 60, 10);
+			mMiss[i].FrameCount = 1.f;
+			break;
+		}
+	}
 }
+
 
 void Beat::SetNote()
 {

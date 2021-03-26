@@ -302,10 +302,10 @@ bool Player::AttackRangeCheck(const int& key)
 
 		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, range[i]) != nullptr)
 		{
+			Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, range[i]));
+			attackCheck = true;
 			if (mWeapon->GetWeaponType() == WeaponType::Rapier)
 			{
-				Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, range[i]));
-				attackCheck = true;
 				//한칸 공백 너머에 적이 있다면
 				if (i > 0)
 				{
@@ -318,8 +318,6 @@ bool Player::AttackRangeCheck(const int& key)
 					break;
 				}
 			}
-			Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, range[i]));
-			attackCheck = true;
 		}
 	}
 	return attackCheck;
