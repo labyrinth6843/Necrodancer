@@ -45,7 +45,7 @@ void Player::Init() {
 	mHp = 6;
 	mX = TileSize * 8;
 	mY = TileSize * 4;
-	mImageY = 0.f;
+	mCorrectionY = 0.f;
 	mStartIndexX = mX / TileSize;
 	mStartIndexY = mY / TileSize;
 	mCurrentHeadAnimation = mHeadRightAnimation;
@@ -124,14 +124,14 @@ void Player::Update() {
 		mX = Math::Lerp(mStartX, mEndX, ratio);
 		mY = Math::Lerp(mStartY, mEndY, ratio);
 
-		mImageY -= mJumpPower * Time::GetInstance()->DeltaTime();
+		mCorrectionY -= mJumpPower * Time::GetInstance()->DeltaTime();
 		mJumpPower -= 200.f * Time::GetInstance()->DeltaTime();
 
 		if (ratio >= 1.f)
 		{
 			mX = mEndX;
 			mY = mEndY;
-			mImageY = 0.f;
+			mCorrectionY = 0.f;
 			mIsMove = false;
 		}
 	}
@@ -147,8 +147,8 @@ void Player::Update() {
 }
 
 void Player::Render(HDC hdc) {
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX +5, mY + mImageY +6, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, mX +5 + 2, mY + mImageY +6 - 14, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX +5, mY + mCorrectionY +6, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, mX +5 + 2, mY + mCorrectionY +6 - 14, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
 	if (mShowShovel == true)
 		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mShovelImage, mEndX, mEndY, (int)mShovelType - 1, 0, TileSize, TileSize);
 }
@@ -185,7 +185,7 @@ void Player::Move(int x, int y) {
 	mStartY = mY;
 	mMoveTime = 0.f;
 	mJumpPower = 150.f;
-	mImageY = 0.f;
+	mCorrectionY = 0.f;
 
 	if(ground->IsMove(mEndIndexX, mEndIndexY))
 		mIsMove = true;

@@ -7,7 +7,7 @@
 #include "WhiteSkeleton.h"
 #include "YellowSkeleton.h"
 #include "BlackSkeleton.h"
-#include "Bat.h"
+#include "GreyBat.h"
 #include "Minotaur.h"
 #include "KingConga.h"
 

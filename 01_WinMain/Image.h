@@ -55,7 +55,6 @@ public:// 생성관련 ~
 	bool CreateEmpty(int width, int height);
 	bool LoadFromFile(wstring keyName,wstring fileName, int width, int height, bool isTrans, COLORREF transColor = RGB(255,0,255));
 	bool LoadFromFile(wstring keyName,wstring fileName, int width, int height, int frameX, int frameY, bool isTrans, COLORREF transColor = RGB(255,0,255));
-	void LoadAllImage();
 public://렌더링 관련 ~
 	//기본렌더링
 	void Render(HDC hdc, int x, int y);
@@ -75,17 +74,7 @@ public://렌더링 관련 ~
 	void AlphaScaleRender(HDC hdc, int x, int y, int width, int height, float alpha);
 	//알파값 + 프레임렌더링 + 크기 조정
 	void AlphaScaleFrameRender(HDC hdc, int x, int y, int frameX, int frameY, int width, int height, float alpha);
-	//타일 좌표 입력할 시 해당 타일 바닥에 맞춰 렌더링
-	void TileRender(HDC hdc, int indexX, int indexY);
-	//타일 좌표 입력할 시 해당 타일 바닥에 맞춰 프레임 렌더링
-	void TileFrameRender(HDC hdc, int indexX, int indexY, int frameX, int frameY);
-	//타일 좌표 입력할 시 해당 타일 바닥에 맞춰 스케일 렌더링
-	void TileScaleRender(HDC hdc, int indexX, int indexY, int width, int height);
-	//타일 좌표 입력할 시 해당 타일 바닥에 맞춰 스케일 프레임 렌더링
-	void TileScaleFrameRender(HDC hdc, int indexX, int indexY, int frameX, int frameY,int width, int height);
 
-	//타일 좌표 입력할 시 해당 타일 바닥에 맞춰 스케일 프레임 렌더링 + 픽셀 추가 입력으로 세부 조정
-	void TileScaleFrameRender(HDC hdc, int indexX, int indexY, int frameX, int frameY, int width, int height, int addX, int addY);
 public:// 접근 관련~
 	inline HDC GetHDC()const { return mImageBuffer->hdc; }
 	inline int GetFrameX()const { return mImageBuffer->frameX; }
@@ -96,4 +85,3 @@ public:// 접근 관련~
 	inline int GetHeight()const { return mImageBuffer->height; }
 	inline wstring GetKeyName()const { return mKeyName; }
 };
-

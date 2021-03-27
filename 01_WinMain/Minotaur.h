@@ -3,7 +3,8 @@
 class Minotaur:public Enemy
 {
 public:
-
+	Animation* mLeftWallImpactAnimation;
+	Animation* mRightWallImpactAnimation;
 public:
 	Minotaur(const string& name, int x, int y);
 

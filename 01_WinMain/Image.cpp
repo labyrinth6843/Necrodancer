@@ -376,9 +376,19 @@ void Image::ScaleFrameRender(HDC hdc, int x, int y, int frameX, int frameY, int 
 {
 	if (mIsTrans)
 	{
-		GdiTransparentBlt(hdc, x, y, width, height,
-			mImageBuffer->hdc, mImageBuffer->frameWidth * frameX, mImageBuffer->frameHeight * frameY,
-			mImageBuffer->frameWidth, mImageBuffer->frameHeight, mTransColor);
+		GdiTransparentBlt(
+			hdc, 
+			x, 
+			y, 
+			width, 
+			height,
+			mImageBuffer->hdc, 
+			mImageBuffer->frameWidth * frameX, 
+			mImageBuffer->frameHeight * frameY,
+			mImageBuffer->frameWidth, 
+			mImageBuffer->frameHeight, 
+			mTransColor
+		);
 	}
 	else
 	{
@@ -456,128 +466,3 @@ void Image::AlphaScaleFrameRender(HDC hdc, int x, int y, int frameX, int frameY,
 		);
 	}
 }
-
-void Image::TileRender(HDC hdc, int indexX, int indexY){
-	if (mIsTrans)
-	{
-		GdiTransparentBlt(
-			hdc,					//그릴 버퍼(HDC)
-			indexX*TileSize - mImageBuffer->width / 2 + TileSize / 2,			//그릴 좌표X
-			indexY*TileSize - mImageBuffer->height + TileSize,						//그릴 좌표Y
-			mImageBuffer->width,	//그릴 가로길이
-			mImageBuffer->height,	//그릴 세로길이
-			mImageBuffer->hdc,		//그릴 HDC
-			0,						//복사해올 버퍼 시작좌표X
-			0,						//복사해올 버퍼 시작좌표Y
-			mImageBuffer->width,	//복사해올 버퍼 가로길이
-			mImageBuffer->height,	//복사해올 버퍼 세로길이
-			mTransColor				//Trans처리할 색상
-		);
-	}
-	else
-	{
-		//HDC의 버퍼를 다른 HDC버퍼에 고속 복사해주는 함수
-		BitBlt(hdc, indexX * TileSize - mImageBuffer->width / 2 + TileSize / 2, indexY * TileSize - mImageBuffer->height + TileSize,
-			mImageBuffer->width, mImageBuffer->height, mImageBuffer->hdc, 0, 0, SRCCOPY);
-	}
-}
-
-void Image::TileFrameRender(HDC hdc, int indexX, int indexY, int frameX, int frameY){
-	if (mIsTrans)
-	{
-		GdiTransparentBlt
-		(
-			hdc,
-			indexX * TileSize - mImageBuffer->frameWidth / 2 + TileSize / 2,
-			indexY * TileSize - mImageBuffer->frameHeight + TileSize,
-			mImageBuffer->frameWidth,
-			mImageBuffer->frameHeight,
-			mImageBuffer->hdc,
-			mImageBuffer->frameWidth * frameX,
-			mImageBuffer->frameHeight * frameY,
-			mImageBuffer->frameWidth,
-			mImageBuffer->frameHeight,
-			mTransColor
-		);
-	}
-	else
-	{
-		BitBlt
-		(
-			hdc,
-			indexX * TileSize - mImageBuffer->frameWidth / 2 + TileSize / 2,
-			indexY * TileSize - mImageBuffer->frameHeight + TileSize,
-			mImageBuffer->frameWidth,
-			mImageBuffer->frameHeight,
-			mImageBuffer->hdc,
-			mImageBuffer->frameWidth * frameX,
-			mImageBuffer->frameHeight * frameY,
-			SRCCOPY
-		);
-	}
-}
-
-void Image::TileScaleRender(HDC hdc, int indexX, int indexY, int width, int height){
-	if (mIsTrans)
-	{
-		GdiTransparentBlt(hdc, indexX * TileSize - mImageBuffer->width / 2 + TileSize / 2, indexY * TileSize - mImageBuffer->frameHeight + TileSize,
-			width, height, mImageBuffer->hdc, 0, 0, mImageBuffer->width, mImageBuffer->height,
-			mTransColor);
-	}
-	else
-	{
-		StretchBlt(hdc, indexX * TileSize - mImageBuffer->width / 2 + TileSize / 2, indexY * TileSize - mImageBuffer->frameHeight + TileSize,
-			width, height, mImageBuffer->hdc, 0, 0, mImageBuffer->width, mImageBuffer->height,
-			SRCCOPY);
-	}
-}
-
-void Image::TileScaleFrameRender(HDC hdc, int indexX, int indexY, int frameX, int frameY, int width, int height){
-	if (mIsTrans)
-	{
-		GdiTransparentBlt(hdc, indexX * TileSize - mImageBuffer->width / 2 + TileSize / 2, indexY * TileSize - mImageBuffer->frameHeight + TileSize,
-			width, height,
-			mImageBuffer->hdc, mImageBuffer->frameWidth * frameX, mImageBuffer->frameHeight * frameY,
-			mImageBuffer->frameWidth, mImageBuffer->frameHeight, mTransColor);
-	}
-	else
-	{
-		BitBlt(hdc, indexX * TileSize - mImageBuffer->width / 2 + TileSize / 2, indexY * TileSize - mImageBuffer->frameHeight + TileSize,
-			width, height, mImageBuffer->hdc, mImageBuffer->frameWidth * frameX,
-			mImageBuffer->frameHeight * frameY, SRCCOPY);
-	}
-}
-
-void Image::TileScaleFrameRender(HDC hdc, int indexX, int indexY, int frameX, int frameY, int width, int height, int addX, int addY){
-	if (mIsTrans)
-	{
-		GdiTransparentBlt(
-			hdc,
-			indexX * TileSize - mImageBuffer->width / 2 + TileSize / 2 + addX,
-			indexY * TileSize - mImageBuffer->frameHeight + TileSize + addY,
-			width, 
-			height,
-			mImageBuffer->hdc, 
-			mImageBuffer->frameWidth * frameX, 
-			mImageBuffer->frameHeight * frameY,
-			mImageBuffer->frameWidth, 
-			mImageBuffer->frameHeight, 
-			mTransColor);
-	}
-	else
-	{
-		BitBlt(
-			hdc, 
-			indexX * TileSize - mImageBuffer->width / 2 + TileSize / 2 + addX,
-			indexY * TileSize - mImageBuffer->frameHeight + TileSize + addY,
-			width, 
-			height, 
-			mImageBuffer->hdc, 
-			mImageBuffer->frameWidth * frameX,
-			mImageBuffer->frameHeight * frameY,
-			SRCCOPY);
-	}
-
-}
-
-

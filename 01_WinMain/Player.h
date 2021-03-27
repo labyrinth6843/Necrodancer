@@ -73,7 +73,7 @@ class Player:public GameObject{
 	int mEndIndexY;
 	bool mIsMove;
 
-	float mImageY;
+	float mCorrectionY;
 	float mMoveTime;
 	float mJumpPower;
 

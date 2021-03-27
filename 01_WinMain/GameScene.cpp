@@ -17,9 +17,10 @@ void GameScene::Init(){
 	Beat::GetInstance()->Init();
 
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player"));
+	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 
 	SoundPlayer::GetInstance()->Play(L"zone1_1",0.2f);
-	SoundPlayer::GetInstance()->Play(L"zone1_1_shopkeeper", 0.2f);
+	SoundPlayer::GetInstance()->Play(L"zone1_1_shopkeeper", 0.2f * temp->DistanceShopkeeper());
 	Beat::GetInstance()->SetMusic(L"zone1_1",L"zone1_1");
 
 	//몬스터

@@ -9,7 +9,7 @@
 
 class Enemy:public GameObject
 {
-public:
+protected:
 	Image* mImage;
 
 	Animation* mCurrentAnimation;
@@ -47,4 +47,3 @@ public:
 	void SetHp(float hp) { mHp = hp; }
 	float GetHp() { return mHp; }
 };
-

@@ -228,6 +228,16 @@ void FileManager::LoadResource()
 	//}}
 
 	//{{ 드래곤 관련 사운드
-
+	SoundPlayer::GetInstance()->LoadFromFile(L"dragon_attack_melee", Resources(L"Sound/voice/Enemy/dragon/en_dragon_attack_melee.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"dragon_attack_prefire", Resources(L"Sound/voice/Enemy/dragon/en_dragon_attack_prefire.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"dragon_attack_fire", Resources(L"Sound/voice/Enemy/dragon/en_dragon_attack_fire.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"dragon_hit_1", Resources(L"Sound/voice/Enemy/dragon/en_dragon_hit_01.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"dragon_hit_2", Resources(L"Sound/voice/Enemy/dragon/en_dragon_hit_02.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"dragon_hit_3", Resources(L"Sound/voice/Enemy/dragon/en_dragon_hit_03.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"dragon_death", Resources(L"Sound/voice/Enemy/dragon/en_dragon_death.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"dragon_cry", Resources(L"Sound/voice/Enemy/dragon/en_dragon_cry.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"dragon_walk_1", Resources(L"Sound/voice/Enemy/dragon/en_dragon_walk_01.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"dragon_walk_2", Resources(L"Sound/voice/Enemy/dragon/en_dragon_walk_02.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"dragon_walk_3", Resources(L"Sound/voice/Enemy/dragon/en_dragon_walk_03.mp3"), false);
 	//}}
 }
