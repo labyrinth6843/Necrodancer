@@ -5,7 +5,7 @@
 class Ground : public GameObject
 {
 	Image* mBack;
-	vector<vector<Tile*>> mGroundList;	//Test00.txt
+	vector<vector<AlphaTile>> mGroundList;	//Test00.txt
 
 	int mMapSizeX;
 	int mMapSizeY;

@@ -72,3 +72,8 @@ public:
 	TileType GetTileType()const { return mType; }
 	void SetTileType(TileType type) { mType = type; }
 };
+
+struct AlphaTile {
+	Tile* Tile;
+	float Alpha;
+};

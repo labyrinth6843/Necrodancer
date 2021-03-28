@@ -8,11 +8,11 @@ Ground::Ground(const string &name, int startx, int starty) : GameObject(name)
 }
 void Ground::Init()
 {
+	vector<vector<Tile*>> groundList;
 	mBack = IMAGEMANAGER->FindImage(L"Black");
-	FileManager::LoadMap(L"Test00",mGroundList, TileSize);
-	
-	mMapSizeY = mGroundList.size();
-	mMapSizeX = mGroundList[0].size();
+	FileManager::LoadMap(L"Test00", groundList, TileSize);
+	mMapSizeY = groundList.size();
+	mMapSizeX = groundList[0].size();
 
 	SetMinMax();
 	mOddFrame = { 0,0 };
@@ -20,52 +20,58 @@ void Ground::Init()
 	//원활한 작업을 위해타일의 이미지 포인터 변경
 	for (int y = 0; y < mMapSizeY; ++y)
 	{
+		vector<AlphaTile> tempX;
 		for (int x = 0; x < mMapSizeX; ++x)
 		{
-			if (mGroundList[y][x]->GetImage() != NULL)
+			tempX.push_back(AlphaTile{ nullptr,0.f });
+			tempX[x].Tile = groundList[y][x];
+			if (groundList[y][x]->GetImage() != NULL)
 			{
 				//채워진 타일일때
-				if (mGroundList[y][x]->GetFrameIndexX() != 0 || mGroundList[y][x]->GetFrameIndexY() != 0)
+				if (groundList[y][x]->GetFrameIndexX() != 0 || groundList[y][x]->GetFrameIndexY() != 0)
 				{
-					mGroundList[y][x]->SetImage(IMAGEMANAGER->GetInstance()->FindImage(L"GroundTile"));
+					tempX[x].Tile->SetImage(IMAGEMANAGER->GetInstance()->FindImage(L"GroundTile"));
 
 					//다음스테이지
-					if (mGroundList[y][x]->GetFrameIndexX() == 4 && mGroundList[y][x]->GetFrameIndexY() == 0)
+					if (groundList[y][x]->GetFrameIndexX() == 4 && groundList[y][x]->GetFrameIndexY() == 0)
 					{
-						mGroundList[y][x]->SetFrameIndexX(6);
-						mGroundList[y][x]->SetFrameIndexY(0);
+						tempX[x].Tile->SetFrameIndexX(6);
+						tempX[x].Tile->SetFrameIndexY(0);
 					}
 					//shop
-					else if (mGroundList[y][x]->GetFrameIndexX() == 3 && mGroundList[y][x]->GetFrameIndexY() == 0)
+					else if (groundList[y][x]->GetFrameIndexX() == 3 && groundList[y][x]->GetFrameIndexY() == 0)
 					{
-						mGroundList[y][x]->SetFrameIndexX(7);
-						mGroundList[y][x]->SetFrameIndexY(0);
+						tempX[x].Tile->SetFrameIndexX(7);
+						tempX[x].Tile->SetFrameIndexY(0);
 					}
 					else
 					{
 						//홀수일때
 						if ((x + y) & 1)
 						{
-							mGroundList[y][x]->SetFrameIndexX(0);
-							mGroundList[y][x]->SetFrameIndexY(0);
+							tempX[x].Tile->SetFrameIndexX(0);
+							tempX[x].Tile->SetFrameIndexY(0);
 						}
 						//짝수일때
 						else
 						{
-							mGroundList[y][x]->SetFrameIndexX(1);
-							mGroundList[y][x]->SetFrameIndexY(0);
+							tempX[x].Tile->SetFrameIndexX(1);
+							tempX[x].Tile->SetFrameIndexY(0);
 						}
 					}
+					tempX[x].Alpha = 1.f;
 				}
 				//빈 타일일때
 				else
 				{
-					mGroundList[y][x]->SetImage(IMAGEMANAGER->GetInstance()->FindImage(L"GroundTile"));
-					mGroundList[y][x]->SetFrameIndexX(7);
-					mGroundList[y][x]->SetFrameIndexY(1);
+					tempX[x].Tile->SetImage(IMAGEMANAGER->GetInstance()->FindImage(L"GroundTile"));
+					tempX[x].Tile->SetFrameIndexX(7);
+					tempX[x].Tile->SetFrameIndexY(1);
+					tempX[x].Alpha = 0.f;
 				}
 			}
 		}
+		mGroundList.push_back(tempX);
 	}
 }
 
@@ -75,7 +81,7 @@ void Ground::Release()
 	{
 		for (int x = 0; x < mMapSizeX; ++x)
 		{
-			SafeDelete(mGroundList[y][x]);
+			SafeDelete(mGroundList[y][x].Tile);
 		}
 	}
 	mGroundList.clear();
@@ -102,39 +108,39 @@ void Ground::Update()
 		{
 			for (int x = mMinIndexX; x < mMaxIndexX; ++x)
 			{
-				if (mGroundList[y][x]->GetImage() != NULL)
+				if (mGroundList[y][x].Tile->GetImage() != NULL)
 				{
 					//스위칭될 이미지가 아니면 continue
-					if (mGroundList[y][x]->GetFrameIndexX() > 5)
+					if (mGroundList[y][x].Tile->GetFrameIndexX() > 5)
 						continue;
 
 					if (COMBO->GetCombo() >= 3)
 					{
-						mGroundList[y][x]->SetFrameIndexY(1);
+						mGroundList[y][x].Tile->SetFrameIndexY(1);
 						//홀
 						if ((x + y) & 1)
 						{
-								mGroundList[y][x]->SetFrameIndexX(mOddFrame.x);
+								mGroundList[y][x].Tile->SetFrameIndexX(mOddFrame.x);
 						}
 						//짝
 						else
 						{
-							mGroundList[y][x]->SetFrameIndexX(mEvenFrame.x*2);
+							mGroundList[y][x].Tile->SetFrameIndexX(mEvenFrame.x*2);
 						}
 
 					}
 					else
 					{
-						mGroundList[y][x]->SetFrameIndexY(0);
+						mGroundList[y][x].Tile->SetFrameIndexY(0);
 						//홀
 						if ((x + y) & 1)
 						{
-							mGroundList[y][x]->SetFrameIndexX(mOddFrame.x);
+							mGroundList[y][x].Tile->SetFrameIndexX(mOddFrame.x);
 						}
 						//짝 : 홀이랑 다른 이미지
 						else
 						{
-							mGroundList[y][x]->SetFrameIndexX(mEvenFrame.x);
+							mGroundList[y][x].Tile->SetFrameIndexX(mEvenFrame.x);
 						}
 					}
 				}
@@ -157,10 +163,15 @@ void Ground::Render(HDC hdc)
 			int posx = x * TileSize;
 			int posy = y * TileSize;
 
-			if(mGroundList[y][x]->GetImage() != NULL)
-					CameraManager::GetInstance()->GetMainCamera()->AlphaScaleFrameRender(hdc, mGroundList[y][x]->GetImage(),
-					posx, posy, mGroundList[y][x]->GetFrameIndexX(), mGroundList[y][x]->GetFrameIndexY(),
-					mGroundList[y][x]->Getwidth(), mGroundList[y][x]->GetHeight(), 1.0f);
+			if (mGroundList[y][x].Tile->GetImage() != NULL)
+			{
+				if (mGroundList[y][x].Alpha > 0.f)
+				{
+					CameraManager::GetInstance()->GetMainCamera()->AlphaScaleFrameRender(hdc, mGroundList[y][x].Tile->GetImage(),
+						posx, posy, mGroundList[y][x].Tile->GetFrameIndexX(), mGroundList[y][x].Tile->GetFrameIndexY(),
+						mGroundList[y][x].Tile->Getwidth(), mGroundList[y][x].Tile->GetHeight(), mGroundList[y][x].Alpha);
+				}
+			}
 		}
 	}
 }
@@ -192,7 +203,7 @@ bool Ground::IsMove(int indexX, int indexY)
 	if(indexX < 0 || indexX >= mMapSizeX || indexY < 0 || indexY >= mMapSizeY)
 		return false;
 
-	if (mGroundList[indexY][indexX]->GetFrameIndexX() != 7 || mGroundList[indexY][indexX]->GetFrameIndexY() != 1)
+	if (mGroundList[indexY][indexX].Tile->GetFrameIndexX() != 7 || mGroundList[indexY][indexX].Tile->GetFrameIndexY() != 1)
 		return true;
 	return false;
 }
