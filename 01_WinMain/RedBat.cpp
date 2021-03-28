@@ -1,16 +1,16 @@
 #include "pch.h"
-#include "GreyBat.h"
+#include "RedBat.h"
 
-GreyBat::GreyBat(const string& name, int x, int y):Enemy(name)
+RedBat::RedBat(const string& name, int x, int y) :Enemy(name)
 {
 	mX = x * TileSize;
 	mY = y * TileSize;
 
 	mHp = 1;
-	mCoin = 2;
-	mAtk = 0.5f;
+	mCoin = 3;
+	mAtk = 1.f;
 
-	mImage = ImageManager::GetInstance()->FindImage(L"GreyBat");
+	mImage = ImageManager::GetInstance()->FindImage(L"RedBat");
 
 	mLeftAnimation = new Animation();
 	mLeftAnimation->InitFrameByStartEnd(0, 0, 3, 0, false);
@@ -28,28 +28,26 @@ GreyBat::GreyBat(const string& name, int x, int y):Enemy(name)
 		mIsLeft = true;
 		mCurrentAnimation = mLeftAnimation;
 	}
-		
+
 	else {
 		mIsLeft = false;
 		mCurrentAnimation = mRightAnimation;
 	}
-
-	mMoveBeat = false;
 }
 
-void GreyBat::Init()
+void RedBat::Init()
 {
 
 }
 
-void GreyBat::Update()
+void RedBat::Update()
 {
 	if (Beat::GetInstance()->NextTurn() == true) {
 		if (mIsMove == false) {
-			mMoveBeat = !mMoveBeat;
-			if (mMoveBeat == true) {
-				POINT temp = DestinationValidationCheck();
-				if (temp.x != 0 && temp.y != 0) {
+			POINT temp = DestinationValidationCheck();
+
+			if (WallCheck(temp.x, temp.y) == false) {
+				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr) {
 					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX &&
 						ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY)
 						Attack();
@@ -57,6 +55,7 @@ void GreyBat::Update()
 						Move(temp.x, temp.y);
 				}
 			}
+
 		}
 	}
 	if (mIsMove == true) {
@@ -79,18 +78,18 @@ void GreyBat::Update()
 	mCurrentAnimation->Update();
 }
 
-void GreyBat::Release()
+void RedBat::Release()
 {
 	SafeDelete(mLeftAnimation);
 	SafeDelete(mRightAnimation);
 }
 
-void GreyBat::Render(HDC hdc)
+void RedBat::Render(HDC hdc)
 {
 	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), 39, 39);
 }
 
-void GreyBat::Move(int destX, int destY)
+void RedBat::Move(int destX, int destY)
 {
 	mMoveTime = 0.f;
 	mIsMove = true;
@@ -114,7 +113,7 @@ void GreyBat::Move(int destX, int destY)
 		mIsMove = false;
 }
 
-POINT GreyBat::DestinationValidationCheck()
+POINT RedBat::DestinationValidationCheck()
 {
 	mDestX = mX;
 	mDestY = mY;
@@ -123,7 +122,7 @@ POINT GreyBat::DestinationValidationCheck()
 
 	bool isBreak = false;
 	int count = 0;
-	POINT destinationDirection = {0,0};
+	POINT destinationDirection = { 0,0 };
 
 	while (isBreak == false) {
 		mDirection = Random::GetInstance()->RandomInt(100) % 4;
@@ -153,9 +152,10 @@ POINT GreyBat::DestinationValidationCheck()
 			break;
 		}
 
-		if (count > 4) {
+		if (count > 3) {
 			mDestX = mX;
 			mDestY = mY;
+			isBreak = true;
 			return { 0,0 };
 		}
 
@@ -163,19 +163,19 @@ POINT GreyBat::DestinationValidationCheck()
 		mDestIndexY = mDestY / TileSize;
 
 		if (WallCheck(destinationDirection.x, destinationDirection.y) == false && ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr)
-			return destinationDirection;
+			isBreak = true;
 	}
-	//return destinationDirection;
+	return destinationDirection;
 }
 
-void GreyBat::Attack()
+void RedBat::Attack()
 {
 	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	temp->SetHp(GetHp() - mAtk);
 	SoundPlayer::GetInstance()->Play(L"bat_attack", 1.f);
 }
 
-void GreyBat::IsAttacked(int dmg)
+void RedBat::IsAttacked(int dmg)
 {
 	mHp -= dmg;
 	if (mHp <= 0) {

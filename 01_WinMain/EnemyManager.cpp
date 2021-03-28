@@ -57,13 +57,13 @@ void EnemyManager::LoadEnemy()
 					}
 
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 3 && mEnemyList[y][x]->GetFrameIndexY() == 1) {
-						//Bat* bat = new Bat("Bat", x, y);
-						//ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)bat);
+						GreyBat* greybat = new GreyBat("Bat", x, y);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)greybat);
 					}
 
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 4 && mEnemyList[y][x]->GetFrameIndexY() == 1) {
-						//RedBat* redbat = new RedBat("RedBat", x, y);
-						//ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)redbat);
+						RedBat* redbat = new RedBat("RedBat", x, y);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)redbat);
 					}
 
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 0 && mEnemyList[y][x]->GetFrameIndexY() == 2) {

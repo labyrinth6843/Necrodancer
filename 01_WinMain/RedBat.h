@@ -1,7 +1,7 @@
 #pragma once
 #include "Enemy.h"
 
-class GreyBat:public Enemy
+class RedBat :public Enemy
 {
 public:
 	int mDestX;
@@ -10,7 +10,7 @@ public:
 	bool mIsLeft;
 	bool mMoveBeat;
 public:
-	GreyBat(const string& name, int x, int y);
+	RedBat(const string& name, int x, int y);
 
 	void Move(int destX, int destY);
 

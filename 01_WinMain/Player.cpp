@@ -18,13 +18,13 @@ void Player::Init() {
 
 	//방향에 따른 머리, 몸통 애니메이션
 	mHeadLeftAnimation = new Animation();
-	mHeadLeftAnimation->InitFrameByStartEnd(4, mIsArmor,7, mIsArmor,false);
+	mHeadLeftAnimation->InitFrameByStartEnd(4, mIsArmor, 7, mIsArmor, false);
 	mHeadLeftAnimation->SetIsLoop(true);
 	mHeadLeftAnimation->SetFrameUpdateTime(0.1f);
 	mHeadLeftAnimation->Play();
 
 	mHeadRightAnimation = new Animation();
-	mHeadRightAnimation->InitFrameByStartEnd(0, mIsArmor,3, mIsArmor,false);
+	mHeadRightAnimation->InitFrameByStartEnd(0, mIsArmor, 3, mIsArmor, false);
 	mHeadRightAnimation->SetIsLoop(true);
 	mHeadRightAnimation->SetFrameUpdateTime(0.1f);
 	mHeadRightAnimation->Play();
@@ -36,7 +36,7 @@ void Player::Init() {
 	mBodyLeftAnimation->Play();
 
 	mBodyRightAnimation = new Animation();
-	mBodyRightAnimation->InitFrameByStartEnd(0, (int)mArmorType,3, (int)mArmorType,false);
+	mBodyRightAnimation->InitFrameByStartEnd(0, (int)mArmorType, 3, (int)mArmorType, false);
 	mBodyRightAnimation->SetIsLoop(true);
 	mBodyRightAnimation->SetFrameUpdateTime(0.1f);
 	mBodyRightAnimation->Play();
@@ -57,11 +57,11 @@ void Player::Init() {
 	//
 }
 
-void Player::Release() { 
+void Player::Release() {
 	SafeDelete(mHeadLeftAnimation)
-	SafeDelete(mHeadRightAnimation)
-	SafeDelete(mBodyLeftAnimation)
-	SafeDelete(mBodyRightAnimation)
+		SafeDelete(mHeadRightAnimation)
+		SafeDelete(mBodyLeftAnimation)
+		SafeDelete(mBodyRightAnimation)
 }
 
 void Player::Update() {
@@ -71,7 +71,7 @@ void Player::Update() {
 
 	//이동 중이지 않을 때 각 입력에 대한 처리
 	if (mIsMove == false) {
-		if (Input::GetInstance()->GetKeyDown(VK_UP) || Input::GetInstance()->GetKeyDown('W')){
+		if (Input::GetInstance()->GetKeyDown(VK_UP) || Input::GetInstance()->GetKeyDown('W')) {
 			if (Beat::GetInstance()->IsDecision() == true) {
 				//목적지 타일의 벽 유무 검사
 				if (WallCheck(0, -1) == true)
@@ -137,7 +137,7 @@ void Player::Update() {
 	}
 
 	if (mShowShovel == true) {
-		mShowShovelFrame-=0.1f;
+		mShowShovelFrame -= 0.1f;
 		if (mShowShovelFrame <= 0.f)
 			mShowShovel = false;
 	}
@@ -147,8 +147,8 @@ void Player::Update() {
 }
 
 void Player::Render(HDC hdc) {
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX +5, mY + mCorrectionY +6, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, mX +5 + 2, mY + mCorrectionY +6 - 14, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX + 5, mY + mCorrectionY + 6, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, mX + 5 + 2, mY + mCorrectionY + 6 - 14, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
 	if (mShowShovel == true)
 		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mShovelImage, mEndX, mEndY, (int)mShovelType - 1, 0, TileSize, TileSize);
 }
@@ -187,7 +187,7 @@ void Player::Move(int x, int y) {
 	mJumpPower = 150.f;
 	mCorrectionY = 0.f;
 
-	if(ground->IsMove(mEndIndexX, mEndIndexY))
+	if (ground->IsMove(mEndIndexX, mEndIndexY))
 		mIsMove = true;
 	else
 		mIsMove = false;
@@ -242,7 +242,7 @@ void Player::Dig(int x, int y) {
 		else if (temp->GetFrameIndexY(mEndIndexX, mEndIndexY) < 5)
 			SoundPlayer::GetInstance()->Play(L"move_stone", 1.f);
 		else if (temp->GetFrameIndexY(mEndIndexX, mEndIndexY) < 6)
-			SoundPlayer::GetInstance()->Play(L"move_brick", 1.f);			
+			SoundPlayer::GetInstance()->Play(L"move_brick", 1.f);
 
 		temp->SetFrameIndexX(mEndIndexX, mEndIndexY, 0);
 		temp->SetFrameIndexY(mEndIndexX, mEndIndexY, 0);
@@ -253,7 +253,7 @@ void Player::Attack(GameObject* object) {
 	if (object == nullptr || object->GetName() == "ShopKeeper")
 		return;
 	Enemy* temp = (Enemy*)object;
-	
+
 	temp->IsAttacked(mAtk);
 	Combo::GetInstance()->ComboUp();
 }
@@ -282,7 +282,7 @@ void Player::Equip(POINT index) {
 		return;
 		break;
 	}
-	
+
 }
 
 bool Player::AttackRangeCheck(const int& key)
@@ -313,22 +313,22 @@ bool Player::AttackRangeCheck(const int& key)
 				if (i > 0)
 				{
 					//한칸 움직인다
-					Move(range[i-1].x - mX / TileSize, range[i-1].y - mY / TileSize);
+					Move(range[i - 1].x - mX / TileSize, range[i - 1].y - mY / TileSize);
 				}
 			}
-			if(mWeapon->GetWeaponType() == WeaponType::Rapier || mWeapon->GetWeaponType() == WeaponType::Spear || mWeapon->GetWeaponType() == WeaponType::Bow)
+			if (mWeapon->GetWeaponType() == WeaponType::Rapier || mWeapon->GetWeaponType() == WeaponType::Spear || mWeapon->GetWeaponType() == WeaponType::Bow)
 			{
 				//한칸을 공격하면 그 너머는 공격하지 않는다
 				break;
 			}
 		}
 	}
-	if(attackCheck)
+	if (attackCheck)
 		CameraManager::GetInstance()->GetMainCamera()->CameraShake();
 	return attackCheck;
 }
 
-void Player::Interaction(int x, int y, const int &key)
+void Player::Interaction(int x, int y, const int& key)
 {
 	if (AttackRangeCheck(key) == false)
 	{

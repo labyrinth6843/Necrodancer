@@ -138,10 +138,10 @@ void BlueSlime::Update()
 
 void BlueSlime::Release()
 {
-	SafeDelete(mLeftIdleAnimation)
-		SafeDelete(mLeftMoveAnimation)
-		SafeDelete(mRightIdleAnimation)
-		SafeDelete(mRightMoveAnimation)
+	SafeDelete(mLeftIdleAnimation);
+	SafeDelete(mLeftMoveAnimation);
+	SafeDelete(mRightIdleAnimation);
+	SafeDelete(mRightMoveAnimation);
 }
 
 void BlueSlime::Render(HDC hdc)

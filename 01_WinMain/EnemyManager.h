@@ -8,6 +8,8 @@
 #include "YellowSkeleton.h"
 #include "BlackSkeleton.h"
 #include "GreyBat.h"
+#include "RedBat.h"
+#include "DireBat.h"
 #include "Minotaur.h"
 #include "KingConga.h"
 
@@ -18,4 +20,3 @@ public:
 public:
 	void LoadEnemy();
 };
-
