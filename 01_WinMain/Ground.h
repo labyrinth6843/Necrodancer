@@ -26,7 +26,8 @@ public:
 
 public:
 	void SetMinMax();
-	bool GetSight();
+	bool GetSight(int targetX, int targetY, int level);
+	bool GetSight(int indexX, int indexY, float& alpha);	//Wall 클래스에서 호출할 함수
 	bool IsMove(int indexX, int indexY);	//이동하고자 하는 바닥타일의 인덱스를 인자로 받는다
 
 	POINT GetMapSize()

@@ -1,6 +1,7 @@
 ﻿#include "pch.h"
 #include "Ground.h"
 #include "Camera.h"
+#include "Wall.h"
 Ground::Ground(const string &name, int startx, int starty) : GameObject(name)
 {
 	mX = startx;
@@ -192,8 +193,77 @@ void Ground::SetMinMax()
 		mMaxIndexY = mMapSizeY;
 }
 
-bool Ground::GetSight()
+bool Ground::GetSight(int targetX, int targetY, int level)
 {
+	//인자 예외처리
+	if (targetX < 0 || targetX >= mMapSizeX || targetY < 0 || targetY >= mMapSizeY)
+		return false;
+
+	//확장할때마다 감소할 수치
+	int lv = 1.f / (float)level;
+
+	//FloodFill 조건으로 사용
+	Wall* tempWall = (Wall*)ObjectManager::GetInstance()->FindObject("Wall");
+
+	//
+	AlphaTile startTile = mGroundList[targetY][targetX];
+	queue<AlphaTile> sightQueue;
+	sightQueue.emplace(startTile);
+
+	while (sightQueue.empty() == false)
+	{
+		AlphaTile check = sightQueue.front();
+		sightQueue.pop();
+
+		int checkX = check.Tile->GetIndexX();	//GetIndexX() : 확인 안해봄
+		int checkY = check.Tile->GetIndexY();
+
+		//확장한 Alpha가 0보다 작은지 확인
+		if (mGroundList[checkY][checkX].Alpha < 0)
+			continue;
+		//Ground가 존재하는지 + 맵의 최소~최대 범위에 포함되어있는지 확인
+		if (IsMove(checkX, checkY) == false)
+			continue;
+		//Wall이 존재하는 타일인지 확인
+		if (tempWall->IsWall(checkX, checkY) == true)
+			continue;
+
+		//Alpha값 변경 + 확장단계
+		if (checkX - 1 > 0)
+		{
+			mGroundList[checkY][checkX - 1].Alpha = mGroundList[checkY][checkX].Alpha - lv;
+			sightQueue.emplace(mGroundList[checkY][checkX - 1]);
+		}
+		if (checkX + 1 < mMapSizeX)
+		{
+			mGroundList[checkY][checkX + 1].Alpha = mGroundList[checkY][checkX].Alpha - lv;
+			sightQueue.emplace(mGroundList[checkY][checkX + 1]);
+		}
+		if (checkY - 1 > 0)
+		{
+			mGroundList[checkY - 1][checkX].Alpha = mGroundList[checkY][checkX].Alpha - lv;
+			sightQueue.emplace(mGroundList[checkY - 1][checkX]);
+		}
+		if (checkY + 1 < mMapSizeY)
+		{
+			mGroundList[checkY + 1][checkX].Alpha = mGroundList[checkY][checkX].Alpha - lv;
+			sightQueue.emplace(mGroundList[checkY + 1][checkX]);
+		}
+
+	}
+
+	return false;
+}
+
+bool Ground::GetSight(int indexX, int indexY, float &alpha)
+{
+	if (indexX < 0 || indexX >= mMapSizeX || indexY < 0 || indexY >= mMapSizeY)
+		return false;
+	if (mGroundList[indexY][indexX].Tile->GetFrameIndexX() != 7 || mGroundList[indexY][indexX].Tile->GetFrameIndexY() != 1)
+	{
+		alpha = mGroundList[indexY][indexX].Alpha;
+		return true;
+	}
 	return false;
 }
 

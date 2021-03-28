@@ -67,6 +67,9 @@ public:
 
 	void SetFrame(int x, int y) { mFrameIndexX = x; mFrameIndexY = y; }
 
+	int GetIndexX() { return mIndexX; }
+	int GetIndexY() { return mIndexY; }
+
 	TileLayer GetTileLayer()const { return mLayer; }
 	void SetTileLayer(TileLayer layer) { mLayer = layer; }
 	TileType GetTileType()const { return mType; }
