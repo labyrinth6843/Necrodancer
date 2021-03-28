@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="01_WinMain.h" />
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="DireBat.h" />
     <ClInclude Include="GreyBat.h" />
     <ClInclude Include="Beat.h" />
     <ClInclude Include="BlackSkeleton.h" />
@@ -189,6 +190,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Random.h" />
+    <ClInclude Include="RedBat.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
@@ -208,6 +210,7 @@
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="DireBat.cpp" />
     <ClCompile Include="GreyBat.cpp" />
     <ClCompile Include="Beat.cpp" />
     <ClCompile Include="BlackSkeleton.cpp" />
@@ -254,6 +257,7 @@
     </ClCompile>
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="Random.cpp" />
+    <ClCompile Include="RedBat.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />

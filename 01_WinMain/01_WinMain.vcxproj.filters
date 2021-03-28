@@ -315,6 +315,12 @@
     <ClInclude Include="GreyBat.h">
       <Filter>MainGame\Object\Enemy\Bat</Filter>
     </ClInclude>
+    <ClInclude Include="RedBat.h">
+      <Filter>MainGame\Object\Enemy\Bat</Filter>
+    </ClInclude>
+    <ClInclude Include="DireBat.h">
+      <Filter>MainGame\Object\Enemy\Bat</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -483,6 +489,12 @@
       <Filter>MainGame\Object\Enemy\KingConga</Filter>
     </ClCompile>
     <ClCompile Include="GreyBat.cpp">
+      <Filter>MainGame\Object\Enemy\Bat</Filter>
+    </ClCompile>
+    <ClCompile Include="DireBat.cpp">
+      <Filter>MainGame\Object\Enemy\Bat</Filter>
+    </ClCompile>
+    <ClCompile Include="RedBat.cpp">
       <Filter>MainGame\Object\Enemy\Bat</Filter>
     </ClCompile>
   </ItemGroup>
