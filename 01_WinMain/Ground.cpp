@@ -205,7 +205,21 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 	//FloodFill 조건으로 사용
 	Wall* tempWall = (Wall*)ObjectManager::GetInstance()->FindObject("Wall");
 
-	//
+	//타일 밝기 기본적으로 전부 어둡게
+	mGroundList[targetY][targetX].Alpha = 1.f;
+	for (int y = mMinIndexY; y < mMaxIndexY; ++y)
+	{
+		for (int x = mMinIndexX; x < mMaxIndexX; ++x)
+		{
+			if (mGroundList[y][x].Tile->GetImage() != NULL)
+			{
+				if (mGroundList[y][x].Tile->GetFrameIndexX() != 7 || mGroundList[y][x].Tile->GetFrameIndexY() != 1)
+					mGroundList[y][x].Alpha = 0.1f;
+			}
+		}
+	}
+	//광원 위치만 밝게
+	mGroundList[targetY][targetX].Alpha = 1.f;
 	AlphaTile startTile = mGroundList[targetY][targetX];
 	queue<AlphaTile> sightQueue;
 	sightQueue.emplace(startTile);
@@ -219,7 +233,7 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 		int checkY = check.Tile->GetIndexY();
 
 		//확장한 Alpha가 0보다 작은지 확인
-		if (mGroundList[checkY][checkX].Alpha < 0)
+		if (mGroundList[checkY][checkX].Alpha < 0.1f)
 			continue;
 		//Ground가 존재하는지 + 맵의 최소~최대 범위에 포함되어있는지 확인
 		if (IsMove(checkX, checkY) == false)
@@ -229,27 +243,30 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 			continue;
 
 		//Alpha값 변경 + 확장단계
-		if (checkX - 1 > 0)
+		//최소밝기 보다 변경할 값이 크다면
+		if (mGroundList[checkY][checkX].Alpha - lv >= 0.1f)
 		{
-			mGroundList[checkY][checkX - 1].Alpha = mGroundList[checkY][checkX].Alpha - lv;
-			sightQueue.emplace(mGroundList[checkY][checkX - 1]);
+			if (checkX - 1 > mMinIndexX)
+			{
+				mGroundList[checkY][checkX - 1].Alpha = mGroundList[checkY][checkX].Alpha - lv;
+				sightQueue.emplace(mGroundList[checkY][checkX - 1]);
+			}
+			if (checkX + 1 < mMaxIndexX)
+			{
+				mGroundList[checkY][checkX + 1].Alpha = mGroundList[checkY][checkX].Alpha - lv;
+				sightQueue.emplace(mGroundList[checkY][checkX + 1]);
+			}
+			if (checkY - 1 > 0)
+			{
+				mGroundList[checkY - 1][checkX].Alpha = mGroundList[checkY][checkX].Alpha - lv;
+				sightQueue.emplace(mGroundList[checkY - 1][checkX]);
+			}
+			if (checkY + 1 < mMaxIndexY)
+			{
+				mGroundList[checkY + 1][checkX].Alpha = mGroundList[checkY][checkX].Alpha - lv;
+				sightQueue.emplace(mGroundList[checkY + 1][checkX]);
+			}
 		}
-		if (checkX + 1 < mMapSizeX)
-		{
-			mGroundList[checkY][checkX + 1].Alpha = mGroundList[checkY][checkX].Alpha - lv;
-			sightQueue.emplace(mGroundList[checkY][checkX + 1]);
-		}
-		if (checkY - 1 > 0)
-		{
-			mGroundList[checkY - 1][checkX].Alpha = mGroundList[checkY][checkX].Alpha - lv;
-			sightQueue.emplace(mGroundList[checkY - 1][checkX]);
-		}
-		if (checkY + 1 < mMapSizeY)
-		{
-			mGroundList[checkY + 1][checkX].Alpha = mGroundList[checkY][checkX].Alpha - lv;
-			sightQueue.emplace(mGroundList[checkY + 1][checkX]);
-		}
-
 	}
 
 	return true;
