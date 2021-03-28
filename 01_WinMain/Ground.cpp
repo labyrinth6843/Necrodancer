@@ -252,7 +252,7 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 
 	}
 
-	return false;
+	return true;
 }
 
 bool Ground::GetSight(int indexX, int indexY, float &alpha)
