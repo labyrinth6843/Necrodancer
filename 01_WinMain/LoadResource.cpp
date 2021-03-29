@@ -69,6 +69,8 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"Nightmare", Resources(L"Enemy/Nightmare.bmp"), 285, 84, 5, 2, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Minotaur", Resources(L"Enemy/Minotaur.bmp"), 450, 196, 9, 4, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Dragon", Resources(L"Enemy/Dragon.bmp"), 427 ,240, 7, 4, true);
+	ImageManager::GetInstance()->LoadFromFile(L"KingConga", Resources(L"Enemy/KingConga.bmp"),406, 158, 7, 4, true);
+	ImageManager::GetInstance()->LoadFromFile(L"KingCongaThrone", Resources(L"Enemy/KingCongaThrone.bmp"), 44, 78, true);
 	//}}
 
 	//{{ NPC 관련 이미지
@@ -93,6 +95,10 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"SlotShovel", Resources(L"HUD/SlotShovel.bmp"), 30, 33, true);
 	ImageManager::GetInstance()->LoadFromFile(L"SlotTorch", Resources(L"HUD/SlotTorch.bmp"), 30, 33, true);
 	ImageManager::GetInstance()->LoadFromFile(L"SlotWeapon", Resources(L"HUD/SlotWeapon.bmp"), 30, 33, true);
+	//}}
+
+	//{{ 씬 관련 이미지
+	ImageManager::GetInstance()->LoadFromFile(L"BossScreenKingConga", Resources(L"Scene/BossScreenKingConga.bmp"), 480, 195, true);
 	//}}
 
 	//{{ ost 사운드
