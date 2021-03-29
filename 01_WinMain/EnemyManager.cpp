@@ -82,7 +82,11 @@ void EnemyManager::LoadEnemy()
 					}
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 3 && mEnemyList[y][x]->GetFrameIndexY() == 2) {
 						//Dragon* dragon = new Dragon("Dragon", x, y);
-						//ObjectManager::GetInstance()->AddObejct(ObjectLayer::Enemy, (GameObject*)dragon);
+						//ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)dragon);
+					}
+					else if (mEnemyList[y][x]->GetFrameIndexX() == 4 && mEnemyList[y][x]->GetFrameIndexY() == 2) {
+						ShopKeeper* shopkeeper = new ShopKeeper("ShopKeeper", x, y);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)shopkeeper);
 					}
 				}
 			}

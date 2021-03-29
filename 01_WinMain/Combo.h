@@ -34,4 +34,3 @@ public:
 	}
 };
 #define COMBO Combo::GetInstance()
-

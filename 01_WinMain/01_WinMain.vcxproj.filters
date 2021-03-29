@@ -142,6 +142,9 @@
     <Filter Include="MainGame\Object\Enemy\Minotaur">
       <UniqueIdentifier>{cdf0a980-0847-42aa-9c51-7140acc3ed6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Object\NPC">
+      <UniqueIdentifier>{0ab3a520-e50a-41e4-8641-afb3bcf83c94}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -321,6 +324,9 @@
     <ClInclude Include="DireBat.h">
       <Filter>MainGame\Object\Enemy\Bat</Filter>
     </ClInclude>
+    <ClInclude Include="ShopKeeper.h">
+      <Filter>MainGame\Object\NPC</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -496,6 +502,9 @@
     </ClCompile>
     <ClCompile Include="RedBat.cpp">
       <Filter>MainGame\Object\Enemy\Bat</Filter>
+    </ClCompile>
+    <ClCompile Include="ShopKeeper.cpp">
+      <Filter>MainGame\Object\NPC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

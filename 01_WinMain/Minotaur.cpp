@@ -45,6 +45,8 @@ void Minotaur::Init()
 
 void Minotaur::Update()
 {
+
+
 	mCurrentAnimation->Update();
 }
 

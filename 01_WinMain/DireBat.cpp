@@ -125,7 +125,6 @@ POINT DireBat::DestinationValidationCheck()
 
 	POINT destinationDirection = { 0,0 };
 
-
 	mDirection = Random::GetInstance()->RandomInt(100) % 4;
 
 	switch (mDirection) {

@@ -12,6 +12,7 @@
 #include "DireBat.h"
 #include "Minotaur.h"
 #include "KingConga.h"
+#include "ShopKeeper.h"
 
 class EnemyManager
 {
