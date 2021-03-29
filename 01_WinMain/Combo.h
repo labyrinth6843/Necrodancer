@@ -14,6 +14,8 @@ public:
 	inline int GetCombo() { return mCombo; }
 	inline void ComboUp()
 	{ 
+		if (mCombo == 0)
+			SoundPlayer::GetInstance()->Play(L"combo_start", 1.f);
 		mCombo++;
 		if (mCombo > mMaxCombo)
 			mCombo = mMaxCombo;
@@ -26,8 +28,9 @@ public:
 	}
 	inline void ComboReset()
 	{ 
+		if(mCombo != 0)
+			SoundPlayer::GetInstance()->Play(L"combo_reset", 1.f);
 		mCombo = 0; 
-		//SoundPlayer 콤보 끊겼을 때 소리
 	}
 };
 #define COMBO Combo::GetInstance()

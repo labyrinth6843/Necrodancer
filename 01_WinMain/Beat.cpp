@@ -277,6 +277,7 @@ void Beat::MissNote()
 			break;
 		}
 	}
+	SoundPlayer::GetInstance()->Play(L"combo_missed",1.f);
 }
 
 

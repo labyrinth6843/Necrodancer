@@ -36,7 +36,7 @@ void FileManager::LoadResource()
 	
 	//{{ 팔레트 관련 이미지
 	ImageManager::GetInstance()->LoadFromFile(L"GroundPallet", Resources(L"Pallet/GroundPallet.bmp"), 130, 26, 5, 1, true);
-	ImageManager::GetInstance()->LoadFromFile(L"WallPallet", Resources(L"Pallet/WallPallet.bmp"), 130, 182, 5, 7, true);
+	ImageManager::GetInstance()->LoadFromFile(L"WallPallet", Resources(L"Pallet/WallPallet.bmp"), 130, 208, 5, 8, true);
 	ImageManager::GetInstance()->LoadFromFile(L"DecoPallet", Resources(L"Pallet/DecoPallet.bmp"), 130, 26, 5, 1, true);
 	ImageManager::GetInstance()->LoadFromFile(L"ItemPallet1", Resources(L"Pallet/ItemPallet1.bmp"), 130, 260, 5, 10, true);
 	ImageManager::GetInstance()->LoadFromFile(L"ItemPallet2", Resources(L"Pallet/ItemPallet2.bmp"), 130, 78, 5, 3, true);
@@ -77,7 +77,7 @@ void FileManager::LoadResource()
 
 	//{{ 맵 타일 이미지
 	ImageManager::GetInstance()->LoadFromFile(L"GroundTile", Resources(L"Tile/GroundTile.bmp"), 208, 52, 8, 2, true);
-	ImageManager::GetInstance()->LoadFromFile(L"WallTile", Resources(L"Tile/WallTile.bmp"), 125, 336, 5, 7, true);
+	ImageManager::GetInstance()->LoadFromFile(L"WallTile", Resources(L"Tile/WallTile.bmp"), 125, 384, 5, 8, true);
 	//}}
 
 	//{{ HUD 관련 이미지
@@ -113,6 +113,12 @@ void FileManager::LoadResource()
 	SoundPlayer::GetInstance()->LoadFromFile(L"move_stone", Resources(L"Sound/sfx/move/mov_dig_stone.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"move_brick", Resources(L"Sound/sfx/move/mov_dig_brick.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"move_fail", Resources(L"Sound/sfx/move/mov_dig_fail.mp3"), false);
+	//}}
+
+	//{{ 콤보 관련 사운드
+	SoundPlayer::GetInstance()->LoadFromFile(L"combo_missed", Resources(L"Sound/sfx/combo/sfx_combo_missed.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"combo_reset", Resources(L"Sound/sfx/combo/sfx_combo_break.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"combo_start", Resources(L"Sound/sfx/combo/sfx_combo_start.mp3"), false);
 	//}}
 
 	//{{캐릭터 관련 사운드
