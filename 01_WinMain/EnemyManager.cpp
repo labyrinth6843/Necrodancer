@@ -67,8 +67,8 @@ void EnemyManager::LoadEnemy()
 					}
 
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 0 && mEnemyList[y][x]->GetFrameIndexY() == 2) {
-						//DireBat* direbat = new RedBat("DireBat", x, y);
-						//ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)direbat);
+						DireBat* direbat = new DireBat("DireBat", x, y);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)direbat);
 					}
 
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 1 & mEnemyList[y][x]->GetFrameIndexY() == 2) {

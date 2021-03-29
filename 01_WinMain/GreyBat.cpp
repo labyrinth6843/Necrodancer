@@ -49,12 +49,14 @@ void GreyBat::Update()
 			mMoveBeat = !mMoveBeat;
 			if (mMoveBeat == true) {
 				POINT temp = DestinationValidationCheck();
-				if (temp.x != 0 && temp.y != 0) {
-					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX &&
-						ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY)
-						Attack();
-					else
-						Move(temp.x, temp.y);
+				if (WallCheck(temp.x, temp.y) == false) {
+					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr) {
+						if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX &&
+							ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY)
+							Attack();
+						else
+							Move(temp.x, temp.y);
+					}
 				}
 			}
 		}
@@ -121,51 +123,35 @@ POINT GreyBat::DestinationValidationCheck()
 	mDestIndexX = mDestX / TileSize;
 	mDestIndexY = mDestY / TileSize;
 
-	bool isBreak = false;
-	int count = 0;
-	POINT destinationDirection = {0,0};
+	POINT destinationDirection = { 0,0 };
 
-	while (isBreak == false) {
-		mDirection = Random::GetInstance()->RandomInt(100) % 4;
 
-		switch (mDirection) {
-		case 0:
-			mDestY = mY - TileSize;
-			count++;
-			destinationDirection = { 0, -1 };
-			break;
-		case 1:
-			mIsLeft = true;
-			mDestX = mX - TileSize;
-			count++;
-			destinationDirection = { -1, 0 };
-			break;
-		case 2:
-			mIsLeft = false;
-			mDestX = mX + TileSize;
-			count++;
-			destinationDirection = { 1, 0 };
-			break;
-		case 3:
-			mDestY = mY + TileSize;
-			count++;
-			destinationDirection = { 0, 1 };
-			break;
-		}
+	mDirection = Random::GetInstance()->RandomInt(100) % 4;
 
-		if (count > 4) {
-			mDestX = mX;
-			mDestY = mY;
-			return { 0,0 };
-		}
-
-		mDestIndexX = mDestX / TileSize;
-		mDestIndexY = mDestY / TileSize;
-
-		if (WallCheck(destinationDirection.x, destinationDirection.y) == false && ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr)
-			return destinationDirection;
+	switch (mDirection) {
+	case 0:
+		mDestY = mY - TileSize;
+		destinationDirection = { 0, -1 };
+		break;
+	case 1:
+		mIsLeft = true;
+		mDestX = mX - TileSize;
+		destinationDirection = { -1, 0 };
+		break;
+	case 2:
+		mIsLeft = false;
+		mDestX = mX + TileSize;
+		destinationDirection = { 1, 0 };
+		break;
+	case 3:
+		mDestY = mY + TileSize;
+		destinationDirection = { 0, 1 };
+		break;
 	}
-	//return destinationDirection;
+
+	mDestIndexX = mDestX / TileSize;
+	mDestIndexY = mDestY / TileSize;
+	return destinationDirection;
 }
 
 void GreyBat::Attack()

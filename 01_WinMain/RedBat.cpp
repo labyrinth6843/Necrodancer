@@ -120,51 +120,34 @@ POINT RedBat::DestinationValidationCheck()
 	mDestIndexX = mDestX / TileSize;
 	mDestIndexY = mDestY / TileSize;
 
-	bool isBreak = false;
-	int count = 0;
 	POINT destinationDirection = { 0,0 };
 
-	while (isBreak == false) {
-		mDirection = Random::GetInstance()->RandomInt(100) % 4;
 
-		switch (mDirection) {
-		case 0:
-			mDestY = mY - TileSize;
-			count++;
-			destinationDirection = { 0, -1 };
-			break;
-		case 1:
-			mIsLeft = true;
-			mDestX = mX - TileSize;
-			count++;
-			destinationDirection = { -1, 0 };
-			break;
-		case 2:
-			mIsLeft = false;
-			mDestX = mX + TileSize;
-			count++;
-			destinationDirection = { 1, 0 };
-			break;
-		case 3:
-			mDestY = mY + TileSize;
-			count++;
-			destinationDirection = { 0, 1 };
-			break;
-		}
+	mDirection = Random::GetInstance()->RandomInt(100) % 4;
 
-		if (count > 3) {
-			mDestX = mX;
-			mDestY = mY;
-			isBreak = true;
-			return { 0,0 };
-		}
-
-		mDestIndexX = mDestX / TileSize;
-		mDestIndexY = mDestY / TileSize;
-
-		if (WallCheck(destinationDirection.x, destinationDirection.y) == false && ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr)
-			isBreak = true;
+	switch (mDirection) {
+	case 0:
+		mDestY = mY - TileSize;
+		destinationDirection = { 0, -1 };
+		break;
+	case 1:
+		mIsLeft = true;
+		mDestX = mX - TileSize;
+		destinationDirection = { -1, 0 };
+		break;
+	case 2:
+		mIsLeft = false;
+		mDestX = mX + TileSize;
+		destinationDirection = { 1, 0 };
+		break;
+	case 3:
+		mDestY = mY + TileSize;
+		destinationDirection = { 0, 1 };
+		break;
 	}
+
+	mDestIndexX = mDestX / TileSize;
+	mDestIndexY = mDestY / TileSize;
 	return destinationDirection;
 }
 
