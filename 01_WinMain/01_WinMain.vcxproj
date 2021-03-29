@@ -194,6 +194,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="ShopKeeper.h" />
     <ClInclude Include="SoundPlayer.h" />
     <ClInclude Include="StringHelper.h" />
     <ClInclude Include="targetver.h" />
@@ -260,6 +261,7 @@
     <ClCompile Include="RedBat.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ShopKeeper.cpp" />
     <ClCompile Include="SoundPlayer.cpp" />
     <ClCompile Include="StringHelper.cpp" />
     <ClCompile Include="Tile.cpp" />
