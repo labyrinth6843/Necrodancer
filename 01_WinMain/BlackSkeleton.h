@@ -4,7 +4,10 @@
 class BlackSkeleton:public Enemy
 {
 public:
-
+	Animation* mUpLeftAnimation;
+	Animation* mUpRightAnimation;
+	Animation* mDownLeftAnimation;
+	Animation* mDownRightAnimation;
 public:
 	BlackSkeleton(const string& name, int x, int y);
 
