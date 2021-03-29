@@ -3,6 +3,8 @@
 #include "Image.h"
 #include "Animation.h"
 
+class Ground;
+
 enum class WallType {
 	Dirt,
 	Stone,
@@ -13,6 +15,8 @@ enum class WallType {
 
 class Wall:public GameObject
 {
+	Image* mWallShadow;
+	Ground* mGroundPtr;
 	vector<vector<Tile*>> mWallList;
 	vector<vector<Tile*>> mDecoList;
 
@@ -29,7 +33,11 @@ public:
 	void Render(HDC hdc)override;
 
 public:
-
+	void SetGroundPtr(string name)
+	{ 
+		if(ObjectManager::GetInstance()->FindObject(name))
+			mGroundPtr = (Ground*)ObjectManager::GetInstance()->FindObject(name); 
+	}
 	bool IsWall(int indexX, int indexY);
 
 	int GetDigLevel() { return mDigLevel; }

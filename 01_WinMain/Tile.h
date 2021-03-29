@@ -1,5 +1,10 @@
 #pragma once
 
+class Tile;
+struct AlphaTile {
+	Tile* Tile;
+	float Alpha;
+};
 enum class TileLayer {
 	Ground = 0,
 	Wall = 1,
@@ -74,9 +79,7 @@ public:
 	void SetTileLayer(TileLayer layer) { mLayer = layer; }
 	TileType GetTileType()const { return mType; }
 	void SetTileType(TileType type) { mType = type; }
-};
 
-struct AlphaTile {
-	Tile* Tile;
-	float Alpha;
+public:
+	static void ChangeAlphaTile(vector<vector<Tile*>>& tilelist, vector<vector<AlphaTile>>& alphalist);
 };

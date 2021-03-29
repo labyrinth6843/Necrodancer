@@ -142,6 +142,9 @@ void Player::Update() {
 			mShowShovel = false;
 	}
 
+	Ground* tempGround = (Ground*)ObjectManager::GetInstance()->FindObject("Ground");
+	tempGround->GetSight(mX / TileSize, mY / TileSize, (int)10);
+
 	mCurrentHeadAnimation->Update();
 	mCurrentBodyAnimation->Update();
 }

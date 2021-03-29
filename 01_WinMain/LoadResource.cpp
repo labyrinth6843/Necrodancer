@@ -78,6 +78,7 @@ void FileManager::LoadResource()
 	//{{ 맵 타일 이미지
 	ImageManager::GetInstance()->LoadFromFile(L"GroundTile", Resources(L"Tile/GroundTile.bmp"), 208, 52, 8, 2, true);
 	ImageManager::GetInstance()->LoadFromFile(L"WallTile", Resources(L"Tile/WallTile.bmp"), 125, 384, 5, 8, true);
+	ImageManager::GetInstance()->LoadFromFile(L"WallShadow", Resources(L"Tile/WallShadow.bmp"), 50, 50, true);
 	//}}
 
 	//{{ HUD 관련 이미지

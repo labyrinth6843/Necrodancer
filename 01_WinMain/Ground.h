@@ -17,6 +17,8 @@ class Ground : public GameObject
 
 	POINT mOddFrame; //홀수 프레임
 	POINT mEvenFrame;//짝수 프레임
+
+	int mSightCall;
 public:
 	Ground(const string &name, int startx = 0, int starty = 0);
 	virtual void Init();
@@ -25,15 +27,17 @@ public:
 	virtual void Render(HDC hdc);
 
 public:
-	void SetMinMax();
 	bool GetSight(int targetX, int targetY, int level);
-	bool GetSight(int indexX, int indexY, float& alpha);	//Wall 클래스에서 호출할 함수
+	bool GetAlpha(int indexX, int indexY, float& alpha);	//Wall 클래스에서 호출할 함수
 	bool IsMove(int indexX, int indexY);	//이동하고자 하는 바닥타일의 인덱스를 인자로 받는다
 
 	POINT GetMapSize()
 	{
-		POINT pt = { mMapSizeX,mMapSizeY };
+		POINT pt = { mMapSizeX, mMapSizeY };
 		return pt;
 	}
+
+private:
+	void SetMinMax();
 };
 

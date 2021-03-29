@@ -1,15 +1,19 @@
 #include "pch.h"
 #include "Wall.h"
 #include "Camera.h"
+#include "Ground.h"
 
 Wall::Wall(const string& name) : GameObject(name) {}
 
 void Wall::Init(){
+	SetGroundPtr("Ground");
 	FileManager::LoadMap(L"Test01", mWallList, TileSize, 72);
 	FileManager::LoadMap(L"Test02", mDecoList, TileSize);
 
 	mMapSizeY = mWallList.size();
 	mMapSizeX = mWallList[0].size();
+
+	mWallShadow = IMAGEMANAGER->FindImage(L"WallShadow");
 }
 
 void Wall::Update()
@@ -46,10 +50,19 @@ void Wall::Render(HDC hdc)
 			{
 				if (mWallList[y][x]->GetImage() != NULL)
 				{
-					CameraManager::GetInstance()->GetMainCamera()->AlphaScaleFrameRender(hdc, mWallList[y][x]->GetImage(),
-						posx, posy, mWallList[y][x]->GetFrameIndexX(), mWallList[y][x]->GetFrameIndexY(),
-						mWallList[y][x]->Getwidth(), mWallList[y][x]->GetHeight(), 1.0f);
-					int a = 1;
+					if (mWallList[y][x]->GetFrameIndexX() != 0 || mWallList[y][x]->GetFrameIndexY() != 0)
+					{
+						float alpha = 1.f;
+						if (mGroundPtr->GetAlpha(x, y, alpha))
+						{
+							CameraManager::GetInstance()->GetMainCamera()->AlphaScaleRender(hdc, mWallShadow,
+								posx, posy, TileSize , TileSize, 1.f);
+							CameraManager::GetInstance()->GetMainCamera()->AlphaScaleFrameRender(hdc, mWallList[y][x]->GetImage(),
+								posx, posy, mWallList[y][x]->GetFrameIndexX(), mWallList[y][x]->GetFrameIndexY(),
+								mWallList[y][x]->Getwidth(), mWallList[y][x]->GetHeight(), alpha);
+
+						}
+					}
 				}
 			}
 		}

@@ -18,6 +18,9 @@ void Ground::Init()
 	SetMinMax();
 	mOddFrame = { 0,0 };
 	mEvenFrame = { 1,0 };
+
+	mSightCall = 0;
+
 	//원활한 작업을 위해타일의 이미지 포인터 변경
 	for (int y = 0; y < mMapSizeY; ++y)
 	{
@@ -92,8 +95,9 @@ void Ground::Release()
 void Ground::Update()
 {
 	SetMinMax();
-	//턴마다 타일 변경하기
+	mSightCall = 0;
 
+	//턴마다 프레임 변경
 	if(BEAT->NextTurn())
 	{
 		if (mOddFrame.x == 0)
@@ -198,26 +202,37 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 	//인자 예외처리
 	if (targetX < 0 || targetX >= mMapSizeX || targetY < 0 || targetY >= mMapSizeY)
 		return false;
+	if (level < 0)
+		return false;
+
+	mSightCall++;
+
+	//Alpha 초기화 -> 여러 광원이 존재한다면 이 함수가 불러질때마다 배경을 초기화하면 안된다
+	// 매 프레임 중 GetSight 함수가 한번이라도 호출되면 딱 한번 Alpha를 초기화한다
+	if (mSightCall)
+	{
+		if (mSightCall == 1)
+		{
+			for (int y = mMinIndexY; y < mMaxIndexY; ++y)
+			{
+				for (int x = mMinIndexX; x < mMaxIndexX; ++x)
+				{
+					if (mGroundList[y][x].Tile->GetImage() != NULL)
+					{
+						if (mGroundList[y][x].Tile->GetFrameIndexX() != 7 || mGroundList[y][x].Tile->GetFrameIndexY() != 1)
+							mGroundList[y][x].Alpha = 0.1f;
+					}
+				}
+			}
+		}
+	}
 
 	//확장할때마다 감소할 수치
-	int lv = 1.f / (float)level;
+	float lv = 1.f / (float)level;
 
 	//FloodFill 조건으로 사용
 	Wall* tempWall = (Wall*)ObjectManager::GetInstance()->FindObject("Wall");
 
-	//타일 밝기 기본적으로 전부 어둡게
-	mGroundList[targetY][targetX].Alpha = 1.f;
-	for (int y = mMinIndexY; y < mMaxIndexY; ++y)
-	{
-		for (int x = mMinIndexX; x < mMaxIndexX; ++x)
-		{
-			if (mGroundList[y][x].Tile->GetImage() != NULL)
-			{
-				if (mGroundList[y][x].Tile->GetFrameIndexX() != 7 || mGroundList[y][x].Tile->GetFrameIndexY() != 1)
-					mGroundList[y][x].Alpha = 0.1f;
-			}
-		}
-	}
 	//광원 위치만 밝게
 	mGroundList[targetY][targetX].Alpha = 1.f;
 	AlphaTile startTile = mGroundList[targetY][targetX];
@@ -238,33 +253,45 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 		//Ground가 존재하는지 + 맵의 최소~최대 범위에 포함되어있는지 확인
 		if (IsMove(checkX, checkY) == false)
 			continue;
-		//Wall이 존재하는 타일인지 확인
+		//Wall이 존재하는 타일인지 확인 -> 벽까지는 확장을 하지만 벽 너머는 확장X
 		if (tempWall->IsWall(checkX, checkY) == true)
 			continue;
 
 		//Alpha값 변경 + 확장단계
 		//최소밝기 보다 변경할 값이 크다면
-		if (mGroundList[checkY][checkX].Alpha - lv >= 0.1f)
+		if (check.Alpha - lv >= 0.1f)
 		{
-			if (checkX - 1 > mMinIndexX)
+			if (checkX - 1 >= mMinIndexX)
 			{
-				mGroundList[checkY][checkX - 1].Alpha = mGroundList[checkY][checkX].Alpha - lv;
-				sightQueue.emplace(mGroundList[checkY][checkX - 1]);
+				if (mGroundList[checkY][checkX - 1].Alpha < check.Alpha)
+				{
+					mGroundList[checkY][checkX - 1].Alpha = check.Alpha - lv;
+					sightQueue.emplace(mGroundList[checkY][checkX - 1]);
+				}
 			}
 			if (checkX + 1 < mMaxIndexX)
 			{
-				mGroundList[checkY][checkX + 1].Alpha = mGroundList[checkY][checkX].Alpha - lv;
-				sightQueue.emplace(mGroundList[checkY][checkX + 1]);
+				if (mGroundList[checkY][checkX + 1].Alpha < check.Alpha)
+				{
+					mGroundList[checkY][checkX + 1].Alpha = check.Alpha - lv;
+					sightQueue.emplace(mGroundList[checkY][checkX + 1]);
+				}
 			}
-			if (checkY - 1 > 0)
+			if (checkY - 1 >= mMinIndexY)
 			{
-				mGroundList[checkY - 1][checkX].Alpha = mGroundList[checkY][checkX].Alpha - lv;
-				sightQueue.emplace(mGroundList[checkY - 1][checkX]);
+				if (mGroundList[checkY - 1][checkX].Alpha < check.Alpha)
+				{
+					mGroundList[checkY - 1][checkX].Alpha = check.Alpha - lv;
+					sightQueue.emplace(mGroundList[checkY - 1][checkX]);
+				}
 			}
 			if (checkY + 1 < mMaxIndexY)
 			{
-				mGroundList[checkY + 1][checkX].Alpha = mGroundList[checkY][checkX].Alpha - lv;
-				sightQueue.emplace(mGroundList[checkY + 1][checkX]);
+				if (mGroundList[checkY + 1][checkX].Alpha < check.Alpha)
+				{
+					mGroundList[checkY + 1][checkX].Alpha = check.Alpha - lv;
+					sightQueue.emplace(mGroundList[checkY + 1][checkX]);
+				}
 			}
 		}
 	}
@@ -272,7 +299,7 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 	return true;
 }
 
-bool Ground::GetSight(int indexX, int indexY, float &alpha)
+bool Ground::GetAlpha(int indexX, int indexY, float &alpha)
 {
 	if (indexX < 0 || indexX >= mMapSizeX || indexY < 0 || indexY >= mMapSizeY)
 		return false;

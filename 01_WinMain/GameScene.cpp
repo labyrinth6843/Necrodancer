@@ -30,6 +30,8 @@ void GameScene::Init(){
 	//게임씬에서 사용할 오브젝트들 생성
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Ground, new Ground("Ground"));
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Wall, new Wall("Wall"));
+	Wall* tempWall = (Wall*)ObjectManager::GetInstance()->FindObject("Wall");
+	tempWall->SetGroundPtr("Ground");	//생성 서순이 꼬일 경우를 대비해서 만듬
 
 	//아이템
 	ItemManager::LoadItem(L"Test03");
