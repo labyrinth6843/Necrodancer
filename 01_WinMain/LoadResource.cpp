@@ -33,7 +33,7 @@ void FileManager::LoadResource()
 	//{{ 맵 + 오브젝트 관련 이미지
 	ImageManager::GetInstance()->LoadFromFile(L"SelectTile", Resources(L"SelectTile.bmp"), 32, 32, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Black", Resources(L"black.bmp"), 1183, 736, true);
-	
+
 	//{{ 팔레트 관련 이미지
 	ImageManager::GetInstance()->LoadFromFile(L"GroundPallet", Resources(L"Pallet/GroundPallet.bmp"), 130, 26, 5, 1, true);
 	ImageManager::GetInstance()->LoadFromFile(L"WallPallet", Resources(L"Pallet/WallPallet.bmp"), 130, 208, 5, 8, true);
@@ -68,8 +68,8 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"Skeleton3", Resources(L"Enemy/Skeleton3.bmp"), 234, 208, 9, 8, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Nightmare", Resources(L"Enemy/Nightmare.bmp"), 285, 84, 5, 2, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Minotaur", Resources(L"Enemy/Minotaur.bmp"), 450, 196, 9, 4, true);
-	ImageManager::GetInstance()->LoadFromFile(L"Dragon", Resources(L"Enemy/Dragon.bmp"), 427 ,240, 7, 4, true);
-	ImageManager::GetInstance()->LoadFromFile(L"KingConga", Resources(L"Enemy/KingConga.bmp"),406, 158, 7, 4, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Dragon", Resources(L"Enemy/Dragon.bmp"), 427, 240, 7, 4, true);
+	ImageManager::GetInstance()->LoadFromFile(L"KingConga", Resources(L"Enemy/KingConga.bmp"), 406, 158, 7, 4, true);
 	ImageManager::GetInstance()->LoadFromFile(L"KingCongaThrone", Resources(L"Enemy/KingCongaThrone.bmp"), 44, 78, true);
 	//}}
 
@@ -95,6 +95,8 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"SlotShovel", Resources(L"HUD/SlotShovel.bmp"), 30, 33, true);
 	ImageManager::GetInstance()->LoadFromFile(L"SlotTorch", Resources(L"HUD/SlotTorch.bmp"), 30, 33, true);
 	ImageManager::GetInstance()->LoadFromFile(L"SlotWeapon", Resources(L"HUD/SlotWeapon.bmp"), 30, 33, true);
+	ImageManager::GetInstance()->LoadFromFile(L"EnemyHealth", Resources(L"HUD/EnemyHealth.bmp"), 24, 12, 2, 1, true);
+	ImageManager::GetInstance()->LoadFromFile(L"NumberFont", Resources(L"HUD/NumberFont.bmp"), 66, 8, 11, 1, true);
 	//}}
 
 	//{{ 씬 관련 이미지
@@ -102,7 +104,7 @@ void FileManager::LoadResource()
 	//}}
 
 	//{{ ost 사운드
-	SoundPlayer::GetInstance()->LoadFromFile(L"zone1_1", Resources(L"Sound/ost/zone1_1.mp3"),false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"zone1_1", Resources(L"Sound/ost/zone1_1.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"zone1_1_shopkeeper", Resources(L"Sound/ost/zone1_1_shopkeeper.mp3"), false);
 
 	SoundPlayer::GetInstance()->LoadFromFile(L"zone1_2", Resources(L"Sound/ost/zone1_2.mp3"), false);
@@ -167,7 +169,7 @@ void FileManager::LoadResource()
 	SoundPlayer::GetInstance()->LoadFromFile(L"death_3", Resources(L"Sound/voice/Player/death/vo_cad_death_03.mp3"), false);
 
 	SoundPlayer::GetInstance()->LoadFromFile(L"dig_1", Resources(L"Sound/voice/Player/dig/vo_cad_dig_01.mp3"), false);
-	SoundPlayer::GetInstance()->LoadFromFile(L"dig_2", Resources(L"Sound/voice/Player/dig/vo_cad_dig_02.mp3"), false);	
+	SoundPlayer::GetInstance()->LoadFromFile(L"dig_2", Resources(L"Sound/voice/Player/dig/vo_cad_dig_02.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"dig_3", Resources(L"Sound/voice/Player/dig/vo_cad_dig_03.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"dig_4", Resources(L"Sound/voice/Player/dig/vo_cad_dig_04.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"dig_5", Resources(L"Sound/voice/Player/dig/vo_cad_dig_05.mp3"), false);
@@ -191,7 +193,7 @@ void FileManager::LoadResource()
 	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_cry_1", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_cry_01.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga_cry_2", Resources(L"Sound/voice/Enemy/kingconga/en_kingconga_cry_02.mp3"), false);
 	//}}
-	
+
 	//{{ 슬라임 관련 사운드
 	SoundPlayer::GetInstance()->LoadFromFile(L"slime_attack", Resources(L"Sound/voice/Enemy/slime/en_slime_attack.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"slime_hit_1", Resources(L"Sound/voice/Enemy/slime/en_slime_hit_01.mp3"), false);

@@ -37,6 +37,63 @@ WhiteSkeleton::WhiteSkeleton(const string& name, int x, int y):Enemy(name)
 	mDownRightAnimation->Play();
 }
 
+void WhiteSkeleton::Init()
+{
+}
+
+void WhiteSkeleton::Update()
+{
+	if (Beat::GetInstance()->NextTurn() == true) {
+		if (mIsMove == false) {
+			if (mIsLeft == true)
+				mCurrentAnimation = mLeftAnimation;
+			else
+				mCurrentAnimation = mRightAnimation;
+			POINT temp = DestinationValidationCheck();
+			if (WallCheck(temp.x, temp.y) == false) {
+				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr) {
+					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX &&
+						ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY)
+						Attack();
+					else
+						Move(temp.x, temp.y);
+				}
+			}
+		}
+	}
+	if (mIsMove == true) {
+		mMoveTime += Time::GetInstance()->DeltaTime();
+		float ratio = mMoveTime / 0.15f;
+		mX = Math::Lerp(mInitX, mDestX, ratio);
+		mY = Math::Lerp(mInitY, mDestY, ratio);
+
+		mCorrectionY -= mJumpPower * Time::GetInstance()->DeltaTime();
+		mJumpPower -= 200.f * Time::GetInstance()->DeltaTime();
+
+		if (ratio >= 1.f)
+		{
+			mX = mDestX;
+			mY = mDestY;
+			mIsMove = false;
+			mCorrectionY = 0.f;
+		}
+	}
+	mCurrentAnimation->Update();
+}
+
+void WhiteSkeleton::Release()
+{
+	SafeDelete(mUpLeftAnimation);
+	SafeDelete(mUpRightAnimation);
+	SafeDelete(mDownLeftAnimation);
+	SafeDelete(mDownRightAnimation);
+}
+
+void WhiteSkeleton::Render(HDC hdc)
+{
+
+}
+
 void WhiteSkeleton::Attack() {
 	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	temp->SetHp(GetHp() - mAtk);
@@ -55,22 +112,12 @@ void WhiteSkeleton::IsAttacked(int dmg)
 	}
 }
 
-void WhiteSkeleton::Init()
+void WhiteSkeleton::Move(int dirX, int dirY)
 {
+
 }
 
-void WhiteSkeleton::Update()
+POINT WhiteSkeleton::DestinationValidationCheck()
 {
-}
 
-void WhiteSkeleton::Release()
-{
-	SafeDelete(mUpLeftAnimation);
-	SafeDelete(mUpRightAnimation);
-	SafeDelete(mDownLeftAnimation);
-	SafeDelete(mDownRightAnimation);
-}
-
-void WhiteSkeleton::Render(HDC hdc)
-{
 }

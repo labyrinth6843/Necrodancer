@@ -8,8 +8,13 @@ public:
 	Animation* mUpRightAnimation;
 	Animation* mDownLeftAnimation;
 	Animation* mDownRightAnimation;
+
+	bool mIsLeft;
 public:
 	WhiteSkeleton(const string& name, int x, int y);
+
+	void Move(int dirX, int dirY);
+	POINT DestinationValidationCheck();
 
 	void Attack()override;
 	void IsAttacked(int dmg)override;
