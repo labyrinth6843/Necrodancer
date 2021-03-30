@@ -4,6 +4,7 @@
 
 class Ground : public GameObject
 {
+	wstring mFileName;
 	Image* mBack;
 	vector<vector<AlphaTile>> mGroundList;	//Test00.txt
 
@@ -20,7 +21,7 @@ class Ground : public GameObject
 
 	int mSightCall;
 public:
-	Ground(const string &name, int startx = 0, int starty = 0);
+	Ground(const string &name, const wstring& filename, int startx = 0, int starty = 0);
 	virtual void Init();
 	virtual void Release();
 	virtual void Update();

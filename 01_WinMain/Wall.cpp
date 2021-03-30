@@ -3,12 +3,16 @@
 #include "Camera.h"
 #include "Ground.h"
 
-Wall::Wall(const string& name) : GameObject(name) {}
+Wall::Wall(const string& name, const wstring& wallfilename, const wstring& decofilename) : GameObject(name)
+{
+	mWallFileName = wallfilename;
+	mDecoFileName = decofilename;
+}
 
 void Wall::Init(){
 	SetGroundPtr("Ground");
-	FileManager::LoadMap(L"Test01", mWallList, TileSize, 72);
-	FileManager::LoadMap(L"Test02", mDecoList, TileSize);
+	FileManager::LoadMap(mWallFileName, mWallList, TileSize, 72);
+	FileManager::LoadMap(mDecoFileName, mDecoList, TileSize);
 
 	mMapSizeY = mWallList.size();
 	mMapSizeX = mWallList[0].size();

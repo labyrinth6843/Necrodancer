@@ -80,8 +80,6 @@ void MapToolScene::Init()
 	mButtonList.insert(make_pair(L"Save", new Button(L"Save", L"Save", 250, 50, 200, 50, bind(&MapToolScene::Save, this))));
 	mButtonList.insert(make_pair(L"Load", new Button(L"Load", L"Load", 350, 50, 200, 50, [this]() 
 		{
-			//지금은 무조건 같은 파일만 불러와진다
-			Path::OpenFileDialog(L"", nullptr, L"../04_Data/", nullptr, _hWnd);
 
 			FileManager::LoadMap(L"Test00", mGroundList, TileSize);
 			FileManager::LoadMap(L"Test01", mWallList, TileSize, 72);
