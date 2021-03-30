@@ -253,29 +253,23 @@ void YellowSkeleton::Update()
 
 				if (WallCheck(temp.x, temp.y) == false) {
 					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr) {
-						if (mPlayerPtr->GetX() / TileSize == mDestIndexX && mPlayerPtr->GetY() / TileSize == mDestIndexY)
-						{
-							Hop();
-						}
-						else
+						if (mPlayerPtr->GetX() / TileSize != mDestIndexX || mPlayerPtr->GetY() / TileSize != mDestIndexY)
 							Move(temp.x, temp.y);
+						else
+							Hop();
 					}
-					else {
+					else
 						Hop();
-					}
 				}
 				else
 					Hop();
-
 			}
 		}
 		if (mIsMove == true) {
 			mMoveTime += Time::GetInstance()->DeltaTime();
 			float ratio = mMoveTime / 0.15f;
-			if (mIsHop == true) {
-				mX = Math::Lerp(mInitX, mDestX, ratio);
-				mY = Math::Lerp(mInitY, mDestY, ratio);
-			}
+			mX = Math::Lerp(mInitX, mDestX, ratio);
+			mY = Math::Lerp(mInitY, mDestY, ratio);
 
 			mCorrectionY -= mJumpPower * Time::GetInstance()->DeltaTime();
 			mJumpPower -= 200.f * Time::GetInstance()->DeltaTime();
@@ -285,6 +279,18 @@ void YellowSkeleton::Update()
 				mX = mDestX;
 				mY = mDestY;
 				mIsMove = false;
+				mCorrectionY = 0.f;
+			}
+		}
+		if (mIsHop == true) {
+			mMoveTime += Time::GetInstance()->DeltaTime();
+			float ratio = mMoveTime / 0.15f;
+
+			mCorrectionY -= mJumpPower * Time::GetInstance()->DeltaTime();
+			mJumpPower -= 200.f * Time::GetInstance()->DeltaTime();
+			
+			if (ratio >= 1.f)
+			{
 				mIsHop = false;
 				mCorrectionY = 0.f;
 			}
@@ -311,7 +317,6 @@ void YellowSkeleton::Render(HDC hdc)
 
 void YellowSkeleton::Hop(){
 	mMoveTime = 0.f;
-	mIsMove = true;
 	mIsHop = true;
 
 	mCorrectionY = 0.f;
