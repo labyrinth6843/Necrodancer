@@ -45,7 +45,7 @@ void FileManager::LoadResource()
 
 	//{{ 아이템 관련 이미지
 	ImageManager::GetInstance()->LoadFromFile(L"Weapon", Resources(L"Item/Weapon.bmp"), 243, 324, 9, 12, true);
-	ImageManager::GetInstance()->LoadFromFile(L"Armor", Resources(L"Item/Armor.bmp"), 260, 52, 10, 2, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Armor", Resources(L"Item/Armor.bmp"), 234, 52, 9, 2, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Torch", Resources(L"Item/Torch.bmp"), 189, 54, 7, 2, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Shovel", Resources(L"Item/Shovel.bmp"), 208, 52, 8, 2, true);
 	//}}
