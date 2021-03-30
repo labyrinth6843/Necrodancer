@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClInclude Include="01_WinMain.h" />
     <ClInclude Include="Animation.h" />
+    <ClInclude Include="Coin.h" />
     <ClInclude Include="DireBat.h" />
     <ClInclude Include="GreyBat.h" />
     <ClInclude Include="Beat.h" />
@@ -211,6 +212,7 @@
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp" />
     <ClCompile Include="Animation.cpp" />
+    <ClCompile Include="Coin.cpp" />
     <ClCompile Include="DireBat.cpp" />
     <ClCompile Include="GreyBat.cpp" />
     <ClCompile Include="Beat.cpp" />
