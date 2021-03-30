@@ -3,8 +3,8 @@
 
 WhiteSkeleton::WhiteSkeleton(const string& name, int x, int y):Enemy(name)
 {
-	mX = x;
-	mY = y;
+	mX = x * TileSize;
+	mY = y * TileSize;
 
 	mHp = 1;
 	mCoin = 2;
@@ -15,29 +15,83 @@ WhiteSkeleton::WhiteSkeleton(const string& name, int x, int y):Enemy(name)
 
 	mImage = ImageManager::GetInstance()->FindImage(L"Skeleton1");
 
-	mUpLeftAnimation = new Animation();
-	mUpLeftAnimation->InitFrameByStartEnd(0, 0, 7, 0, false);
-	mUpLeftAnimation->SetFrameUpdateTime(0.1f);
-	mUpLeftAnimation->SetIsLoop(true);
-	mUpLeftAnimation->Play();
+	mUpLeftReadyAnimation = new Animation();
+	mUpLeftReadyAnimation->InitFrameByStartEnd(0, 0, 3, 0, false);
+	mUpLeftReadyAnimation->SetFrameUpdateTime(0.1f);
+	mUpLeftReadyAnimation->SetIsLoop(true);
+	mUpLeftReadyAnimation->Play();
 
-	mUpRightAnimation = new Animation();
-	mUpRightAnimation->InitFrameByStartEnd(0, 2, 7, 2, false);
-	mUpRightAnimation->SetFrameUpdateTime(0.1f);
-	mUpRightAnimation->SetIsLoop(true);
-	mUpRightAnimation->Play();
+	mUpLeftMoveAnimation = new Animation();
+	mUpLeftMoveAnimation->InitFrameByStartEnd(4, 0, 7, 0, false);
+	mUpLeftMoveAnimation->SetFrameUpdateTime(0.1f);
+	mUpLeftMoveAnimation->SetIsLoop(true);
+	mUpLeftMoveAnimation->Play();
 
-	mDownLeftAnimation = new Animation();
-	mDownLeftAnimation->InitFrameByStartEnd(0, 4, 7, 4, false);
-	mDownLeftAnimation->SetFrameUpdateTime(0.1f);
-	mDownLeftAnimation->SetIsLoop(true);
-	mDownLeftAnimation->Play();
+	mUpRightReadyAnimation = new Animation();
+	mUpRightReadyAnimation->InitFrameByStartEnd(0, 2, 3, 2, false);
+	mUpRightReadyAnimation->SetFrameUpdateTime(0.1f);
+	mUpRightReadyAnimation->SetIsLoop(true);
+	mUpRightReadyAnimation->Play();
 
-	mDownRightAnimation = new Animation();
-	mDownRightAnimation->InitFrameByStartEnd(0, 6, 7, 6, false);
-	mDownRightAnimation->SetFrameUpdateTime(0.1f);
-	mDownRightAnimation->SetIsLoop(true);
-	mDownRightAnimation->Play();
+	mUpRightMoveAnimation = new Animation();
+	mUpRightMoveAnimation->InitFrameByStartEnd(4, 2, 7, 2, false);
+	mUpRightMoveAnimation->SetFrameUpdateTime(0.1f);
+	mUpRightMoveAnimation->SetIsLoop(true);
+	mUpRightMoveAnimation->Play();
+
+	mDownLeftReadyAnimation = new Animation();
+	mDownLeftReadyAnimation->InitFrameByStartEnd(0, 4, 3, 4, false);
+	mDownLeftReadyAnimation->SetFrameUpdateTime(0.1f);
+	mDownLeftReadyAnimation->SetIsLoop(true);
+	mDownLeftReadyAnimation->Play();
+
+	mDownLeftMoveAnimation = new Animation();
+	mDownLeftMoveAnimation->InitFrameByStartEnd(4, 4, 7, 4, false);
+	mDownLeftMoveAnimation->SetFrameUpdateTime(0.1f);
+	mDownLeftMoveAnimation->SetIsLoop(true);
+	mDownLeftMoveAnimation->Play();
+
+	mDownRightReadyAnimation = new Animation();
+	mDownRightReadyAnimation->InitFrameByStartEnd(0, 6, 7, 6, false);
+	mDownRightReadyAnimation->SetFrameUpdateTime(0.1f);
+	mDownRightReadyAnimation->SetIsLoop(true);
+	mDownRightReadyAnimation->Play();
+
+	mDownRightMoveAnimation = new Animation();
+	mDownRightMoveAnimation->InitFrameByStartEnd(0, 6, 7, 6, false);
+	mDownRightMoveAnimation->SetFrameUpdateTime(0.1f);
+	mDownRightMoveAnimation->SetIsLoop(true);
+	mDownRightMoveAnimation->Play();
+
+	if (Random::GetInstance()->RandomInt(2) == 0)
+		mIsLeft = true;
+	else
+		mIsLeft = false;
+
+	mMoveBeat = false;
+
+	mDirection = Random::GetInstance()->RandomInt(100) % 4;
+
+	switch (mDirection) {
+	case 0:
+		if(mIsLeft == true)
+			mCurrentAnimation = mUpLeftReadyAnimation;
+		else
+			mCurrentAnimation = mUpRightReadyAnimation;
+		break;
+	case 1:
+		mCurrentAnimation = mDownLeftReadyAnimation;
+		break;
+	case 2:
+		mCurrentAnimation = mDownRightReadyAnimation;
+		break;
+	case 3:
+		if(mIsLeft == true)
+			mCurrentAnimation = mDownLeftReadyAnimation;
+		else
+			mCurrentAnimation = mDownRightReadyAnimation;
+		break;
+	}
 }
 
 void WhiteSkeleton::Init()
@@ -49,18 +103,59 @@ void WhiteSkeleton::Update()
 	//수정해야 함
 	if (Beat::GetInstance()->NextTurn() == true) {
 		if (mIsMove == false) {
-			if (mIsLeft == true)
-				mCurrentAnimation = mLeftAnimation;
-			else
-				mCurrentAnimation = mRightAnimation;
-			POINT temp = DestinationValidationCheck();
-			if (WallCheck(temp.x, temp.y) == false) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr) {
-					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX &&
-						ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY)
-						Attack();
+			mMoveBeat = !mMoveBeat;
+			if (mMoveBeat == true) {
+				POINT temp = DirectionDecision();
+				switch (mDirection) {
+				case 0:
+					if (mIsLeft == true)
+						mCurrentAnimation = mUpLeftMoveAnimation;
 					else
-						Move(temp.x, temp.y);
+						mCurrentAnimation = mUpRightMoveAnimation;
+					break;
+				case 1:
+					mCurrentAnimation = mDownLeftMoveAnimation;
+					break;
+				case 2:
+					mCurrentAnimation = mDownRightMoveAnimation;
+					break;
+				case 3:
+					if (mIsLeft == true)
+						mCurrentAnimation = mDownLeftMoveAnimation;
+					else
+						mCurrentAnimation = mDownRightMoveAnimation;
+					break;
+				}
+				if (WallCheck(temp.x, temp.y) == false) {
+					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr) {
+						if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX &&
+							ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY)
+							Attack();
+						else
+							Move(temp.x, temp.y);
+					}
+				}
+			}
+			else {
+				switch (mDirection) {
+				case 0:
+					if (mIsLeft == true)
+						mCurrentAnimation = mUpLeftReadyAnimation;
+					else
+						mCurrentAnimation = mUpRightReadyAnimation;
+					break;
+				case 1:
+					mCurrentAnimation = mDownLeftReadyAnimation;
+					break;
+				case 2:
+					mCurrentAnimation = mDownRightReadyAnimation;
+					break;
+				case 3:
+					if (mIsLeft == true)
+						mCurrentAnimation = mDownLeftReadyAnimation;
+					else
+						mCurrentAnimation = mDownRightReadyAnimation;
+					break;
 				}
 			}
 		}
@@ -96,15 +191,19 @@ void WhiteSkeleton::Update()
 
 void WhiteSkeleton::Release()
 {
-	SafeDelete(mUpLeftAnimation);
-	SafeDelete(mUpRightAnimation);
-	SafeDelete(mDownLeftAnimation);
-	SafeDelete(mDownRightAnimation);
+	SafeDelete(mUpLeftReadyAnimation);
+	SafeDelete(mUpLeftMoveAnimation);
+	SafeDelete(mUpRightReadyAnimation);
+	SafeDelete(mUpRightMoveAnimation);
+	SafeDelete(mDownLeftReadyAnimation);
+	SafeDelete(mDownLeftMoveAnimation);
+	SafeDelete(mDownRightReadyAnimation);
+	SafeDelete(mDownRightMoveAnimation);
 }
 
 void WhiteSkeleton::Render(HDC hdc)
 {
-
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY + mCorrectionY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 39, 39);
 }
 
 void WhiteSkeleton::Attack() {
@@ -127,10 +226,69 @@ void WhiteSkeleton::IsAttacked(int dmg)
 
 void WhiteSkeleton::Move(int dirX, int dirY)
 {
+	mMoveTime = 0.f;
+	mIsMove = true;
 
+	Ground* ground;
+	if (ObjectManager::GetInstance()->FindObject("Ground"))
+		ground = (Ground*)ObjectManager::GetInstance()->FindObject("Ground");
+	else
+		return;
+
+	mDestX = mX + TileSize * dirX;
+	mDestY = mY + TileSize * dirY;
+
+	mDestIndexX = mDestX / TileSize;
+	mDestIndexY = mDestY / TileSize;
+
+	mInitX = mX;
+	mInitY = mY;
+	mCorrectionY = 0.f;
+	mJumpPower = 150.f;
+
+	if (ground->IsMove(mDestIndexX, mDestIndexY))
+		mIsMove = true;
+	else
+		mIsMove = false;
 }
 
-POINT WhiteSkeleton::DestinationValidationCheck()
+POINT WhiteSkeleton::DirectionDecision()
 {
-	return { 0,0 };
+	GameObject* temp = ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
+
+	int disX = abs(mX / TileSize - temp->GetX() / TileSize);
+	int disY = abs(mY / TileSize - temp->GetY() / TileSize);
+
+	if (disX > disY) {
+		if (mX > temp->GetX()) {
+			mDirection = 1;
+			return { -1,0 };
+		}
+		else {
+			mDirection = 2;
+			return { 1, 0 };
+		}
+	}
+	else if(disX < disY){
+		if (mY > temp->GetY()) {
+			mDirection = 0;
+			return { 0, -1 };
+		}
+		else {
+			mDirection = 3;
+			return { 0, 1 };
+		}	
+	}
+	else {
+		switch (mDirection) {
+		case 0:
+			return { 0, -1 };
+		case 1:
+			return { -1,0 };
+		case 2:
+			return { 1, 0 };
+		case 3:
+			return { 0, 1 };
+		}
+	}
 }

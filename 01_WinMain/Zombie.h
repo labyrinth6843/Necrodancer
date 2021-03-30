@@ -4,13 +4,13 @@
 class Zombie:public Enemy
 {
 public:
+	bool mIsLeft;
+	bool mMoveBeat;
+
 	Animation* mUpLeftAnimation;
 	Animation* mUpRightAnimation;
 	Animation* mDownLeftAnimation;
 	Animation* mDownRightAnimation;
-
-	bool mIsLeft;
-	bool mMoveBeat;
 public:
 	Zombie(const string& name, int x, int y);
 

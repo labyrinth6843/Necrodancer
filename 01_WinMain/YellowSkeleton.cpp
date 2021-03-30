@@ -97,5 +97,5 @@ void YellowSkeleton::Update()
 
 void YellowSkeleton::Render(HDC hdc)
 {
-
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 39, 39);
 }

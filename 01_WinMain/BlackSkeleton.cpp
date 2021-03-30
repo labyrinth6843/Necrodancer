@@ -99,5 +99,5 @@ void BlackSkeleton::Update()
 
 void BlackSkeleton::Render(HDC hdc)
 {
-
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 39, 39);
 }

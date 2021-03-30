@@ -4,17 +4,25 @@
 class WhiteSkeleton:public Enemy
 {
 public:
-	Animation* mUpLeftAnimation;
-	Animation* mUpRightAnimation;
-	Animation* mDownLeftAnimation;
-	Animation* mDownRightAnimation;
-
 	bool mIsLeft;
+	bool mMoveBeat;
+	
+	Animation* mUpLeftReadyAnimation;
+	Animation* mUpLeftMoveAnimation;
+
+	Animation* mUpRightReadyAnimation;
+	Animation* mUpRightMoveAnimation;
+
+	Animation* mDownLeftReadyAnimation;
+	Animation* mDownLeftMoveAnimation;
+
+	Animation* mDownRightReadyAnimation;
+	Animation* mDownRightMoveAnimation;
 public:
 	WhiteSkeleton(const string& name, int x, int y);
 
 	void Move(int dirX, int dirY);
-	POINT DestinationValidationCheck();
+	POINT DirectionDecision();
 
 	void Attack()override;
 	void IsAttacked(int dmg)override;

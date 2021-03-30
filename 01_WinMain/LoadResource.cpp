@@ -209,7 +209,7 @@ void FileManager::LoadResource()
 	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_hit_1", Resources(L"Sound/voice/Enemy/skeleton/en_skel_hit_01.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_hit_2", Resources(L"Sound/voice/Enemy/skeleton/en_skel_hit_02.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_hit_3", Resources(L"Sound/voice/Enemy/skeleton/en_skel_hit_03.mp3"), false);
-	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_death", Resources(L"Sound/voice/Enemy/skeleton/en_skel_eath.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_death", Resources(L"Sound/voice/Enemy/skeleton/en_skel_death.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_head_loss_1", Resources(L"Sound/voice/Enemy/skeleton/en_skel_head_loss_01.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_head_loss_2", Resources(L"Sound/voice/Enemy/skeleton/en_skel_head_loss_02.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"skeleton_head_loss_3", Resources(L"Sound/voice/Enemy/skeleton/en_skel_head_loss_03.mp3"), false);
