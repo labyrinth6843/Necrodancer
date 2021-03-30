@@ -175,6 +175,7 @@
     <ClInclude Include="GreenSlime.h" />
     <ClInclude Include="Ground.h" />
     <ClInclude Include="Helper.h" />
+    <ClInclude Include="Hud.h" />
     <ClInclude Include="Image.h" />
     <ClInclude Include="ImageManager.h" />
     <ClInclude Include="Input.h" />
@@ -237,6 +238,7 @@
     <ClCompile Include="Gizmo.cpp" />
     <ClCompile Include="GreenSlime.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="Hud.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Input.cpp" />

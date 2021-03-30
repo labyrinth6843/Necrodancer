@@ -145,9 +145,6 @@
     <Filter Include="MainGame\Object\NPC">
       <UniqueIdentifier>{0ab3a520-e50a-41e4-8641-afb3bcf83c94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\Object\UI">
-      <UniqueIdentifier>{46876753-ca6e-4b6b-8e5a-ebaa587e2f6f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MainGame\Object\Enemy\Nightmare">
       <UniqueIdentifier>{8ab094c6-f5e9-48c1-b128-6f20eb8807b9}</UniqueIdentifier>
     </Filter>
@@ -165,6 +162,9 @@
     </Filter>
     <Filter Include="MainGame\Object\Item\Shovel">
       <UniqueIdentifier>{d196e37f-20c5-45a9-b7f9-47971367d128}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Object\HUD">
+      <UniqueIdentifier>{46876753-ca6e-4b6b-8e5a-ebaa587e2f6f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -360,6 +360,9 @@
     <ClInclude Include="Weapon.h">
       <Filter>MainGame\Object\Item\Weapon</Filter>
     </ClInclude>
+    <ClInclude Include="Hud.h">
+      <Filter>MainGame\Object\HUD</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -550,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="Weapon.cpp">
       <Filter>MainGame\Object\Item\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="Hud.cpp">
+      <Filter>MainGame\Object\HUD</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
