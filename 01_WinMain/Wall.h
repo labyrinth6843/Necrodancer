@@ -17,6 +17,7 @@ class Wall:public GameObject
 {
 	Image* mWallShadow;
 	Ground* mGroundPtr;
+
 	vector<vector<Tile*>> mWallList;
 	vector<vector<Tile*>> mDecoList;
 
@@ -24,6 +25,12 @@ class Wall:public GameObject
 	int mMapSizeY;
 
 	int mDigLevel;
+
+	int mMinIndexX;
+	int mMinIndexY;
+	int mMaxIndexX;
+	int mMaxIndexY;
+
 public:
 	Wall(const string& name);
 

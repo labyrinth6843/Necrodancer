@@ -94,10 +94,12 @@ Weapon::Weapon(float posx, float posy, WeaponType type, WeaponMaterial material,
 void Weapon::Release()
 {
 	mPlayer = nullptr;
+	mGroundPtr = nullptr;
 }
 
 void Weapon::Update()
 {
+
 	//습득했을때
 	if (mState == ItemState::Owned)
 	{
@@ -110,6 +112,17 @@ void Weapon::Update()
 			mImage.FrameX = 4 + mAtk;	//5~7
 		}
 	}
+	else
+	{
+		float alpha = 1.f;
+		if (mGroundPtr->GetAlpha(mX, mY, alpha))
+		{
+			if (alpha < 0.4f)
+				mIsShadow = true;
+			else
+				mIsShadow = false;
+		}
+	}
 }
 
 void Weapon::Render(HDC hdc)
@@ -120,9 +133,18 @@ void Weapon::Render(HDC hdc)
 		{
 			if (CameraManager::GetInstance()->GetMainCamera()->IsInCameraArea(mX, mY))
 			{
-				CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc,mImage.Image,
-					mX, mY ,
-					mImage.FrameX, mImage.FrameY, TileSize, TileSize);
+				if (mIsShadow)
+				{
+					CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage.Image,
+						mX, mY,
+						mImage.FrameX, mImage.FrameY+1, TileSize, TileSize);
+				}
+				else
+				{
+					CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc,mImage.Image,
+						mX, mY ,
+						mImage.FrameX, mImage.FrameY, TileSize, TileSize);
+				}
 			}
 		}
 		else if (mState == ItemState::Owned)

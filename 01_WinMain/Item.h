@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Animation.h"
 #include "Image.h"
+#include "Ground.h"
 
 //아이템 재료
 enum class ItemMaterial {
@@ -39,10 +40,14 @@ protected:
 	ItemState mState;
 	ItemType mType;
 
+	Ground* mGroundPtr;
+
 	int mMinIndexX;
 	int mMinIndexY;
 	int mMaxIndexX;
 	int mMaxIndexY;
+
+	bool mIsShadow = false;
 public:
 	Item();
 
@@ -51,6 +56,7 @@ public:
 	void Release()override;
 	void Render(HDC hdc)override;
 
+public:
 	FrameImage GetFrameImage() { return mImage; }
 	POINT GetPosition() { return POINT{ (long)mX,(long)mY }; }
 	float GetPositionX() { return mX; }
@@ -66,5 +72,13 @@ public:
 	void SetMaterial(ItemMaterial mt) { mMaterial = mt; }
 	void SetState(ItemState st) { mState = st; }
 	void SetType(ItemType t) { mType = t; }
+
+	void SetGroundPtr(Ground* gptr) { mGroundPtr = gptr; }
+	void SetGroundPtr(GameObject* gptr)
+	{ 
+		if(gptr)
+		 mGroundPtr = (Ground*)gptr; 
+	}
+	Ground* GetGroundPtr() { return mGroundPtr; }
 };
 

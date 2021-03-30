@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "Tile.h"
 #include "GameObject.h"
+#include "Wall.h"
 
 class Ground : public GameObject
 {
@@ -29,7 +30,10 @@ public:
 public:
 	bool GetSight(int targetX, int targetY, int level);
 	bool GetAlpha(int indexX, int indexY, float& alpha);	//Wall 클래스에서 호출할 함수
+	bool GetAlpha(float posX, float posY, float & alpha);
 	bool IsMove(int indexX, int indexY);	//이동하고자 하는 바닥타일의 인덱스를 인자로 받는다
+
+	void GetShowArea(int &minx, int &miny, int &maxx, int &maxy);
 
 	POINT GetMapSize()
 	{

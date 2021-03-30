@@ -53,7 +53,8 @@ void Player::Init() {
 
 	//초반 장착 아이템
 	mWeapon = new Weapon(-10.f, -10.f, WeaponType::Rapier, WeaponMaterial::Glass, ItemState::Owned);
-	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, mWeapon);
+	mWeapon->SetGroundPtr((Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground"));
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)mWeapon);
 	//
 }
 
@@ -142,7 +143,7 @@ void Player::Update() {
 			mShowShovel = false;
 	}
 
-	Ground* tempGround = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
+	Ground* tempGround = (Ground*)ObjectManager::GetInstance()->FindObject("Ground");
 	tempGround->GetSight(mX / TileSize, mY / TileSize, (int)10);
 
 	mCurrentHeadAnimation->Update();
@@ -263,21 +264,24 @@ void Player::Attack(GameObject* object) {
 
 void Player::Equip(POINT index) {
 
-	Item* newWeapon = (Item*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Item, index);
+	Item* newItem = (Item*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Item, index);
 
-	if (newWeapon == nullptr)
+	if (newItem == nullptr)
 		return;
 
-	switch (newWeapon->GetType())
+	switch (newItem->GetType())
 	{
 	case ItemType::Weapon:
 		mWeapon->SetState(ItemState::NotOwned);
 		mWeapon->SetPosition(index.x * TileSize, index.y * TileSize);
 
-		mWeapon = (Weapon*)newWeapon;
+		mWeapon = (Weapon*)newItem;
 		mWeapon->SetState(ItemState::Owned);
 		mWeapon->SetPosition(-10.f, -10.f);
 		mAtk = mWeapon->GetAtk();
+		//{{~ 무기 착용 사운드 삽입
+
+		//~}}
 		break;
 
 		//이후에 아이템 등급을 비교해서 교체하도록 기능 추가

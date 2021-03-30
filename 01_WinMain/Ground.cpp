@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "Ground.h"
 #include "Camera.h"
-#include "Wall.h"
+
 Ground::Ground(const string &name, int startx, int starty) : GameObject(name)
 {
 	mX = startx;
@@ -89,7 +89,6 @@ void Ground::Release()
 		}
 	}
 	mGroundList.clear();
-	mGroundList.shrink_to_fit();
 }
 
 void Ground::Update()
@@ -311,6 +310,21 @@ bool Ground::GetAlpha(int indexX, int indexY, float &alpha)
 	return false;
 }
 
+bool Ground::GetAlpha(float posX, float posY, float &alpha)
+{
+	int indexX = posX / TileSize;
+	int indexY = posY / TileSize;
+
+	if (indexX < 0 || indexX >= mMapSizeX || indexY < 0 || indexY >= mMapSizeY)
+		return false;
+	if (mGroundList[indexY][indexX].Tile->GetFrameIndexX() != 7 || mGroundList[indexY][indexX].Tile->GetFrameIndexY() != 1)
+	{
+		alpha = mGroundList[indexY][indexX].Alpha;
+		return true;
+	}
+	return false;
+}
+
 bool Ground::IsMove(int indexX, int indexY)
 {
 	//장외처리
@@ -320,4 +334,12 @@ bool Ground::IsMove(int indexX, int indexY)
 	if (mGroundList[indexY][indexX].Tile->GetFrameIndexX() != 7 || mGroundList[indexY][indexX].Tile->GetFrameIndexY() != 1)
 		return true;
 	return false;
+}
+
+void Ground::GetShowArea(int &minx, int &miny, int &maxx, int &maxy)
+{
+	minx = mMinIndexX;
+	miny = mMinIndexY;
+	maxx = mMaxIndexX;
+	maxy = mMaxIndexY;
 }
