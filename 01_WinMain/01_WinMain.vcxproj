@@ -150,6 +150,7 @@
     <ClInclude Include="01_WinMain.h" />
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Armor.h" />
+    <ClInclude Include="BossScene.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="DireBat.h" />
     <ClInclude Include="Dragon.h" />
@@ -218,6 +219,7 @@
     <ClCompile Include="01_WinMain.cpp" />
     <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Armor.cpp" />
+    <ClCompile Include="BossScene.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="DireBat.cpp" />
     <ClCompile Include="Dragon.cpp" />

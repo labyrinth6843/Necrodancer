@@ -372,7 +372,13 @@ bool Player::AttackRangeCheck(const int& key)
 		}
 	}
 	if (attackCheck)
+	{
 		CameraManager::GetInstance()->GetMainCamera()->CameraShake();
+
+		int a = Random::GetInstance()->RandomInt(1, 4);
+		int b = Random::GetInstance()->RandomInt(1, 4);
+		SoundPlayer::GetInstance()->Play(L"melee_"+to_wstring(a)+L"_"+ to_wstring(b), 1.0f);
+	}
 	return attackCheck;
 }
 

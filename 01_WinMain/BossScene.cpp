@@ -49,7 +49,6 @@ void BossScene::Init() {
 	HUD->SetHp();
 
 	//테스트모드
-	BEAT->SetFreeMode(true);
 	BEAT->SetIsLoop(true);
 
 	//데이터저장 테스트
@@ -95,7 +94,6 @@ void BossScene::Render(HDC hdc) {
 void BossScene::Tool() {
 	SoundPlayer::GetInstance()->Stop(L"zone1_1");
 	SceneManager::GetInstance()->LoadScene(L"MapToolScene");
-
 }
 
 void BossScene::NextStage()
