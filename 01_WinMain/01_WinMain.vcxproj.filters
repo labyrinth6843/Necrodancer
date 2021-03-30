@@ -330,6 +330,9 @@
     <ClInclude Include="Coin.h">
       <Filter>MainGame\Object\Item</Filter>
     </ClInclude>
+    <ClInclude Include="Armor.h">
+      <Filter>MainGame\Object\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -510,6 +513,9 @@
       <Filter>MainGame\Object\NPC</Filter>
     </ClCompile>
     <ClCompile Include="Coin.cpp">
+      <Filter>MainGame\Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Armor.cpp">
       <Filter>MainGame\Object\Item</Filter>
     </ClCompile>
   </ItemGroup>

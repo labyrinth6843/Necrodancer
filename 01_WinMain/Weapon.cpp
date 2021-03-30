@@ -1,16 +1,19 @@
 ﻿#include "pch.h"
 #include "Weapon.h"
 #include "Item.h"
-#include "Player.h"
-#include "Camera.h"
 
 Weapon::Weapon(float posx, float posy, WeaponType type, WeaponMaterial material, ItemState state)
 {
 
-	if (ObjectManager::GetInstance()->FindObject("Player"))
+	if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player,"Player"))
 		mPlayer = (Player*)ObjectManager::GetInstance()->FindObject("Player");
 	else
 		mPlayer = nullptr;
+
+	if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground"))
+		mGroundPtr = (Ground*)ObjectManager::GetInstance()->FindObject("Ground");
+	else
+		mGroundPtr = nullptr;
 
 	mType = ItemType::Weapon;
 	mWeaponType = type;
@@ -104,16 +107,21 @@ void Weapon::Update()
 	if (mState == ItemState::Owned)
 	{
 		//옵시디언 타입이면
-		if (mMaterial == ItemMaterial::Obsidian)
+		if (mWeaponMaterial == WeaponMaterial::Obsidian)
 		{
 			mAtk = COMBO->GetCombo();
-			if (mAtk >= 3)	//1...3
-				mAtk = 3;
+			if (mAtk >= 3.f)	//1...3
+				mAtk = 3.f;
 			mImage.FrameX = 4 + mAtk;	//5~7
 		}
 	}
 	else
 	{
+		//옵시디언 타입이면
+		if (mWeaponMaterial == WeaponMaterial::Obsidian)
+		{
+			mImage.FrameX = 5;	//5~7
+		}
 		float alpha = 1.f;
 		if (mGroundPtr->GetAlpha(mX, mY, alpha))
 		{

@@ -2,20 +2,10 @@
 #include "Image.h"
 #include "GameObject.h"
 #include "Animation.h"
-#include "Weapon.h"
 
+class Weapon;
+class Armor;
 //갑옷 종류
-enum class ArmorType {
-	None,
-	Leather,
-	Chainmail,
-	Plate,
-	HeavyPlate,
-	Obsidian,
-	Glass,
-	Karate,
-	End
-};
 
 //삽 종류
 enum class ShovelType {
@@ -46,8 +36,8 @@ class Player:public GameObject{
 	Animation* mCurrentBodyAnimation;
 	
 	float mHp = 6;
-	float mDef = 0;
-	int mAtk = 1;
+	float mDef = 0.f;
+	float mAtk = 1.f;
 	int mShovelPower = 3;
 	bool mIsArmor = false;
 	
@@ -56,11 +46,9 @@ class Player:public GameObject{
 	float mShowShovelFrame;
 
 	//장착중인 아이템
-	ArmorType mArmorType = ArmorType::None;
 
 	Weapon* mWeapon;
-	WeaponType mWeaponType = WeaponType::Longsword;
-	WeaponMaterial mWeaponMaterial = WeaponMaterial::Basic;
+	Armor* mArmor;
 
 	int mCoin = 0;
 	float mStartX;

@@ -14,7 +14,7 @@ public:
 	inline int GetCombo() { return mCombo; }
 	inline void ComboUp()
 	{ 
-		if (mCombo == 0)
+		if (mCombo == 1)
 			SoundPlayer::GetInstance()->Play(L"combo_start", 1.f);
 		mCombo++;
 		if (mCombo > mMaxCombo)
@@ -23,14 +23,14 @@ public:
 	inline void ComboDown()
 	{ 
 		mCombo--;
-		if (mCombo < 0)
-			mCombo = 0;
+		if (mCombo < 1)
+			mCombo = 1;
 	}
 	inline void ComboReset()
 	{ 
-		if(mCombo != 0)
+		if(mCombo != 1)
 			SoundPlayer::GetInstance()->Play(L"combo_reset", 1.f);
-		mCombo = 0; 
+		mCombo = 1; 
 	}
 };
 #define COMBO Combo::GetInstance()

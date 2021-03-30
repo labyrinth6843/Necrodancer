@@ -201,7 +201,7 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 	//인자 예외처리
 	if (targetX < 0 || targetX >= mMapSizeX || targetY < 0 || targetY >= mMapSizeY)
 		return false;
-	if (level < 0)
+	if (level <= 0)
 		return false;
 
 	mSightCall++;
@@ -230,7 +230,7 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 	float lv = 1.f / (float)level;
 
 	//FloodFill 조건으로 사용
-	Wall* tempWall = (Wall*)ObjectManager::GetInstance()->FindObject("Wall");
+	Wall* tempWall = (Wall*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, "Wall");
 
 	//광원 위치만 밝게
 	mGroundList[targetY][targetX].Alpha = 1.f;

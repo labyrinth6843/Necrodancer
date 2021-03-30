@@ -217,12 +217,10 @@ bool Beat::IsDecision()
 	if (PtInRect(&mHeartImage.Rect, pos))
 	{
 		mTurn = true;
-		//COMBO->ComboUp(); //테스트용, 몬스터 사망시 호출되도록 한다
 		NoteSuccess();
 		return true;
 	}
 	//miss
-	//COMBO->ComboDown();
 	COMBO->ComboReset();
 	MissNote();
 	return false;

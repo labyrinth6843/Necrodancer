@@ -3,7 +3,7 @@
 
 Combo::Combo()
 {
-	mCombo = 0;
+	mCombo = 1;
 	mMaxCombo = 4;
 }
 

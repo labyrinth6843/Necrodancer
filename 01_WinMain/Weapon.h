@@ -35,8 +35,7 @@ enum class WeaponAttribute {
 
 class Weapon final : public Item
 {
-	Player* mPlayer;
-	int mAtk;
+	float mAtk;
 
 	WeaponType mWeaponType;
 	WeaponAttribute mWeaponAttribute;
@@ -55,7 +54,7 @@ public:
 	void SetWeaponAttribute(WeaponAttribute att) { mWeaponAttribute = att; }
 	void SetWeaponMaterial(WeaponMaterial mt) { mWeaponMaterial = mt; }
 
-	int GetAtk() { return mAtk; }
+	float GetAtk() { return mAtk; }
 	WeaponType GetWeaponType() { return mWeaponType; }
 	WeaponAttribute GetWeaponAttribute() { return mWeaponAttribute; }
 	WeaponMaterial GetWeaponMaterial() { return mWeaponMaterial; }

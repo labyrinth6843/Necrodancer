@@ -5,6 +5,8 @@
 #include "Wall.h"
 #include "Ground.h"
 #include "Item.h"
+#include "Weapon.h"
+#include "Armor.h"
 
 Player::Player(const string& name) : GameObject(name) {
 
@@ -15,6 +17,17 @@ void Player::Init() {
 	mHeadImage = ImageManager::GetInstance()->FindImage(L"Head");
 	mBodyImage = ImageManager::GetInstance()->FindImage(L"Body");
 	mShovelImage = ImageManager::GetInstance()->FindImage(L"Shovel");
+
+	//초반 장착 아이템
+	mWeapon = new Weapon(-10.f, -10.f, WeaponType::Rapier, WeaponMaterial::Glass, ItemState::Owned);
+	mWeapon->SetGroundPtr((Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground"));
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)mWeapon);
+
+	mArmor = new Armor(-10.f, -10.f, ArmorMaterial::Obsidian, ItemState::Owned);
+	mArmor->SetGroundPtr((Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground"));
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)mArmor);
+
+	//
 
 	//방향에 따른 머리, 몸통 애니메이션
 	mHeadLeftAnimation = new Animation();
@@ -30,13 +43,13 @@ void Player::Init() {
 	mHeadRightAnimation->Play();
 
 	mBodyLeftAnimation = new Animation();
-	mBodyLeftAnimation->InitFrameByStartEnd(4, (int)mArmorType, 7, (int)mArmorType, false);
+	mBodyLeftAnimation->InitFrameByStartEnd(4, (int)mArmor->GetArmorMaterial(), 7, (int)mArmor->GetArmorMaterial(), false);
 	mBodyLeftAnimation->SetIsLoop(true);
 	mBodyLeftAnimation->SetFrameUpdateTime(0.1f);
 	mBodyLeftAnimation->Play();
 
 	mBodyRightAnimation = new Animation();
-	mBodyRightAnimation->InitFrameByStartEnd(0, (int)mArmorType, 3, (int)mArmorType, false);
+	mBodyRightAnimation->InitFrameByStartEnd(0, (int)mArmor->GetArmorMaterial(), 3, (int)mArmor->GetArmorMaterial(), false);
 	mBodyRightAnimation->SetIsLoop(true);
 	mBodyRightAnimation->SetFrameUpdateTime(0.1f);
 	mBodyRightAnimation->Play();
@@ -51,11 +64,6 @@ void Player::Init() {
 	mCurrentHeadAnimation = mHeadRightAnimation;
 	mCurrentBodyAnimation = mBodyRightAnimation;
 
-	//초반 장착 아이템
-	mWeapon = new Weapon(-10.f, -10.f, WeaponType::Rapier, WeaponMaterial::Glass, ItemState::Owned);
-	mWeapon->SetGroundPtr((Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground"));
-	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)mWeapon);
-	//
 }
 
 void Player::Release() {
@@ -151,7 +159,17 @@ void Player::Update() {
 }
 
 void Player::Render(HDC hdc) {
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX + 5, mY + mCorrectionY + 6, mCurrentBodyAnimation->GetNowFrameX(), mCurrentBodyAnimation->GetNowFrameY(), 34, 30);
+	if (mArmor->GetArmorMaterial() == ArmorMaterial::Obsidian)
+	{
+		int combo = (int)(mArmor->GetDef()/0.5f);
+		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX + 5, mY + mCorrectionY + 6,
+			mCurrentBodyAnimation->GetNowFrameX(), (int)mArmor->GetArmorMaterial() + combo, 34, 30);
+	}
+	else
+	{
+		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX + 5, mY + mCorrectionY + 6,
+			mCurrentBodyAnimation->GetNowFrameX(), (int)mArmor->GetArmorMaterial(), 34, 30);
+	}
 	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mHeadImage, mX + 5 + 2, mY + mCorrectionY + 6 - 14, mCurrentHeadAnimation->GetNowFrameX(), mCurrentHeadAnimation->GetNowFrameY(), 28, 22);
 	if (mShowShovel == true)
 		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mShovelImage, mEndX, mEndY, (int)mShovelType - 1, 0, TileSize, TileSize);
@@ -259,7 +277,6 @@ void Player::Attack(GameObject* object) {
 	Enemy* temp = (Enemy*)object;
 
 	temp->IsAttacked(mAtk);
-	Combo::GetInstance()->ComboUp();
 }
 
 void Player::Equip(POINT index) {

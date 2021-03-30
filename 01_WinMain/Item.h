@@ -3,7 +3,9 @@
 #include "Animation.h"
 #include "Image.h"
 #include "Ground.h"
+#include "Player.h"
 
+#include "Camera.h"
 //아이템 재료
 enum class ItemMaterial {
 	Basic,
@@ -40,6 +42,7 @@ protected:
 	ItemState mState;
 	ItemType mType;
 
+	Player* mPlayer;
 	Ground* mGroundPtr;
 
 	int mMinIndexX;
