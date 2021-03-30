@@ -42,3 +42,4 @@
 *.ilk
 .vs/01_WinMain/v15/.suo
 *.recipe
+01_WinMain/x64/Debug/hphud.obj.enc

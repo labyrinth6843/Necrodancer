@@ -18,8 +18,9 @@ void Hud::UpdateHp()
 	int index = 0;
 	for (int i = 0; i < count; ++i)
 	{
-		mHp[index].FrameX = i % 3;	//0,1,2
-		if (mHp[index].FrameX == 2)
+		if(mHp[index].FrameX < 2)
+			mHp[index].FrameX++;	//0,1,2
+		if (mHp[index].FrameX >= 2)
 		{
 			index++;
 			//혹시모르는 예외처리
