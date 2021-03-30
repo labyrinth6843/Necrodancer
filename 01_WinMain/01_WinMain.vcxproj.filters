@@ -145,6 +145,12 @@
     <Filter Include="MainGame\Object\NPC">
       <UniqueIdentifier>{0ab3a520-e50a-41e4-8641-afb3bcf83c94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Object\Enemy\Nightmare">
+      <UniqueIdentifier>{8ab094c6-f5e9-48c1-b128-6f20eb8807b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\Object\Enemy\Dragon">
+      <UniqueIdentifier>{eaeecaa1-f97f-4bb0-9bc3-d9d33723575e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -333,6 +339,12 @@
     <ClInclude Include="Armor.h">
       <Filter>MainGame\Object\Item</Filter>
     </ClInclude>
+    <ClInclude Include="Nightmare.h">
+      <Filter>MainGame\Object\Enemy\Nightmare</Filter>
+    </ClInclude>
+    <ClInclude Include="Dragon.h">
+      <Filter>MainGame\Object\Enemy\Dragon</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -517,6 +529,12 @@
     </ClCompile>
     <ClCompile Include="Armor.cpp">
       <Filter>MainGame\Object\Item</Filter>
+    </ClCompile>
+    <ClCompile Include="Nightmare.cpp">
+      <Filter>MainGame\Object\Enemy\Nightmare</Filter>
+    </ClCompile>
+    <ClCompile Include="Dragon.cpp">
+      <Filter>MainGame\Object\Enemy\Dragon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

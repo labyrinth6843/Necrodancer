@@ -57,12 +57,12 @@ vector<class Tile*> PathFinder::FindPath(const vector<vector<class Tile*>>& tile
 	while (true)
 	{
 		//개조필요함
-		/*
+
 		//뭔가 잘못되었다???
 		if (currentTile == nullptr)return result;
 
-		int currentIndexX = currentTile->mIndexX;
-		int currentIndexY = currentTile->mIndexY;
+		int currentIndexX = currentTile->GetFrameIndexX();
+		int currentIndexY = currentTile->GetFrameIndexY();
 		// {{ 주변 8개 타일 검사~
 
 		for (int y = currentIndexY - 1; y <= currentIndexY + 1; ++y)
@@ -79,7 +79,7 @@ vector<class Tile*> PathFinder::FindPath(const vector<vector<class Tile*>>& tile
 
 				if (dummyList[y][x].IsClose == true)continue;
 
-				if (tileList[y][x]->mType == Tile::Type::Block)
+				if (tileList[y][x]->GetFrameIndexX() != 0 && tileList[y][x]->GetFrameIndexY() != 0)
 				{
 					dummyList[y][x].IsClose = true;
 					dummyList[y][x].IsOpen = true;
@@ -91,9 +91,9 @@ vector<class Tile*> PathFinder::FindPath(const vector<vector<class Tile*>>& tile
 					dummyList[y][x].IsOpen = true;
 					dummyList[y][x].Parent = currentTile;
 					dummyList[y][x].CostFromStart =
-						dummyList[currentTile->mIndexY][currentTile->mIndexX].CostFromStart + 1;
+						dummyList[currentTile->GetFrameIndexY()][currentTile->GetFrameIndexX()].CostFromStart + 1;
 					dummyList[y][x].CostToEnd =
-						CalcHeuristic(x, y, arrivalX, arrivalY, DefaultTileSize);
+						CalcHeuristic(x, y, arrivalX, arrivalY, TileSize);
 					dummyList[y][x].CostTotal =
 						dummyList[y][x].CostFromStart + dummyList[y][x].CostToEnd;
 
@@ -135,8 +135,8 @@ vector<class Tile*> PathFinder::FindPath(const vector<vector<class Tile*>>& tile
 				continue;
 			}
 
-			if (dummyList[openList[i]->mIndexY][openList[i]->mIndexX].CostTotal <
-				dummyList[tileMin->mIndexY][tileMin->mIndexX].CostToEnd)
+			if (dummyList[openList[i]->GetFrameIndexY()][openList[i]->GetFrameIndexX()].CostTotal <
+				dummyList[tileMin->GetFrameIndexY()][tileMin->GetFrameIndexX()].CostToEnd)
 			{
 				tileMin = openList[i];
 			}
@@ -147,7 +147,7 @@ vector<class Tile*> PathFinder::FindPath(const vector<vector<class Tile*>>& tile
 		//여기까지 왔다는 것은 가장 적은 비용의 타일 선정되었다는 것
 		if (tileMin != nullptr)
 		{
-			dummyList[tileMin->mIndexY][tileMin->mIndexX].IsClose = true;
+			dummyList[tileMin->GetFrameIndexY()][tileMin->GetFrameIndexX()].IsClose = true;
 			currentTile = tileMin;
 		}
 		//OpenList에 아무것도 없다는 뜻 : 갈 수 있는 길이 없다.( 탐색의 여지가 없음)
@@ -160,9 +160,9 @@ vector<class Tile*> PathFinder::FindPath(const vector<vector<class Tile*>>& tile
 		{
 			Tile* temp = tileMin;
 			result.push_back(temp);
-			while (dummyList[temp->mIndexY][temp->mIndexX].Parent != nullptr)
+			while (dummyList[temp->GetFrameIndexY()][temp->GetFrameIndexX()].Parent != nullptr)
 			{
-				temp = dummyList[temp->mIndexY][temp->mIndexX].Parent;
+				temp = dummyList[temp->GetFrameIndexY()][temp->GetFrameIndexX()].Parent;
 				result.push_back(temp);
 			}
 
@@ -174,7 +174,6 @@ vector<class Tile*> PathFinder::FindPath(const vector<vector<class Tile*>>& tile
 	}
 	// }}
 
-	*/
-		return result;
-	}
+
+	return result;
 }

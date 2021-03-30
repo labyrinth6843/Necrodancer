@@ -106,25 +106,44 @@ void EnemyManager::LoadEnemy()
 					}
 
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 1 & mEnemyList[y][x]->GetFrameIndexY() == 2) {
-						//Minotaur* minotaur = new Minotaur("Minotaur", x, y);
-						//ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)minotaur);
+						Minotaur* minotaur = new Minotaur("Minotaur", x, y);
+						minotaur->SetGroundPtr(ground);
+						minotaur->SetWallPtr(wall);
+						minotaur->SetPlayerPtr(player);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)minotaur);
 					}
 
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 2 & mEnemyList[y][x]->GetFrameIndexY() == 2) {
 						//Nightmare* nightmare = new Nightmare("Nightmare", x, y);
+						//nightmare->SetGroundPtr(ground);
+						//nightmare->SetWallPtr(wall);
+						//nightmare->SetPlayerPtr(player);
 						//ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)nightmare);
 					}
+
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 3 && mEnemyList[y][x]->GetFrameIndexY() == 2) {
 						//Dragon* dragon = new Dragon("Dragon", x, y);
+						//dragon->SetGroundPtr(ground);
+						//dragon->SetWallPtr(wall);
+						//dragon->SetPlayerPtr(player);
 						//ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)dragon);
 					}
+
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 4 && mEnemyList[y][x]->GetFrameIndexY() == 2) {
+						//KingConga* kingconga = new KingConga("KingConga", x, y);
+						//kingconga->SetGroundPtr(ground);
+						//kingconga->SetWallPtr(wall);
+						//kingconga->SetPlayerPtr(player);
+						//ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)kingconga);
+					}
+
+					else if (mEnemyList[y][x]->GetFrameIndexX() == 0 && mEnemyList[y][x]->GetFrameIndexY() == 3) {
 						ShopKeeper* shopkeeper = new ShopKeeper("ShopKeeper", x, y);
 						shopkeeper->SetGroundPtr(ground);
 						shopkeeper->SetWallPtr(wall);
 						shopkeeper->SetPlayerPtr(player);
 						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)shopkeeper);
-					}
+					}	
 				}
 			}
 		}
