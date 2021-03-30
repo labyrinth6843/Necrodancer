@@ -39,7 +39,7 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"WallPallet", Resources(L"Pallet/WallPallet.bmp"), 130, 208, 5, 8, true);
 	ImageManager::GetInstance()->LoadFromFile(L"DecoPallet", Resources(L"Pallet/DecoPallet.bmp"), 130, 26, 5, 1, true);
 	ImageManager::GetInstance()->LoadFromFile(L"ItemPallet1", Resources(L"Pallet/ItemPallet1.bmp"), 130, 260, 5, 10, true);
-	ImageManager::GetInstance()->LoadFromFile(L"ItemPallet2", Resources(L"Pallet/ItemPallet2.bmp"), 130, 78, 5, 3, true);
+	ImageManager::GetInstance()->LoadFromFile(L"ItemPallet2", Resources(L"Pallet/ItemPallet2.bmp"), 130, 234, 5, 9, true);
 	ImageManager::GetInstance()->LoadFromFile(L"MonsterPallet", Resources(L"Pallet/MonsterPallet.bmp"), 130, 78, 5, 3, true);
 	//}}
 
