@@ -27,7 +27,6 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"Drag", Resources(L"ButtonIcon/Drag.bmp"), 72, 48, 1, 2, false);
 	ImageManager::GetInstance()->LoadFromFile(L"Fill", Resources(L"ButtonIcon/Fill.bmp"), 72, 48, 1, 2, false);
 	ImageManager::GetInstance()->LoadFromFile(L"Set", Resources(L"ButtonIcon/Set.bmp"), 56, 48, 1, 2, false);
-
 	//}}
 
 	//{{ 맵 + 오브젝트 관련 이미지
@@ -36,11 +35,11 @@ void FileManager::LoadResource()
 
 	//{{ 팔레트 관련 이미지
 	ImageManager::GetInstance()->LoadFromFile(L"GroundPallet", Resources(L"Pallet/GroundPallet.bmp"), 130, 26, 5, 1, true);
-	ImageManager::GetInstance()->LoadFromFile(L"WallPallet", Resources(L"Pallet/WallPallet.bmp"), 130, 208, 5, 8, true);
+	ImageManager::GetInstance()->LoadFromFile(L"WallPallet", Resources(L"Pallet/WallPallet.bmp"), 130, 234, 5, 9, true);
 	ImageManager::GetInstance()->LoadFromFile(L"DecoPallet", Resources(L"Pallet/DecoPallet.bmp"), 130, 26, 5, 1, true);
 	ImageManager::GetInstance()->LoadFromFile(L"ItemPallet1", Resources(L"Pallet/ItemPallet1.bmp"), 130, 260, 5, 10, true);
 	ImageManager::GetInstance()->LoadFromFile(L"ItemPallet2", Resources(L"Pallet/ItemPallet2.bmp"), 130, 234, 5, 9, true);
-	ImageManager::GetInstance()->LoadFromFile(L"MonsterPallet", Resources(L"Pallet/MonsterPallet.bmp"), 130, 78, 5, 3, true);
+	ImageManager::GetInstance()->LoadFromFile(L"MonsterPallet", Resources(L"Pallet/MonsterPallet.bmp"), 130, 104, 5, 4, true);
 	//}}
 
 	//{{ 아이템 관련 이미지
@@ -79,7 +78,7 @@ void FileManager::LoadResource()
 
 	//{{ 맵 타일 이미지
 	ImageManager::GetInstance()->LoadFromFile(L"GroundTile", Resources(L"Tile/GroundTile.bmp"), 208, 52, 8, 2, true);
-	ImageManager::GetInstance()->LoadFromFile(L"WallTile", Resources(L"Tile/WallTile.bmp"), 125, 384, 5, 8, true);
+	ImageManager::GetInstance()->LoadFromFile(L"WallTile", Resources(L"Tile/WallTile.bmp"), 125, 432, 5, 9, true);
 	ImageManager::GetInstance()->LoadFromFile(L"WallShadow", Resources(L"Tile/WallShadow.bmp"), 50, 50, true);
 	//}}
 
@@ -116,7 +115,6 @@ void FileManager::LoadResource()
 
 	SoundPlayer::GetInstance()->LoadFromFile(L"kingconga", Resources(L"Sound/ost/kingconga.mp3"), true);
 	//}}
-
 
 	//{{ 효과음 관련 사운드
 	SoundPlayer::GetInstance()->LoadFromFile(L"move_dirt", Resources(L"Sound/sfx/move/mov_dig_dirt.mp3"), false);
