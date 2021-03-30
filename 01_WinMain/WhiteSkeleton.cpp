@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "WhiteSkeleton.h"
 
 WhiteSkeleton::WhiteSkeleton(const string& name, int x, int y):Enemy(name)
@@ -9,6 +9,9 @@ WhiteSkeleton::WhiteSkeleton(const string& name, int x, int y):Enemy(name)
 	mHp = 1;
 	mCoin = 2;
 	mAtk = 0.5f;
+
+	mOpacity = 0.f;
+	mIsVisible = false;
 
 	mImage = ImageManager::GetInstance()->FindImage(L"Skeleton1");
 
@@ -43,6 +46,7 @@ void WhiteSkeleton::Init()
 
 void WhiteSkeleton::Update()
 {
+	//수정해야 함
 	if (Beat::GetInstance()->NextTurn() == true) {
 		if (mIsMove == false) {
 			if (mIsLeft == true)
@@ -78,6 +82,15 @@ void WhiteSkeleton::Update()
 			mCorrectionY = 0.f;
 		}
 	}
+
+	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
+	ground->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	//흑백에서 컬러로 넘어가는 시점
+	if (mOpacity > 0.5f)
+		mIsVisible = true;
+	else
+		mIsVisible = false;
+
 	mCurrentAnimation->Update();
 }
 

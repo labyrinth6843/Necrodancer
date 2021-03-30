@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "GreyBat.h"
 
 GreyBat::GreyBat(const string& name, int x, int y):Enemy(name)
@@ -9,6 +9,9 @@ GreyBat::GreyBat(const string& name, int x, int y):Enemy(name)
 	mHp = 1;
 	mCoin = 2;
 	mAtk = 0.5f;
+
+	mOpacity = 0.f;
+	mIsVisible = false;
 
 	mImage = ImageManager::GetInstance()->FindImage(L"GreyBat");
 
@@ -78,6 +81,15 @@ void GreyBat::Update()
 			mInitY = mY;
 		}
 	}
+
+	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
+	ground->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	//흑백에서 컬러로 넘어가는 시점
+	if (mOpacity > 0.5f)
+		mIsVisible = true;
+	else
+		mIsVisible = false;
+
 	mCurrentAnimation->Update();
 }
 
@@ -89,7 +101,7 @@ void GreyBat::Release()
 
 void GreyBat::Render(HDC hdc)
 {
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), 39, 39);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 39, 39);
 }
 
 void GreyBat::Move(int destX, int destY)

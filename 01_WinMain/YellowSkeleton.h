@@ -11,6 +11,9 @@ public:
 public:
 	YellowSkeleton(const string& name, int x, int y);
 
+	void Move(int dirX, int dirY);
+	POINT DestinationValidationCheck();
+
 	void Attack()override;
 	void IsAttacked(int dmg)override;
 

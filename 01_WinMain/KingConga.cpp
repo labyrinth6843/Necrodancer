@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "KingConga.h"
 
 KingConga::KingConga(const string& name, int x, int y): Enemy(name)
@@ -8,6 +8,13 @@ KingConga::KingConga(const string& name, int x, int y): Enemy(name)
 
 	InitX = mX;
 	InitY = mY;
+
+	mHp = 2;
+	mCoin = 50;
+	mAtk = 1.f;
+
+	mOpacity = 0.f;
+	mIsVisible = false;
 
 	mImage = ImageManager::GetInstance()->FindImage(L"KingConga");
 	mThroneImage = ImageManager::GetInstance()->FindImage(L"KingCongaThrone");
@@ -34,6 +41,14 @@ void KingConga::Init()
 
 void KingConga::Update()
 {
+	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
+	ground->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	//흑백에서 컬러로 넘어가는 시점
+	if (mOpacity > 0.5f)
+		mIsVisible = true;
+	else
+		mIsVisible = false;
+
 	mCurrentAnimation->Update();
 }
 
@@ -46,7 +61,7 @@ void KingConga::Release()
 void KingConga::Render(HDC hdc)
 {
 	CameraManager::GetInstance()->GetMainCamera()->ScaleRender(hdc, mThroneImage, InitX, InitY, 39, 39);
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY + mCorrectionY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), 39, 39);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY + mCorrectionY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 39, 39);
 }
 
 void KingConga::Attack()

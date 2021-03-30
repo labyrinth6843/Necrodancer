@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "YellowSkeleton.h"
 
 YellowSkeleton::YellowSkeleton(const string& name, int x, int y) : Enemy(name) {
@@ -8,6 +8,9 @@ YellowSkeleton::YellowSkeleton(const string& name, int x, int y) : Enemy(name) {
 	mHp = 2;
 	mCoin = 3;
 	mAtk = 1.5f;
+
+	mOpacity = 0.f;
+	mIsVisible = false;
 
 	mImage = ImageManager::GetInstance()->FindImage(L"Skeleton2");
 
@@ -81,7 +84,15 @@ void YellowSkeleton::Release()
 
 void YellowSkeleton::Update()
 {
+	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
+	ground->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	//흑백에서 컬러로 넘어가는 시점
+	if (mOpacity > 0.5f)
+		mIsVisible = true;
+	else
+		mIsVisible = false;
 
+	mCurrentAnimation->Update();
 }
 
 void YellowSkeleton::Render(HDC hdc)

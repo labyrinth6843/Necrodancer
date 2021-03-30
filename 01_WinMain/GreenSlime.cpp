@@ -77,6 +77,7 @@ void GreenSlime::Update()
 		mIsVisible = true;
 	else
 		mIsVisible = false;
+
 	mCurrentAnimation->Update();
 }
 

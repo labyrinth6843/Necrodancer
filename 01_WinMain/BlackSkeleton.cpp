@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "BlackSkeleton.h"
 
 BlackSkeleton::BlackSkeleton(const string& name, int x, int y) : Enemy(name){
@@ -8,6 +8,9 @@ BlackSkeleton::BlackSkeleton(const string& name, int x, int y) : Enemy(name){
 	mHp = 3;
 	mCoin = 4;
 	mAtk = 2.f;
+
+	mOpacity = 0.f;
+	mIsVisible = false;
 
 	mImage = ImageManager::GetInstance()->FindImage(L"Skeleton3");
 
@@ -83,6 +86,14 @@ void BlackSkeleton::Release()
 
 void BlackSkeleton::Update()
 {
+	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
+	ground->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	//흑백에서 컬러로 넘어가는 시점
+	if (mOpacity > 0.5f)
+		mIsVisible = true;
+	else
+		mIsVisible = false;
+
 	mCurrentAnimation->Update();
 }
 
