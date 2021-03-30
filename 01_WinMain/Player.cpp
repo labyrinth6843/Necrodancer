@@ -189,7 +189,7 @@ float Player::DistanceShopkeeper() {
 		return 0.f;
 
 	//직선거리로 10칸을 넘어가는지 확인, 넘어갔다면 소리가 아예 들리지 않는다
-	if (Math::GetDistance(mStartIndexX, mStartIndexY, temp->GetX() / TileSize, temp->GetY() / TileSize) < 10)
+	if (Math::GetDistance(mStartIndexX, mStartIndexY, temp->GetX() / TileSize, temp->GetY() / TileSize) > 10)
 		return 0.f;
 	//나온 직선거리를 역수를 취해 볼륨값으로 반환
 	else
