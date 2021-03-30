@@ -56,6 +56,8 @@ private:
 	bool mNotCall;
 
 	int mFrontNote;
+
+	bool mFreeMode = false; //박자 상관없이 무조건 이동 가능한 상태
 public:
 	Beat();
 	~Beat();
@@ -72,6 +74,8 @@ public:
 
 	bool GetIsBoss() { return mIsBoss; };
 	void SetIsBoss(bool b) { mIsBoss = b; };
+
+	void SetFreeMode(bool mod) { mFreeMode = mod; }
 private:
 	void SetTiming();	//Update내부에서 호출될 함수, 노트의 등장 타이밍
 	void SetNote();		//비활성화된 노트중 

@@ -5,7 +5,6 @@
 
 class Weapon;
 class Armor;
-//갑옷 종류
 
 //삽 종류
 enum class ShovelType {
@@ -46,7 +45,6 @@ class Player:public GameObject{
 	float mShowShovelFrame;
 
 	//장착중인 아이템
-
 	Weapon* mWeapon;
 	Armor* mArmor;
 

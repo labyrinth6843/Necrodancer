@@ -44,6 +44,9 @@ void GameScene::Init(){
 
 	ObjectManager::GetInstance()->Init();
 	mToolButton  = new Button(L"Tool",  L"Tool",  550, 50, 200, 50, bind(&GameScene::Tool, this));
+
+	//테스트모드
+	BEAT->SetFreeMode(true);
 }
 
 void GameScene::Release(){

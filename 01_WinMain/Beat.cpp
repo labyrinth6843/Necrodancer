@@ -185,15 +185,15 @@ void Beat::Render(HDC hdc)
 		}
 	}
 	//심장
-	Gizmo::GetInstance()->DrawRect(hdc, mHeartImage.Rect, Gizmo::Color::Green);
+	//Gizmo::GetInstance()->DrawRect(hdc, mHeartImage.Rect, Gizmo::Color::Green);
 	mHeartImage.Image->ScaleFrameRender(hdc, WINSIZEX/2 - 60, WINSIZEY - 160,
 		mHeartImage.FrameX, mHeartImage.FrameY, 120, 150);
 
 	//테스팅
-	Gizmo::GetInstance()->DrawRect(hdc, RectMake(-1, 0, WINSIZEX / 2, WINSIZEY +1), Gizmo::Color::Red);
-	float t = SoundPlayer::GetInstance()->GetPosition(mNowMusic);
-	wstring test = to_wstring(t);
-	TextOut(hdc,10,10,test.c_str(),test.length());
+	//Gizmo::GetInstance()->DrawRect(hdc, RectMake(-1, 0, WINSIZEX / 2, WINSIZEY +1), Gizmo::Color::Red);
+	//float t = SoundPlayer::GetInstance()->GetPosition(mNowMusic);
+	//wstring test = to_wstring(t);
+	//TextOut(hdc,10,10,test.c_str(),test.length());
 }
 
 void Beat::SetMusic(const wstring& keyname, const wstring& beatfilename)
@@ -212,6 +212,9 @@ void Beat::SetMusic(const wstring& keyname, const wstring& beatfilename)
 
 bool Beat::IsDecision()
 {
+	if(mFreeMode)
+		return true;
+
 	mNotCall = false;
 	POINT pos = { mLeftNote[mFrontNote].X, mLeftNote[mFrontNote].Y };
 	if (PtInRect(&mHeartImage.Rect, pos))

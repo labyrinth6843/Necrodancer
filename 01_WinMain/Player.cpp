@@ -152,7 +152,6 @@ void Player::Update() {
 	}
 
 	Ground* tempGround = (Ground*)ObjectManager::GetInstance()->FindObject("Ground");
-	tempGround->SightCall();
 	tempGround->GetSight(mX / TileSize, mY / TileSize, (int)10);
 
 	mCurrentHeadAnimation->Update();

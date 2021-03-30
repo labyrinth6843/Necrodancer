@@ -63,7 +63,7 @@ void Ground::Init()
 							tempX[x].Tile->SetFrameIndexY(0);
 						}
 					}
-					tempX[x].Alpha = 1.f;
+					tempX[x].Alpha = 0.025f;
 				}
 				//빈 타일일때
 				else
@@ -163,7 +163,6 @@ void Ground::Render(HDC hdc)
 	{
 		for (int x = mMinIndexX; x < mMaxIndexX; ++x)
 		{
-			//맵 전체를 랜더하면 엄청 느려지니 처리 생각하기
 			int posx = x * TileSize;
 			int posy = y * TileSize;
 
@@ -240,7 +239,7 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 		{
 			if (checkX - 1 >= mMinIndexX)
 			{
-				if (mGroundList[checkY][checkX - 1].Alpha <= 0.1f)
+				if (mGroundList[checkY][checkX - 1].Alpha <= check.Alpha)
 				{
 					mGroundList[checkY][checkX - 1].Alpha = check.Alpha - lv;
 					sightQueue.emplace(mGroundList[checkY][checkX - 1]);
@@ -248,7 +247,7 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 			}
 			if (checkX + 1 < mMaxIndexX)
 			{
-				if (mGroundList[checkY][checkX + 1].Alpha <= 0.1f)
+				if (mGroundList[checkY][checkX + 1].Alpha <= check.Alpha)
 				{
 					mGroundList[checkY][checkX + 1].Alpha = check.Alpha - lv;
 					sightQueue.emplace(mGroundList[checkY][checkX + 1]);
@@ -256,7 +255,7 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 			}
 			if (checkY - 1 >= mMinIndexY)
 			{
-				if (mGroundList[checkY - 1][checkX].Alpha <= 0.1f)
+				if (mGroundList[checkY - 1][checkX].Alpha <= check.Alpha)
 				{
 					mGroundList[checkY - 1][checkX].Alpha = check.Alpha - lv;
 					sightQueue.emplace(mGroundList[checkY - 1][checkX]);
@@ -264,7 +263,7 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 			}
 			if (checkY + 1 < mMaxIndexY)
 			{
-				if (mGroundList[checkY + 1][checkX].Alpha <= 0.1f)
+				if (mGroundList[checkY + 1][checkX].Alpha <= check.Alpha)
 				{
 					mGroundList[checkY + 1][checkX].Alpha = check.Alpha - lv;
 					sightQueue.emplace(mGroundList[checkY + 1][checkX]);
@@ -323,14 +322,18 @@ void Ground::GetShowArea(int &minx, int &miny, int &maxx, int &maxy)
 }
 void Ground::SightCall()
 {
-	for (int y = mMinIndexY; y < mMaxIndexY; ++y)
+	//시행착오 : 호출하는 곳은 없지만 남겨둠
+	if (mSightCall)
 	{
-		for (int x = mMinIndexX; x < mMaxIndexX; ++x)
+		for (int y = mMinIndexY; y < mMaxIndexY; ++y)
 		{
-			if (mGroundList[y][x].Tile->GetImage() != NULL)
+			for (int x = mMinIndexX; x < mMaxIndexX; ++x)
 			{
-				if (mGroundList[y][x].Tile->GetFrameIndexX() != 7 || mGroundList[y][x].Tile->GetFrameIndexY() != 1)
-					mGroundList[y][x].Alpha = 0.1f;
+				if (mGroundList[y][x].Tile->GetImage() != NULL)
+				{
+					if (mGroundList[y][x].Tile->GetFrameIndexX() != 7 || mGroundList[y][x].Tile->GetFrameIndexY() != 1)
+						mGroundList[y][x].Alpha = 0.1f;
+				}
 			}
 		}
 	}
