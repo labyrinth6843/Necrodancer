@@ -735,6 +735,5 @@ void MapToolScene::NextPallete(){
 }
 
 void MapToolScene::Play() {
-	SceneManager::GetInstance()->LoadScene(L"BossScene");
-	//SceneManager::GetInstance()->LoadScene(L"GameScene");
+	SceneManager::GetInstance()->LoadScene(L"GameScene");
 }

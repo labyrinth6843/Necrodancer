@@ -209,9 +209,9 @@ void Beat::SetMusic(const wstring& keyname, const wstring& beatfilename)
 	FileManager::LoadBeat(beatfilename,mSaveQueue);
 	mRunQueue = mSaveQueue;
 
-	mTiming = (float)mRunQueue.front();
+	mTiming = mRunQueue.front();
 	mRunQueue.pop();
-	mArrive = (float)mRunQueue.front();
+	mArrive = mRunQueue.front();
 	mRunQueue.pop();
 }
 
@@ -219,9 +219,9 @@ void Beat::ResetMusic()
 {
 	mRunQueue = mSaveQueue;
 
-	mTiming = (float)mRunQueue.front();
+	mTiming = mRunQueue.front();
 	mRunQueue.pop();
-	mArrive = (float)mRunQueue.front();
+	mArrive = mRunQueue.front();
 	mRunQueue.pop();
 	SoundPlayer::GetInstance()->SetPosition(mNowMusic, 0.f);
 }
@@ -259,10 +259,10 @@ void Beat::SetTiming()
 		mMusicEnd = true;
 		return;
 	}
-	//mArrive = (float)mRunQueue.front();
+	//mTiming = mRunQueue.front();
 	//mRunQueue.pop();
 	mTiming = mArrive;
-	mArrive = (float)mRunQueue.front();
+	mArrive = mRunQueue.front();
 	mRunQueue.pop();
 }
 
@@ -302,8 +302,8 @@ void Beat::MissNote()
 
 void Beat::SetNote()
 {
-	float speed = 300.f;
-	//float speed = (WINSIZEX) / ((mArrive - mTiming) * 0.001f);
+	float speed = 210.f;
+	//float speed = (float)(WINSIZEX/2.f) / (mArrive - mTiming) * 125.f;
 	//비활성화된 노트 중 가장 앞에있는 노트를 찾아 활성화
 	for (int i = 0; i < 30; ++i)
 	{
