@@ -47,6 +47,9 @@ public:
 
 
 private:
+	//아이템
 	void SortSlot();	//아이템을 습득하거나 버릴때(현재는 없음)시 호출
+	//체력
+	void UpdateHp();
 };
 #define HUD Hud::GetInstance()

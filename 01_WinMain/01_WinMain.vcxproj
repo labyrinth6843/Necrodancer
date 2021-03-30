@@ -238,12 +238,14 @@
     <ClCompile Include="Gizmo.cpp" />
     <ClCompile Include="GreenSlime.cpp" />
     <ClCompile Include="Ground.cpp" />
+    <ClCompile Include="HpHud.cpp" />
     <ClCompile Include="Hud.cpp" />
     <ClCompile Include="Image.cpp" />
     <ClCompile Include="ImageManager.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Interaction.cpp" />
     <ClCompile Include="Item.cpp" />
+    <ClCompile Include="ItemHud.cpp" />
     <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="KingConga.cpp" />
     <ClCompile Include="LoadingScene.cpp" />

@@ -557,6 +557,12 @@
     <ClCompile Include="Hud.cpp">
       <Filter>MainGame\Object\HUD</Filter>
     </ClCompile>
+    <ClCompile Include="HpHud.cpp">
+      <Filter>MainGame\Object\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemHud.cpp">
+      <Filter>MainGame\Object\HUD</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="01_WinMain.rc">

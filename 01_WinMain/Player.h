@@ -95,7 +95,7 @@ public:
 	void HpDown(float dmg) { mHp -= dmg; }
 
 	void SetAtk(float atk) { mAtk = atk; }
-	void SetDef(float def) { mAtk = def; }
+	void SetDef(float def) { mDef = def; }
 
 	float GetAtk() { return mAtk; }
 	float GetDef() { return mDef; }
