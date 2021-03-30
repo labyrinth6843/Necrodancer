@@ -31,13 +31,13 @@ Minotaur::Minotaur(const string & name, int x, int y):Enemy(name)
 
 	mLeftWallImpactAnimation = new Animation();
 	mLeftWallImpactAnimation->InitFrameByStartEnd(5, 0, 8, 0, false);
-	mLeftWallImpactAnimation->SetFrameUpdateTime(0.1f);
+	mLeftWallImpactAnimation->SetFrameUpdateTime(0.2f);
 	mLeftWallImpactAnimation->SetIsLoop(true);
 	mLeftWallImpactAnimation->Play();
 
 	mRightWallImpactAnimation = new Animation;
 	mRightWallImpactAnimation->InitFrameByStartEnd(5,2,8,2,false);
-	mRightWallImpactAnimation->SetFrameUpdateTime(0.1f);
+	mRightWallImpactAnimation->SetFrameUpdateTime(0.2f);
 	mRightWallImpactAnimation->SetIsLoop(true);
 	mRightWallImpactAnimation->Play();
 
@@ -238,9 +238,9 @@ void Minotaur::Release()
 void Minotaur::Render(HDC hdc)
 {
 	if(mIsAttack == false)
-		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY + mCorrectionY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 39, 39);
+		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX - 19, mY + mCorrectionY - 39, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 78, 78);
 	else
-		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY + mCorrectionY, 4, mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 39, 39);
+		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX - 19, mY + mCorrectionY - 39, 4, mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 78, 78);
 }
 
 void Minotaur::Attack()
