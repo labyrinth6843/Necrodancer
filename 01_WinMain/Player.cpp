@@ -349,11 +349,11 @@ bool Player::AttackRangeCheck(const int& key)
 			//벽이 있다면 공격 중단
 			break;
 		}
-
+		GameObject* target = ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, range[i]);
 		//적이 공격범위에 있다면
-		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, range[i]) != nullptr)
+		if (target != nullptr)
 		{
-			Attack(ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, range[i]));
+			Attack(target);
 			attackCheck = true;
 			if (mWeapon->GetWeaponType() == WeaponType::Rapier)
 			{
@@ -378,6 +378,10 @@ bool Player::AttackRangeCheck(const int& key)
 
 void Player::Interaction(int x, int y, const int& key)
 {
+	GameObject* target = ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ (long)((mX + TileSize * x) / TileSize) , (long)((mY + TileSize * y) / TileSize) });
+	if(target)
+		if (target->GetName() == "ShopKeeper")
+			return;
 	if (AttackRangeCheck(key) == false)
 	{
 		mEndX = mX + TileSize * x;
