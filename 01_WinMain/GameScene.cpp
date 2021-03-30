@@ -53,6 +53,9 @@ void GameScene::Init(){
 	//테스트모드
 	BEAT->SetFreeMode(true);
 	BEAT->SetIsLoop(true);
+
+	//데이터저장 테스트
+	PDATA->LoadPlayer(ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player"));
 }
 
 void GameScene::Release(){
@@ -94,4 +97,7 @@ void GameScene::Tool() {
 	SoundPlayer::GetInstance()->Stop(L"zone1_1");
 	SoundPlayer::GetInstance()->Stop(L"zone1_1_shopkeeper");
 	SceneManager::GetInstance()->LoadScene(L"MapToolScene");
+
+	PDATA->CopyPlayer(ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player"));
+
 }

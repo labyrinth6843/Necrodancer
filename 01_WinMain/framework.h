@@ -46,6 +46,7 @@ using namespace std;
 #include "Combo.h"
 #include "PathFinder.h"
 #include "Hud.h"
+#include "PlayerData.h"
 
 //Test용 콘솔창
 //#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")

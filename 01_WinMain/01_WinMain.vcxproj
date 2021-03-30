@@ -194,6 +194,7 @@
     <ClInclude Include="PathFinder.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerData.h" />
     <ClInclude Include="Random.h" />
     <ClInclude Include="RedBat.h" />
     <ClInclude Include="Resource.h" />
@@ -269,6 +270,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerData.cpp" />
     <ClCompile Include="Random.cpp" />
     <ClCompile Include="RedBat.cpp" />
     <ClCompile Include="Scene.cpp" />

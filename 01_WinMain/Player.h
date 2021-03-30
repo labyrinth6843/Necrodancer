@@ -106,4 +106,10 @@ public:
 
 	void SetCoin(int coin) { mCoin = coin; }
 	int GetCoin() { return mCoin; }
+
+	void SetArmor(Armor* armor) { mArmor = armor; }
+	Armor* GetArmor() { return mArmor; }
+
+	void SetWeapon(Weapon* weapon) { mWeapon = weapon; }
+	Weapon* GetWeapon() { return mWeapon; }
 };
