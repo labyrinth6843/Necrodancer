@@ -102,12 +102,16 @@ void BlueSlime::Update()
 			if (mMoveBeat == true) {
 				if (WallCheck((mDestX - mX) / TileSize, (mDestY - mY) / TileSize) == false) {
 					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr) {
-						if (mPlayerPtr->GetX() / TileSize == mDestIndexX &&	mPlayerPtr->GetY() / TileSize == mDestIndexY)
+						if (mPlayerPtr->GetX() / TileSize == mDestIndexX && mPlayerPtr->GetY() / TileSize == mDestIndexY)
 							Attack();
 						else
 							Move((mDestX - mX) / TileSize, (mDestY - mY) / TileSize);
 					}
+					else
+						Hop();
 				}
+				else
+					Hop();
 			}
 			else {
 				mLeftAnimation = mLeftIdleAnimation;
@@ -136,6 +140,19 @@ void BlueSlime::Update()
 			mDestY = mInitY;
 			mInitX = mX;
 			mInitY = mY;
+		}
+	}
+	if (mIsHop == true) {
+		mMoveTime += Time::GetInstance()->DeltaTime();
+		float ratio = mMoveTime / 0.15f;
+
+		mCorrectionY -= mJumpPower * Time::GetInstance()->DeltaTime();
+		mJumpPower -= 200.f * Time::GetInstance()->DeltaTime();
+
+		if (ratio >= 1.f)
+		{
+			mIsHop = false;
+			mCorrectionY = 0.f;
 		}
 	}
 
@@ -239,4 +256,13 @@ void BlueSlime::IsAttacked(int dmg)
 			break;
 		}
 	}
+}
+
+void BlueSlime::Hop()
+{
+	mMoveTime = 0.f;
+	mIsHop = true;
+
+	mCorrectionY = 0.f;
+	mJumpPower = 150.f;
 }

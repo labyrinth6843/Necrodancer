@@ -6,6 +6,7 @@ class BlueSlime:public Enemy
 public:
 	bool mIsLeft;
 	bool mMoveBeat;
+	bool mIsHop;
 
 	Animation* mLeftIdleAnimation;
 	Animation* mLeftMoveAnimation;
@@ -19,6 +20,8 @@ public:
 
 	void Attack()override;
 	void IsAttacked(int dmg)override;
+
+	void Hop();
 
 	void Init()override;
 	void Update()override;
