@@ -14,13 +14,13 @@ ShopKeeper::ShopKeeper(const string& name, int x, int y):Enemy(name)
 	mIdleAnimation = new Animation();
 	mIdleAnimation->InitFrameByStartEnd(0, 0, 3, 0, false);
 	mIdleAnimation->SetIsLoop(true);
-	mIdleAnimation->SetFrameUpdateTime(0.1f);
+	mIdleAnimation->SetFrameUpdateTime(0.5f);
 	mIdleAnimation->Play();
 
 	mSingAnimation = new Animation();
 	mSingAnimation->InitFrameByStartEnd(4, 0, 7, 0, false);
 	mSingAnimation->SetIsLoop(true);
-	mSingAnimation->SetFrameUpdateTime(0.1f);
+	mSingAnimation->SetFrameUpdateTime(0.5f);
 	mSingAnimation->Play();
 
 	mCurrentAnimation = mIdleAnimation;

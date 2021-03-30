@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "KingConga.h"
 
-KingConga::KingConga(const string& name, int x, int y): Enemy(name)
+KingConga::KingConga(const string& name, int x, int y) : Enemy(name)
 {
 	mX = x * TileSize;
 	mY = y * TileSize;
@@ -52,7 +52,6 @@ void KingConga::Update()
 						else
 							Move(temp.x, temp.y);
 					}
-
 				}
 			}
 		}
@@ -75,6 +74,11 @@ void KingConga::Update()
 		}
 	}
 
+	if (Math::GetDistance(mX / TileSize, mY / TileSize, mPlayerPtr->GetX() / TileSize, mPlayerPtr->GetY() / TileSize) < 5) {
+		mIsMoveState = true;
+		mCurrentAnimation = mMoveAnimation;
+	}
+
 	mGroundPtr->GetAlpha((int)(mThronePosX / TileSize), (int)(mThronePosY / TileSize), mThroneOpacity);
 
 	if (mThroneOpacity > 0.5f)
@@ -83,11 +87,6 @@ void KingConga::Update()
 		mIsThroneVisible = false;
 
 	mGroundPtr->GetAlpha((int)(mX / TileSize), (int)(mY / TileSize), mOpacity);
-	if (mOpacity > 0.7f) {
-		mIsMoveState = true;
-		mCurrentAnimation = mMoveAnimation;
-	}
-		
 
 	//흑백에서 컬러로 넘어가는 시점
 	if (mOpacity > 0.5f)
@@ -106,7 +105,7 @@ void KingConga::Release()
 
 void KingConga::Render(HDC hdc)
 {
-	if(mIsMoveState == true && mIsThroneVisible == true)
+	if (mIsMoveState == true && mIsThroneVisible == true)
 		CameraManager::GetInstance()->GetMainCamera()->ScaleRender(hdc, mThroneImage, mThronePosX - 3, mThronePosY - 39, 44, 78);
 	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX - 11, mY + mCorrectionY - 39, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 58, 78);
 }
@@ -144,12 +143,11 @@ void KingConga::IsAttacked(int dmg)
 		Combo::GetInstance()->ComboUp();
 	}
 	else {
-		mX = Random::GetInstance()->RandomInt(mWallPtr->GetMapSize().x) * TileSize;
-		mY = Random::GetInstance()->RandomInt(mWallPtr->GetMapSize().y) * TileSize;
-		while (mWallPtr->GetFrameIndexX(mX / TileSize, mY / TileSize) != 0 || mWallPtr->GetFrameIndexY(mX / TileSize, mY / TileSize) != 0) {
+		do {
 			mX = Random::GetInstance()->RandomInt(mWallPtr->GetMapSize().x) * TileSize;
 			mY = Random::GetInstance()->RandomInt(mWallPtr->GetMapSize().y) * TileSize;
-		} 
+		} while (mWallPtr->GetFrameIndexX(mX / TileSize, mY / TileSize) != 0 || mWallPtr->GetFrameIndexY(mX / TileSize, mY / TileSize) != 0
+			|| Math::GetDistance(mX/TileSize, mY/TileSize, mPlayerPtr->GetIndexX(), mPlayerPtr->GetIndexY())<3);
 
 		int random = Random::GetInstance()->RandomInt(100) % 3;
 		switch (random) {
