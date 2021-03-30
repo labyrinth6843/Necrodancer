@@ -41,8 +41,7 @@ void KingConga::Init()
 
 void KingConga::Update()
 {
-	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
-	ground->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	mGroundPtr->GetAlpha((int)(mX / TileSize), (int)(mY / TileSize), mOpacity);
 	//흑백에서 컬러로 넘어가는 시점
 	if (mOpacity > 0.5f)
 		mIsVisible = true;
@@ -66,8 +65,7 @@ void KingConga::Render(HDC hdc)
 
 void KingConga::Attack()
 {
-	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
-	temp->SetHp(GetHp() - mAtk);
+	mPlayerPtr->SetHp(GetHp() - mAtk);
 	int random = Random::GetInstance()->RandomInt(100) % 3;
 	switch (random) {
 	case 0:

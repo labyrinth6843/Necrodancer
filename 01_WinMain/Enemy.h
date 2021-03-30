@@ -3,14 +3,17 @@
 #include"Image.h"
 #include"Animation.h"
 #include"Camera.h"
-#include "Wall.h"
 #include "Ground.h"
+#include "Wall.h"
 #include "Player.h"
 
 class Enemy:public GameObject
 {
 protected:
 	Image* mImage;
+	Ground* mGroundPtr;
+	Wall* mWallPtr;
+	Player* mPlayerPtr;
 
 	Animation* mCurrentAnimation;
 	Animation* mLeftAnimation;
@@ -45,6 +48,10 @@ public:
 	bool WallCheck(int x, int y);
 	virtual void Attack() = 0;
 	virtual void IsAttacked(int dmg) = 0;
+
+	void SetGroundPtr(Ground* groundPtr) { mGroundPtr = groundPtr; }
+	void SetWallPtr(Wall* wallPtr) { mWallPtr = wallPtr; }
+	void SetPlayerPtr(Player* playerPtr) { mPlayerPtr = playerPtr; }
 
 	void SetHp(float hp) { mHp = hp; }
 	float GetHp() { return mHp; }

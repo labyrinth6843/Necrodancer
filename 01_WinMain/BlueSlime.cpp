@@ -89,6 +89,9 @@ void BlueSlime::Init()
 
 void BlueSlime::Update()
 {
+	if(mGroundPtr == nullptr)
+		return;
+
 	if (Beat::GetInstance()->NextTurn() == true) {
 		if (mIsMove == false) {
 			mMoveBeat = !mMoveBeat;
@@ -99,8 +102,7 @@ void BlueSlime::Update()
 			if (mMoveBeat == true) {
 				if (WallCheck((mDestX - mX) / TileSize, (mDestY - mY) / TileSize) == false) {
 					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr) {
-						if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX &&
-							ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY)
+						if (mPlayerPtr->GetX() / TileSize == mDestIndexX &&	mPlayerPtr->GetY() / TileSize == mDestIndexY)
 							Attack();
 						else
 							Move((mDestX - mX) / TileSize, (mDestY - mY) / TileSize);
@@ -137,8 +139,7 @@ void BlueSlime::Update()
 		}
 	}
 
-	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
-	ground->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	mGroundPtr->GetAlpha((int)(mX / TileSize), (int)(mY / TileSize), mOpacity);
 	//흑백에서 컬러로 넘어가는 시점
 	if (mOpacity > 0.5f)
 		mIsVisible = true;
@@ -165,12 +166,6 @@ void BlueSlime::Move(int dirX, int dirY) {
 	mMoveTime = 0.f;
 	mIsMove = true;
 
-	Ground* ground;
-	if (ObjectManager::GetInstance()->FindObject("Ground"))
-		ground = (Ground*)ObjectManager::GetInstance()->FindObject("Ground");
-	else
-		return;
-
 	mDestX = mX + TileSize * dirX;
 	mDestY = mY + TileSize * dirY;
 
@@ -194,8 +189,7 @@ void BlueSlime::Move(int dirX, int dirY) {
 	else if (dirX < 0)
 		mCurrentAnimation = mLeftAnimation;
 
-
-	if (ground->IsMove(mDestIndexX, mDestIndexY))
+	if (mGroundPtr->IsMove(mDestIndexX, mDestIndexY))
 		mIsMove = true;
 	else
 		mIsMove = false;
@@ -203,8 +197,7 @@ void BlueSlime::Move(int dirX, int dirY) {
 
 void BlueSlime::Attack()
 {
-	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
-	temp->SetHp(GetHp() - mAtk);
+	mPlayerPtr->SetHp(GetHp() - mAtk);
 	SoundPlayer::GetInstance()->Play(L"slime_attack", 1.f);
 }
 

@@ -40,8 +40,7 @@ BlackSkeleton::BlackSkeleton(const string& name, int x, int y) : Enemy(name){
 }
 
 void BlackSkeleton::Attack() {
-	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
-	temp->SetHp(GetHp() - mAtk);
+	mPlayerPtr->SetHp(GetHp() - mAtk);
 	SoundPlayer::GetInstance()->Play(L"skeleton_attack", 1.f);
 }
 
@@ -86,8 +85,7 @@ void BlackSkeleton::Release()
 
 void BlackSkeleton::Update()
 {
-	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
-	ground->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	mGroundPtr->GetAlpha((int)(mX / TileSize), (int)(mY / TileSize), mOpacity);
 	//흑백에서 컬러로 넘어가는 시점
 	if (mOpacity > 0.5f)
 		mIsVisible = true;

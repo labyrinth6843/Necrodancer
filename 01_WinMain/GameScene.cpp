@@ -23,16 +23,14 @@ void GameScene::Init(){
 	SoundPlayer::GetInstance()->Play(L"zone1_1_shopkeeper", 0.2f * temp->DistanceShopkeeper());
 	Beat::GetInstance()->SetMusic(L"zone1_1",L"zone1_1");
 
-	//몬스터
-	//EnemyManager* mEnemyManager = new EnemyManager;
-	//mEnemyManager->LoadEnemy();
-	EnemyManager::LoadEnemy();
-
 	//게임씬에서 사용할 오브젝트들 생성
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Ground, new Ground("Ground"));
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Wall, new Wall("Wall"));
 	Wall* tempWall = (Wall*)ObjectManager::GetInstance()->FindObject("Wall");
 	tempWall->SetGroundPtr("Ground");	//생성 서순이 꼬일 경우를 대비해서 만듬
+	
+	//몬스터
+	EnemyManager::LoadEnemy();
 
 	//아이템
 	ItemManager::LoadItem(L"Test03");

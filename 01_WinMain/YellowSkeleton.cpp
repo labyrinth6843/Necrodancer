@@ -95,8 +95,7 @@ YellowSkeleton::YellowSkeleton(const string& name, int x, int y) : Enemy(name)
 }
 
 void YellowSkeleton::Attack() {
-	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
-	temp->SetHp(GetHp() - mAtk);
+	mPlayerPtr->SetHp(GetHp() - mAtk);
 	SoundPlayer::GetInstance()->Play(L"skeleton_attack", 1.f);
 }
 
@@ -254,8 +253,7 @@ void YellowSkeleton::Update()
 
 				if (WallCheck(temp.x, temp.y) == false) {
 					if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr) {
-						if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetX() / TileSize == mDestIndexX &&
-							ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player")->GetY() / TileSize == mDestIndexY)
+						if (mPlayerPtr->GetX() / TileSize == mDestIndexX && mPlayerPtr->GetY() / TileSize == mDestIndexY)
 						{
 							Hop();
 						}
@@ -293,8 +291,7 @@ void YellowSkeleton::Update()
 		}
 	}
 
-	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
-	ground->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	mGroundPtr->GetAlpha((int)(mX / TileSize), (int)(mY / TileSize), mOpacity);
 	//흑백에서 컬러로 넘어가는 시점
 	if (mOpacity > 0.5f)
 		mIsVisible = true;
@@ -326,12 +323,6 @@ void YellowSkeleton::Move(int dirX, int dirY)
 	mMoveTime = 0.f;
 	mIsMove = true;
 
-	Ground* ground;
-	if (ObjectManager::GetInstance()->FindObject("Ground"))
-		ground = (Ground*)ObjectManager::GetInstance()->FindObject("Ground");
-	else
-		return;
-
 	mDestX = mX + TileSize * dirX;
 	mDestY = mY + TileSize * dirY;
 
@@ -343,7 +334,7 @@ void YellowSkeleton::Move(int dirX, int dirY)
 	mCorrectionY = 0.f;
 	mJumpPower = 150.f;
 
-	if (ground->IsMove(mDestIndexX, mDestIndexY))
+	if (mGroundPtr->IsMove(mDestIndexX, mDestIndexY))
 		mIsMove = true;
 	else
 		mIsMove = false;
@@ -351,13 +342,11 @@ void YellowSkeleton::Move(int dirX, int dirY)
 
 POINT YellowSkeleton::DirectionDecision()
 {
-	GameObject* temp = ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
-
-	int disX = abs(mX / TileSize - temp->GetX() / TileSize);
-	int disY = abs(mY / TileSize - temp->GetY() / TileSize);
+	int disX = abs(mX / TileSize - mPlayerPtr->GetX() / TileSize);
+	int disY = abs(mY / TileSize - mPlayerPtr->GetY() / TileSize);
 
 	if (disX > disY) {
-		if (mX > temp->GetX()) {
+		if (mX > mPlayerPtr->GetX()) {
 			mDirection = 1;
 			return { -1,0 };
 		}
@@ -367,7 +356,7 @@ POINT YellowSkeleton::DirectionDecision()
 		}
 	}
 	else if (disX < disY) {
-		if (mY > temp->GetY()) {
+		if (mY > mPlayerPtr->GetY()) {
 			mDirection = 0;
 			return { 0, -1 };
 		}

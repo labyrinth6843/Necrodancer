@@ -36,8 +36,7 @@ GreenSlime::GreenSlime(const string & name, int x, int y):Enemy(name)
 }
 
 void GreenSlime::Attack() {
-	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
-	temp->SetHp(GetHp() - mAtk);
+	mPlayerPtr->SetHp(GetHp() - mAtk);
 	SoundPlayer::GetInstance()->Play(L"slime_attack", 1.f);
 }
 
@@ -57,7 +56,6 @@ void GreenSlime::IsAttacked(int dmg)
 			SoundPlayer::GetInstance()->Play(L"slime_death_3", 1.f);
 			break;
 		}
-		
 		this->SetIsActive(false);
 		this->SetIsDestroy(true);
 		Combo::GetInstance()->ComboUp();
@@ -70,8 +68,7 @@ void GreenSlime::Init() {
 
 void GreenSlime::Update()
 {
-	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
-	ground->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	mGroundPtr->GetAlpha((int)(mX / TileSize), (int)(mY / TileSize), mOpacity);
 	//흑백에서 컬러로 넘어가는 시점
 	if (mOpacity > 0.5f)
 		mIsVisible = true;
