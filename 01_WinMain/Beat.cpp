@@ -31,8 +31,8 @@ Beat::Beat()
 	}
 	//노트 색깔을 변경할 기준값
 	mDeadLine = INT_MAX;
-	//보스전인지 판단
-	mIsBoss = false;
+	//루프할지
+	mIsLoop = false;
 	//몬스터 행동 조건
 	mTurn = false;
 	//노래종료
@@ -55,7 +55,7 @@ void Beat::Release()
 {
 	mNowMusic = L"";
 	mDeadLine = INT_MAX;
-	mIsBoss = false;
+	mIsLoop = false;
 	QueueClear(mRunQueue);
 	QueueClear(mSaveQueue);
 	for (int i = 0; i < 30; ++i)
@@ -81,7 +81,7 @@ void Beat::Update()
 		SetTiming();
 	}
 	//보스라면 루프시키기 위해 mRunQueue가 비어있을때 mSaveQueue로 덮어씌운다
-	if (mIsBoss && mRunQueue.empty())
+	if (mIsLoop && mRunQueue.empty())
 	{
 		mRunQueue = mSaveQueue;
 	}

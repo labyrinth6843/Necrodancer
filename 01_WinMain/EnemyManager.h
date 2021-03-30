@@ -19,5 +19,5 @@
 class EnemyManager
 {
 public:
-	static void LoadEnemy();
+	static void LoadEnemy(wstring filename);
 };

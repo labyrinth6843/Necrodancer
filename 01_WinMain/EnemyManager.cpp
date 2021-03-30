@@ -1,10 +1,10 @@
 ﻿#include "pch.h"
 #include "EnemyManager.h"
 
-void EnemyManager::LoadEnemy()
+void EnemyManager::LoadEnemy(wstring filename)
 {
 	vector<vector<Tile*>> mEnemyList;
-	FileManager::LoadMap(L"Test04", mEnemyList, TileSize);
+	FileManager::LoadMap(filename, mEnemyList, TileSize);
 
 	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
 	Wall* wall = (Wall*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Wall, "Wall");

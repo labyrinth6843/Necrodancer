@@ -8,7 +8,7 @@ void ItemManager::LoadItem(wstring filename)	//filename : 로드할 맵의 아�
 {
 	vector<vector<Tile*>> itemList;	//Test03.txt
 	//아이템을 생성할 위치 정보를 담은 타일맵 로드
-	FileManager::LoadMap(L"Test03", itemList, TileSize, TileSize);
+	FileManager::LoadMap(filename, itemList, TileSize, TileSize);
 	int mapSizeY = itemList.size();
 	int mapSizeX = itemList.size();
 

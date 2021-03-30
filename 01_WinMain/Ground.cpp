@@ -2,16 +2,17 @@
 #include "Ground.h"
 #include "Camera.h"
 #include "Player.h"
-Ground::Ground(const string &name, int startx, int starty) : GameObject(name)
+Ground::Ground(const string &name, const wstring& filename, int startx, int starty) : GameObject(name)
 {
 	mX = startx;
 	mY = starty;
+	mFileName = filename;
 }
 void Ground::Init()
 {
 	vector<vector<Tile*>> groundList;
 	mBack = IMAGEMANAGER->FindImage(L"Black");
-	FileManager::LoadMap(L"Test00", groundList, TileSize);
+	FileManager::LoadMap(mFileName, groundList, TileSize);
 	mMapSizeY = groundList.size();
 	mMapSizeX = groundList[0].size();
 

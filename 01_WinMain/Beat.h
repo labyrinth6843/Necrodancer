@@ -50,7 +50,7 @@ private:
 	FrameImage mHeartImage;
 	vector<FrameImage> mMiss;
 
-	bool mIsBoss;
+	bool mIsLoop;
 	bool mTurn;
 	bool mMusicEnd;
 	bool mNotCall;
@@ -72,8 +72,8 @@ public:
 	bool IsDecision();	//플레이어 커맨드용
 	bool NextTurn();	//몬스터 이동 및 공격 턴 확인용
 
-	bool GetIsBoss() { return mIsBoss; };
-	void SetIsBoss(bool b) { mIsBoss = b; };
+	bool GetIsLoop() { return mIsLoop; };
+	void SetIsLoop(bool b) { mIsLoop = b; };
 
 	void SetFreeMode(bool mod) { mFreeMode = mod; }
 private:

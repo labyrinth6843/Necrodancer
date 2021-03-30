@@ -25,6 +25,7 @@ private:
 	Player* mPlayerPtr;
 	vector<FrameImage> mHp;
 	float mMaxHp;
+
 public:
 	Hud();
 	void Render(HDC hdc);
@@ -37,14 +38,13 @@ public:
 
 	//체력
 	void SetHp();
-	//골드
+
 public:
 	void SetPlayerPtr()
 	{
 		if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player"))
 			mPlayerPtr = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	}
-
 
 private:
 	//아이템

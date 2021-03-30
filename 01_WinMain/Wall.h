@@ -15,6 +15,9 @@ enum class WallType {
 
 class Wall:public GameObject
 {
+	wstring mWallFileName;
+	wstring mDecoFileName;
+
 	Image* mWallShadow;
 	Ground* mGroundPtr;
 
@@ -33,7 +36,7 @@ class Wall:public GameObject
 
 	int mFrameCount;
 public:
-	Wall(const string& name);
+	Wall(const string& name, const wstring& wallfilename, const wstring& decofilename);
 
 	void Init()override;
 	void Update()override;

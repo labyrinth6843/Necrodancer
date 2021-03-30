@@ -24,13 +24,13 @@ void GameScene::Init(){
 	Beat::GetInstance()->SetMusic(L"zone1_1",L"zone1_1");
 
 	//게임씬에서 사용할 오브젝트들 생성
-	ObjectManager::GetInstance()->AddObject(ObjectLayer::Ground, new Ground("Ground"));
-	ObjectManager::GetInstance()->AddObject(ObjectLayer::Wall, new Wall("Wall"));
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Ground, new Ground("Ground", L"Test00"));
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Wall, new Wall("Wall", L"Test01", L"Test02"));
 	Wall* tempWall = (Wall*)ObjectManager::GetInstance()->FindObject("Wall");
 	tempWall->SetGroundPtr("Ground");	//생성 서순이 꼬일 경우를 대비해서 만듬
 	
 	//몬스터
-	EnemyManager::LoadEnemy();
+	EnemyManager::LoadEnemy(L"Test04");
 
 	//아이템
 	ItemManager::LoadItem(L"Test03");
@@ -52,6 +52,7 @@ void GameScene::Init(){
 
 	//테스트모드
 	BEAT->SetFreeMode(true);
+	BEAT->SetIsLoop(true);
 }
 
 void GameScene::Release(){
