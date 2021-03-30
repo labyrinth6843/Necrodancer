@@ -53,7 +53,7 @@ void Player::Init() {
 
 	//초반 장착 아이템
 	mWeapon = new Weapon(-10.f, -10.f, WeaponType::Rapier, WeaponMaterial::Glass, ItemState::Owned);
-	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)mWeapon);
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, mWeapon);
 	//
 }
 
@@ -142,7 +142,7 @@ void Player::Update() {
 			mShowShovel = false;
 	}
 
-	Ground* tempGround = (Ground*)ObjectManager::GetInstance()->FindObject("Ground");
+	Ground* tempGround = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
 	tempGround->GetSight(mX / TileSize, mY / TileSize, (int)10);
 
 	mCurrentHeadAnimation->Update();

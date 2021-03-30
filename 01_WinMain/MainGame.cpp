@@ -56,7 +56,7 @@ void MainGame::Render(HDC hdc){
 	// ==================================================
 	{
 		SceneManager::GetInstance()->Render(backDC);
-		//RenderTime(backDC);
+		RenderTime(backDC);
 	}
 	//====================================================
 	//후면버퍼 내용을 윈도우 창에 고속 복사

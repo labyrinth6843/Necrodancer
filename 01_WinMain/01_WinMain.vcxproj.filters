@@ -327,6 +327,9 @@
     <ClInclude Include="ShopKeeper.h">
       <Filter>MainGame\Object\NPC</Filter>
     </ClInclude>
+    <ClInclude Include="Coin.h">
+      <Filter>MainGame\Object\Item</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="01_WinMain.cpp">
@@ -505,6 +508,9 @@
     </ClCompile>
     <ClCompile Include="ShopKeeper.cpp">
       <Filter>MainGame\Object\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="Coin.cpp">
+      <Filter>MainGame\Object\Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

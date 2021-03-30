@@ -17,7 +17,5 @@
 class EnemyManager
 {
 public:
-	
-public:
-	void LoadEnemy();
+	static void LoadEnemy();
 };

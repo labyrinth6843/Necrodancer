@@ -24,8 +24,9 @@ void GameScene::Init(){
 	Beat::GetInstance()->SetMusic(L"zone1_1",L"zone1_1");
 
 	//몬스터
-	EnemyManager* mEnemyManager = new EnemyManager;
-	mEnemyManager->LoadEnemy();
+	//EnemyManager* mEnemyManager = new EnemyManager;
+	//mEnemyManager->LoadEnemy();
+	EnemyManager::LoadEnemy();
 
 	//게임씬에서 사용할 오브젝트들 생성
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Ground, new Ground("Ground"));

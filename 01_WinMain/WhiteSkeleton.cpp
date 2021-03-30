@@ -96,11 +96,11 @@ WhiteSkeleton::WhiteSkeleton(const string& name, int x, int y):Enemy(name)
 
 void WhiteSkeleton::Init()
 {
+
 }
 
 void WhiteSkeleton::Update()
 {
-	//수정해야 함
 	if (Beat::GetInstance()->NextTurn() == true) {
 		if (mIsMove == false) {
 			mMoveBeat = !mMoveBeat;
