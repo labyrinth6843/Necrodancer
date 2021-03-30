@@ -11,7 +11,7 @@ void MapToolScene::Init()
 {
 	//Image LoadFromFile은 필터 -> LoadImage.cpp로 옮김
 	mPalleteList.push_back(L"GroundPallet");
-	mPalleteList.push_back(L"WallPallet");
+	mPalleteList.push_back(L"WallTile");
 	mPalleteList.push_back(L"DecoPallet");
 	mPalleteList.push_back(L"ItemPallet1");
 	mPalleteList.push_back(L"ItemPallet2");
@@ -80,9 +80,6 @@ void MapToolScene::Init()
 	mButtonList.insert(make_pair(L"Save", new Button(L"Save", L"Save", 250, 50, 200, 50, bind(&MapToolScene::Save, this))));
 	mButtonList.insert(make_pair(L"Load", new Button(L"Load", L"Load", 350, 50, 200, 50, [this]() 
 		{
-			//지금은 무조건 같은 파일만 불러와진다
-			Path::OpenFileDialog(L"", nullptr, L"../04_Data/", nullptr, _hWnd);
-
 			FileManager::LoadMap(L"Test00", mGroundList, TileSize);
 			FileManager::LoadMap(L"Test01", mWallList, TileSize, 72);
 			FileManager::LoadMap(L"Test02", mDecoList, TileSize);
@@ -652,194 +649,6 @@ void MapToolScene::Save()
 	saveStream.close();
 }
 
-void MapToolScene::Load()
-{	
-	//이제 사용 안함
-	int i = 0;
-	ifstream loadStream(L"../04_Data/Test0" + to_wstring(i) + L".txt");
-	if (loadStream.is_open()){
-		for (int y = 0; y < TileCountY; ++y){
-			for (int x = 0; x < TileCountX; ++x){
-				string key;
-				int posx;
-				int posy;
-				int frameX;
-				int frameY;
-				int type;
-
-				string buffer;
-				
-				getline(loadStream, buffer, ',');
-				key = buffer;
-				getline(loadStream, buffer, ',');
-				posx = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				posy = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				frameX = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				frameY = stoi(buffer);
-				getline(loadStream, buffer);
-				type = stoi(buffer);
-
-				wstring wstr;
-				wstr.assign(key.begin(), key.end());
-				mGroundList[y][x]->SetImage(ImageManager::GetInstance()->FindImage(wstr));
-				mGroundList[y][x]->SetFrameIndexX(frameX);
-				mGroundList[y][x]->SetFrameIndexY(frameY);
-				mGroundList[y][x]->SetTileType((TileType)type);
-			}
-		}
-	}
-	i++;
-	loadStream.close();
-	loadStream.open(L"../04_Data/Test0" + to_wstring(i) + L".txt");
-	if (loadStream.is_open()) {
-		for (int y = 0; y < TileCountY; ++y) {
-			for (int x = 0; x < TileCountX; ++x) {
-				string key;
-				int indexX;
-				int indexY;
-				int frameX;
-				int frameY;
-				int type;
-
-				string buffer;
-
-				getline(loadStream, buffer, ',');
-				key = buffer;
-				getline(loadStream, buffer, ',');
-				indexX = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				indexY = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				frameX = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				frameY = stoi(buffer);
-				getline(loadStream, buffer);
-				type = stoi(buffer);
-
-				wstring wstr;
-				wstr.assign(key.begin(), key.end());
-				mWallList[y][x]->SetImage(ImageManager::GetInstance()->FindImage(wstr));
-				mWallList[y][x]->SetFrameIndexX(frameX);
-				mWallList[y][x]->SetFrameIndexY(frameY);
-				mWallList[y][x]->SetTileType((TileType)type);
-			}
-		}
-	}
-	i++;
-	loadStream.close();
-	loadStream.open(L"../04_Data/Test0" + to_wstring(i) + L".txt");
-	if (loadStream.is_open()) {
-		for (int y = 0; y < TileCountY; ++y) {
-			for (int x = 0; x < TileCountX; ++x) {
-				string key;
-				int indexX;
-				int indexY;
-				int frameX;
-				int frameY;
-				int type;
-
-				string buffer;
-
-				getline(loadStream, buffer, ',');
-				key = buffer;
-				getline(loadStream, buffer, ',');
-				indexX = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				indexY = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				frameX = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				frameY = stoi(buffer);
-				getline(loadStream, buffer);
-				type = stoi(buffer);
-
-				wstring wstr;
-				wstr.assign(key.begin(), key.end());
-				mDecoList[y][x]->SetImage(ImageManager::GetInstance()->FindImage(wstr));
-				mDecoList[y][x]->SetFrameIndexX(frameX);
-				mDecoList[y][x]->SetFrameIndexY(frameY);
-				mDecoList[y][x]->SetTileType((TileType)type);
-			}
-		}
-	}
-	i++;
-	loadStream.close();
-	loadStream.open(L"../04_Data/Test0" + to_wstring(i) + L".txt");
-	if (loadStream.is_open()) {
-		for (int y = 0; y < TileCountY; ++y) {
-			for (int x = 0; x < TileCountX; ++x) {
-				string key;
-				int indexX;
-				int indexY;
-				int frameX;
-				int frameY;
-				int type;
-
-				string buffer;
-
-				getline(loadStream, buffer, ',');
-				key = buffer;
-				getline(loadStream, buffer, ',');
-				indexX = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				indexY = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				frameX = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				frameY = stoi(buffer);
-				getline(loadStream, buffer);
-				type = stoi(buffer);
-
-				wstring wstr;
-				wstr.assign(key.begin(), key.end());
-				mItemList[y][x]->SetImage(ImageManager::GetInstance()->FindImage(wstr));
-				mItemList[y][x]->SetFrameIndexX(frameX);
-				mItemList[y][x]->SetFrameIndexY(frameY);
-				mItemList[y][x]->SetTileType((TileType)type);
-			}
-		}
-	}
-	i++;
-	loadStream.close();
-	loadStream.open(L"../04_Data/Test0" + to_wstring(i) + L".txt");
-	if (loadStream.is_open()) {
-		for (int y = 0; y < TileCountY; ++y) {
-			for (int x = 0; x < TileCountX; ++x) {
-				string key;
-				int indexX;
-				int indexY;
-				int frameX;
-				int frameY;
-				int type;
-
-				string buffer;
-
-				getline(loadStream, buffer, ',');
-				key = buffer;
-				getline(loadStream, buffer, ',');
-				indexX = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				indexY = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				frameX = stoi(buffer);
-				getline(loadStream, buffer, ',');
-				frameY = stoi(buffer);
-				getline(loadStream, buffer);
-				type = stoi(buffer);
-
-				wstring wstr;
-				wstr.assign(key.begin(), key.end());
-				mObjectList[y][x]->SetImage(ImageManager::GetInstance()->FindImage(wstr));
-				mObjectList[y][x]->SetFrameIndexX(frameX);
-				mObjectList[y][x]->SetFrameIndexY(frameY);
-				mObjectList[y][x]->SetTileType((TileType)type);
-			}
-		}
-	}
-}
 
 void MapToolScene::Clear(){
 	for (int y = 0; y < mMaxSizeY; ++y) {

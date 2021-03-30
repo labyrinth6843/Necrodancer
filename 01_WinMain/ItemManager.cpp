@@ -10,7 +10,7 @@ void ItemManager::LoadItem(wstring filename)	//filename : 로드할 맵의 아�
 	//아이템을 생성할 위치 정보를 담은 타일맵 로드
 	FileManager::LoadMap(filename, itemList, TileSize, TileSize);
 	int mapSizeY = itemList.size();
-	int mapSizeX = itemList.size();
+	int mapSizeX = itemList[0].size();
 
 	//아이템 생성
 	for (int y = 0; y < mapSizeY; ++y)

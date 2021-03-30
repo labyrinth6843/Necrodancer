@@ -259,7 +259,7 @@ void Player::Dig(int x, int y) {
 	mShowShovel = true;
 	mShowShovelFrame = 01.0f;
 
-	if (temp->GetFrameIndexY(mEndIndexX, mEndIndexY) == 6) {
+	if (temp->GetFrameIndexY(mEndIndexX, mEndIndexY) >= 6) {
 		SoundPlayer::GetInstance()->Play(L"move_fail", 1.f);
 		Combo::GetInstance()->ComboReset();
 		return;

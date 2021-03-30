@@ -79,6 +79,7 @@ void Wall::Render(HDC hdc)
 				{
 					if (mWallList[y][x]->GetFrameIndexX() != 0 || mWallList[y][x]->GetFrameIndexY() != 0)
 					{
+
 						float alpha = 1.f;
 						if (mGroundPtr->GetAlpha(x, y, alpha))
 						{

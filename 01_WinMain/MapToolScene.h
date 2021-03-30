@@ -157,7 +157,6 @@ private:
 	void SetSize();
 
 	void Save();
-	void Load();
 	void Clear();
 	void Undo();
 	void Redo();
