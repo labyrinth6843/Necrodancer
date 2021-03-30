@@ -4,7 +4,7 @@ DecoPallet,2,0,0,0,0
 DecoPallet,3,0,0,0,0
 DecoPallet,4,0,0,0,0
 DecoPallet,5,0,0,0,0
-DecoPallet,6,0,3,0,0
+DecoPallet,6,0,0,0,0
 DecoPallet,7,0,0,0,0
 DecoPallet,8,0,0,0,0
 DecoPallet,9,0,0,0,0
@@ -78,7 +78,7 @@ WallPallet,16,3,0,0,0
 WallPallet,17,3,0,0,0
 WallPallet,18,3,0,0,0
 WallPallet,19,3,0,0,0
-DecoPallet,0,4,1,0,0
+DecoPallet,0,4,0,0,0
 DecoPallet,1,4,0,0,0
 DecoPallet,2,4,0,0,0
 DecoPallet,3,4,0,0,0

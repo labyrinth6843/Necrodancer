@@ -68,7 +68,7 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"Nightmare", Resources(L"Enemy/Nightmare.bmp"), 285, 84, 5, 2, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Minotaur", Resources(L"Enemy/Minotaur.bmp"), 450, 196, 9, 4, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Dragon", Resources(L"Enemy/Dragon.bmp"), 427, 240, 7, 4, true);
-	ImageManager::GetInstance()->LoadFromFile(L"KingConga", Resources(L"Enemy/KingConga.bmp"), 406, 158, 7, 4, true);
+	ImageManager::GetInstance()->LoadFromFile(L"KingConga", Resources(L"Enemy/KingConga.bmp"), 406, 158, 7, 2, true);
 	ImageManager::GetInstance()->LoadFromFile(L"KingCongaThrone", Resources(L"Enemy/KingCongaThrone.bmp"), 44, 78, true);
 	//}}
 

@@ -130,11 +130,11 @@ void EnemyManager::LoadEnemy()
 					}
 
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 4 && mEnemyList[y][x]->GetFrameIndexY() == 2) {
-						//KingConga* kingconga = new KingConga("KingConga", x, y);
-						//kingconga->SetGroundPtr(ground);
-						//kingconga->SetWallPtr(wall);
-						//kingconga->SetPlayerPtr(player);
-						//ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)kingconga);
+						KingConga* kingconga = new KingConga("KingConga", x, y);
+						kingconga->SetGroundPtr(ground);
+						kingconga->SetWallPtr(wall);
+						kingconga->SetPlayerPtr(player);
+						ObjectManager::GetInstance()->AddObject(ObjectLayer::Enemy, (GameObject*)kingconga);
 					}
 
 					else if (mEnemyList[y][x]->GetFrameIndexX() == 0 && mEnemyList[y][x]->GetFrameIndexY() == 3) {

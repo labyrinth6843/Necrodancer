@@ -1,6 +1,6 @@
 ﻿#include "pch.h"
 #include "Minotaur.h"
-//
+
 Minotaur::Minotaur(const string & name, int x, int y):Enemy(name)
 {
 	FileManager::LoadMap(L"Test01", mWallList, TileSize, 72);
@@ -10,7 +10,7 @@ Minotaur::Minotaur(const string & name, int x, int y):Enemy(name)
 
 	mHp = 3;
 	mCoin = 10;
-	mAtk = 2.f;
+	mAtk = 4;
 
 	mOpacity = 0.f;
 	mIsVisible = false;
@@ -245,7 +245,10 @@ void Minotaur::Render(HDC hdc)
 
 void Minotaur::Attack()
 {
-	mPlayerPtr->SetHp(GetHp() - mAtk);
+	float damage = (float)mAtk - mPlayerPtr->GetDef();
+	if (damage <= 0.f)
+		damage = 1.f;
+	mPlayerPtr->HpDown(damage);
 	SoundPlayer::GetInstance()->Play(L"minotaur_attack", 1.f);
 }
 

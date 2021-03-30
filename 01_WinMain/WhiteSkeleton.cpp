@@ -8,7 +8,7 @@ WhiteSkeleton::WhiteSkeleton(const string& name, int x, int y):Enemy(name)
 
 	mHp = 1;
 	mCoin = 2;
-	mAtk = 0.5f;
+	mAtk = 1;
 
 	mOpacity = 0.f;
 	mIsVisible = false;
@@ -205,7 +205,10 @@ void WhiteSkeleton::Render(HDC hdc)
 }
 
 void WhiteSkeleton::Attack() {
-	mPlayerPtr->SetHp(GetHp() - mAtk);
+	float damage = (float)mAtk - mPlayerPtr->GetDef();
+	if (damage <= 0.f)
+		damage = 1.f;
+	mPlayerPtr->HpDown(damage);
 	SoundPlayer::GetInstance()->Play(L"skeleton_attack", 1.f);
 }
 

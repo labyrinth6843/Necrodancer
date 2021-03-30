@@ -8,7 +8,7 @@ Zombie::Zombie(const string& name, int x, int y) :Enemy(name)
 
 	mHp = 1;
 	mCoin = 1;
-	mAtk = 1.f;
+	mAtk = 2;
 
 	mOpacity = 0.f;
 	mIsVisible = false;
@@ -151,7 +151,7 @@ void Zombie::Update()
 		}
 	}
 
-	mGroundPtr->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	mGroundPtr->GetAlpha((int)(mX / TileSize), (int)(mY / TileSize), mOpacity);
 	//흑백에서 컬러로 넘어가는 시점
 	if (mOpacity > 0.5f)
 		mIsVisible = true;
@@ -177,7 +177,10 @@ void Zombie::Render(HDC hdc)
 }
 
 void Zombie::Attack() {
-	mPlayerPtr->SetHp(GetHp() - mAtk);
+	float damage = (float)mAtk - mPlayerPtr->GetDef();
+	if (damage <= 0.f)
+		damage = 1.f;
+	mPlayerPtr->HpDown(damage);
 	SoundPlayer::GetInstance()->Play(L"zombie_attack", 1.f);
 }
 
