@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "BlueSlime.h"
 
 BlueSlime::BlueSlime(const string& name, int x, int y) : Enemy(name) {
@@ -8,6 +8,9 @@ BlueSlime::BlueSlime(const string& name, int x, int y) : Enemy(name) {
 	mHp = 2;
 	mCoin = 2;
 	mAtk = 1.f;
+
+	mOpacity = 0.f;
+	mIsVisible = false;
 
 	mImage = ImageManager::GetInstance()->FindImage(L"Slime2");
 
@@ -133,6 +136,15 @@ void BlueSlime::Update()
 			mInitY = mY;
 		}
 	}
+
+	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
+	ground->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	//흑백에서 컬러로 넘어가는 시점
+	if (mOpacity > 0.5f)
+		mIsVisible = true;
+	else
+		mIsVisible = false;
+
 	mCurrentAnimation->Update();
 }
 
@@ -146,7 +158,7 @@ void BlueSlime::Release()
 
 void BlueSlime::Render(HDC hdc)
 {
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY + mCorrectionY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), 39, 39);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 39, 39);
 }
 
 void BlueSlime::Move(int dirX, int dirY) {

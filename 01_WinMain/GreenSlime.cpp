@@ -24,7 +24,7 @@ GreenSlime::GreenSlime(const string & name, int x, int y):Enemy(name)
 	mLeftAnimation->Play();
 
 	mRightAnimation = new Animation();
-	mRightAnimation->InitFrameByStartEnd(4, 0, 7, 0, false);
+	mRightAnimation->InitFrameByStartEnd(0, 2, 3, 2, false);
 	mRightAnimation->SetFrameUpdateTime(0.1f);
 	mRightAnimation->SetIsLoop(true);
 	mRightAnimation->Play();
@@ -88,5 +88,5 @@ void GreenSlime::Release()
 
 void GreenSlime::Render(HDC hdc)
 {
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY, mCurrentAnimation->GetNowFrameX(), 1 - mIsVisible, 39, 39);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY() +(int)mIsVisible, 39, 39);
 }
