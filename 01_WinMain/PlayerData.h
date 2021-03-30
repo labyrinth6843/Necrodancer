@@ -14,6 +14,7 @@ private:
 	Armor* mArmor;
 public:
 	PlayerData();
+	~PlayerData();
 	void Release();
 	void CopyPlayer(GameObject* player);
 	void CopyPlayer(Player* player);

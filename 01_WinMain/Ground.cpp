@@ -339,3 +339,11 @@ void Ground::SightCall()
 		}
 	}
 }
+
+bool Ground::NextStage(int indexX, int indexY)
+{
+	if (mGroundList[indexY][indexX].Tile->GetFrameIndexX() == 6 && mGroundList[indexY][indexX].Tile->GetFrameIndexY() == 0)
+		return true;
+	else
+		return false;
+}

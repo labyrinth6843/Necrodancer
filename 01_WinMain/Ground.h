@@ -37,6 +37,8 @@ public:
 
 	void SightCall();
 
+	bool NextStage(int indexX, int indexY);
+
 	POINT GetMapSize()
 	{
 		POINT pt = { mMapSizeX, mMapSizeY };

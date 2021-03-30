@@ -1,5 +1,5 @@
-ï»¿#include "pch.h"
-#include "GameScene.h"
+#include "pch.h"
+#include "BossScene.h"
 #include "Player.h"
 #include "Tile.h"
 #include "Button.h"
@@ -13,27 +13,26 @@
 #include "Enemy.h"
 
 #include "Camera.h"
-void GameScene::Init(){
+void BossScene::Init() {
 	Beat::GetInstance()->Init();
 
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player"));
 	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 
-	SoundPlayer::GetInstance()->Play(L"zone1_1",0.2f);
-	SoundPlayer::GetInstance()->Play(L"zone1_1_shopkeeper", 0.2f * temp->DistanceShopkeeper());
-	Beat::GetInstance()->SetMusic(L"zone1_1",L"zone1_1");
+	SoundPlayer::GetInstance()->Play(L"kingconga", 0.2f);
+	Beat::GetInstance()->SetMusic(L"kingconga", L"boss_1");
 
-	//ê²Œìž„ì”¬ì—ì„œ ì‚¬ìš©í•  ì˜¤ë¸Œì íŠ¸ë“¤ ìƒì„±
-	ObjectManager::GetInstance()->AddObject(ObjectLayer::Ground, new Ground("Ground", L"Scene1_00"));
-	ObjectManager::GetInstance()->AddObject(ObjectLayer::Wall, new Wall("Wall", L"Scene1_01", L"Scene1_02"));
+	//°ÔÀÓ¾À¿¡¼­ »ç¿ëÇÒ ¿ÀºêÁ§Æ®µé »ý¼º
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Ground, new Ground("Ground", L"Test00"));
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Wall, new Wall("Wall", L"Test01", L"Test02"));
 	Wall* tempWall = (Wall*)ObjectManager::GetInstance()->FindObject("Wall");
-	tempWall->SetGroundPtr("Ground");	//ìƒì„± ì„œìˆœì´ ê¼¬ì¼ ê²½ìš°ë¥¼ ëŒ€ë¹„í•´ì„œ ë§Œë“¬
-	
-	//ëª¬ìŠ¤í„°
-	EnemyManager::LoadEnemy(L"Scene1_04");
+	tempWall->SetGroundPtr("Ground");	//»ý¼º ¼­¼øÀÌ ²¿ÀÏ °æ¿ì¸¦ ´ëºñÇØ¼­ ¸¸µë
 
-	//ì•„ì´í…œ
-	ItemManager::LoadItem(L"Scene1_03");
+	//¸ó½ºÅÍ
+	EnemyManager::LoadEnemy(L"Test04");
+
+	//¾ÆÀÌÅÛ
+	ItemManager::LoadItem(L"Test03");
 
 	//camera
 	Camera* camera = new Camera();
@@ -43,36 +42,36 @@ void GameScene::Init(){
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, camera);
 
 	ObjectManager::GetInstance()->Init();
-	mToolButton  = new Button(L"Tool",  L"Tool",  550, 50, 200, 50, bind(&GameScene::Tool, this));
+	mToolButton = new Button(L"Tool", L"Tool", 550, 50, 200, 50, bind(&BossScene::Tool, this));
 
 	//Hud
 	HUD->SetPlayerPtr();
 	HUD->SetHp();
 
-	//í…ŒìŠ¤íŠ¸ëª¨ë“œ
+	//Å×½ºÆ®¸ðµå
 	BEAT->SetFreeMode(true);
 	BEAT->SetIsLoop(true);
 
-	//ë°ì´í„°ì €ìž¥ í…ŒìŠ¤íŠ¸
+	//µ¥ÀÌÅÍÀúÀå Å×½ºÆ®
 	PDATA->LoadPlayer(ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player"));
 }
 
-void GameScene::Release(){
+void BossScene::Release() {
 	SafeDelete(mToolButton);
 	HUD->Release();
 	BEAT->Release();
-	ObjectManager::GetInstance()->AllDestroy();	//í•¨ìˆ˜ êµ¬ì„±ì€ ê°™ì€ë° Releaseë¥¼ ì‚¬ìš©í•˜ë©´ Playerê°€ nullptr
+	ObjectManager::GetInstance()->AllDestroy();	//ÇÔ¼ö ±¸¼ºÀº °°Àºµ¥ Release¸¦ »ç¿ëÇÏ¸é Player°¡ nullptr
 	CameraManager::GetInstance()->SetMainCamera(nullptr);
 }
 
-void GameScene::Update(){
+void BossScene::Update() {
 	ObjectManager::GetInstance()->Update();
 	HUD->Update();
 	BEAT->Update();
 	mToolButton->Update();
 }
 
-void GameScene::Render(HDC hdc){
+void BossScene::Render(HDC hdc) {
 	HBRUSH Brush = CreateSolidBrush(RGB(66, 66, 66));
 	HBRUSH oldBrush = (HBRUSH)SelectObject(hdc, Brush);
 
@@ -93,22 +92,19 @@ void GameScene::Render(HDC hdc){
 	NextStage();
 }
 
-void GameScene::Tool() {
+void BossScene::Tool() {
 	SoundPlayer::GetInstance()->Stop(L"zone1_1");
-	SoundPlayer::GetInstance()->Stop(L"zone1_1_shopkeeper");
 	SceneManager::GetInstance()->LoadScene(L"MapToolScene");
 
 }
 
-void GameScene::NextStage()
+void BossScene::NextStage()
 {
 	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
 	Player* player = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 	if (ground->NextStage(player->GetX() / TileSize, player->GetY() / TileSize))
 	{
-		SoundPlayer::GetInstance()->Stop(L"zone1_1");
-		SoundPlayer::GetInstance()->Stop(L"zone1_1_shopkeeper");
-		SceneManager::GetInstance()->LoadScene(L"BossScene");
+		Tool();
 		PDATA->CopyPlayer(ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player"));
 	}
 }

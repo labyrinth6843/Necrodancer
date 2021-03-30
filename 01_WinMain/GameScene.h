@@ -18,5 +18,6 @@ public:
 	void Render(HDC hdc)override;
 
 	void Tool();
+	void NextStage();
 };
 

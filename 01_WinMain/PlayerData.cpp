@@ -11,8 +11,16 @@ PlayerData::PlayerData()
 	mArmor = new Armor(-10.f, -10.f, ArmorMaterial::None, ItemState::Owned);
 }
 
+PlayerData::~PlayerData()
+{
+}
+
 void PlayerData::Release()
 {
+	mIsSave = false;
+	mHp = 6.f;
+	mWeapon = nullptr;
+	mArmor = nullptr;
 }
 
 void PlayerData::CopyPlayer(GameObject* player)
