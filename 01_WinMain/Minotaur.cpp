@@ -18,26 +18,26 @@ Minotaur::Minotaur(const string & name, int x, int y):Enemy(name)
 	mImage = ImageManager::GetInstance()->FindImage(L"Minotaur");
 
 	mLeftAnimation = new Animation();
-	mLeftAnimation->InitFrameByStartEnd(0,0,4,0,false);
+	mLeftAnimation->InitFrameByStartEnd(0,0,3,0,false);
 	mLeftAnimation->SetFrameUpdateTime(0.1f);
 	mLeftAnimation->SetIsLoop(true);
 	mLeftAnimation->Play();
 
 	mRightAnimation = new Animation();
-	mRightAnimation->InitFrameByStartEnd(0,2,4,2,false);
+	mRightAnimation->InitFrameByStartEnd(0,2,3,2,false);
 	mRightAnimation->SetFrameUpdateTime(0.1f);
 	mRightAnimation->SetIsLoop(true);
 	mRightAnimation->Play();
 
 	mLeftWallImpactAnimation = new Animation();
 	mLeftWallImpactAnimation->InitFrameByStartEnd(5, 0, 8, 0, false);
-	mLeftWallImpactAnimation->SetFrameUpdateTime(0.1f);
+	mLeftWallImpactAnimation->SetFrameUpdateTime(0.2f);
 	mLeftWallImpactAnimation->SetIsLoop(true);
 	mLeftWallImpactAnimation->Play();
 
 	mRightWallImpactAnimation = new Animation;
 	mRightWallImpactAnimation->InitFrameByStartEnd(5,2,8,2,false);
-	mRightWallImpactAnimation->SetFrameUpdateTime(0.1f);
+	mRightWallImpactAnimation->SetFrameUpdateTime(0.2f);
 	mRightWallImpactAnimation->SetIsLoop(true);
 	mRightWallImpactAnimation->Play();
 
@@ -53,30 +53,26 @@ Minotaur::Minotaur(const string & name, int x, int y):Enemy(name)
 	}
 }
 
-void Minotaur::Move(int indexX, int indexY)
+void Minotaur::Move(int dirX, int dirY)
 {
 	mMoveTime = 0.f;
 	mIsMove = true;
 
-	mDestX = indexX;
-	mDestY = indexY;
+	mDestX = mX + TileSize * dirX;
+	mDestY = mY + TileSize * dirY;
 
 	mDestIndexX = mDestX / TileSize;
 	mDestIndexY = mDestY / TileSize;
+
+	if (dirX > 0)
+		mIsLeft = false;
+	else if(dirX < 0)
+		mIsLeft = true;
 
 	mInitX = mX;
 	mInitY = mY;
 	mCorrectionY = 0.f;
 	mJumpPower = 150.f;
-
-	if (mX > mDestX) {
-		mCurrentAnimation = mLeftAnimation;
-		mIsLeft = true;
-	}
-	else {
-		mCurrentAnimation = mRightAnimation;
-		mIsLeft = false;
-	}
 
 	if (mGroundPtr->IsMove(mDestIndexX, mDestIndexY))
 		mIsMove = true;
@@ -86,15 +82,71 @@ void Minotaur::Move(int indexX, int indexY)
 
 POINT Minotaur::DestinationValidationCheck()
 {
-	mDestX = mX;
+	mDestX = mPlayerPtr->GetX();
+	mDestY = mPlayerPtr->GetY();
 	mDestIndexX = mDestX / TileSize;
-	mDestY = mY;
 	mDestIndexY = mDestY / TileSize;
 	
-	mRouteList = PathFinder::GetInstance()->FindPath(mWallList, mX /TileSize, mY  /TileSize, mPlayerPtr->GetX()/TileSize, mPlayerPtr->GetY()/TileSize);
-	Tile* temp = mRouteList.front();
-	mRouteList.erase(mRouteList.begin());
-	return { (int)(temp->GetX()) / TileSize, (int)(temp->GetY()) / TileSize };
+	int disX = abs(mX / TileSize - mPlayerPtr->GetX() / TileSize);
+	int disY = abs(mY / TileSize - mPlayerPtr->GetY() / TileSize);
+
+	if (mX / TileSize == mDestIndexX) {
+		mIsAttack = true;
+		SoundPlayer::GetInstance()->Play(L"minotaur_charge", 1.f);
+		if (mY / TileSize > mDestIndexY) {
+			mRushDirection = { 0, -1 };
+			return { 0, -1 };
+		}
+		else
+			mRushDirection = { 0, 1 };
+			return { 0, 1 };
+	}
+
+	if (mY / TileSize == mDestIndexY) {
+		mIsAttack = true;
+		SoundPlayer::GetInstance()->Play(L"minotaur_charge", 1.f);
+		if (mX / TileSize > mDestIndexX) {
+			mRushDirection = { -1,0 };
+			return { -1,0 };
+		}
+		else {
+			mRushDirection = { 1,0 };
+			return { 1,0 };
+		}
+	}
+
+	if (disX > disY) {
+		if (mX > mPlayerPtr->GetX()) {
+			mDirection = 1;
+			return { -1,0 };
+		}
+		else {
+			mDirection = 2;
+			return { 1, 0 };
+		}
+	}
+	else if (disX < disY) {
+		if (mY > mPlayerPtr->GetY()) {
+			mDirection = 0;
+			return { 0, -1 };
+		}
+		else {
+			mDirection = 3;
+			return { 0, 1 };
+		}
+	}
+	else {
+		switch (mDirection) {
+		case 0:
+			return { 0, -1 };
+		case 1:
+			return { -1,0 };
+		case 2:
+			return { 1, 0 };
+		case 3:
+			return { 0, 1 };
+		}
+	}
 }
 
 void Minotaur::Dig(int indexX, int indexY)
@@ -111,17 +163,38 @@ void Minotaur::Update()
 {
 	if (Beat::GetInstance()->NextTurn() == true) {
 		if (mIsMove == false) {
-			if (mIsLeft == true)
-				mCurrentAnimation = mLeftAnimation;
-			else
-				mCurrentAnimation = mRightAnimation;
-			POINT temp = DestinationValidationCheck();
-			if (WallCheck(temp.x, temp.y) == false) {
-				if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr) {
-					if (mPlayerPtr->GetX() / TileSize == mDestIndexX && mPlayerPtr->GetY() / TileSize == mDestIndexY)
-						Attack();
+			if (mIsStun == true) {
+				mStunBeat++;
+				if (mStunBeat > 2)
+					mIsStun = false;
+			}
+			else {
+				if (mIsLeft == true)
+					mCurrentAnimation = mLeftAnimation;
+				else
+					mCurrentAnimation = mRightAnimation;
+
+				if (mIsAttack == false) {
+					POINT temp = DestinationValidationCheck();
+					if (WallCheck(temp.x, temp.y) == false) {
+						if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) == nullptr)
+							Move(temp.x, temp.y);
+					}
+				}
+
+				else {
+					if (WallCheck(mRushDirection.x, mRushDirection.y) == false) {
+						if (ObjectManager::GetInstance()->FindObject(ObjectLayer::Enemy, POINT{ mDestIndexX, mDestIndexY }) != nullptr)
+							Stun();
+						else if (mPlayerPtr->GetX() / TileSize == mDestIndexX && mPlayerPtr->GetY() / TileSize == mDestIndexY) {
+							Attack();
+							Stun();
+						}
+						else
+							Move(mRushDirection.x, mRushDirection.y);
+					}
 					else
-						Move(temp.x, temp.y);
+						Stun();
 				}
 			}
 		}
@@ -164,13 +237,30 @@ void Minotaur::Release()
 
 void Minotaur::Render(HDC hdc)
 {
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY + mCorrectionY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 39, 39);
+	if(mIsAttack == false)
+		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX - 19, mY + mCorrectionY - 39, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 78, 78);
+	else
+		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX - 19, mY + mCorrectionY - 39, 4, mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 78, 78);
 }
 
 void Minotaur::Attack()
 {
 	mPlayerPtr->SetHp(GetHp() - mAtk);
 	SoundPlayer::GetInstance()->Play(L"minotaur_attack", 1.f);
+}
+
+void Minotaur::Stun()
+{
+	SoundPlayer::GetInstance()->Play(L"minotaur_wallimpact", 1.f);
+	mStunBeat = 0;
+
+	mIsAttack = false;
+	mIsStun = true;
+	
+	if (mIsLeft == true)
+		mCurrentAnimation = mLeftWallImpactAnimation;
+	else
+		mCurrentAnimation = mRightWallImpactAnimation;
 }
 
 void Minotaur::IsAttacked(int dmg)
