@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "GreenSlime.h"
 
 GreenSlime::GreenSlime(const string & name, int x, int y):Enemy(name)
@@ -9,6 +9,9 @@ GreenSlime::GreenSlime(const string & name, int x, int y):Enemy(name)
 	mHp = 1;
 	mCoin = 1;
 	mAtk = 50.f;
+
+	mOpacity = 0.f;
+	mIsVisible = false;
 
 	mImage = ImageManager::GetInstance()->FindImage(L"Slime1");
 
@@ -21,7 +24,7 @@ GreenSlime::GreenSlime(const string & name, int x, int y):Enemy(name)
 	mLeftAnimation->Play();
 
 	mRightAnimation = new Animation();
-	mRightAnimation->InitFrameByStartEnd(0, 2, 3, 2, false);
+	mRightAnimation->InitFrameByStartEnd(4, 0, 7, 0, false);
 	mRightAnimation->SetFrameUpdateTime(0.1f);
 	mRightAnimation->SetIsLoop(true);
 	mRightAnimation->Play();
@@ -67,15 +70,23 @@ void GreenSlime::Init() {
 
 void GreenSlime::Update()
 {
+	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
+	ground->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	//흑백에서 컬러로 넘어가는 시점
+	if (mOpacity > 0.5f)
+		mIsVisible = true;
+	else
+		mIsVisible = false;
 	mCurrentAnimation->Update();
 }
 
 void GreenSlime::Release()
 {
-	
+	SafeDelete(mLeftAnimation);
+	SafeDelete(mRightAnimation);
 }
 
 void GreenSlime::Render(HDC hdc)
 {
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY(), 39, 39);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY, mCurrentAnimation->GetNowFrameX(), 1 - mIsVisible, 39, 39);
 }

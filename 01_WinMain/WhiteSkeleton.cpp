@@ -119,5 +119,5 @@ void WhiteSkeleton::Move(int dirX, int dirY)
 
 POINT WhiteSkeleton::DestinationValidationCheck()
 {
-
+	return { 0,0 };
 }

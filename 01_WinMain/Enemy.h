@@ -27,6 +27,8 @@ protected:
 	float mCorrectionY;
 	float mJumpPower;
 	bool mIsMove;
+	bool mIsVisible;
+	float mOpacity;
 
 	int mDirection;
 	int mHp;

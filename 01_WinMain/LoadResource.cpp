@@ -57,7 +57,7 @@ void FileManager::LoadResource()
 
 	//{{ 적 관련 이미지
 	ImageManager::GetInstance()->LoadFromFile(L"Zombie", Resources(L"Enemy/Zombie.bmp"), 320, 150, 16, 6, true);
-	ImageManager::GetInstance()->LoadFromFile(L"Slime1", Resources(L"Enemy/Slime1.bmp"), 104, 104, 4, 4, true);
+	ImageManager::GetInstance()->LoadFromFile(L"Slime1", Resources(L"Enemy/Slime1.bmp"), 208, 52, 8, 2, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Slime2", Resources(L"Enemy/Slime2.bmp"), 208, 104, 8, 4, true);
 	ImageManager::GetInstance()->LoadFromFile(L"Slime3", Resources(L"Enemy/Slime3.bmp"), 104, 104, 4, 4, true);
 	ImageManager::GetInstance()->LoadFromFile(L"GreyBat", Resources(L"Enemy/Bat1.bmp"), 96, 96, 4, 4, true);
