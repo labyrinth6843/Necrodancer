@@ -39,7 +39,6 @@ void MapToolScene::Init()
 			WList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"WallTile"), TileSize * x , TileSize * y , TileSize, 72, 0, 0));
 			DList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"DecoPallet"), TileSize * x , TileSize * y , TileSize, TileSize, 0, 0));
 			IList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"ItemPallet1"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
-			IList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"ItemPallet2"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
 			OList.push_back(new Tile(ImageManager::GetInstance()->FindImage(L"MonsterPallet"), TileSize * x, TileSize * y, TileSize, TileSize, 0, 0));
 		}
 		mGroundList.push_back(GList);
@@ -200,7 +199,7 @@ void MapToolScene::Update(){
 				mPallete[y][x].Layer = TileLayer::Wall;
 			else if (mCurrentPage < 3)
 				mPallete[y][x].Layer = TileLayer::Deco;
-			else if (mCurrentPage < 4)
+			else if (mCurrentPage < 5)
 				mPallete[y][x].Layer = TileLayer::Item;
 			else
 				mPallete[y][x].Layer = TileLayer::GameObject;
@@ -420,9 +419,9 @@ void MapToolScene::Render(HDC hdc){
 
 	//타일 출력
 	TileListRender(hdc, mGroundList);
-	TileListRender(hdc, mDecoList);
 	TileListRender(hdc, mItemList);
 	TileListRender(hdc, mWallList);
+	TileListRender(hdc, mDecoList);
 	TileListRender(hdc, mObjectList);
 	//격자
 	for (int y = 0; y < 10; ++y)

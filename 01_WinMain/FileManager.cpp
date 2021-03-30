@@ -25,7 +25,6 @@ void FileManager::LoadMap(wstring filename, vector<vector<Tile*>>& saveList, int
 			}
 		}
 		saveList.clear();
-		saveList.shrink_to_fit();
 		isNew = true;
 	}
 

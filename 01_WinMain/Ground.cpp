@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
 #include "Ground.h"
 #include "Camera.h"
-
+#include "Player.h"
 Ground::Ground(const string &name, int startx, int starty) : GameObject(name)
 {
 	mX = startx;
@@ -19,7 +19,7 @@ void Ground::Init()
 	mOddFrame = { 0,0 };
 	mEvenFrame = { 1,0 };
 
-	mSightCall = 0;
+	mSightCall = false;
 
 	//원활한 작업을 위해타일의 이미지 포인터 변경
 	for (int y = 0; y < mMapSizeY; ++y)
@@ -204,28 +204,6 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 	if (level <= 0)
 		return false;
 
-	mSightCall++;
-
-	//Alpha 초기화 -> 여러 광원이 존재한다면 이 함수가 불러질때마다 배경을 초기화하면 안된다
-	// 매 프레임 중 GetSight 함수가 한번이라도 호출되면 딱 한번 Alpha를 초기화한다
-	if (mSightCall)
-	{
-		if (mSightCall == 1)
-		{
-			for (int y = mMinIndexY; y < mMaxIndexY; ++y)
-			{
-				for (int x = mMinIndexX; x < mMaxIndexX; ++x)
-				{
-					if (mGroundList[y][x].Tile->GetImage() != NULL)
-					{
-						if (mGroundList[y][x].Tile->GetFrameIndexX() != 7 || mGroundList[y][x].Tile->GetFrameIndexY() != 1)
-							mGroundList[y][x].Alpha = 0.1f;
-					}
-				}
-			}
-		}
-	}
-
 	//확장할때마다 감소할 수치
 	float lv = 1.f / (float)level;
 
@@ -253,7 +231,7 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 		if (IsMove(checkX, checkY) == false)
 			continue;
 		//Wall이 존재하는 타일인지 확인 -> 벽까지는 확장을 하지만 벽 너머는 확장X
-		if (tempWall->IsWall(checkX, checkY) == true)
+		if ((checkX != targetX || checkY != targetY) && tempWall->IsWall(checkX, checkY) == true)
 			continue;
 
 		//Alpha값 변경 + 확장단계
@@ -262,7 +240,7 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 		{
 			if (checkX - 1 >= mMinIndexX)
 			{
-				if (mGroundList[checkY][checkX - 1].Alpha < check.Alpha)
+				if (mGroundList[checkY][checkX - 1].Alpha <= 0.1f)
 				{
 					mGroundList[checkY][checkX - 1].Alpha = check.Alpha - lv;
 					sightQueue.emplace(mGroundList[checkY][checkX - 1]);
@@ -270,7 +248,7 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 			}
 			if (checkX + 1 < mMaxIndexX)
 			{
-				if (mGroundList[checkY][checkX + 1].Alpha < check.Alpha)
+				if (mGroundList[checkY][checkX + 1].Alpha <= 0.1f)
 				{
 					mGroundList[checkY][checkX + 1].Alpha = check.Alpha - lv;
 					sightQueue.emplace(mGroundList[checkY][checkX + 1]);
@@ -278,7 +256,7 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 			}
 			if (checkY - 1 >= mMinIndexY)
 			{
-				if (mGroundList[checkY - 1][checkX].Alpha < check.Alpha)
+				if (mGroundList[checkY - 1][checkX].Alpha <= 0.1f)
 				{
 					mGroundList[checkY - 1][checkX].Alpha = check.Alpha - lv;
 					sightQueue.emplace(mGroundList[checkY - 1][checkX]);
@@ -286,7 +264,7 @@ bool Ground::GetSight(int targetX, int targetY, int level)
 			}
 			if (checkY + 1 < mMaxIndexY)
 			{
-				if (mGroundList[checkY + 1][checkX].Alpha < check.Alpha)
+				if (mGroundList[checkY + 1][checkX].Alpha <= 0.1f)
 				{
 					mGroundList[checkY + 1][checkX].Alpha = check.Alpha - lv;
 					sightQueue.emplace(mGroundList[checkY + 1][checkX]);
@@ -342,4 +320,18 @@ void Ground::GetShowArea(int &minx, int &miny, int &maxx, int &maxy)
 	miny = mMinIndexY;
 	maxx = mMaxIndexX;
 	maxy = mMaxIndexY;
+}
+void Ground::SightCall()
+{
+	for (int y = mMinIndexY; y < mMaxIndexY; ++y)
+	{
+		for (int x = mMinIndexX; x < mMaxIndexX; ++x)
+		{
+			if (mGroundList[y][x].Tile->GetImage() != NULL)
+			{
+				if (mGroundList[y][x].Tile->GetFrameIndexX() != 7 || mGroundList[y][x].Tile->GetFrameIndexY() != 1)
+					mGroundList[y][x].Alpha = 0.1f;
+			}
+		}
+	}
 }

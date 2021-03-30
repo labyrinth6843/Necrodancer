@@ -34,6 +34,8 @@ public:
 
 	void GetShowArea(int &minx, int &miny, int &maxx, int &maxy);
 
+	void SightCall();
+
 	POINT GetMapSize()
 	{
 		POINT pt = { mMapSizeX, mMapSizeY };

@@ -152,6 +152,7 @@ void Player::Update() {
 	}
 
 	Ground* tempGround = (Ground*)ObjectManager::GetInstance()->FindObject("Ground");
+	tempGround->SightCall();
 	tempGround->GetSight(mX / TileSize, mY / TileSize, (int)10);
 
 	mCurrentHeadAnimation->Update();
@@ -164,6 +165,11 @@ void Player::Render(HDC hdc) {
 		int combo = (int)(mArmor->GetDef()/0.5f);
 		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX + 5, mY + mCorrectionY + 6,
 			mCurrentBodyAnimation->GetNowFrameX(), (int)mArmor->GetArmorMaterial() + combo, 34, 30);
+	}
+	else if (mArmor->GetArmorMaterial() == ArmorMaterial::Glass)
+	{
+		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX + 5, mY + mCorrectionY + 6,
+			mCurrentBodyAnimation->GetNowFrameX(), 9, 34, 30);
 	}
 	else
 	{
@@ -296,16 +302,24 @@ void Player::Equip(POINT index) {
 		mWeapon->SetState(ItemState::Owned);
 		mWeapon->SetPosition(-10.f, -10.f);
 		mAtk = mWeapon->GetAtk();
-		//{{~ 무기 착용 사운드 삽입
 
-		//~}}
+		SoundPlayer::GetInstance()->Play(L"pickup_weapon", 1.0f);
 		break;
+	case ItemType::Armor:
+		mArmor->SetState(ItemState::NotOwned);
+		mArmor->SetPosition(index.x * TileSize, index.y * TileSize);
 
+		mArmor = (Armor*)newItem;
+		mArmor->SetState(ItemState::Owned);
+		mArmor->SetPosition(-10.f, -10.f);
+		mDef = mArmor->GetDef();
+		SoundPlayer::GetInstance()->Play(L"pickup_armor", 1.0f);
 		//이후에 아이템 등급을 비교해서 교체하도록 기능 추가
 	default:
 		return;
 		break;
 	}
+
 
 }
 

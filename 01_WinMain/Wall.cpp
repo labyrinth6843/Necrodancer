@@ -19,6 +19,21 @@ void Wall::Init(){
 void Wall::Update()
 {
 	mGroundPtr->GetShowArea(mMinIndexX, mMinIndexY, mMaxIndexX, mMaxIndexY);
+	for (int y = mMinIndexY; y < mMaxIndexY; ++y)
+	{
+		for (int x = mMinIndexX; x < mMaxIndexX; ++x)
+		{
+			int posx = x * TileSize;
+			int posy = y * TileSize;
+			if (mWallList[y][x]->GetImage() != NULL && (mWallList[y][x]->GetFrameIndexX() != 0 || mWallList[y][x]->GetFrameIndexY() != 0))
+			{
+				if (mDecoList[y][x]->GetFrameIndexX() != 0 || mDecoList[y][x]->GetFrameIndexY() != 0)
+				{
+					mGroundPtr->GetSight(x, y, 5);
+				}
+			}
+		}
+	}
 }
 
 void Wall::Release()
@@ -57,6 +72,17 @@ void Wall::Render(HDC hdc)
 								posx, posy, mWallList[y][x]->GetFrameIndexX(), mWallList[y][x]->GetFrameIndexY(),
 								mWallList[y][x]->Getwidth(), mWallList[y][x]->GetHeight(), alpha);
 
+						}
+						if (mDecoList[y][x]->GetFrameIndexX() != 0 || mDecoList[y][x]->GetFrameIndexY() != 0)
+						{
+							float alpha = 1.f;
+							if (mGroundPtr->GetAlpha(x, y, alpha))
+							{
+								CameraManager::GetInstance()->GetMainCamera()->AlphaScaleFrameRender(hdc, mDecoList[y][x]->GetImage(),
+									posx, posy, mDecoList[y][x]->GetFrameIndexX(), mDecoList[y][x]->GetFrameIndexY(),
+									mDecoList[y][x]->Getwidth(), mDecoList[y][x]->GetHeight(), alpha);
+
+							}
 						}
 					}
 				}

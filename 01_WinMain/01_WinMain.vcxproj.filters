@@ -145,6 +145,9 @@
     <Filter Include="MainGame\Object\NPC">
       <UniqueIdentifier>{0ab3a520-e50a-41e4-8641-afb3bcf83c94}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MainGame\Object\UI">
+      <UniqueIdentifier>{46876753-ca6e-4b6b-8e5a-ebaa587e2f6f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">

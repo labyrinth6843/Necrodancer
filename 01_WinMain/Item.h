@@ -21,6 +21,7 @@ enum class ItemMaterial {
 enum class ItemState {
 	NotOwned,
 	Owned,
+	Sell,
 	End
 };
 

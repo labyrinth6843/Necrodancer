@@ -2,17 +2,15 @@
 #include "ItemManager.h"
 #include "Item.h"
 #include "Weapon.h"
+#include "Armor.h"
 #include "Ground.h"
 void ItemManager::LoadItem(wstring filename)	//filename : 로드할 맵의 아이템
 {
-	Ground* gptr = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground,"Ground");
 	vector<vector<Tile*>> itemList;	//Test03.txt
 	//아이템을 생성할 위치 정보를 담은 타일맵 로드
 	FileManager::LoadMap(L"Test03", itemList, TileSize, TileSize);
 	int mapSizeY = itemList.size();
 	int mapSizeX = itemList.size();
-
-	//카메라 클리핑을 위한 정보 -> 다른방법도 생각해봄 일단 보류
 
 	//아이템 생성
 	for (int y = 0; y < mapSizeY; ++y)
@@ -21,6 +19,8 @@ void ItemManager::LoadItem(wstring filename)	//filename : 로드할 맵의 아�
 		{
 			if (itemList[y][x]->GetImage())
 			{
+				wstring palletname = itemList[y][x]->GetImage()->GetKeyName();
+
 				//팔레트의 빈 이미지가 채워진 타일이라면
 				if (itemList[y][x]->GetFrameIndexX() == 0 && itemList[y][x]->GetFrameIndexY() == 0)
 				{
@@ -59,36 +59,94 @@ void ItemManager::LoadItem(wstring filename)	//filename : 로드할 맵의 아�
 					}
 					Weapon* temp;
 					//무기의 종류를 판별하고 생성한다
-					switch (itemList[y][x]->GetFrameIndexX())
+					if (palletname == L"ItemPallet1")
 					{
-					case 0:	//대거
-						temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Dagger, mt, ItemState::NotOwned);
-						temp->SetGroundPtr(gptr);
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item,(GameObject*)temp);
-						break;
-					case 1:	//브로드소드
-						temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Broadsword, mt, ItemState::NotOwned);
-						temp->SetGroundPtr(gptr);
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
-						break;
-					case 2: //레이피어
-						temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Rapier, mt, ItemState::NotOwned);
-						temp->SetGroundPtr(gptr);
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
-						break;
-					case 3: //창
-						temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Spear, mt, ItemState::NotOwned);
-						temp->SetGroundPtr(gptr);
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
-						break;
-					case 4: //롱소드
-						temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Longsword, mt, ItemState::NotOwned);
-						temp->SetGroundPtr(gptr);
-						ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
-						break;
+						switch (itemList[y][x]->GetFrameIndexX())
+						{
+						case 0:	//대거
+							temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Dagger, mt, ItemState::NotOwned);
+							ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
+							break;
+						case 1:	//브로드소드
+							temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Broadsword, mt, ItemState::NotOwned);
+							ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
+							break;
+						case 2: //레이피어
+							temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Rapier, mt, ItemState::NotOwned);
+							ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
+							break;
+						case 3: //창
+							temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Spear, mt, ItemState::NotOwned);
+							ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
+							break;
+						case 4: //롱소드
+							temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Longsword, mt, ItemState::NotOwned);
+							ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
+							break;
+
+						}
 					}
+					else if (palletname == L"ItemPallet2")
+					{
+						switch (itemList[y][x]->GetFrameIndexX())
+						{
+						case 0:	//활
+							temp = new Weapon(itemList[y][x]->GetX(), itemList[y][x]->GetY(), WeaponType::Bow, mt, ItemState::NotOwned);
+							ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
+							break;
+						}
+					}
+					
 				}
 				//방어구
+				if (itemList[y][x]->GetFrameIndexY() >= 0 && itemList[y][x]->GetFrameIndexY() < 2)
+				{
+					Armor* temp;
+					if (itemList[y][x]->GetFrameIndexY() == 0)
+					{
+						switch (itemList[y][x]->GetFrameIndexX())
+						{
+						case 1:
+							temp = new Armor(itemList[y][x]->GetX(), itemList[y][x]->GetY(), ArmorMaterial::Leather, ItemState::NotOwned);
+							ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
+							break;
+						case 2:
+							temp = new Armor(itemList[y][x]->GetX(), itemList[y][x]->GetY(), ArmorMaterial::Chain, ItemState::NotOwned);
+							ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
+							break;
+						case 3:
+							temp = new Armor(itemList[y][x]->GetX(), itemList[y][x]->GetY(), ArmorMaterial::Plate, ItemState::NotOwned);
+							ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
+							break;
+						case 4:
+							temp = new Armor(itemList[y][x]->GetX(), itemList[y][x]->GetY(), ArmorMaterial::HeavyPlate, ItemState::NotOwned);
+							ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
+							break;
+						default:
+							break;
+						}
+					}
+					else if (itemList[y][x]->GetFrameIndexY() == 1)
+					{
+						switch (itemList[y][x]->GetFrameIndexX())
+						{
+						case 1:
+							temp = new Armor(itemList[y][x]->GetX(), itemList[y][x]->GetY(), ArmorMaterial::Karate, ItemState::NotOwned);
+							ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
+							break;
+						case 2:
+							temp = new Armor(itemList[y][x]->GetX(), itemList[y][x]->GetY(), ArmorMaterial::Glass, ItemState::NotOwned);
+							ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
+							break;
+						case 3:
+							temp = new Armor(itemList[y][x]->GetX(), itemList[y][x]->GetY(), ArmorMaterial::Obsidian, ItemState::NotOwned);
+							ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)temp);
+							break;
+						default:
+							break;
+						}
+					}
+				}
 				//토치(횃불)
 			}
 		}
