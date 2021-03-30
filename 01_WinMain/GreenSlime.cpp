@@ -8,7 +8,7 @@ GreenSlime::GreenSlime(const string & name, int x, int y):Enemy(name)
 	
 	mHp = 1;
 	mCoin = 1;
-	mAtk = 50.f;
+	mAtk = 100;
 
 	mOpacity = 0.f;
 	mIsVisible = false;

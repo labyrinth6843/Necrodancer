@@ -8,7 +8,7 @@ YellowSkeleton::YellowSkeleton(const string& name, int x, int y) : Enemy(name)
 
 	mHp = 2;
 	mCoin = 3;
-	mAtk = 1.5f;
+	mAtk = 3;
 
 	mOpacity = 0.f;
 	mIsVisible = false;
@@ -95,7 +95,10 @@ YellowSkeleton::YellowSkeleton(const string& name, int x, int y) : Enemy(name)
 }
 
 void YellowSkeleton::Attack() {
-	mPlayerPtr->SetHp(GetHp() - mAtk);
+	float damage = (float)mAtk - mPlayerPtr->GetDef();
+	if (damage <= 0.f)
+		damage = 1.f;
+	mPlayerPtr->HpDown(damage);
 	SoundPlayer::GetInstance()->Play(L"skeleton_attack", 1.f);
 }
 

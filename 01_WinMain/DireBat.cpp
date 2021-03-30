@@ -8,7 +8,7 @@ DireBat::DireBat(const string& name, int x, int y) :Enemy(name)
 
 	mHp = 2;
 	mCoin = 10;
-	mAtk = 1.5f;
+	mAtk = 3;
 
 	mOpacity = 0.f;
 	mIsVisible = false;
@@ -160,7 +160,10 @@ POINT DireBat::DestinationValidationCheck()
 
 void DireBat::Attack()
 {
-	mPlayerPtr->SetHp(GetHp() - mAtk);
+	float damage = (float)mAtk - mPlayerPtr->GetDef();
+	if (damage <= 0.f)
+		damage = 1.f;
+	mPlayerPtr->HpDown(damage);
 	SoundPlayer::GetInstance()->Play(L"bat_attack", 1.f);
 }
 
