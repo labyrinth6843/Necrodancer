@@ -35,7 +35,7 @@ public:
 	void SetVolume(const wstring& keyName, float volume);
 	float GetVolume(const wstring& keyName);  
 	void SetPosition(const wstring& keyName, float time);
-	float GetPosition(const wstring& keyName);
+	unsigned int GetPosition(const wstring& keyName);
 	float GetFullPosition(const wstring& keyName);
 };
 

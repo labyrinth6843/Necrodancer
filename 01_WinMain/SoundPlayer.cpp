@@ -184,7 +184,7 @@ void SoundPlayer::SetPosition(const wstring& keyName, float time)
 	}
 }
 
-float SoundPlayer::GetPosition(const wstring& keyName)
+unsigned int SoundPlayer::GetPosition(const wstring& keyName)
 {
 	for (int i = 0; i < mActiveChannels.size(); ++i)
 	{
@@ -192,7 +192,7 @@ float SoundPlayer::GetPosition(const wstring& keyName)
 		{
 			unsigned int pos = 0;
 			mActiveChannels[i].Channel->getPosition(&pos, FMOD_TIMEUNIT_MS);
-			return float(pos);
+			return pos;
 		}
 	}
 }

@@ -37,8 +37,8 @@ private:
 
 	wstring mNowMusic;
 
-	float mTiming;	//노트세팅 시점 체크용
-	float mArrive;
+	unsigned int mTiming;	//노트세팅 시점 체크용
+	unsigned int mArrive;
 	queue<int> mRunQueue;	//txt를 읽어 노트세팅 타이밍 저장용
 	queue<int> mSaveQueue;	//보스전처럼 반복 재생용
 	
@@ -68,7 +68,9 @@ public:
 	void Render(HDC hdc);
 
 public:
-	void SetMusic(const wstring &keyname, const wstring& beatfilename);//스테이지(필드) 시작시 음악에 대한 세팅을 할 함수
+	void SetMusic(const wstring &keyname, const wstring& beatfilename);
+	void ResetMusic();
+	//스테이지(필드) 시작시 음악에 대한 세팅을 할 함수
 	bool IsDecision();	//플레이어 커맨드용
 	bool NextTurn();	//몬스터 이동 및 공격 턴 확인용
 

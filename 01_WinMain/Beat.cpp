@@ -75,7 +75,7 @@ void Beat::Update()
 		mTurn = false;
 
 	//현재 재생중인 음악의 Position이 mTiming과 같으면 노트를 활성화 한다
-	float position = SoundPlayer::GetInstance()->GetPosition(mNowMusic);
+	unsigned int position = SoundPlayer::GetInstance()->GetPosition(mNowMusic);
 	if (mTiming <= position && !mMusicEnd)
 	{
 		SetNote();
@@ -84,7 +84,8 @@ void Beat::Update()
 	//보스라면 루프시키기 위해 mRunQueue가 비어있을때 mSaveQueue로 덮어씌운다
 	if (mIsLoop && mRunQueue.empty())
 	{
-		mRunQueue = mSaveQueue;
+		ResetMusic();
+		mMusicEnd = false;
 	}
 
 	//활성화된 노트만 중앙으로 이동시킨다
@@ -214,12 +215,24 @@ void Beat::SetMusic(const wstring& keyname, const wstring& beatfilename)
 	mRunQueue.pop();
 }
 
+void Beat::ResetMusic()
+{
+	mRunQueue = mSaveQueue;
+
+	mTiming = (float)mRunQueue.front();
+	mRunQueue.pop();
+	mArrive = (float)mRunQueue.front();
+	mRunQueue.pop();
+	SoundPlayer::GetInstance()->SetPosition(mNowMusic, 0.f);
+}
+
 bool Beat::IsDecision()
 {
 	mNotCall = false;
 
 	if(mFreeMode)
 		return true;
+
 	POINT pos = { mLeftNote[mFrontNote].X, mLeftNote[mFrontNote].Y };
 	if (PtInRect(&mHeartImage.Rect, pos))
 	{
@@ -246,7 +259,8 @@ void Beat::SetTiming()
 		mMusicEnd = true;
 		return;
 	}
-
+	//mArrive = (float)mRunQueue.front();
+	//mRunQueue.pop();
 	mTiming = mArrive;
 	mArrive = (float)mRunQueue.front();
 	mRunQueue.pop();
@@ -288,18 +302,19 @@ void Beat::MissNote()
 
 void Beat::SetNote()
 {
-	float speed = (WINSIZEX / 2) / (mArrive - mTiming) * 275.f;
+	float speed = 300.f;
+	//float speed = (WINSIZEX) / ((mArrive - mTiming) * 0.001f);
 	//비활성화된 노트 중 가장 앞에있는 노트를 찾아 활성화
 	for (int i = 0; i < 30; ++i)
 	{
 		if (mLeftNote[i].State == NoteState::Unactive)
 		{
 			mLeftNote[i].State = NoteState::Active;
-			mLeftNote[i].Speed = (int)speed;
+			mLeftNote[i].Speed = (float)speed;
 			//음악의 재생시간이 mDeadLine을 넘어가면 노트 이미지를 변경한다
 			if (mNowMusic != L"")
 			{
-				if (mDeadLine <= SoundPlayer::GetInstance()->GetPosition(mNowMusic))
+				if (mDeadLine <= SoundPlayer::GetInstance()->GetPosition(mNowMusic) && !mIsLoop)
 				{
 					//이미지 삽입 후 주석 제거
 					mLeftNote[i].Image = IMAGEMANAGER->FindImage(L"BeatRed");
@@ -313,10 +328,10 @@ void Beat::SetNote()
 		if (mRightNote[i].State == NoteState::Unactive)
 		{
 			mRightNote[i].State = NoteState::Active;
-			mRightNote[i].Speed = (int)speed;
+			mRightNote[i].Speed = (float)speed;
 			if (mNowMusic != L"")
 			{
-				if (mDeadLine <= SoundPlayer::GetInstance()->GetPosition(mNowMusic))
+				if (mDeadLine <= SoundPlayer::GetInstance()->GetPosition(mNowMusic) && !mIsLoop)
 				{
 					//이미지 삽입 후 주석 제거
 					mRightNote[i].Image = IMAGEMANAGER->FindImage(L"BeatRed");
