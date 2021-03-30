@@ -19,7 +19,7 @@ MonsterPallet,17,0,0,0,0
 MonsterPallet,18,0,0,0,0
 MonsterPallet,19,0,0,0,0
 MonsterPallet,0,1,0,0,0
-MonsterPallet,1,1,4,2,0
+MonsterPallet,1,1,0,2,0
 MonsterPallet,2,1,0,0,0
 MonsterPallet,3,1,0,0,0
 MonsterPallet,4,1,0,0,0

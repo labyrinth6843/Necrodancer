@@ -43,14 +43,14 @@ void ShopKeeper::Init()
 
 void ShopKeeper::Update()
 {
-	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
-	if (temp->DistanceShopkeeper() != 0)
+	SoundPlayer::GetInstance()->SetVolume(L"zone1_1_shopkeeper", mPlayerPtr->DistanceShopkeeper()*0.2f);
+
+	if (mPlayerPtr->DistanceShopkeeper() != 0)
 		mCurrentAnimation = mSingAnimation;
 	else
 		mCurrentAnimation = mIdleAnimation;
 
-	Ground* ground = (Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground");
-	ground->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	mGroundPtr->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
 	//흑백에서 컬러로 넘어가는 시점
 	if (mOpacity > 0.5f)
 		mIsVisible = true;
@@ -68,5 +68,5 @@ void ShopKeeper::Release()
 
 void ShopKeeper::Render(HDC hdc)
 {
-	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 39, 39);
+	CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX-15, mY-18, mCurrentAnimation->GetNowFrameX(), mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 70, 57);
 }
