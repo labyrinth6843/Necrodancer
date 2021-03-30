@@ -26,19 +26,19 @@ Armor::Armor(float posx, float posy, ArmorMaterial material, ItemState state)
 	switch (material)
 	{
 	case ArmorMaterial::Leather:
-		mDef = 0.5f;
+		mDef = 1.f;
 		mImage.FrameX = 0;
 		break;
 	case ArmorMaterial::Chain:
-		mDef = 1.f;
+		mDef = 2.f;
 		mImage.FrameX = 1;
 		break;
 	case ArmorMaterial::Plate:
-		mDef = 1.5f;
+		mDef = 3.f;
 		mImage.FrameX = 2;
 		break;
 	case ArmorMaterial::HeavyPlate:
-		mDef = 2.f;
+		mDef = 4.f;
 		mImage.FrameX = 3;
 		break;
 	case ArmorMaterial::Karate:
@@ -70,11 +70,11 @@ void Armor::Update()
 		//옵시디언 타입이면
 		if (mArmorMaterial == ArmorMaterial::Obsidian)
 		{
-			float combo = (float)COMBO->GetCombo();
+			int combo = COMBO->GetCombo();
 			if (combo >= 4)
-				combo = 3.f;
-			mDef = 0.5 * combo;
-			mImage.FrameX = 5 + (int)(mDef/0.5f);	//6,7,8
+				combo = 3;
+			mDef = 1 * combo;
+			mImage.FrameX = 5 + (int)mDef;	//6,7,8
 		}
 	}
 	else

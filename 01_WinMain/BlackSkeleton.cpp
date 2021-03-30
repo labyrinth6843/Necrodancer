@@ -7,7 +7,7 @@ BlackSkeleton::BlackSkeleton(const string& name, int x, int y) : Enemy(name){
 
 	mHp = 3;
 	mCoin = 4;
-	mAtk = 2.f;
+	mAtk = 4;
 
 	mOpacity = 0.f;
 	mIsVisible = false;
@@ -164,7 +164,10 @@ void BlackSkeleton::Hop()
 }
 
 void BlackSkeleton::Attack() {
-	mPlayerPtr->SetHp(GetHp() - mAtk);
+	float damage = (float)mAtk - mPlayerPtr->GetDef();
+	if (damage <= 0.f)
+		damage = 1.f;
+	mPlayerPtr->HpDown(damage);
 	SoundPlayer::GetInstance()->Play(L"skeleton_attack", 1.f);
 }
 

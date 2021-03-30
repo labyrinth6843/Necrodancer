@@ -19,8 +19,9 @@ void Player::Init() {
 	mShovelImage = ImageManager::GetInstance()->FindImage(L"Shovel");
 
 	//초반 장착 아이템
-	mWeapon = new Weapon(-10.f, -10.f, WeaponType::Rapier, WeaponMaterial::Glass, ItemState::Owned);
+	mWeapon = new Weapon(-10.f, -10.f, WeaponType::Dagger, WeaponMaterial::Basic, ItemState::Owned);
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)mWeapon);
+	HUD->ItemEquip((Item*)mWeapon);
 
 	mArmor = new Armor(-10.f, -10.f, ArmorMaterial::None, ItemState::Owned);
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)mArmor);
@@ -75,6 +76,9 @@ void Player::Update() {
 	//현재 인덱스값 계산
 	mStartIndexX = mX / TileSize;
 	mStartIndexY = mY / TileSize;
+
+	if (Input::GetInstance()->GetKeyDown(VK_SPACE))
+		mHp -= 1;
 
 	//이동 중이지 않을 때 각 입력에 대한 처리
 	if (mIsMove == false) {
