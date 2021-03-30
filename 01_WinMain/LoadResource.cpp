@@ -97,6 +97,7 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"SlotWeapon", Resources(L"HUD/SlotWeapon.bmp"), 30, 33, true);
 	ImageManager::GetInstance()->LoadFromFile(L"EnemyHealth", Resources(L"HUD/EnemyHealth.bmp"), 24, 12, 2, 1, true);
 	ImageManager::GetInstance()->LoadFromFile(L"NumberFont", Resources(L"HUD/NumberFont.bmp"), 66, 8, 11, 1, true);
+	ImageManager::GetInstance()->LoadFromFile(L"CoinMultiplier", Resources(L"HUD/CoinMultiplier.bmp"), 138, 10, true);
 	//}}
 
 	//{{ 씬 관련 이미지
@@ -128,6 +129,16 @@ void FileManager::LoadResource()
 	SoundPlayer::GetInstance()->LoadFromFile(L"combo_missed", Resources(L"Sound/sfx/combo/sfx_combo_missed.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"combo_reset", Resources(L"Sound/sfx/combo/sfx_combo_break.mp3"), false);
 	SoundPlayer::GetInstance()->LoadFromFile(L"combo_start", Resources(L"Sound/sfx/combo/sfx_combo_start.mp3"), false);
+	//}}
+
+	//{{ 효과음 관련 사운드
+	SoundPlayer::GetInstance()->LoadFromFile(L"pickup_gold_1", Resources(L"Sound/sfx/pickup/sfx_pickup_gold_01.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"pickup_gold_2", Resources(L"Sound/sfx/pickup/sfx_pickup_gold_02.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"pickup_gold_3", Resources(L"Sound/sfx/pickup/sfx_pickup_gold_03.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"pickup_weapon", Resources(L"Sound/sfx/pickup/sfx_pickup_weapon.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"pickup_armor", Resources(L"Sound/sfx/pickup/sfx_pickup_armor.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"pickup_purchase", Resources(L"Sound/sfx/pickup/sfx_pickup_purchase.mp3"), false);
+	SoundPlayer::GetInstance()->LoadFromFile(L"pickup_general", Resources(L"Sound/sfx/pickup/sfx_pickup_general.mp3"), false);
 	//}}
 
 	//{{캐릭터 관련 사운드

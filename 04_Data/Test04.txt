@@ -125,7 +125,7 @@ MonsterPallet,3,6,2,0,0
 MonsterPallet,4,6,0,0,0
 MonsterPallet,5,6,0,0,0
 MonsterPallet,6,6,0,0,0
-MonsterPallet,7,6,1,1,0
+MonsterPallet,7,6,2,1,0
 MonsterPallet,8,6,0,0,0
 MonsterPallet,9,6,0,0,0
 MonsterPallet,10,6,0,0,0
