@@ -97,6 +97,7 @@ void FileManager::LoadResource()
 	ImageManager::GetInstance()->LoadFromFile(L"SlotWeapon", Resources(L"HUD/SlotWeapon.bmp"), 30, 33, true);
 	ImageManager::GetInstance()->LoadFromFile(L"EnemyHealth", Resources(L"HUD/EnemyHealth.bmp"), 24, 12, 2, 1, true);
 	ImageManager::GetInstance()->LoadFromFile(L"NumberFont", Resources(L"HUD/NumberFont.bmp"), 66, 8, 11, 1, true);
+	ImageManager::GetInstance()->LoadFromFile(L"CoinMultiplier", Resources(L"HUD/CoinMultiplier.bmp"), 138, 10, true);
 	//}}
 
 	//{{ 씬 관련 이미지
