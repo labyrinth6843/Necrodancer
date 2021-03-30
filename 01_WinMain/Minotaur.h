@@ -1,13 +1,18 @@
 #pragma once
 #include "Enemy.h"
+
 class Minotaur:public Enemy
 {
 public:
 	bool mIsLeft;
+	bool mIsAttack;
+	bool mIsStun;
 
+	int mStunBeat;
+
+	POINT mRushDirection;
+	
 	vector<vector<Tile*>> mWallList;
-
-	vector<Tile*>mRouteList;
 
 	Animation* mLeftWallImpactAnimation;
 	Animation* mRightWallImpactAnimation;
@@ -21,6 +26,7 @@ public:
 
 	void Attack()override;
 	void IsAttacked(int dmg)override;
+	void Stun();
 
 	void Init()override;
 	void Update()override;
