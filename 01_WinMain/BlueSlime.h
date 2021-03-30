@@ -4,9 +4,6 @@
 class BlueSlime:public Enemy
 {
 public:
-	int mDestX;
-	int mDestY;
-
 	bool mIsLeft;
 	bool mMoveBeat;
 

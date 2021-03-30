@@ -12,6 +12,8 @@
 #include "DireBat.h"
 #include "Minotaur.h"
 #include "KingConga.h"
+#include "Nightmare.h"
+#include "Dragon.h"
 #include "ShopKeeper.h"
 
 class EnemyManager

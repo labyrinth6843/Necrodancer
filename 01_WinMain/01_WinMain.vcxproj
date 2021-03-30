@@ -152,6 +152,7 @@
     <ClInclude Include="Armor.h" />
     <ClInclude Include="Coin.h" />
     <ClInclude Include="DireBat.h" />
+    <ClInclude Include="Dragon.h" />
     <ClInclude Include="GreyBat.h" />
     <ClInclude Include="Beat.h" />
     <ClInclude Include="BlackSkeleton.h" />
@@ -186,6 +187,7 @@
     <ClInclude Include="MapToolScene.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Minotaur.h" />
+    <ClInclude Include="Nightmare.h" />
     <ClInclude Include="ObjectManager.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="PathFinder.h" />
@@ -216,6 +218,7 @@
     <ClCompile Include="Armor.cpp" />
     <ClCompile Include="Coin.cpp" />
     <ClCompile Include="DireBat.cpp" />
+    <ClCompile Include="Dragon.cpp" />
     <ClCompile Include="GreyBat.cpp" />
     <ClCompile Include="Beat.cpp" />
     <ClCompile Include="BlackSkeleton.cpp" />
@@ -251,6 +254,7 @@
     <ClCompile Include="MapToolScene.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="Minotaur.cpp" />
+    <ClCompile Include="Nightmare.cpp" />
     <ClCompile Include="ObjectManager.cpp" />
     <ClCompile Include="Path.cpp" />
     <ClCompile Include="PathFinder.cpp" />

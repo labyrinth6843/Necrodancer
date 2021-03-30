@@ -3,6 +3,12 @@
 class Minotaur:public Enemy
 {
 public:
+	bool mIsLeft;
+
+	vector<vector<Tile*>> mWallList;
+
+	vector<Tile*>mRouteList;
+
 	Animation* mLeftWallImpactAnimation;
 	Animation* mRightWallImpactAnimation;
 public:
@@ -10,6 +16,8 @@ public:
 
 	void Move(int dirX, int dirY);
 	POINT DestinationValidationCheck();
+
+	void Dig(int indexX, int indexY);
 
 	void Attack()override;
 	void IsAttacked(int dmg)override;
