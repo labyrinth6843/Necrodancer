@@ -53,14 +53,15 @@ void GameScene::Init(){
 	BEAT->SetFreeMode(true);
 	BEAT->SetIsLoop(true);
 
-	//데이터저장 테스트
-	PDATA->LoadPlayer(ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player"));
+	//데이터저장
+	PDATA->CopyPlayer(ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player"));
 }
 
 void GameScene::Release(){
 	SafeDelete(mToolButton);
 	HUD->Release();
 	BEAT->Release();
+	PDATA->Release();
 	ObjectManager::GetInstance()->AllDestroy();	//함수 구성은 같은데 Release를 사용하면 Player가 nullptr
 	CameraManager::GetInstance()->SetMainCamera(nullptr);
 }
@@ -97,7 +98,6 @@ void GameScene::Tool() {
 	SoundPlayer::GetInstance()->Stop(L"zone1_1");
 	SoundPlayer::GetInstance()->Stop(L"zone1_1_shopkeeper");
 	SceneManager::GetInstance()->LoadScene(L"MapToolScene");
-
 }
 
 void GameScene::NextStage()

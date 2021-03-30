@@ -92,8 +92,9 @@ void BossScene::Render(HDC hdc) {
 }
 
 void BossScene::Tool() {
-	SoundPlayer::GetInstance()->Stop(L"zone1_1");
+	SoundPlayer::GetInstance()->Stop(L"kingconga");
 	SceneManager::GetInstance()->LoadScene(L"MapToolScene");
+	PDATA->Release();
 }
 
 void BossScene::NextStage()

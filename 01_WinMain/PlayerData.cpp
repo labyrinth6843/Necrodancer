@@ -19,8 +19,6 @@ void PlayerData::Release()
 {
 	mIsSave = false;
 	mHp = 6.f;
-	mWeapon = nullptr;
-	mArmor = nullptr;
 }
 
 void PlayerData::CopyPlayer(GameObject* player)
