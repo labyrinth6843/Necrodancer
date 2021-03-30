@@ -147,6 +147,7 @@
     </Filter>
     <Filter Include="MainGame\Object\UI">
       <UniqueIdentifier>{46876753-ca6e-4b6b-8e5a-ebaa587e2f6f}</UniqueIdentifier>
+    </Filter>
     <Filter Include="MainGame\Object\Enemy\Nightmare">
       <UniqueIdentifier>{8ab094c6-f5e9-48c1-b128-6f20eb8807b9}</UniqueIdentifier>
     </Filter>
