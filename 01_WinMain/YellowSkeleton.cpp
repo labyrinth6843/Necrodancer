@@ -315,7 +315,8 @@ void YellowSkeleton::Render(HDC hdc)
 		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage, mX, mY + mCorrectionY, 8, mCurrentAnimation->GetNowFrameY() + (int)mIsVisible, 39, 39);
 }
 
-void YellowSkeleton::Hop(){
+void YellowSkeleton::Hop()
+{
 	mMoveTime = 0.f;
 	mIsHop = true;
 
