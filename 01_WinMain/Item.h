@@ -52,6 +52,9 @@ protected:
 	int mMaxIndexY;
 
 	bool mIsShadow = false;
+	float mRenderTop = 0.f;
+	bool mRenderTurn = false;
+	int mFrameCount = 0;
 public:
 	Item();
 

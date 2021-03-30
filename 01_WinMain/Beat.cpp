@@ -167,21 +167,24 @@ void Beat::Update()
 void Beat::Render(HDC hdc)
 {
 	//노트
-	for (int i = 0; i < 30; ++i)
+	if (!mFreeMode)
 	{
-		if (mLeftNote[i].State != NoteState::Unactive)
+		for (int i = 0; i < 30; ++i)
 		{
-			mLeftNote[i].Image->AlphaScaleRender(hdc, mLeftNote[i].X - 5, mLeftNote[i].Y - 50, 10, 70, mLeftNote[i].Alpha);
-			//Gizmo::GetInstance()->DrawRect(hdc, mLeftNote[i].Rc, Gizmo::Color::Green);
-		}
-		if (mRightNote[i].State != NoteState::Unactive)
-		{
-			mRightNote[i].Image->AlphaScaleRender(hdc, mRightNote[i].X - 5, mRightNote[i].Y - 50, 10, 70, mRightNote[i].Alpha);
-			//Gizmo::GetInstance()->DrawRect(hdc, mRightNote[i].Rc, Gizmo::Color::Green);
-		}
-		if (mMiss[i].FrameCount > 0)
-		{
-			mMiss[i].Image->AlphaScaleRender(hdc, mMiss[i].Rect.left, mMiss[i].Rect.top, 60, 10, mMiss[i].FrameCount);
+			if (mLeftNote[i].State != NoteState::Unactive)
+			{
+				mLeftNote[i].Image->AlphaScaleRender(hdc, mLeftNote[i].X - 5, mLeftNote[i].Y - 50, 10, 70, mLeftNote[i].Alpha);
+				//Gizmo::GetInstance()->DrawRect(hdc, mLeftNote[i].Rc, Gizmo::Color::Green);
+			}
+			if (mRightNote[i].State != NoteState::Unactive)
+			{
+				mRightNote[i].Image->AlphaScaleRender(hdc, mRightNote[i].X - 5, mRightNote[i].Y - 50, 10, 70, mRightNote[i].Alpha);
+				//Gizmo::GetInstance()->DrawRect(hdc, mRightNote[i].Rc, Gizmo::Color::Green);
+			}
+			if (mMiss[i].FrameCount > 0)
+			{
+				mMiss[i].Image->AlphaScaleRender(hdc, mMiss[i].Rect.left, mMiss[i].Rect.top, 60, 10, mMiss[i].FrameCount);
+			}
 		}
 	}
 	//심장
@@ -212,10 +215,10 @@ void Beat::SetMusic(const wstring& keyname, const wstring& beatfilename)
 
 bool Beat::IsDecision()
 {
+	mNotCall = false;
+
 	if(mFreeMode)
 		return true;
-
-	mNotCall = false;
 	POINT pos = { mLeftNote[mFrontNote].X, mLeftNote[mFrontNote].Y };
 	if (PtInRect(&mHeartImage.Rect, pos))
 	{

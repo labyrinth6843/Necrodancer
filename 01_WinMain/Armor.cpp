@@ -79,6 +79,27 @@ void Armor::Update()
 	}
 	else
 	{
+		mFrameCount += 100 * Time::GetInstance()->DeltaTime();
+		if (mFrameCount > 5)
+		{
+			if (mRenderTurn)
+			{
+				mRenderTop += 1.f;
+				if (mRenderTop >= 0.f)
+				{
+					mRenderTurn = false;
+				}
+			}
+			else
+			{
+				mRenderTop -= 1.f;
+				if (mRenderTop <= -4.f)
+				{
+					mRenderTurn = true;
+				}
+			}
+			mFrameCount = 0;
+		}
 		if (mArmorMaterial == ArmorMaterial::Obsidian)
 		{
 			mImage.FrameX = 6;
@@ -105,14 +126,14 @@ void Armor::Render(HDC hdc)
 				if (mIsShadow)
 				{
 					CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage.Image,
-						mX, mY,
+						mX, mY + mRenderTop,
 						mImage.FrameX, mImage.FrameY + 1, TileSize, TileSize);
 				}
 				else
 				{
 					CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mImage.Image,
-						mX, mY,
-						mImage.FrameX, mImage.FrameY, TileSize, TileSize);
+						mX, mY + mRenderTop,
+						mImage.FrameX, mImage.FrameY , TileSize, TileSize);
 				}
 			}
 		}
