@@ -45,6 +45,11 @@ void GameScene::Init(){
 	ObjectManager::GetInstance()->Init();
 	mToolButton  = new Button(L"Tool",  L"Tool",  550, 50, 200, 50, bind(&GameScene::Tool, this));
 
+
+	//Hud
+	HUD->SetPlayerPtr();
+	HUD->SetHp();
+
 	//테스트모드
 	BEAT->SetFreeMode(true);
 }
@@ -59,6 +64,7 @@ void GameScene::Release(){
 
 void GameScene::Update(){
 	ObjectManager::GetInstance()->Update();
+	HUD->Update();
 	BEAT->Update();
 	mToolButton->Update();
 }

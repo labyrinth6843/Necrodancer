@@ -1,46 +1,40 @@
-#include "pch.h"
+﻿#include "pch.h"
 
 Hud::Hud()
 {
-	mItemSlot[0] = { IMAGEMANAGER->FindImage(L"SlotShovel"), 50.f, 50.f, nullptr, false };	//��
-	mItemSlot[1] = { IMAGEMANAGER->FindImage(L"SlotWeapon"), 50.f, 50.f, nullptr, false };	//����
-	mItemSlot[2] = { IMAGEMANAGER->FindImage(L"SlotArmor"), 50.f, 50.f, nullptr, false };	//��
-	mItemSlot[3] = { IMAGEMANAGER->FindImage(L"SlotTorch"), 50.f, 50.f, nullptr, false };	//ȶ��
+	mItemSlot[0] = { IMAGEMANAGER->FindImage(L"SlotShovel"), 50.f, 50.f, nullptr, false };	//삽
+	mItemSlot[1] = { IMAGEMANAGER->FindImage(L"SlotWeapon"), 50.f, 50.f, nullptr, false };	//무기
+	mItemSlot[2] = { IMAGEMANAGER->FindImage(L"SlotArmor"), 50.f, 50.f, nullptr, false };	//방어구
+	mItemSlot[3] = { IMAGEMANAGER->FindImage(L"SlotTorch"), 50.f, 50.f, nullptr, false };	//횃불
 
-	mSlotSize = 64;
+	mHudSize = 64;
 	mItemSize = 50;
 }
 
 void Hud::Render(HDC hdc)
 {
-	if (mItemSlot[0].Item)
+	//아이템 슬롯
+	for(int i = 0; i < 4; ++i)
 	{
-		FrameImage temp = mItemSlot[0].Item->GetFrameImage();
-		mItemSlot[0].Image->ScaleRender(hdc, mItemSlot[0].Left, mItemSlot[0].Top, mSlotSize, mSlotSize);
-		temp.Image->ScaleFrameRender(hdc, mItemSlot[0].Left + 7.f, mItemSlot[0].Top + 12.f,
-			temp.FrameX, temp.FrameY, mItemSize , mItemSize);
+		if (mItemSlot[i].Item)
+		{
+			FrameImage temp = mItemSlot[i].Item->GetFrameImage();
+			mItemSlot[i].Image->ScaleRender(hdc, mItemSlot[i].Left, mItemSlot[i].Top, mHudSize, mHudSize);
+			temp.Image->ScaleFrameRender(hdc, mItemSlot[i].Left + 7.f, mItemSlot[i].Top + 12.f,
+				temp.FrameX, temp.FrameY, mItemSize, mItemSize);
+		}
 	}
-	if (mItemSlot[1].Item)
+	for (int i = 0; i < mHp.size(); ++i)
 	{
-		FrameImage temp = mItemSlot[1].Item->GetFrameImage();
-		mItemSlot[1].Image->ScaleRender(hdc, mItemSlot[1].Left, mItemSlot[1].Top, mSlotSize, mSlotSize);
-		temp.Image->ScaleFrameRender(hdc, mItemSlot[1].Left + 7.f, mItemSlot[1].Top + 12.f,
-			temp.FrameX, temp.FrameY, mItemSize, mItemSize);
+		if (mHp[i].Image)
+		{
+			mHp[i].Image->ScaleFrameRender(hdc, mHp[i].PositionX, mHp[i].PositionY, mHp[i].FrameX, mHp[i].FrameY, mHudSize, mHudSize);
+		}
 	}
-	if (mItemSlot[2].Item)
-	{
-		FrameImage temp = mItemSlot[2].Item->GetFrameImage();
-		mItemSlot[2].Image->ScaleRender(hdc, mItemSlot[2].Left, mItemSlot[2].Top, mSlotSize, mSlotSize);
-		temp.Image->ScaleFrameRender(hdc, mItemSlot[2].Left + 7.f, mItemSlot[2].Top + 12.f,
-			temp.FrameX, temp.FrameY, mItemSize, mItemSize);
-	}
-	if (mItemSlot[3].Item)
-	{
-		FrameImage temp = mItemSlot[3].Item->GetFrameImage();
-		mItemSlot[3].Image->ScaleRender(hdc, mItemSlot[3].Left, mItemSlot[3].Top, mSlotSize, mSlotSize);
-		temp.Image->ScaleFrameRender(hdc, mItemSlot[3].Left + 7.f, mItemSlot[3].Top + 12.f,
-			temp.FrameX, temp.FrameY , mItemSize, mItemSize);
-	}
+}
+
+void Hud::Update()
+{
 }
 
 void Hud::Release()
@@ -54,6 +48,8 @@ void Hud::Release()
 	mItemSlot[1].IsShow = false;
 	mItemSlot[2].IsShow = false;
 	mItemSlot[3].IsShow = false;
+
+	mPlayerPtr = nullptr;
 }
 
 void Hud::ItemEquip(Item* item)
@@ -104,6 +100,17 @@ void Hud::ItemRemove(Item* item)
 	SortSlot();
 }
 
+void Hud::SetHp()
+{
+	//GameScene Init 혹은 최대체력 상태에서 체력칸을 늘릴때 호출,
+	mMaxHp = mPlayerPtr->GetHp();
+	for (float i = 0.f; i < mMaxHp / 2.f; i += 1.f)
+	{
+		FrameImage temp = { IMAGEMANAGER->FindImage(L"HUDHealth"), WINSIZEX - 200.f - mHudSize * i, 50.f,  0, 0, mHudSize, mHudSize };
+		mHp.push_back(temp);
+	}
+}
+
 void Hud::SortSlot()
 {
 	float endLeft = 50.f;
@@ -111,21 +118,21 @@ void Hud::SortSlot()
 	if (mItemSlot[0].IsShow)
 	{
 		mItemSlot[0].Left = endLeft;
-		endLeft += 25.f + mSlotSize;
+		endLeft += 25.f + mHudSize;
 	}
 	if (mItemSlot[1].IsShow)
 	{
 		mItemSlot[1].Left = endLeft;
-		endLeft += 25.f + mSlotSize;
+		endLeft += 25.f + mHudSize;
 	}
 	if (mItemSlot[2].IsShow)
 	{
 		mItemSlot[2].Left = endLeft;
-		endLeft += 25.f + mSlotSize;
+		endLeft += 25.f + mHudSize;
 	}
 	if (mItemSlot[3].IsShow)
 	{
 		mItemSlot[3].Left = endLeft;
-		endLeft += 25.f + mSlotSize;
+		endLeft += 25.f + mHudSize;
 	}
 }

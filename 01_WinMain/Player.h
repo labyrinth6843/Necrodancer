@@ -34,7 +34,7 @@ class Player:public GameObject{
 	Animation* mCurrentHeadAnimation;
 	Animation* mCurrentBodyAnimation;
 	
-	float mHp = 6;
+	float mHp = 6.f;
 	float mDef = 0.f;
 	float mAtk = 1.f;
 	int mShovelPower = 3;
@@ -92,6 +92,7 @@ public:
 
 	void SetHp(float hp) { mHp = hp; }
 	float GetHp() { return mHp; }
+	void HpDown(float dmg) { mHp -= dmg; }
 
 	void SetAtk(float atk) { mAtk = atk; }
 	void SetDef(float def) { mAtk = def; }
