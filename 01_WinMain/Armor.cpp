@@ -116,9 +116,5 @@ void Armor::Render(HDC hdc)
 				}
 			}
 		}
-		else if (mState == ItemState::Owned)
-		{
-			mImage.Image->ScaleFrameRender(hdc, 120, 50, mImage.FrameX, mImage.FrameY, 64, 64);
-		}
 	}
 }

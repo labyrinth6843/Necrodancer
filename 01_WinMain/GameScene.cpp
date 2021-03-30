@@ -51,6 +51,7 @@ void GameScene::Init(){
 
 void GameScene::Release(){
 	SafeDelete(mToolButton);
+	HUD->Release();
 	BEAT->Release();
 	ObjectManager::GetInstance()->AllDestroy();	//함수 구성은 같은데 Release를 사용하면 Player가 nullptr
 	CameraManager::GetInstance()->SetMainCamera(nullptr);
@@ -76,6 +77,7 @@ void GameScene::Render(HDC hdc){
 	ObjectManager::GetInstance()->Render(hdc);
 
 	mToolButton->Render(hdc);
+	HUD->Render(hdc);
 	COMBO->Render(hdc);
 	BEAT->Render(hdc);
 

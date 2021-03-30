@@ -20,11 +20,9 @@ void Player::Init() {
 
 	//초반 장착 아이템
 	mWeapon = new Weapon(-10.f, -10.f, WeaponType::Rapier, WeaponMaterial::Glass, ItemState::Owned);
-	mWeapon->SetGroundPtr((Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground"));
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)mWeapon);
 
-	mArmor = new Armor(-10.f, -10.f, ArmorMaterial::Obsidian, ItemState::Owned);
-	mArmor->SetGroundPtr((Ground*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Ground, "Ground"));
+	mArmor = new Armor(-10.f, -10.f, ArmorMaterial::None, ItemState::Owned);
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Item, (GameObject*)mArmor);
 
 	//
@@ -302,16 +300,25 @@ void Player::Equip(POINT index) {
 		mWeapon->SetPosition(-10.f, -10.f);
 		mAtk = mWeapon->GetAtk();
 
+		HUD->ItemEquip(newItem);
 		SoundPlayer::GetInstance()->Play(L"pickup_weapon", 1.0f);
 		break;
 	case ItemType::Armor:
-		mArmor->SetState(ItemState::NotOwned);
-		mArmor->SetPosition(index.x * TileSize, index.y * TileSize);
-
+		if (mArmor->GetArmorMaterial() == ArmorMaterial::None)
+		{
+			mArmor->SetIsDestroy(true);
+		}
+		else
+		{
+			mArmor->SetState(ItemState::NotOwned);
+			mArmor->SetPosition(index.x * TileSize, index.y * TileSize);
+		}
 		mArmor = (Armor*)newItem;
 		mArmor->SetState(ItemState::Owned);
 		mArmor->SetPosition(-10.f, -10.f);
 		mDef = mArmor->GetDef();
+
+		HUD->ItemEquip(newItem);
 		SoundPlayer::GetInstance()->Play(L"pickup_armor", 1.0f);
 		//이후에 아이템 등급을 비교해서 교체하도록 기능 추가
 	default:
