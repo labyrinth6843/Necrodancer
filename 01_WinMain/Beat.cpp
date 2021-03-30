@@ -186,7 +186,7 @@ void Beat::Render(HDC hdc)
 	}
 	//심장
 	//Gizmo::GetInstance()->DrawRect(hdc, mHeartImage.Rect, Gizmo::Color::Green);
-	mHeartImage.Image->ScaleFrameRender(hdc, WINSIZEX/2 - 60, WINSIZEY - 160,
+	mHeartImage.Image->ScaleFrameRender(hdc, WINSIZEX/2 - 60, WINSIZEY - 176,
 		mHeartImage.FrameX, mHeartImage.FrameY, 120, 150);
 
 	//테스팅

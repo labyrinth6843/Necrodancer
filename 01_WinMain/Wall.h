@@ -31,6 +31,7 @@ class Wall:public GameObject
 	int mMaxIndexX;
 	int mMaxIndexY;
 
+	int mFrameCount;
 public:
 	Wall(const string& name);
 

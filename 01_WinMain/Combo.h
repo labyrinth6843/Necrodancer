@@ -5,6 +5,8 @@ class Combo
 private:
 	int mCombo;
 	int mMaxCombo;
+	Image* mText;
+	FrameImage mNum;
 public:
 	Combo();
 	~Combo();

@@ -14,10 +14,12 @@ void Wall::Init(){
 	mMapSizeX = mWallList[0].size();
 
 	mWallShadow = IMAGEMANAGER->FindImage(L"WallShadow");
+	mFrameCount = 0;
 }
 
 void Wall::Update()
 {
+	mFrameCount += 100 * Time::GetInstance()->DeltaTime();
 	mGroundPtr->GetShowArea(mMinIndexX, mMinIndexY, mMaxIndexX, mMaxIndexY);
 	for (int y = mMinIndexY; y < mMaxIndexY; ++y)
 	{
@@ -30,10 +32,19 @@ void Wall::Update()
 				if (mDecoList[y][x]->GetFrameIndexX() != 0 || mDecoList[y][x]->GetFrameIndexY() != 0)
 				{
 					mGroundPtr->GetSight(x, y, 5);
+					if (mFrameCount>5)
+					{
+						int nextX = mDecoList[y][x]->GetFrameIndexX() + 1;
+						if (nextX >= 5)
+							nextX = 1;
+						mDecoList[y][x]->SetFrameIndexX(nextX);
+					}
 				}
 			}
 		}
 	}
+	if(mFrameCount > 5)
+		mFrameCount = 0;
 }
 
 void Wall::Release()
