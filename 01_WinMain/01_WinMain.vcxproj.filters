@@ -163,11 +163,11 @@
     <Filter Include="MainGame\Object\Item\Shovel">
       <UniqueIdentifier>{d196e37f-20c5-45a9-b7f9-47971367d128}</UniqueIdentifier>
     </Filter>
-    <Filter Include="MainGame\Object\HUD">
-      <UniqueIdentifier>{46876753-ca6e-4b6b-8e5a-ebaa587e2f6f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="MainGame\System\PlayerData">
       <UniqueIdentifier>{9bcf540d-00b7-4bbd-baba-1dcdfc90eae1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainGame\System\HUD">
+      <UniqueIdentifier>{46876753-ca6e-4b6b-8e5a-ebaa587e2f6f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -364,7 +364,7 @@
       <Filter>MainGame\Object\Item\Weapon</Filter>
     </ClInclude>
     <ClInclude Include="Hud.h">
-      <Filter>MainGame\Object\HUD</Filter>
+      <Filter>MainGame\System\HUD</Filter>
     </ClInclude>
     <ClInclude Include="PlayerData.h">
       <Filter>MainGame\System\PlayerData</Filter>
@@ -564,13 +564,13 @@
       <Filter>MainGame\Object\Item\Weapon</Filter>
     </ClCompile>
     <ClCompile Include="Hud.cpp">
-      <Filter>MainGame\Object\HUD</Filter>
+      <Filter>MainGame\System\HUD</Filter>
     </ClCompile>
     <ClCompile Include="HpHud.cpp">
-      <Filter>MainGame\Object\HUD</Filter>
+      <Filter>MainGame\System\HUD</Filter>
     </ClCompile>
     <ClCompile Include="ItemHud.cpp">
-      <Filter>MainGame\Object\HUD</Filter>
+      <Filter>MainGame\System\HUD</Filter>
     </ClCompile>
     <ClCompile Include="PlayerData.cpp">
       <Filter>MainGame\System\PlayerData</Filter>

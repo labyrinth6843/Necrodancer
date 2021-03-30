@@ -5,7 +5,7 @@
 #include "TitleScene.h"
 #include "MapToolScene.h"
 #include "GameScene.h"
-
+#include "BossScene.h"
 /*
 Initialize : 초기화
 앞으로 게임을 시작하기 전에 초기화 및 생성은 여기서 진행
@@ -20,6 +20,7 @@ void MainGame::Init()
 	SceneManager::GetInstance()->AddScene(L"TitleScene", new TitleScene);
 	SceneManager::GetInstance()->AddScene(L"MapToolScene", new MapToolScene);
 	SceneManager::GetInstance()->AddScene(L"GameScene", new GameScene);
+	SceneManager::GetInstance()->AddScene(L"BossScene", new BossScene);
 	//SceneManager::GetInstance()->LoadScene(L"TitleScene");
 	SceneManager::GetInstance()->LoadScene(L"MapToolScene");
 }

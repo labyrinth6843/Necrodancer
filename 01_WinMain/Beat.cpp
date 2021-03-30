@@ -55,6 +55,7 @@ void Beat::Release()
 {
 	mNowMusic = L"";
 	mDeadLine = INT_MAX;
+	mFreeMode = false;
 	mIsLoop = false;
 	QueueClear(mRunQueue);
 	QueueClear(mSaveQueue);
