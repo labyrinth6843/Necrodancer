@@ -155,10 +155,6 @@ void Weapon::Render(HDC hdc)
 				}
 			}
 		}
-		else if (mState == ItemState::Owned)
-		{
-			mImage.Image->ScaleFrameRender(hdc, 50, 50, mImage.FrameX, mImage.FrameY, 64, 64);
-		}
 	}
 }
 

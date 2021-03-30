@@ -62,6 +62,7 @@ public:
 
 public:
 	FrameImage GetFrameImage() { return mImage; }
+	Image* GetImage() { return mImage.Image; }
 	POINT GetPosition() { return POINT{ (long)mX,(long)mY }; }
 	float GetPositionX() { return mX; }
 	float GetPositionY() { return mY; }
@@ -70,6 +71,7 @@ public:
 	ItemType GetType() { return mType; }
 
 	void SetFrameImage(FrameImage fimage) { mImage = fimage; }
+	void SetImage(Image* image) { mImage.Image = image; }
 	void SetPosition(float x, float y) { mX = x; mY = y; }
 	void SetPositionX(float x) { mX = x; }
 	void SetPositionY(float y) { mY = y; }
