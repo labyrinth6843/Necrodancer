@@ -11,7 +11,7 @@ void MapToolScene::Init()
 {
 	//Image LoadFromFile은 필터 -> LoadImage.cpp로 옮김
 	mPalleteList.push_back(L"GroundPallet");
-	mPalleteList.push_back(L"WallTile");
+	mPalleteList.push_back(L"WallPallet");
 	mPalleteList.push_back(L"DecoPallet");
 	mPalleteList.push_back(L"ItemPallet1");
 	mPalleteList.push_back(L"ItemPallet2");
@@ -80,6 +80,8 @@ void MapToolScene::Init()
 	mButtonList.insert(make_pair(L"Save", new Button(L"Save", L"Save", 250, 50, 200, 50, bind(&MapToolScene::Save, this))));
 	mButtonList.insert(make_pair(L"Load", new Button(L"Load", L"Load", 350, 50, 200, 50, [this]() 
 		{
+			//지금은 무조건 같은 파일만 불러와진다
+			Path::OpenFileDialog(L"", nullptr, L"../04_Data/", nullptr, _hWnd);
 
 			FileManager::LoadMap(L"Test00", mGroundList, TileSize);
 			FileManager::LoadMap(L"Test01", mWallList, TileSize, 72);
