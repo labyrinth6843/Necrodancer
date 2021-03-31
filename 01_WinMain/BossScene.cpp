@@ -16,7 +16,7 @@
 void BossScene::Init() {
 	Beat::GetInstance()->Init();
 
-	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player"));
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player", 10, 10));
 	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 
 	SoundPlayer::GetInstance()->Play(L"kingconga", 0.2f);

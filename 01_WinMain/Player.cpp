@@ -57,8 +57,6 @@ void Player::Init() {
 
 	//초기 설정이 필요한 값 입력
 	mHp = 6.f;
-	mX = TileSize * 8;
-	mY = TileSize * 4;
 	mCorrectionY = 0.f;
 	mStartIndexX = mX / TileSize;
 	mStartIndexY = mY / TileSize;
