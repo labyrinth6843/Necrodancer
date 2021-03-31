@@ -35,7 +35,7 @@ void Wall::Update()
 			{
 				if (mDecoList[y][x]->GetFrameIndexX() != 0 || mDecoList[y][x]->GetFrameIndexY() != 0)
 				{
-					mGroundPtr->GetSight(x, y, 5);
+					mGroundPtr->GetSight(x, y, 8);
 					if (mFrameCount>5)
 					{
 						int nextX = mDecoList[y][x]->GetFrameIndexX() + 1;

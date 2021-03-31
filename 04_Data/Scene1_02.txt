@@ -1470,7 +1470,7 @@ DecoPallet,28,24,0,0,0
 DecoPallet,29,24,0,0,0
 DecoPallet,30,24,0,0,0
 DecoPallet,31,24,0,0,0
-DecoPallet,32,24,0,0,0
+DecoPallet,32,24,3,0,0
 DecoPallet,33,24,0,0,0
 DecoPallet,34,24,0,0,0
 DecoPallet,35,24,0,0,0
@@ -1633,7 +1633,7 @@ DecoPallet,11,27,0,0,0
 DecoPallet,12,27,0,0,0
 DecoPallet,13,27,0,0,0
 DecoPallet,14,27,0,0,0
-DecoPallet,15,27,0,0,0
+DecoPallet,15,27,4,0,0
 DecoPallet,16,27,0,0,0
 DecoPallet,17,27,0,0,0
 DecoPallet,18,27,0,0,0
@@ -1710,7 +1710,7 @@ DecoPallet,28,28,0,0,0
 DecoPallet,29,28,0,0,0
 DecoPallet,30,28,0,0,0
 DecoPallet,31,28,0,0,0
-DecoPallet,32,28,0,0,0
+DecoPallet,32,28,4,0,0
 DecoPallet,33,28,0,0,0
 DecoPallet,34,28,0,0,0
 DecoPallet,35,28,0,0,0
@@ -1873,7 +1873,7 @@ DecoPallet,11,31,0,0,0
 DecoPallet,12,31,0,0,0
 DecoPallet,13,31,0,0,0
 DecoPallet,14,31,0,0,0
-DecoPallet,15,31,0,0,0
+DecoPallet,15,31,1,0,0
 DecoPallet,16,31,0,0,0
 DecoPallet,17,31,0,0,0
 DecoPallet,18,31,0,0,0
@@ -1885,7 +1885,7 @@ DecoPallet,23,31,0,0,0
 DecoPallet,24,31,0,0,0
 DecoPallet,25,31,0,0,0
 DecoPallet,26,31,0,0,0
-DecoPallet,27,31,0,0,0
+DecoPallet,27,31,3,0,0
 DecoPallet,28,31,0,0,0
 DecoPallet,29,31,0,0,0
 DecoPallet,30,31,0,0,0
@@ -2113,7 +2113,7 @@ DecoPallet,11,35,0,0,0
 DecoPallet,12,35,0,0,0
 DecoPallet,13,35,0,0,0
 DecoPallet,14,35,0,0,0
-DecoPallet,15,35,0,0,0
+DecoPallet,15,35,2,0,0
 DecoPallet,16,35,0,0,0
 DecoPallet,17,35,0,0,0
 DecoPallet,18,35,0,0,0
@@ -2125,7 +2125,7 @@ DecoPallet,23,35,0,0,0
 DecoPallet,24,35,0,0,0
 DecoPallet,25,35,0,0,0
 DecoPallet,26,35,0,0,0
-DecoPallet,27,35,0,0,0
+DecoPallet,27,35,4,0,0
 DecoPallet,28,35,0,0,0
 DecoPallet,29,35,0,0,0
 DecoPallet,30,35,0,0,0
@@ -2357,11 +2357,11 @@ DecoPallet,15,39,0,0,0
 DecoPallet,16,39,0,0,0
 DecoPallet,17,39,0,0,0
 DecoPallet,18,39,0,0,0
-DecoPallet,19,39,0,0,0
+DecoPallet,19,39,3,0,0
 DecoPallet,20,39,0,0,0
 DecoPallet,21,39,0,0,0
 DecoPallet,22,39,0,0,0
-DecoPallet,23,39,0,0,0
+DecoPallet,23,39,3,0,0
 DecoPallet,24,39,0,0,0
 DecoPallet,25,39,0,0,0
 DecoPallet,26,39,0,0,0
