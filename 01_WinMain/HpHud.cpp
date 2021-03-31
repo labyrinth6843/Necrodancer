@@ -6,7 +6,7 @@ void Hud::SetHp()
 	mMaxHp = mPlayerPtr->GetHp();
 	for (int i = 0.f; i < mMaxHp / 2.f; i ++)
 	{
-		FrameImage temp = { IMAGEMANAGER->FindImage(L"HUDHealth"), WINSIZEX - 200.f - mHudSize * i, 50.f,  0, 0, mHudSize, mHudSize };
+		FrameImage temp = { IMAGEMANAGER->FindImage(L"HUDHealth"), WINSIZEX - 80.f - mHudSize * i, 50.f,  0, 0, mHudSize, mHudSize };
 		mHp.push_back(temp);
 	}
 }

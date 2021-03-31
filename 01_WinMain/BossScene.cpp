@@ -42,7 +42,7 @@ void BossScene::Init() {
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, camera);
 
 	ObjectManager::GetInstance()->Init();
-	mToolButton = new Button(L"Tool", L"Tool", 550, 50, 200, 50, bind(&BossScene::Tool, this));
+	mToolButton = new Button(L"Tool", L"Tool", 1200, 10, 200, 50, bind(&BossScene::Tool, this));
 
 	//Hud
 	HUD->SetPlayerPtr();

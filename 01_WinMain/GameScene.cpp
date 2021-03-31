@@ -16,7 +16,7 @@
 void GameScene::Init(){
 	Beat::GetInstance()->Init();
 
-	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player"));
+	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, new Player("Player", 6, 5));
 	Player* temp = (Player*)ObjectManager::GetInstance()->FindObject(ObjectLayer::Player, "Player");
 
 	SoundPlayer::GetInstance()->Play(L"zone1_1",0.2f);
@@ -43,7 +43,7 @@ void GameScene::Init(){
 	ObjectManager::GetInstance()->AddObject(ObjectLayer::Player, camera);
 
 	ObjectManager::GetInstance()->Init();
-	mToolButton  = new Button(L"Tool",  L"Tool",  550, 50, 200, 50, bind(&GameScene::Tool, this));
+	mToolButton  = new Button(L"Tool",  L"Tool", 1200, 10, 200, 50, bind(&GameScene::Tool, this));
 
 	//Hud
 	HUD->SetPlayerPtr();
@@ -61,7 +61,6 @@ void GameScene::Release(){
 	SafeDelete(mToolButton);
 	HUD->Release();
 	BEAT->Release();
-	PDATA->Release();
 	ObjectManager::GetInstance()->AllDestroy();	//함수 구성은 같은데 Release를 사용하면 Player가 nullptr
 	CameraManager::GetInstance()->SetMainCamera(nullptr);
 }
@@ -98,6 +97,7 @@ void GameScene::Tool() {
 	SoundPlayer::GetInstance()->Stop(L"zone1_1");
 	SoundPlayer::GetInstance()->Stop(L"zone1_1_shopkeeper");
 	SceneManager::GetInstance()->LoadScene(L"MapToolScene");
+	PDATA->Release();
 }
 
 void GameScene::NextStage()

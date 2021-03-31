@@ -806,10 +806,10 @@ DecoPallet,24,13,0,0,0
 DecoPallet,25,13,0,0,0
 DecoPallet,26,13,0,0,0
 DecoPallet,27,13,0,0,0
-DecoPallet,28,13,0,0,0
+DecoPallet,28,13,1,0,0
 DecoPallet,29,13,0,0,0
 DecoPallet,30,13,0,0,0
-DecoPallet,31,13,0,0,0
+DecoPallet,31,13,4,0,0
 DecoPallet,32,13,0,0,0
 DecoPallet,33,13,0,0,0
 DecoPallet,34,13,0,0,0
