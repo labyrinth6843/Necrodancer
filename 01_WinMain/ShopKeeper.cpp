@@ -50,7 +50,7 @@ void ShopKeeper::Update()
 	else
 		mCurrentAnimation = mIdleAnimation;
 
-	mGroundPtr->GetAlpha(mX / TileSize, mY / TileSize, mOpacity);
+	mGroundPtr->GetAlpha((int)(mX / TileSize), (int)(mY / TileSize), mOpacity);
 	//흑백에서 컬러로 넘어가는 시점
 	if (mOpacity > 0.5f)
 		mIsVisible = true;
