@@ -8,8 +8,10 @@
 #include "Weapon.h"
 #include "Armor.h"
 
-Player::Player(const string& name) : GameObject(name) {
-
+Player::Player(const string& name, int indexX, int indexY) : GameObject(name)
+{
+	mX = indexX * TileSize;
+	mY = indexY * TileSize;
 }
 
 void Player::Init() {

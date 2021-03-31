@@ -65,7 +65,7 @@ class Player:public GameObject{
 
 	int mSpeed;
 public:
-	Player(const string& name);
+	Player(const string& name, int indexX = 5, int indexY = 5);
 
 	void Init()override;
 	void Release()override;
