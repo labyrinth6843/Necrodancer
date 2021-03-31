@@ -13,6 +13,8 @@ PlayerData::PlayerData()
 
 PlayerData::~PlayerData()
 {
+	SafeDelete(mWeapon);
+	SafeDelete(mArmor);
 }
 
 void PlayerData::Release()

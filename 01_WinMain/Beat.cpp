@@ -70,6 +70,9 @@ void Beat::Release()
 
 void Beat::Update()
 {
+	//치트키
+	if (Input::GetInstance()->GetKeyDown('L'))
+		mFreeMode = !mFreeMode;
 	//기본적으로 매 프레임마다 턴조건 초기화
 	if(mNotCall)
 		mTurn = false;

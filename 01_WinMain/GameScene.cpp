@@ -50,7 +50,6 @@ void GameScene::Init(){
 	HUD->SetHp();
 
 	//테스트모드
-	BEAT->SetFreeMode(true);
 	BEAT->SetIsLoop(true);
 
 	//데이터저장

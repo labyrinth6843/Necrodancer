@@ -163,7 +163,7 @@ void Player::Update() {
 void Player::Render(HDC hdc) {
 	if (mArmor->GetArmorMaterial() == ArmorMaterial::Obsidian)
 	{
-		int combo = (int)(mArmor->GetDef()/0.5f);
+		int combo = mArmor->GetDef();
 		CameraManager::GetInstance()->GetMainCamera()->ScaleFrameRender(hdc, mBodyImage, mX + 5, mY + mCorrectionY + 6,
 			mCurrentBodyAnimation->GetNowFrameX(), (int)mArmor->GetArmorMaterial() + combo, 34, 30);
 	}
