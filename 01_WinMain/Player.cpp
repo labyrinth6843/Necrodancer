@@ -353,6 +353,8 @@ bool Player::AttackRangeCheck(const int& key)
 		//적이 공격범위에 있다면
 		if (target != nullptr)
 		{
+			if (target->GetName() == "ShopKeeper")
+				return attackCheck;
 			Attack(target);
 			attackCheck = true;
 			if (mWeapon->GetWeaponType() == WeaponType::Rapier)
