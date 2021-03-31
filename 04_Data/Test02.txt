@@ -85,11 +85,11 @@ DecoPallet,3,4,0,0,0
 DecoPallet,4,4,0,0,0
 DecoPallet,5,4,0,0,0
 DecoPallet,6,4,0,0,0
-DecoPallet,7,4,0,0,0
+DecoPallet,7,4,1,0,0
 DecoPallet,8,4,0,0,0
 DecoPallet,9,4,0,0,0
 WallPallet,10,4,0,0,0
-WallPallet,11,4,0,0,0
+DecoPallet,11,4,1,0,0
 WallPallet,12,4,0,0,0
 WallPallet,13,4,0,0,0
 DecoPallet,14,4,0,0,0
